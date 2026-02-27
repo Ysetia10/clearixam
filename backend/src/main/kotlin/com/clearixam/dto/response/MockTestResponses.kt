@@ -12,6 +12,14 @@ data class MockResponse(
     val probabilityScore: Double?
 )
 
+data class PagedMockResponse(
+    val content: List<MockResponse>,
+    val page: Int,
+    val size: Int,
+    val totalElements: Long,
+    val totalPages: Int
+)
+
 data class MockDetailResponse(
     val id: UUID,
     val testDate: LocalDate,

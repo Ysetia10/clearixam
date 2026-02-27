@@ -3,6 +3,7 @@ package com.clearixam.controller
 import com.clearixam.dto.request.CreateMockRequest
 import com.clearixam.dto.response.MockDetailResponse
 import com.clearixam.dto.response.MockResponse
+import com.clearixam.dto.response.PagedMockResponse
 import com.clearixam.service.MockTestService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
@@ -27,9 +28,13 @@ class MockTestController(
     }
 
     @GetMapping
-    fun getMocks(authentication: Authentication): ResponseEntity<List<MockResponse>> {
+    fun getMocks(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int,
+        authentication: Authentication
+    ): ResponseEntity<PagedMockResponse> {
         val userEmail = authentication.name
-        val mocks = mockTestService.getMocksForUser(userEmail)
+        val mocks = mockTestService.getMocksForUser(userEmail, page, size)
         return ResponseEntity.ok(mocks)
     }
 

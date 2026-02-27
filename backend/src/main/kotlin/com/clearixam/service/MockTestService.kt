@@ -4,11 +4,14 @@ import com.clearixam.dto.request.CreateMockRequest
 import com.clearixam.dto.request.SubjectInput
 import com.clearixam.dto.response.MockDetailResponse
 import com.clearixam.dto.response.MockResponse
+import com.clearixam.dto.response.PagedMockResponse
 import com.clearixam.dto.response.SubjectDetail
 import com.clearixam.entity.MockTest
 import com.clearixam.entity.SubjectScore
 import com.clearixam.repository.MockTestRepository
 import com.clearixam.repository.UserRepository
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -61,14 +64,24 @@ class MockTestService(
         return toMockResponse(updatedMockTest)
     }
 
-    fun getMocksForUser(userEmail: String): List<MockResponse> {
+    @Transactional(readOnly = true)
+    fun getMocksForUser(userEmail: String, page: Int = 0, size: Int = 10): PagedMockResponse {
         val user = userRepository.findByEmail(userEmail)
             ?: throw IllegalArgumentException("User not found")
 
-        return mockTestRepository.findByUserIdOrderByTestDateDesc(user.id!!)
-            .map { toMockResponse(it) }
+        val pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "testDate"))
+        val mockPage = mockTestRepository.findByUserIdOrderByTestDateDesc(user.id!!, pageable)
+
+        return PagedMockResponse(
+            content = mockPage.content.map { toMockResponse(it) },
+            page = mockPage.number,
+            size = mockPage.size,
+            totalElements = mockPage.totalElements,
+            totalPages = mockPage.totalPages
+        )
     }
 
+    @Transactional(readOnly = true)
     fun getMockDetail(mockId: UUID, userEmail: String): MockDetailResponse {
         val user = userRepository.findByEmail(userEmail)
             ?: throw IllegalArgumentException("User not found")
