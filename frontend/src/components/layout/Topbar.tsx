@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Box, Chip } from '@mui/material';
+import { AppBar, Toolbar, Box, Chip } from '@mui/material';
 import { getUserEmail } from '../../api/auth';
 
 const DRAWER_WIDTH = 220;

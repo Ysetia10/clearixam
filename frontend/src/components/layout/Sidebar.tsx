@@ -17,6 +17,7 @@ import {
   BarChart as BarChartIcon,
   LightMode,
   DarkMode,
+  Settings as SettingsIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { removeToken } from '../../api/auth';
@@ -39,6 +40,7 @@ export const Sidebar = () => {
     { text: 'Dashboard', icon: <DashboardIcon fontSize="small" />, path: '/dashboard' },
     { text: 'Subject Analytics', icon: <BarChartIcon fontSize="small" />, path: '/subject-analytics' },
     { text: 'Add Mock', icon: <AddIcon fontSize="small" />, path: '/add-mock' },
+    { text: 'Account', icon: <SettingsIcon fontSize="small" />, path: '/account' },
   ];
 
   return (

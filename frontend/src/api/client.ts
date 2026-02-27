@@ -1,4 +1,5 @@
 import { getToken } from './auth';
+import { errorLogger } from '../utils/errorLogger';
 
 const API_BASE_URL = 'http://localhost:8081/api';
 
@@ -14,19 +15,29 @@ export async function apiClient<T>(
     ...options?.headers,
   };
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
 
-  if (!response.ok) {
-    if (response.status === 401 || response.status === 403) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('userEmail');
-      window.location.href = '/login';
+    if (!response.ok) {
+      if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userEmail');
+        window.location.href = '/login';
+      }
+      
+      const error = new Error(`API Error: ${response.statusText}`);
+      errorLogger.logApiError({ response: { status: response.status, statusText: response.statusText } }, endpoint);
+      throw error;
     }
-    throw new Error(`API Error: ${response.statusText}`);
-  }
 
-  return response.json();
+    return response.json();
+  } catch (error: any) {
+    if (!error.message?.includes('API Error')) {
+      errorLogger.logApiError(error, endpoint);
+    }
+    throw error;
+  }
 }

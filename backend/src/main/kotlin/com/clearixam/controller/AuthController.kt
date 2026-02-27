@@ -3,15 +3,19 @@ package com.clearixam.controller
 import com.clearixam.dto.request.LoginRequest
 import com.clearixam.dto.request.RegisterRequest
 import com.clearixam.dto.response.AuthResponse
+import com.clearixam.security.RateLimitService
 import com.clearixam.service.AuthService
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(
-    private val authService: AuthService
+    private val authService: AuthService,
+    private val rateLimitService: RateLimitService
 ) {
 
     @PostMapping("/register")
@@ -21,9 +25,37 @@ class AuthController(
     }
 
     @PostMapping("/login")
-    fun login(@Valid @RequestBody request: LoginRequest): ResponseEntity<AuthResponse> {
-        val response = authService.login(request)
-        return ResponseEntity.ok(response)
+    fun login(
+        @Valid @RequestBody request: LoginRequest,
+        httpRequest: HttpServletRequest
+    ): ResponseEntity<Any> {
+        val ipAddress = getClientIP(httpRequest)
+        
+        // Check rate limit
+        if (rateLimitService.isRateLimited(ipAddress)) {
+            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(mapOf("error" to "Too many login attempts. Please try again later."))
+        }
+        
+        try {
+            val response = authService.login(request)
+            // Clear attempts on successful login
+            rateLimitService.clearAttempts(ipAddress)
+            return ResponseEntity.ok(response)
+        } catch (e: Exception) {
+            // Record failed attempt
+            rateLimitService.recordAttempt(ipAddress)
+            throw e
+        }
+    }
+    
+    private fun getClientIP(request: HttpServletRequest): String {
+        val xForwardedFor = request.getHeader("X-Forwarded-For")
+        return if (xForwardedFor != null && xForwardedFor.isNotEmpty()) {
+            xForwardedFor.split(",")[0].trim()
+        } else {
+            request.remoteAddr
+        }
     }
 }
 

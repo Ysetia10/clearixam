@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   Box,
   Grid,
@@ -15,6 +15,8 @@ import {
   TableHead,
   TableRow,
   Button,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
 import {
   TrendingUp,
@@ -24,6 +26,7 @@ import {
   CheckCircle,
   Visibility,
   TrendingDown,
+  Download,
 } from '@mui/icons-material';
 import {
   LineChart,
@@ -31,7 +34,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
+  Tooltip as ChartTooltip,
   Legend,
   ResponsiveContainer,
 } from 'recharts';
@@ -39,6 +42,7 @@ import { motion } from 'framer-motion';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { analyticsApi } from '../api/analytics';
 import { mocksApi } from '../api/mocks';
+import { reportsApi } from '../api/reports';
 import { GoalProgressCard } from '../components/GoalProgressCard';
 import { GoalSettingDialog } from '../components/GoalSettingDialog';
 import { MockDetailDialog } from '../components/MockDetailDialog';
@@ -50,6 +54,21 @@ export const Dashboard = () => {
   const [selectedMockId, setSelectedMockId] = useState<string | null>(null);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [mockDetailOpen, setMockDetailOpen] = useState(false);
+
+  const downloadReportMutation = useMutation({
+    mutationFn: reportsApi.downloadPerformanceReport,
+    onSuccess: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const date = new Date().toISOString().split('T')[0];
+      link.download = `Clearixam_Report_${date}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    },
+  });
 
   const { data: overview, isLoading: overviewLoading } = useQuery({
     queryKey: ['analytics-overview'],
@@ -175,9 +194,21 @@ export const Dashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
-          Dashboard
-        </Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h6" fontWeight="bold">
+            Dashboard
+          </Typography>
+          <Tooltip title="Download Performance Report">
+            <IconButton
+              color="primary"
+              onClick={() => downloadReportMutation.mutate()}
+              disabled={downloadReportMutation.isPending}
+              size="small"
+            >
+              <Download />
+            </IconButton>
+          </Tooltip>
+        </Box>
 
         {/* Performance Insights */}
         {insights.length > 0 && (
@@ -367,7 +398,7 @@ export const Dashboard = () => {
                   <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" strokeWidth={0.5} />
                   <XAxis dataKey="date" tick={{ fontSize: 11 }} />
                   <YAxis tick={{ fontSize: 11 }} />
-                  <Tooltip contentStyle={{ fontSize: 12 }} />
+                  <ChartTooltip contentStyle={{ fontSize: 12 }} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
                   <Line
                     type="monotone"
