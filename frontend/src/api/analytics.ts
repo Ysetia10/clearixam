@@ -12,6 +12,19 @@ export interface AnalyticsOverview {
   probability: number;
   riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
   weakSubjects: WeakSubject[];
+  recommendedAttemptRange: string;
+  strategyNote: string;
+  consistencyScore: 'HIGH' | 'MODERATE' | 'LOW' | 'INSUFFICIENT_DATA';
+  goalProgress: {
+    goalProgressPercent: number;
+    daysRemaining: number;
+    onTrack: boolean;
+    currentScore: number;
+    targetScore: number;
+  } | null;
+  lastFiveAverage: number;
+  previousFiveAverage: number;
+  performanceChange: number;
 }
 
 export interface TrendPoint {
@@ -24,7 +37,24 @@ export interface AnalyticsTrend {
   trends: TrendPoint[];
 }
 
+export interface SubjectAnalysis {
+  subjectName: string;
+  averageScore: number;
+  averageAccuracy: number;
+  improvementRate: number;
+  trend: {
+    dates: string[];
+    scores: number[];
+    accuracy: number[];
+  };
+}
+
+export interface SubjectAnalyticsResponse {
+  subjects: SubjectAnalysis[];
+}
+
 export const analyticsApi = {
   getOverview: () => apiClient<AnalyticsOverview>('/analytics/overview'),
   getTrend: () => apiClient<AnalyticsTrend>('/analytics/trend'),
+  getSubjectAnalytics: () => apiClient<SubjectAnalyticsResponse>('/analytics/subjects'),
 };

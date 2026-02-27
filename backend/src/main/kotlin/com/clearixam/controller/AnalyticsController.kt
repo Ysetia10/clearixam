@@ -28,4 +28,11 @@ class AnalyticsController(
         val trend = analyticsService.getTrend(userEmail)
         return ResponseEntity.ok(trend)
     }
+
+    @GetMapping("/subjects")
+    fun getSubjectAnalytics(authentication: Authentication): ResponseEntity<com.clearixam.dto.response.SubjectAnalyticsResponse> {
+        val userEmail = authentication.name
+        val subjects = analyticsService.getSubjectAnalytics(userEmail)
+        return ResponseEntity.ok(subjects)
+    }
 }

@@ -1,7 +1,7 @@
-import { AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, Chip } from '@mui/material';
 import { getUserEmail } from '../../api/auth';
 
-const DRAWER_WIDTH = 240;
+const DRAWER_WIDTH = 220;
 
 export const Topbar = () => {
   const userEmail = getUserEmail();
@@ -13,16 +13,22 @@ export const Topbar = () => {
       sx={{
         width: `calc(100% - ${DRAWER_WIDTH}px)`,
         ml: `${DRAWER_WIDTH}px`,
-        backgroundColor: 'white',
+        backgroundColor: 'background.paper',
         borderBottom: '1px solid',
         borderColor: 'divider',
       }}
     >
-      <Toolbar>
+      <Toolbar sx={{ minHeight: '56px !important', py: 1 }}>
         <Box sx={{ flexGrow: 1 }} />
-        <Typography variant="body2" color="text.secondary">
-          {userEmail}
-        </Typography>
+        <Chip 
+          label={userEmail} 
+          size="small"
+          sx={{ 
+            fontSize: '0.75rem',
+            height: '28px',
+            bgcolor: 'action.hover',
+          }} 
+        />
       </Toolbar>
     </AppBar>
   );

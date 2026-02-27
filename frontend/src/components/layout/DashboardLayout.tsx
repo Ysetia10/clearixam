@@ -1,4 +1,4 @@
-import { Box, Toolbar } from '@mui/material';
+import { Box } from '@mui/material';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 
@@ -6,11 +6,11 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-const DRAWER_WIDTH = 240;
+const DRAWER_WIDTH = 220;
 
 export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
       <Box
         component="main"
@@ -18,12 +18,11 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           flexGrow: 1,
           width: `calc(100% - ${DRAWER_WIDTH}px)`,
           minHeight: '100vh',
-          backgroundColor: '#F9FAFB',
+          backgroundColor: 'background.default',
         }}
       >
         <Topbar />
-        <Toolbar />
-        <Box sx={{ p: 3 }}>{children}</Box>
+        <Box sx={{ p: 2.5, pt: 10 }}>{children}</Box>
       </Box>
     </Box>
   );

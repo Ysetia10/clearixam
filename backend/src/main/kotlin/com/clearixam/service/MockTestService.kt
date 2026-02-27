@@ -42,7 +42,8 @@ class MockTestService(
         val savedMockTest = mockTestRepository.save(mockTest)
 
         request.subjects.forEach { subjectInput ->
-            val score = calculateScore(subjectInput)
+            val incorrect = subjectInput.attempted - subjectInput.correct
+            val score = subjectInput.correct * 2.0 - incorrect * 0.66
             totalScore += score
 
             val subjectScore = SubjectScore(
@@ -50,7 +51,7 @@ class MockTestService(
                 subjectName = subjectInput.subjectName,
                 attempted = subjectInput.attempted,
                 correct = subjectInput.correct,
-                incorrect = subjectInput.incorrect,
+                incorrect = incorrect,
                 score = score
             )
             subjectScores.add(subjectScore)
@@ -92,15 +93,22 @@ class MockTestService(
         return toMockDetailResponse(mockTest)
     }
 
-    private fun calculateScore(input: SubjectInput): Double {
-        return (input.correct * 2.0) - (input.incorrect * 0.66)
+    @Transactional
+    fun deleteMock(mockId: UUID, userEmail: String) {
+        val user = userRepository.findByEmail(userEmail)
+            ?: throw IllegalArgumentException("User not found")
+
+        val mockTest = mockTestRepository.findByIdAndUserId(mockId, user.id!!)
+            ?: throw IllegalArgumentException("Mock test not found or access denied")
+
+        mockTestRepository.delete(mockTest)
     }
 
     private fun validateSubjectInputs(subjects: List<SubjectInput>) {
         subjects.forEach { subject ->
-            if (subject.attempted < subject.correct + subject.incorrect) {
+            if (subject.correct > subject.attempted) {
                 throw IllegalArgumentException(
-                    "Invalid data for ${subject.subjectName}: attempted must be >= correct + incorrect"
+                    "Invalid data for ${subject.subjectName}: correct cannot exceed attempted"
                 )
             }
         }

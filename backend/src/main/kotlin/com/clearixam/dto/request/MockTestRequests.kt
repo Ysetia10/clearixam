@@ -30,9 +30,5 @@ data class SubjectInput(
 
     @field:NotNull(message = "Correct count is required")
     @field:PositiveOrZero(message = "Correct must be positive")
-    val correct: Int,
-
-    @field:NotNull(message = "Incorrect count is required")
-    @field:PositiveOrZero(message = "Incorrect must be positive")
-    val incorrect: Int
+    val correct: Int
 )

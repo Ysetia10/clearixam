@@ -10,7 +10,14 @@ data class AnalyticsOverviewResponse(
     val improvementRate: Double,
     val probability: Int,
     val riskLevel: PerformanceCalculator.RiskLevel,
-    val weakSubjects: List<WeakSubjectResponse>
+    val weakSubjects: List<WeakSubjectResponse>,
+    val recommendedAttemptRange: String,
+    val strategyNote: String,
+    val consistencyScore: PerformanceCalculator.ConsistencyLevel,
+    val goalProgress: GoalProgressResponse?,
+    val lastFiveAverage: Double,
+    val previousFiveAverage: Double,
+    val performanceChange: Double
 )
 
 data class WeakSubjectResponse(

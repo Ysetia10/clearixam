@@ -47,4 +47,14 @@ class MockTestController(
         val mock = mockTestService.getMockDetail(id, userEmail)
         return ResponseEntity.ok(mock)
     }
+
+    @DeleteMapping("/{id}")
+    fun deleteMock(
+        @PathVariable id: UUID,
+        authentication: Authentication
+    ): ResponseEntity<Void> {
+        val userEmail = authentication.name
+        mockTestService.deleteMock(id, userEmail)
+        return ResponseEntity.noContent().build()
+    }
 }

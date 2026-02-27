@@ -4,7 +4,6 @@ export interface SubjectInput {
   subjectName: string;
   attempted: number;
   correct: number;
-  incorrect: number;
 }
 
 export interface CreateMockRequest {
@@ -29,6 +28,23 @@ export interface PagedMockResponse {
   totalPages: number;
 }
 
+export interface SubjectDetail {
+  subjectName: string;
+  attempted: number;
+  correct: number;
+  incorrect: number;
+  score: number;
+}
+
+export interface MockDetailResponse {
+  id: string;
+  testDate: string;
+  totalScore: number;
+  cutoffScore: number;
+  probabilityScore: number | null;
+  subjects: SubjectDetail[];
+}
+
 export const mocksApi = {
   create: (data: CreateMockRequest) =>
     apiClient<MockResponse>('/mocks', {
@@ -38,4 +54,12 @@ export const mocksApi = {
 
   list: (page: number = 0, size: number = 10) =>
     apiClient<PagedMockResponse>(`/mocks?page=${page}&size=${size}`),
+
+  getDetail: (id: string) =>
+    apiClient<MockDetailResponse>(`/mocks/${id}`),
+
+  delete: (id: string) =>
+    apiClient<void>(`/mocks/${id}`, {
+      method: 'DELETE',
+    }),
 };

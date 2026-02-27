@@ -78,6 +78,124 @@ class PerformanceCalculator {
         }
     }
 
+    fun calculateOverallAccuracy(mocks: List<MockTest>): Double {
+        if (mocks.isEmpty()) return 0.0
+        var totalCorrect = 0
+        var totalAttempted = 0
+        
+        mocks.forEach { mock ->
+            mock.subjects.forEach { subject ->
+                totalCorrect += subject.correct
+                totalAttempted += subject.attempted
+            }
+        }
+        
+        return if (totalAttempted > 0) {
+            (totalCorrect.toDouble() / totalAttempted) * 100
+        } else 0.0
+    }
+
+    fun calculateAttemptStrategy(accuracy: Double): AttemptStrategy {
+        return when {
+            accuracy > 75 -> AttemptStrategy(
+                recommendedRange = "85-100 questions",
+                note = "High accuracy! Increase attempts to maximize score."
+            )
+            accuracy >= 60 -> AttemptStrategy(
+                recommendedRange = "70-85 questions",
+                note = "Good accuracy. Maintain current attempt rate."
+            )
+            else -> AttemptStrategy(
+                recommendedRange = "60-75 questions",
+                note = "Focus on accuracy. Reduce attempts and improve fundamentals."
+            )
+        }
+    }
+
+    fun calculateConsistencyScore(mocks: List<MockTest>): ConsistencyLevel {
+        if (mocks.size < 2) return ConsistencyLevel.INSUFFICIENT_DATA
+        
+        val recentMocks = mocks.sortedByDescending { it.testDate }.take(5)
+        if (recentMocks.size < 2) return ConsistencyLevel.INSUFFICIENT_DATA
+        
+        val scores = recentMocks.map { it.totalScore }
+        val mean = scores.average()
+        val variance = scores.map { (it - mean) * (it - mean) }.average()
+        val stdDev = kotlin.math.sqrt(variance)
+        
+        return when {
+            stdDev < 5 -> ConsistencyLevel.HIGH
+            stdDev < 10 -> ConsistencyLevel.MODERATE
+            else -> ConsistencyLevel.LOW
+        }
+    }
+
+    fun analyzeSubjects(mocks: List<MockTest>): List<SubjectAnalysisData> {
+        if (mocks.isEmpty()) return emptyList()
+
+        val subjectData = mutableMapOf<SubjectName, MutableList<SubjectDataPoint>>()
+
+        mocks.forEach { mock ->
+            mock.subjects.forEach { subject ->
+                val dataPoints = subjectData.getOrPut(subject.subjectName) { mutableListOf() }
+                val accuracy = if (subject.attempted > 0) {
+                    (subject.correct.toDouble() / subject.attempted) * 100
+                } else 0.0
+                
+                dataPoints.add(
+                    SubjectDataPoint(
+                        date = mock.testDate,
+                        score = subject.score,
+                        accuracy = accuracy
+                    )
+                )
+            }
+        }
+
+        return subjectData.map { (subjectName, dataPoints) ->
+            val sortedPoints = dataPoints.sortedBy { it.date }
+            val avgScore = sortedPoints.map { it.score }.average()
+            val avgAccuracy = sortedPoints.map { it.accuracy }.average()
+            
+            val improvementRate = if (sortedPoints.size >= 2) {
+                val oldest = sortedPoints.first().score
+                val latest = sortedPoints.last().score
+                if (oldest != 0.0) ((latest - oldest) / oldest) * 100 else 0.0
+            } else 0.0
+
+            SubjectAnalysisData(
+                subjectName = subjectName,
+                averageScore = avgScore,
+                averageAccuracy = avgAccuracy,
+                improvementRate = improvementRate,
+                dataPoints = sortedPoints
+            )
+        }
+    }
+
+    data class SubjectAnalysisData(
+        val subjectName: SubjectName,
+        val averageScore: Double,
+        val averageAccuracy: Double,
+        val improvementRate: Double,
+        val dataPoints: List<SubjectDataPoint>
+    )
+
+    data class SubjectDataPoint(
+        val date: java.time.LocalDate,
+        val score: Double,
+        val accuracy: Double
+    )
+
+    data class AttemptStrategy(
+        val recommendedRange: String,
+        val note: String
+    )
+
+    enum class ConsistencyLevel {
+        HIGH, MODERATE, LOW, INSUFFICIENT_DATA
+    }
+
     data class SubjectAggregation(
         val subjectName: SubjectName,
         val totalCorrect: Int,

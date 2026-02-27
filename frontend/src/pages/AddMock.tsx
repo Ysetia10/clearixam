@@ -30,7 +30,7 @@ export const AddMock = () => {
   const [subjects, setSubjects] = useState<Record<string, SubjectInput>>(
     SUBJECTS.reduce((acc, subject) => ({
       ...acc,
-      [subject]: { subjectName: subject, attempted: 0, correct: 0, incorrect: 0 },
+      [subject]: { subjectName: subject, attempted: 0, correct: 0 },
     }), {})
   );
   const [error, setError] = useState('');
@@ -47,13 +47,14 @@ export const AddMock = () => {
     },
   });
 
-  const calculateScore = (correct: number, incorrect: number) => {
+  const calculateScore = (attempted: number, correct: number) => {
+    const incorrect = attempted - correct;
     return (correct * 2 - incorrect * 0.66).toFixed(2);
   };
 
   const handleSubjectChange = (
     subject: string,
-    field: 'attempted' | 'correct' | 'incorrect',
+    field: 'attempted' | 'correct',
     value: string
   ) => {
     const numValue = parseInt(value) || 0;
@@ -71,7 +72,7 @@ export const AddMock = () => {
     setError('');
 
     const subjectList = Object.values(subjects).filter(
-      (s) => s.attempted > 0 || s.correct > 0 || s.incorrect > 0
+      (s) => s.attempted > 0 || s.correct > 0
     );
 
     if (subjectList.length === 0) {
@@ -80,8 +81,8 @@ export const AddMock = () => {
     }
 
     for (const subject of subjectList) {
-      if (subject.attempted < subject.correct + subject.incorrect) {
-        setError(`Invalid data for ${subject.subjectName}: attempted must be >= correct + incorrect`);
+      if (subject.correct > subject.attempted) {
+        setError(`Invalid data for ${subject.subjectName}: correct cannot exceed attempted`);
         return;
       }
     }
@@ -95,12 +96,12 @@ export const AddMock = () => {
 
   return (
     <DashboardLayout>
-      <Typography variant="h4" gutterBottom fontWeight="bold">
+      <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
         Add Mock Test
       </Typography>
 
-      <Card>
-        <CardContent>
+      <Card sx={{ p: 2 }}>
+        <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
@@ -108,13 +109,14 @@ export const AddMock = () => {
           )}
 
           <form onSubmit={handleSubmit}>
-            <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
               <TextField
                 label="Test Date"
                 type="date"
                 value={testDate}
                 onChange={(e) => setTestDate(e.target.value)}
                 required
+                size="small"
                 InputLabelProps={{ shrink: true }}
                 sx={{ flex: 1 }}
               />
@@ -124,19 +126,19 @@ export const AddMock = () => {
                 value={cutoffScore}
                 onChange={(e) => setCutoffScore(e.target.value)}
                 required
+                size="small"
                 inputProps={{ step: '0.01', min: '0' }}
                 sx={{ flex: 1 }}
               />
             </Box>
 
-            <TableContainer component={Paper} variant="outlined" sx={{ mb: 3 }}>
-              <Table>
+            <TableContainer component={Paper} variant="outlined" sx={{ mb: 2 }}>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Subject</TableCell>
                     <TableCell align="center">Attempted</TableCell>
                     <TableCell align="center">Correct</TableCell>
-                    <TableCell align="center">Incorrect</TableCell>
                     <TableCell align="center">Score Preview</TableCell>
                   </TableRow>
                 </TableHead>
@@ -155,7 +157,7 @@ export const AddMock = () => {
                               handleSubjectChange(subject, 'attempted', e.target.value)
                             }
                             inputProps={{ min: '0' }}
-                            sx={{ width: 80 }}
+                            sx={{ width: 70 }}
                           />
                         </TableCell>
                         <TableCell align="center">
@@ -167,24 +169,12 @@ export const AddMock = () => {
                               handleSubjectChange(subject, 'correct', e.target.value)
                             }
                             inputProps={{ min: '0' }}
-                            sx={{ width: 80 }}
-                          />
-                        </TableCell>
-                        <TableCell align="center">
-                          <TextField
-                            type="number"
-                            size="small"
-                            value={data.incorrect || ''}
-                            onChange={(e) =>
-                              handleSubjectChange(subject, 'incorrect', e.target.value)
-                            }
-                            inputProps={{ min: '0' }}
-                            sx={{ width: 80 }}
+                            sx={{ width: 70 }}
                           />
                         </TableCell>
                         <TableCell align="center">
                           <Typography variant="body2" fontWeight="bold">
-                            {calculateScore(data.correct, data.incorrect)}
+                            {calculateScore(data.attempted, data.correct)}
                           </Typography>
                         </TableCell>
                       </TableRow>
@@ -197,6 +187,7 @@ export const AddMock = () => {
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Button
                 variant="outlined"
+                size="small"
                 onClick={() => navigate('/dashboard')}
                 disabled={mutation.isPending}
               >
@@ -204,6 +195,7 @@ export const AddMock = () => {
               </Button>
               <Button
                 variant="contained"
+                size="small"
                 type="submit"
                 disabled={mutation.isPending}
               >
