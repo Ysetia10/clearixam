@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   Box,
@@ -7,7 +7,6 @@ import {
   CardContent,
   Typography,
   Chip,
-  CircularProgress,
   Alert,
   Table,
   TableBody,
@@ -36,12 +35,16 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { motion } from 'framer-motion';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { analyticsApi } from '../api/analytics';
 import { mocksApi } from '../api/mocks';
 import { GoalProgressCard } from '../components/GoalProgressCard';
 import { GoalSettingDialog } from '../components/GoalSettingDialog';
 import { MockDetailDialog } from '../components/MockDetailDialog';
+import { DashboardSkeleton } from '../components/SkeletonLoaders';
+import { TrendBadge } from '../components/TrendBadge';
+import { InsightCard } from '../components/InsightCard';
 
 export const Dashboard = () => {
   const [selectedMockId, setSelectedMockId] = useState<string | null>(null);
@@ -51,16 +54,19 @@ export const Dashboard = () => {
   const { data: overview, isLoading: overviewLoading } = useQuery({
     queryKey: ['analytics-overview'],
     queryFn: analyticsApi.getOverview,
+    staleTime: 30000,
   });
 
   const { data: trend, isLoading: trendLoading } = useQuery({
     queryKey: ['analytics-trend'],
     queryFn: analyticsApi.getTrend,
+    staleTime: 30000,
   });
 
   const { data: mocks, isLoading: mocksLoading } = useQuery({
     queryKey: ['mocks'],
     queryFn: () => mocksApi.list(0, 10),
+    staleTime: 30000,
   });
 
   const { data: mockDetail } = useQuery({
@@ -69,12 +75,83 @@ export const Dashboard = () => {
     enabled: !!selectedMockId && mockDetailOpen,
   });
 
-  if (overviewLoading || trendLoading || mocksLoading) {
+  // Generate insights based on analytics data
+  const insights = useMemo(() => {
+    if (!overview) return [];
+    
+    const insightList = [];
+
+    // Performance trend insight
+    if (overview.performanceChange !== undefined) {
+      if (overview.performanceChange > 3) {
+        insightList.push({
+          type: 'success' as const,
+          icon: 'trending' as const,
+          message: `Performance improving steadily (+${overview.performanceChange.toFixed(1)}% from last cycle)`,
+        });
+      } else if (overview.performanceChange < -3) {
+        insightList.push({
+          type: 'warning' as const,
+          icon: 'warning' as const,
+          message: `Performance declined ${overview.performanceChange.toFixed(1)}% recently. Review weak subjects.`,
+        });
+      }
+    }
+
+    // Weak subjects insight
+    if (overview.weakSubjects && overview.weakSubjects.length > 0) {
+      const weakestSubject = overview.weakSubjects[0];
+      insightList.push({
+        type: 'warning' as const,
+        icon: 'warning' as const,
+        message: `${weakestSubject.subjectName} accuracy at ${weakestSubject.accuracy.toFixed(1)}%. Focus needed.`,
+      });
+    }
+
+    // Goal progress insight
+    if (overview.goalProgress) {
+      insightList.push({
+        type: 'goal' as const,
+        icon: 'goal' as const,
+        message: `You are ${overview.goalProgress.goalProgressPercent.toFixed(0)}% toward your target of ${overview.goalProgress.targetScore.toFixed(2)}`,
+      });
+    }
+
+    // Consistency insight
+    if (overview.consistencyScore) {
+      if (overview.consistencyScore === 'HIGH') {
+        insightList.push({
+          type: 'success' as const,
+          icon: 'stable' as const,
+          message: 'Consistency level: Stable. Excellent performance stability.',
+        });
+      } else if (overview.consistencyScore === 'LOW') {
+        insightList.push({
+          type: 'info' as const,
+          icon: 'warning' as const,
+          message: 'Performance varies significantly. Aim for more consistent scores.',
+        });
+      }
+    }
+
+    // No weak subjects celebration
+    if (!overview.weakSubjects || overview.weakSubjects.length === 0) {
+      insightList.push({
+        type: 'success' as const,
+        icon: 'check' as const,
+        message: 'No weak subjects detected. Great job maintaining strong performance!',
+      });
+    }
+
+    return insightList.slice(0, 4); // Limit to 4 insights
+  }, [overview]);
+
+  const isLoading = overviewLoading || trendLoading || mocksLoading;
+
+  if (isLoading) {
     return (
       <DashboardLayout>
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-          <CircularProgress size={32} />
-        </Box>
+        <DashboardSkeleton />
       </DashboardLayout>
     );
   }
@@ -93,78 +170,96 @@ export const Dashboard = () => {
 
   return (
     <DashboardLayout>
-      <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
-        Dashboard
-      </Typography>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+          Dashboard
+        </Typography>
 
-      <Grid container spacing={2} sx={{ mb: 2 }}>
-        <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ p: 2 }}>
-            <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                <Assessment color="primary" sx={{ mr: 0.5, fontSize: '1.125rem' }} />
-                <Typography variant="body2" color="text.secondary">
-                  Average Score
-                </Typography>
-              </Box>
-              <Typography variant="h5" fontWeight="bold">
-                {overview?.averageScore.toFixed(2)}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        {/* Performance Insights */}
+        {insights.length > 0 && (
+          <Box sx={{ mb: 2 }}>
+            <InsightCard insights={insights} />
+          </Box>
+        )}
 
-        <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ p: 2 }}>
-            <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                <TrendingUp color="primary" sx={{ mr: 0.5, fontSize: '1.125rem' }} />
-                <Typography variant="body2" color="text.secondary">
-                  Moving Average
-                </Typography>
-              </Box>
-              <Typography variant="h5" fontWeight="bold">
-                {overview?.movingAverage.toFixed(2)}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        {/* KPI Cards - Compact Grid */}
+        <Grid container spacing={2} sx={{ mb: 2 }}>
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ p: 2 }}>
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                  <Assessment color="primary" sx={{ mr: 0.5, fontSize: '1.125rem' }} />
+                  <Typography variant="body2" color="text.secondary">
+                    Average Score
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1 }}>
+                  <Typography variant="h5" fontWeight="bold">
+                    {overview?.averageScore.toFixed(2)}
+                  </Typography>
+                  {overview?.improvementRate !== undefined && overview.improvementRate !== 0 && (
+                    <TrendBadge value={overview.improvementRate} />
+                  )}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ p: 2 }}>
-            <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                <Speed color="primary" sx={{ mr: 0.5, fontSize: '1.125rem' }} />
-                <Typography variant="body2" color="text.secondary">
-                  Probability
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ p: 2 }}>
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                  <TrendingUp color="primary" sx={{ mr: 0.5, fontSize: '1.125rem' }} />
+                  <Typography variant="body2" color="text.secondary">
+                    Moving Average
+                  </Typography>
+                </Box>
+                <Typography variant="h5" fontWeight="bold">
+                  {overview?.movingAverage.toFixed(2)}
                 </Typography>
-              </Box>
-              <Chip
-                label={`${overview?.probability}%`}
-                color={getProbabilityColor(overview?.probability || 0)}
-                sx={{ fontSize: '1.125rem', height: 32, fontWeight: 'bold' }}
-              />
-            </CardContent>
-          </Card>
-        </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
 
-        <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ p: 2 }}>
-            <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                <Warning color="primary" sx={{ mr: 0.5, fontSize: '1.125rem' }} />
-                <Typography variant="body2" color="text.secondary">
-                  Risk Level
-                </Typography>
-              </Box>
-              <Chip
-                label={overview?.riskLevel}
-                color={getRiskColor(overview?.riskLevel || 'HIGH')}
-                sx={{ fontSize: '1rem', height: 32, fontWeight: 'bold' }}
-              />
-            </CardContent>
-          </Card>
-        </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ p: 2 }}>
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                  <Speed color="primary" sx={{ mr: 0.5, fontSize: '1.125rem' }} />
+                  <Typography variant="body2" color="text.secondary">
+                    Probability
+                  </Typography>
+                </Box>
+                <Chip
+                  label={`${overview?.probability}%`}
+                  color={getProbabilityColor(overview?.probability || 0)}
+                  sx={{ fontSize: '1.125rem', height: 32, fontWeight: 'bold' }}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={3}>
+            <Card sx={{ p: 2 }}>
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                  <Warning color="primary" sx={{ mr: 0.5, fontSize: '1.125rem' }} />
+                  <Typography variant="body2" color="text.secondary">
+                    Risk Level
+                  </Typography>
+                </Box>
+                <Chip
+                  label={overview?.riskLevel}
+                  color={getRiskColor(overview?.riskLevel || 'HIGH')}
+                  sx={{ fontSize: '1rem', height: 32, fontWeight: 'bold' }}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
 
         <Grid item xs={12} sm={6} md={3}>
           <Card sx={{ p: 2 }}>
@@ -395,6 +490,7 @@ export const Dashboard = () => {
         open={goalDialogOpen}
         onClose={() => setGoalDialogOpen(false)}
       />
+      </motion.div>
     </DashboardLayout>
   );
 };

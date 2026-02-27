@@ -6,12 +6,10 @@ import {
   Card,
   CardContent,
   Typography,
-  CircularProgress,
   Collapse,
   IconButton,
-  Chip,
 } from '@mui/material';
-import { ExpandMore, TrendingUp, TrendingDown } from '@mui/icons-material';
+import { ExpandMore } from '@mui/icons-material';
 import {
   LineChart,
   Line,
@@ -22,8 +20,11 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { motion } from 'framer-motion';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { analyticsApi } from '../api/analytics';
+import { SubjectCardSkeleton } from '../components/SkeletonLoaders';
+import { TrendBadge } from '../components/TrendBadge';
 
 export const SubjectAnalytics = () => {
   const [expandedSubject, setExpandedSubject] = useState<string | null>(null);
@@ -31,14 +32,22 @@ export const SubjectAnalytics = () => {
   const { data: subjects, isLoading } = useQuery({
     queryKey: ['subject-analytics'],
     queryFn: analyticsApi.getSubjectAnalytics,
+    staleTime: 30000,
   });
 
   if (isLoading) {
     return (
       <DashboardLayout>
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-          <CircularProgress size={32} />
-        </Box>
+        <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+          Subject-Wise Analytics
+        </Typography>
+        <Grid container spacing={2}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Grid item xs={12} md={6} key={i}>
+              <SubjectCardSkeleton />
+            </Grid>
+          ))}
+        </Grid>
       </DashboardLayout>
     );
   }
@@ -49,11 +58,16 @@ export const SubjectAnalytics = () => {
 
   return (
     <DashboardLayout>
-      <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
-        Subject-Wise Analytics
-      </Typography>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+          Subject-Wise Analytics
+        </Typography>
 
-      <Grid container spacing={2}>
+        <Grid container spacing={2}>
         {subjects?.subjects && subjects.subjects.length > 0 ? (
           subjects.subjects.map((subject) => {
             const chartData = subject.trend.dates.map((date, index) => ({
@@ -113,18 +127,7 @@ export const SubjectAnalytics = () => {
                           Improvement
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
-                          {subject.improvementRate >= 0 ? (
-                            <TrendingUp color="success" sx={{ fontSize: '1rem' }} />
-                          ) : (
-                            <TrendingDown color="error" sx={{ fontSize: '1rem' }} />
-                          )}
-                          <Typography
-                            variant="subtitle1"
-                            fontWeight="bold"
-                            color={subject.improvementRate >= 0 ? 'success.main' : 'error.main'}
-                          >
-                            {subject.improvementRate.toFixed(1)}%
-                          </Typography>
+                          <TrendBadge value={subject.improvementRate} showIcon={false} />
                         </Box>
                       </Grid>
                     </Grid>
@@ -181,6 +184,7 @@ export const SubjectAnalytics = () => {
           </Grid>
         )}
       </Grid>
+      </motion.div>
     </DashboardLayout>
   );
 };

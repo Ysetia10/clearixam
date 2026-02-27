@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { mocksApi, SubjectInput } from '../api/mocks';
 
@@ -96,9 +97,14 @@ export const AddMock = () => {
 
   return (
     <DashboardLayout>
-      <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
-        Add Mock Test
-      </Typography>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+          Add Mock Test
+        </Typography>
 
       <Card sx={{ p: 2 }}>
         <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
@@ -205,6 +211,7 @@ export const AddMock = () => {
           </form>
         </CardContent>
       </Card>
+      </motion.div>
     </DashboardLayout>
   );
 };
