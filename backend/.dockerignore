@@ -1,0 +1,22 @@
+# Gradle build artifacts
+.gradle/
+build/
+!build/libs/*.jar
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md

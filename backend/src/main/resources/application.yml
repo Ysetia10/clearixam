@@ -7,16 +7,23 @@ spring:
     password: ${DATABASE_PASSWORD:}
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: ${DDL_AUTO:update}
+    show-sql: ${SHOW_SQL:false}
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 jwt:
-  secret: ${JWT_SECRET:your-secret-key-change-this-in-production-must-be-at-least-256-bits}
+  secret: ${JWT_SECRET:change-this-secret-in-production-minimum-256-bits-required}
   expiration: ${JWT_EXPIRATION:86400000}
+
+logging:
+  level:
+    root: INFO
+    com.clearixam: INFO
+    org.springframework.web: WARN
+    org.hibernate: WARN
