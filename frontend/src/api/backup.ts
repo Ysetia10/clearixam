@@ -1,7 +1,4 @@
-import { getToken } from './auth';
-import { errorLogger } from '../utils/errorLogger';
-
-const API_BASE_URL = 'http://localhost:8081/api';
+import { apiClient } from './client';
 
 export interface BackupData {
   exportDate: string;
@@ -49,51 +46,6 @@ export interface ImportRequest {
 }
 
 export const backupApi = {
-  exportData: async (): Promise<BackupData> => {
-    const token = getToken();
-    
-    try {
-      const response = await fetch(`${API_BASE_URL}/backup/export`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to export data: ${response.statusText}`);
-      }
-
-      return await response.json();
-    } catch (error: any) {
-      errorLogger.logApiError(error, '/backup/export');
-      throw error;
-    }
-  },
-
-  importData: async (data: ImportRequest): Promise<{ message: string }> => {
-    const token = getToken();
-    
-    try {
-      const response = await fetch(`${API_BASE_URL}/backup/import`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw { response: { status: response.status, statusText: response.statusText, data: errorData } };
-      }
-
-      return await response.json();
-    } catch (error: any) {
-      errorLogger.logApiError(error, '/backup/import');
-      throw error;
-    }
-  },
+  exportData: () => apiClient.get<BackupData>('/backup/export'),
+  importData: (data: ImportRequest) => apiClient.post<{ message: string }>('/backup/import', data),
 };

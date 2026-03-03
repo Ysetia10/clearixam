@@ -13,16 +13,7 @@ export interface GoalResponse {
 }
 
 export const goalsApi = {
-  create: (data: CreateGoalRequest) =>
-    apiClient<GoalResponse>('/goals', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }),
-
-  list: () => apiClient<GoalResponse[]>('/goals'),
-
-  delete: (id: string) =>
-    apiClient<void>(`/goals/${id}`, {
-      method: 'DELETE',
-    }),
+  create: (data: CreateGoalRequest) => apiClient.post<GoalResponse>('/goals', data),
+  list: () => apiClient.get<GoalResponse[]>('/goals'),
+  delete: (id: string) => apiClient.delete<void>(`/goals/${id}`),
 };

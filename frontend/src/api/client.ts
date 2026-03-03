@@ -1,43 +1,135 @@
-import { getToken } from './auth';
-import { errorLogger } from '../utils/errorLogger';
+import { API_CONFIG } from '../config/apiConfig';
+import { getToken, removeToken } from './auth';
 
-const API_BASE_URL = 'http://localhost:8081/api';
+class ApiClient {
+  private baseURL: string;
 
-export async function apiClient<T>(
-  endpoint: string,
-  options?: RequestInit
-): Promise<T> {
-  const token = getToken();
-  
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
-    ...options?.headers,
-  };
+  constructor() {
+    this.baseURL = API_CONFIG.baseURL;
+  }
 
-  try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  private async request<T>(
+    endpoint: string,
+    options?: RequestInit
+  ): Promise<T> {
+    const token = getToken();
+    
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...options?.headers,
+    };
+
+    const config: RequestInit = {
       ...options,
+      headers,
+      credentials: 'omit', // Don't send cookies cross-origin
+    };
+
+    try {
+      const response = await fetch(`${this.baseURL}${endpoint}`, config);
+
+      // Handle 401/403 - Auto logout
+      if (response.status === 401 || response.status === 403) {
+        this.handleUnauthorized();
+        throw new Error('Unauthorized - Please login again');
+      }
+
+      // Handle other errors
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      // Handle empty responses
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        return response.json();
+      }
+      
+      return response.text() as any;
+    } catch (error: any) {
+      // Network errors
+      if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+        throw new Error('Network error - Please check your connection');
+      }
+      throw error;
+    }
+  }
+
+  private handleUnauthorized(): void {
+    removeToken();
+    localStorage.removeItem('userEmail');
+    
+    // Only redirect if not already on login/register
+    if (!window.location.pathname.includes('/login') && 
+        !window.location.pathname.includes('/register')) {
+      window.location.href = '/login';
+    }
+  }
+
+  async get<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET' });
+  }
+
+  async post<T>(endpoint: string, data?: any): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'POST',
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async put<T>(endpoint: string, data?: any): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PUT',
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  async delete<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'DELETE' });
+  }
+
+  async download(endpoint: string): Promise<Blob> {
+    const token = getToken();
+    
+    const headers: HeadersInit = {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    };
+
+    const response = await fetch(`${this.baseURL}${endpoint}`, {
+      method: 'GET',
       headers,
     });
 
     if (!response.ok) {
-      if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userEmail');
-        window.location.href = '/login';
-      }
-      
-      const error = new Error(`API Error: ${response.statusText}`);
-      errorLogger.logApiError({ response: { status: response.status, statusText: response.statusText } }, endpoint);
-      throw error;
+      throw new Error(`Download failed: ${response.statusText}`);
     }
 
-    return response.json();
-  } catch (error: any) {
-    if (!error.message?.includes('API Error')) {
-      errorLogger.logApiError(error, endpoint);
-    }
-    throw error;
+    return response.blob();
+  }
+}
+
+// Export singleton instance
+export const apiClient = new ApiClient();
+
+// Legacy export for backward compatibility
+export async function apiClientLegacy<T>(
+  endpoint: string,
+  options?: RequestInit
+): Promise<T> {
+  const method = options?.method || 'GET';
+  
+  switch (method.toUpperCase()) {
+    case 'GET':
+      return apiClient.get<T>(endpoint);
+    case 'POST':
+      return apiClient.post<T>(endpoint, options?.body ? JSON.parse(options.body as string) : undefined);
+    case 'PUT':
+      return apiClient.put<T>(endpoint, options?.body ? JSON.parse(options.body as string) : undefined);
+    case 'DELETE':
+      return apiClient.delete<T>(endpoint);
+    default:
+      return apiClient.get<T>(endpoint);
   }
 }

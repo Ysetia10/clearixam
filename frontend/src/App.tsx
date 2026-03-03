@@ -7,11 +7,11 @@ import { ThemeModeProvider, useThemeMode } from './context/ThemeContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
-import { Dashboard } from './pages/Dashboard';
-import { AddMock } from './pages/AddMock';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
-// Lazy load heavy pages
+// Lazy load all heavy pages for better performance
+const Dashboard = lazy(() => import('./pages/Dashboard').then(module => ({ default: module.Dashboard })));
+const AddMock = lazy(() => import('./pages/AddMock').then(module => ({ default: module.AddMock })));
 const SubjectAnalytics = lazy(() => import('./pages/SubjectAnalytics').then(module => ({ default: module.SubjectAnalytics })));
 const AccountSettings = lazy(() => import('./pages/AccountSettings').then(module => ({ default: module.AccountSettings })));
 
@@ -54,7 +54,9 @@ function AppContent() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Suspense fallback={<PageLoader />}>
+                  <Dashboard />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -62,7 +64,9 @@ function AppContent() {
             path="/add-mock"
             element={
               <ProtectedRoute>
-                <AddMock />
+                <Suspense fallback={<PageLoader />}>
+                  <AddMock />
+                </Suspense>
               </ProtectedRoute>
             }
           />

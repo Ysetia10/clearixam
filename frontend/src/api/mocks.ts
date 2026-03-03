@@ -46,20 +46,8 @@ export interface MockDetailResponse {
 }
 
 export const mocksApi = {
-  create: (data: CreateMockRequest) =>
-    apiClient<MockResponse>('/mocks', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }),
-
-  list: (page: number = 0, size: number = 10) =>
-    apiClient<PagedMockResponse>(`/mocks?page=${page}&size=${size}`),
-
-  getDetail: (id: string) =>
-    apiClient<MockDetailResponse>(`/mocks/${id}`),
-
-  delete: (id: string) =>
-    apiClient<void>(`/mocks/${id}`, {
-      method: 'DELETE',
-    }),
+  create: (data: CreateMockRequest) => apiClient.post<MockResponse>('/mocks', data),
+  list: (page: number = 0, size: number = 10) => apiClient.get<PagedMockResponse>(`/mocks?page=${page}&size=${size}`),
+  getDetail: (id: string) => apiClient.get<MockDetailResponse>(`/mocks/${id}`),
+  delete: (id: string) => apiClient.delete<void>(`/mocks/${id}`),
 };

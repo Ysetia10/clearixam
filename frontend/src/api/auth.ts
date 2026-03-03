@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8081/api';
+import { API_CONFIG } from '../config/apiConfig';
 
 export interface LoginRequest {
   email: string;
@@ -16,7 +16,7 @@ export interface AuthResponse {
 
 export const authApi = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const response = await fetch(`${API_CONFIG.baseURL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export const authApi = {
   },
 
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+    const response = await fetch(`${API_CONFIG.baseURL}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,6 +50,7 @@ export const authApi = {
   },
 };
 
+// Token management
 export const getToken = (): string | null => {
   return localStorage.getItem('token');
 };
@@ -60,12 +61,24 @@ export const setToken = (token: string): void => {
 
 export const removeToken = (): void => {
   localStorage.removeItem('token');
+  localStorage.removeItem('userEmail');
 };
 
+export const isAuthenticated = (): boolean => {
+  return !!getToken();
+};
+
+// User email management
 export const getUserEmail = (): string | null => {
   return localStorage.getItem('userEmail');
 };
 
 export const setUserEmail = (email: string): void => {
   localStorage.setItem('userEmail', email);
+};
+
+// Logout helper
+export const logout = (): void => {
+  removeToken();
+  window.location.href = '/login';
 };
