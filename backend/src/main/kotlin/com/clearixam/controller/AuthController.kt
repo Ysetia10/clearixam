@@ -13,6 +13,22 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(
+    origins = [
+        "http://localhost:3000",
+        "http://localhost:5173", 
+        "https://clearixam.vercel.app"
+    ],
+    allowedHeaders = ["*"],
+    methods = [
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.DELETE,
+        RequestMethod.OPTIONS
+    ],
+    allowCredentials = "true"
+)
 class AuthController(
     private val authService: AuthService,
     private val rateLimitService: RateLimitService
