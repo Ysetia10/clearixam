@@ -19,7 +19,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 server:
-  port: ${PORT:8081}
+  port: ${PORT:8080}
 
 jwt:
   secret: ${JWT_SECRET:change-this-secret-in-production-minimum-256-bits-required}
