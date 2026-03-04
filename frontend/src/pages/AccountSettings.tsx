@@ -1,32 +1,21 @@
-import { useState, useRef } from 'react';
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Alert,
-  Divider,
-  CircularProgress,
-} from '@mui/material';
-import { Download, Upload, Warning } from '@mui/icons-material';
+import { useState, useRef, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { backupApi, BackupData } from '../api/backup';
+import { removeToken } from '../api/auth';
 
 export const AccountSettings = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [importData, setImportData] = useState<BackupData | null>(null);
   const [overwriteExisting, setOverwriteExisting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
 
   const exportMutation = useMutation({
     mutationFn: backupApi.exportData,
@@ -68,7 +57,7 @@ export const AccountSettings = () => {
     },
   });
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -77,7 +66,6 @@ export const AccountSettings = () => {
       try {
         const data = JSON.parse(e.target?.result as string);
         
-        // Validate data structure
         if (!data.mocks || !Array.isArray(data.mocks)) {
           setError('Invalid backup file format. Missing mocks data.');
           return;
@@ -92,13 +80,12 @@ export const AccountSettings = () => {
     };
     reader.readAsText(file);
     
-    // Reset input
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-  };
+  }, []);
 
-  const handleImport = () => {
+  const handleImport = useCallback(() => {
     if (!importData) return;
 
     importMutation.mutate({
@@ -106,166 +93,278 @@ export const AccountSettings = () => {
       mocks: importData.mocks,
       goals: importData.goals || [],
     });
+  }, [importData, overwriteExisting, importMutation]);
+
+  const handleLogout = useCallback(() => {
+    removeToken();
+    localStorage.removeItem('userEmail');
+    navigate('/login');
+  }, [navigate]);
+
+  const getInitials = (email: string) => {
+    return email.substring(0, 2).toUpperCase();
   };
 
   return (
     <DashboardLayout>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
-          Account Settings
-        </Typography>
+      <h1 className="page-title" style={{ marginBottom: '32px' }}>Account Settings</h1>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError('')}>
-            {error}
-          </Alert>
-        )}
+      {error && (
+        <div style={{
+          padding: '12px 16px',
+          background: 'rgba(244,63,94,0.08)',
+          border: '1px solid rgba(244,63,94,0.2)',
+          borderRadius: '8px',
+          color: 'var(--red)',
+          fontSize: '13px',
+          marginBottom: '20px',
+        }}>
+          {error}
+          <button
+            onClick={() => setError('')}
+            style={{
+              float: 'right',
+              background: 'none',
+              border: 'none',
+              color: 'var(--red)',
+              cursor: 'pointer',
+              fontSize: '16px',
+            }}
+          >
+            ×
+          </button>
+        </div>
+      )}
 
-        {success && (
-          <Alert severity="success" sx={{ mb: 2 }} onClose={() => setSuccess('')}>
-            {success}
-          </Alert>
-        )}
+      {success && (
+        <div style={{
+          padding: '12px 16px',
+          background: 'rgba(34,211,160,0.08)',
+          border: '1px solid rgba(34,211,160,0.2)',
+          borderRadius: '8px',
+          color: 'var(--green)',
+          fontSize: '13px',
+          marginBottom: '20px',
+        }}>
+          {success}
+          <button
+            onClick={() => setSuccess('')}
+            style={{
+              float: 'right',
+              background: 'none',
+              border: 'none',
+              color: 'var(--green)',
+              cursor: 'pointer',
+              fontSize: '16px',
+            }}
+          >
+            ×
+          </button>
+        </div>
+      )}
 
-        {/* Data Backup Section */}
-        <Card sx={{ mb: 2 }}>
-          <CardContent>
-            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-              Data Backup & Restore
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Export your data for backup or import previously exported data.
-            </Typography>
+      {/* Profile Section */}
+      <div className="card" style={{ marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div style={{
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, var(--accent), var(--green))',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#fff',
+            fontSize: '24px',
+            fontWeight: 700,
+            fontFamily: 'Syne, sans-serif',
+          }}>
+            {getInitials(userEmail)}
+          </div>
+          <div>
+            <div style={{ fontFamily: 'Syne, sans-serif', fontSize: '20px', fontWeight: 700, marginBottom: '4px' }}>
+              {userEmail.split('@')[0]}
+            </div>
+            <div style={{ fontSize: '13px', color: 'var(--text2)' }}>
+              {userEmail}
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-              <Button
-                variant="contained"
-                startIcon={exportMutation.isPending ? <CircularProgress size={16} /> : <Download />}
-                onClick={() => exportMutation.mutate()}
-                disabled={exportMutation.isPending}
-              >
-                {exportMutation.isPending ? 'Exporting...' : 'Export Data'}
-              </Button>
+      {/* Account Info */}
+      <div className="card" style={{ marginBottom: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0' }}>
+          <div>
+            <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '4px' }}>EMAIL</div>
+            <div style={{ fontSize: '14px', fontWeight: 500 }}>{userEmail}</div>
+          </div>
+          <button className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: '12px' }}>
+            Edit
+          </button>
+        </div>
+      </div>
 
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".json"
-                style={{ display: 'none' }}
-                onChange={handleFileSelect}
-              />
-              <Button
-                variant="outlined"
-                startIcon={<Upload />}
-                onClick={() => fileInputRef.current?.click()}
-              >
-                Import Data
-              </Button>
-            </Box>
+      {/* Data Backup Section */}
+      <div className="card" style={{ marginBottom: '24px' }}>
+        <h3 className="section-title" style={{ marginBottom: '8px' }}>Data Backup & Restore</h3>
+        <p style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '20px' }}>
+          Export your data for backup or import previously exported data.
+        </p>
 
-            <Alert severity="info" sx={{ mt: 2 }}>
-              <Typography variant="caption">
-                Your data is exported in JSON format. Keep this file secure as it contains all your mock test data and goals.
-              </Typography>
-            </Alert>
-          </CardContent>
-        </Card>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' }}>
+          <button
+            className="btn btn-primary"
+            onClick={() => exportMutation.mutate()}
+            disabled={exportMutation.isPending}
+          >
+            {exportMutation.isPending ? '⏳ Exporting...' : '📥 Export Data'}
+          </button>
 
-        {/* Account Information */}
-        <Card>
-          <CardContent>
-            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-              Account Information
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Your account details and security information.
-            </Typography>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json"
+            style={{ display: 'none' }}
+            onChange={handleFileSelect}
+          />
+          <button
+            className="btn btn-ghost"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            📤 Import Data
+          </button>
+        </div>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Box>
-                <Typography variant="caption" color="text.secondary">
-                  Email
-                </Typography>
-                <Typography variant="body2">
-                  {localStorage.getItem('userEmail') || 'Not available'}
-                </Typography>
-              </Box>
+        <div style={{
+          padding: '12px 16px',
+          background: 'rgba(124,106,255,0.08)',
+          border: '1px solid rgba(124,106,255,0.2)',
+          borderRadius: '8px',
+          fontSize: '12px',
+          color: 'var(--text2)',
+        }}>
+          🔒 Your data is exported in JSON format. Keep this file secure as it contains all your mock test data and goals.
+        </div>
+      </div>
 
-              <Divider sx={{ my: 1 }} />
+      {/* Danger Zone */}
+      <div className="card" style={{
+        background: 'rgba(244,63,94,0.04)',
+        border: '1px solid rgba(244,63,94,0.2)',
+      }}>
+        <h3 className="section-title" style={{ marginBottom: '8px', color: 'var(--red)' }}>Danger Zone</h3>
+        <p style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '16px' }}>
+          Logout from your account
+        </p>
+        <button
+          className="btn btn-ghost"
+          onClick={handleLogout}
+          style={{
+            color: 'var(--red)',
+            borderColor: 'rgba(244,63,94,0.3)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(244,63,94,0.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'var(--surface2)';
+          }}
+        >
+          🚪 Logout
+        </button>
+      </div>
 
-              <Alert severity="info" icon={false}>
-                <Typography variant="caption">
-                  🔒 Your data is securely stored and encrypted. We never share your information with third parties.
-                </Typography>
-              </Alert>
-            </Box>
-          </CardContent>
-        </Card>
+      {/* Import Dialog */}
+      {importDialogOpen && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.7)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+        }}>
+          <div className="card" style={{
+            maxWidth: '500px',
+            width: '90%',
+            maxHeight: '90vh',
+            overflow: 'auto',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+              <span style={{ fontSize: '24px' }}>⚠️</span>
+              <h3 className="section-title">Confirm Data Import</h3>
+            </div>
 
-        {/* Import Confirmation Dialog */}
-        <Dialog open={importDialogOpen} onClose={() => setImportDialogOpen(false)} maxWidth="sm" fullWidth>
-          <DialogTitle>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Warning color="warning" />
-              <Typography variant="h6">Confirm Data Import</Typography>
-            </Box>
-          </DialogTitle>
-          <DialogContent>
             {importData && (
-              <Box>
-                <Typography variant="body2" gutterBottom>
+              <>
+                <p style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '12px' }}>
                   You are about to import:
-                </Typography>
-                <Box sx={{ pl: 2, py: 1 }}>
-                  <Typography variant="body2">• {importData.mocks.length} mock tests</Typography>
-                  <Typography variant="body2">• {importData.goals?.length || 0} goals</Typography>
-                </Box>
+                </p>
+                <ul style={{ paddingLeft: '20px', marginBottom: '16px', fontSize: '13px', color: 'var(--text)' }}>
+                  <li>{importData.mocks.length} mock tests</li>
+                  <li>{importData.goals?.length || 0} goals</li>
+                </ul>
 
-                <Alert severity="warning" sx={{ mt: 2, mb: 2 }}>
-                  <Typography variant="body2" gutterBottom>
-                    <strong>Important:</strong>
-                  </Typography>
-                  <Typography variant="caption">
-                    By default, this will add new data without removing existing records. 
-                    If you want to replace all existing data, check the option below.
-                  </Typography>
-                </Alert>
+                <div style={{
+                  padding: '12px 16px',
+                  background: 'rgba(245,158,11,0.08)',
+                  border: '1px solid rgba(245,158,11,0.2)',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                  color: 'var(--text2)',
+                  marginBottom: '16px',
+                }}>
+                  <strong style={{ color: 'var(--amber)' }}>Important:</strong><br />
+                  By default, this will add new data without removing existing records. 
+                  If you want to replace all existing data, check the option below.
+                </div>
 
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
+                <label style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '13px',
+                  marginBottom: '20px',
+                  cursor: 'pointer',
+                }}>
                   <input
                     type="checkbox"
-                    id="overwrite"
                     checked={overwriteExisting}
                     onChange={(e) => setOverwriteExisting(e.target.checked)}
+                    style={{ width: '16px', height: '16px' }}
                   />
-                  <label htmlFor="overwrite">
-                    <Typography variant="body2">
-                      Overwrite existing data (this will delete all current mocks and goals)
-                    </Typography>
-                  </label>
-                </Box>
-              </Box>
+                  <span>Overwrite existing data (this will delete all current mocks and goals)</span>
+                </label>
+              </>
             )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setImportDialogOpen(false)} disabled={importMutation.isPending}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleImport}
-              disabled={importMutation.isPending}
-              color={overwriteExisting ? 'error' : 'primary'}
-            >
-              {importMutation.isPending ? 'Importing...' : overwriteExisting ? 'Overwrite & Import' : 'Import'}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </motion.div>
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <button
+                className="btn btn-ghost"
+                onClick={() => setImportDialogOpen(false)}
+                disabled={importMutation.isPending}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={handleImport}
+                disabled={importMutation.isPending}
+                style={overwriteExisting ? {
+                  background: 'linear-gradient(135deg, var(--red), #d91f3f)',
+                } : {}}
+              >
+                {importMutation.isPending ? 'Importing...' : overwriteExisting ? 'Overwrite & Import' : 'Import'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 };

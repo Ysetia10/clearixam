@@ -1,31 +1,6 @@
-import { useState, useEffect } from 'react';
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  TextField,
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Alert,
-  Paper,
-  Tabs,
-  Tab,
-  CircularProgress,
-  IconButton,
-  MenuItem,
-  Select,
-  FormControl,
-} from '@mui/material';
-import { Add, Delete } from '@mui/icons-material';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { motion } from 'framer-motion';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { mocksApi } from '../api/mocks';
 import { examsApi, Exam, Subject } from '../api/exams';
@@ -52,13 +27,11 @@ export const AddMock = () => {
   const [subjectRows, setSubjectRows] = useState<SubjectRow[]>([]);
   const [error, setError] = useState('');
 
-  // Fetch exams
   const { data: exams = [], isLoading: examsLoading } = useQuery({
     queryKey: ['exams'],
     queryFn: examsApi.getAll,
   });
 
-  // Fetch subjects for selected exam
   const { data: examSubjects = [], isLoading: subjectsLoading } = useQuery({
     queryKey: ['subjects', selectedExamId],
     queryFn: () => examsApi.getSubjects(selectedExamId),
@@ -67,13 +40,11 @@ export const AddMock = () => {
 
   const selectedExam = exams.find((e: Exam) => e.id === selectedExamId);
 
-  // Initialize when exam changes
   useEffect(() => {
     if (selectedExam) {
       setMaxQuestions(selectedExam.maxQuestions);
       setMaxMarks(selectedExam.maxMarks);
       
-      // Initialize with first 3 subjects if available
       if (examSubjects.length > 0) {
         const initialRows = examSubjects.slice(0, 3).map((subject: Subject) => ({
           id: Math.random().toString(36).substr(2, 9),
@@ -87,7 +58,6 @@ export const AddMock = () => {
     }
   }, [selectedExam, examSubjects]);
 
-  // Set default exam when exams load
   useEffect(() => {
     if (exams.length > 0 && !selectedExamId) {
       setSelectedExamId(exams[0].id);
@@ -110,39 +80,34 @@ export const AddMock = () => {
     },
   });
 
-  const calculateScore = (attempted: number, correct: number) => {
+  const calculateScore = useCallback((attempted: number, correct: number) => {
     const incorrect = attempted - correct;
     return (correct * 2 - incorrect * 0.66).toFixed(2);
-  };
+  }, []);
 
-  const calculateTotalScore = () => {
+  const calculateTotalScore = useCallback(() => {
     return subjectRows.reduce((sum, row) => {
       const score = parseFloat(calculateScore(row.attempted, row.correct));
       return sum + score;
     }, 0).toFixed(2);
-  };
+  }, [subjectRows, calculateScore]);
 
-  const calculateTotalAttempted = () => {
+  const calculateTotalAttempted = useCallback(() => {
     return subjectRows.reduce((sum, row) => sum + row.attempted, 0);
-  };
+  }, [subjectRows]);
 
-  const calculateUnattempted = () => {
-    return maxQuestions - calculateTotalAttempted();
-  };
-
-  const handleSubjectChange = (id: string, field: keyof SubjectRow, value: any) => {
+  const handleSubjectChange = useCallback((id: string, field: keyof SubjectRow, value: any) => {
     setSubjectRows(prev => prev.map(row => 
       row.id === id ? { ...row, [field]: value } : row
     ));
-  };
+  }, []);
 
-  const handleAddSubject = () => {
+  const handleAddSubject = useCallback(() => {
     if (examSubjects.length === 0) {
       showToast('No subjects available to add', 'error');
       return;
     }
 
-    // Find first unused subject
     const usedSubjectIds = new Set(subjectRows.map(r => r.subjectId));
     const availableSubject = examSubjects.find((s: Subject) => !usedSubjectIds.has(s.id));
 
@@ -160,23 +125,17 @@ export const AddMock = () => {
     };
 
     setSubjectRows(prev => [...prev, newRow]);
-  };
+  }, [examSubjects, subjectRows, showToast]);
 
-  const handleRemoveSubject = (id: string) => {
+  const handleRemoveSubject = useCallback((id: string) => {
     if (subjectRows.length === 1) {
       showToast('At least one subject is required', 'error');
       return;
     }
     setSubjectRows(prev => prev.filter(row => row.id !== id));
-  };
+  }, [subjectRows.length, showToast]);
 
-  const handleExamChange = (_: React.SyntheticEvent, newValue: string) => {
-    setSelectedExamId(newValue);
-    setSubjectRows([]);
-    setError('');
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -199,7 +158,6 @@ export const AddMock = () => {
       return;
     }
 
-    // Validate
     const totalAttempted = calculateTotalAttempted();
     if (totalAttempted > maxQuestions) {
       setError(`Total questions attempted (${totalAttempted}) cannot exceed max questions (${maxQuestions})`);
@@ -224,303 +182,301 @@ export const AddMock = () => {
       cutoffScore: parseFloat(cutoffScore),
       subjects: subjectList,
     });
-  };
+  }, [selectedExamId, subjectRows, testDate, cutoffScore, maxQuestions, maxMarks, calculateTotalAttempted, calculateTotalScore, mutation]);
 
   if (examsLoading) {
     return (
       <DashboardLayout>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-          <CircularProgress />
-        </Box>
+        <div className="empty-state">
+          <div className="empty-icon">⏳</div>
+          <div className="empty-title">Loading...</div>
+        </div>
       </DashboardLayout>
     );
   }
 
   const totalAttempted = calculateTotalAttempted();
-  const unattempted = calculateUnattempted();
+  const unattempted = maxQuestions - totalAttempted;
   const totalScore = calculateTotalScore();
 
   return (
     <DashboardLayout>
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
-          Add Mock Test
-        </Typography>
+      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        <h1 className="page-title" style={{ marginBottom: '24px' }}>Add Mock Test</h1>
 
-        {/* Exam Tabs */}
-        <Card sx={{ mb: 2 }}>
-          <Tabs
-            value={selectedExamId}
-            onChange={handleExamChange}
-            variant="fullWidth"
-            sx={{ borderBottom: 1, borderColor: 'divider' }}
-          >
-            {exams.map((exam: Exam) => (
-              <Tab 
-                key={exam.id} 
-                label={exam.name} 
-                value={exam.id}
-              />
-            ))}
-          </Tabs>
-        </Card>
+        <div className="card">
+          {error && (
+            <div style={{
+              padding: '12px 16px',
+              background: 'rgba(244,63,94,0.08)',
+              border: '1px solid rgba(244,63,94,0.2)',
+              borderRadius: '8px',
+              color: 'var(--red)',
+              fontSize: '13px',
+              marginBottom: '20px',
+            }}>
+              {error}
+            </div>
+          )}
 
-        <Card sx={{ p: 2 }}>
-          <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-            {error && (
-              <Alert severity="error" sx={{ mb: 2 }}>
-                {error}
-              </Alert>
-            )}
+          <form onSubmit={handleSubmit}>
+            {/* Exam Selection */}
+            <div style={{ marginBottom: '20px' }}>
+              <label className="input-label">Exam</label>
+              <select
+                className="select"
+                value={selectedExamId}
+                onChange={(e) => {
+                  setSelectedExamId(e.target.value);
+                  setSubjectRows([]);
+                  setError('');
+                }}
+              >
+                {exams.map((exam: Exam) => (
+                  <option key={exam.id} value={exam.id}>
+                    {exam.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-            <form onSubmit={handleSubmit}>
-              {/* Test Details */}
-              <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
-                <TextField
-                  label="Test Date"
+            <div style={{ height: '1px', background: 'var(--border)', margin: '20px 0' }} />
+
+            {/* Test Details */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '20px' }}>
+              <div>
+                <label className="input-label">Test Date</label>
+                <input
                   type="date"
+                  className="input"
                   value={testDate}
                   onChange={(e) => setTestDate(e.target.value)}
                   required
-                  size="small"
-                  InputLabelProps={{ shrink: true }}
-                  sx={{ flex: 1, minWidth: 150 }}
-                  inputProps={{ max: new Date().toISOString().split('T')[0] }}
+                  max={new Date().toISOString().split('T')[0]}
                 />
-                <TextField
-                  label="Cutoff Score"
+              </div>
+              <div>
+                <label className="input-label">Cutoff Score</label>
+                <input
                   type="number"
+                  className="input"
                   value={cutoffScore}
                   onChange={(e) => setCutoffScore(e.target.value)}
                   required
-                  size="small"
-                  inputProps={{ step: '0.01', min: '0' }}
-                  sx={{ flex: 1, minWidth: 150 }}
+                  step="0.01"
+                  min="0"
+                  placeholder="0.00"
                 />
-                <TextField
-                  label="Max Questions"
+              </div>
+              <div>
+                <label className="input-label">Max Questions</label>
+                <input
                   type="number"
+                  className="input"
                   value={maxQuestions}
                   onChange={(e) => setMaxQuestions(parseInt(e.target.value) || 0)}
                   required
-                  size="small"
-                  inputProps={{ min: '1' }}
-                  sx={{ flex: 1, minWidth: 150 }}
+                  min="1"
                 />
-                <TextField
-                  label="Max Marks"
+              </div>
+              <div>
+                <label className="input-label">Max Marks</label>
+                <input
                   type="number"
+                  className="input"
                   value={maxMarks}
                   onChange={(e) => setMaxMarks(parseInt(e.target.value) || 0)}
                   required
-                  size="small"
-                  inputProps={{ min: '1' }}
-                  sx={{ flex: 1, minWidth: 150 }}
+                  min="1"
                 />
-              </Box>
+              </div>
+            </div>
 
-              {/* Subjects Table */}
+            <div style={{ height: '1px', background: 'var(--border)', margin: '20px 0' }} />
+
+            {/* Subjects Section */}
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <h3 className="section-title">Subjects</h3>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={handleAddSubject}
+                  disabled={subjectRows.length >= examSubjects.length}
+                >
+                  + Add Subject
+                </button>
+              </div>
+
               {subjectsLoading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
-                  <CircularProgress size={24} />
-                </Box>
+                <div className="empty-state">
+                  <div className="empty-icon">⏳</div>
+                  <div className="empty-title">Loading subjects...</div>
+                </div>
               ) : examSubjects.length === 0 ? (
-                <Alert severity="warning" sx={{ mb: 2 }}>
+                <div style={{
+                  padding: '16px',
+                  background: 'rgba(245,158,11,0.08)',
+                  border: '1px solid rgba(245,158,11,0.2)',
+                  borderRadius: '8px',
+                  textAlign: 'center',
+                  color: 'var(--amber)',
+                  fontSize: '13px',
+                }}>
                   No subjects found for this exam. Please add subjects first.
-                </Alert>
+                </div>
               ) : (
-                <>
-                  <TableContainer component={Paper} variant="outlined" sx={{ mb: 2 }}>
-                    <Table size="small">
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Subject</TableCell>
-                          <TableCell align="center">Attempted</TableCell>
-                          <TableCell align="center">Correct</TableCell>
-                          <TableCell align="center">Score</TableCell>
-                          <TableCell align="center">Actions</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {subjectRows.map((row) => {
-                          const usedSubjectIds = new Set(subjectRows.map(r => r.subjectId));
-                          const availableSubjects = examSubjects.filter((s: Subject) => 
-                            s.id === row.subjectId || !usedSubjectIds.has(s.id)
-                          );
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {subjectRows.map((row) => {
+                    const usedSubjectIds = new Set(subjectRows.map(r => r.subjectId));
+                    const availableSubjects = examSubjects.filter((s: Subject) => 
+                      s.id === row.subjectId || !usedSubjectIds.has(s.id)
+                    );
 
-                          return (
-                            <TableRow key={row.id}>
-                              <TableCell>
-                                <FormControl size="small" fullWidth>
-                                  <Select
-                                    value={row.subjectId}
-                                    onChange={(e) => {
-                                      const subject = examSubjects.find((s: Subject) => s.id === e.target.value);
-                                      if (subject) {
-                                        handleSubjectChange(row.id, 'subjectId', subject.id);
-                                        handleSubjectChange(row.id, 'subjectName', subject.name);
-                                      }
-                                    }}
-                                  >
-                                    {availableSubjects.map((subject: Subject) => (
-                                      <MenuItem key={subject.id} value={subject.id}>
-                                        {subject.name}
-                                      </MenuItem>
-                                    ))}
-                                  </Select>
-                                </FormControl>
-                              </TableCell>
-                              <TableCell align="center">
-                                <TextField
-                                  type="number"
-                                  size="small"
-                                  value={row.attempted || ''}
-                                  onChange={(e) =>
-                                    handleSubjectChange(row.id, 'attempted', parseInt(e.target.value) || 0)
-                                  }
-                                  inputProps={{ min: '0' }}
-                                  sx={{ width: 80 }}
-                                />
-                              </TableCell>
-                              <TableCell align="center">
-                                <TextField
-                                  type="number"
-                                  size="small"
-                                  value={row.correct || ''}
-                                  onChange={(e) =>
-                                    handleSubjectChange(row.id, 'correct', parseInt(e.target.value) || 0)
-                                  }
-                                  inputProps={{ min: '0', max: row.attempted }}
-                                  sx={{ width: 80 }}
-                                />
-                              </TableCell>
-                              <TableCell align="center">
-                                <Typography variant="body2" fontWeight="bold">
-                                  {calculateScore(row.attempted, row.correct)}
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="center">
-                                <IconButton
-                                  size="small"
-                                  color="error"
-                                  onClick={() => handleRemoveSubject(row.id)}
-                                  disabled={subjectRows.length === 1}
-                                >
-                                  <Delete fontSize="small" />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-
-                  {/* Add Subject Button */}
-                  <Button
-                    startIcon={<Add />}
-                    onClick={handleAddSubject}
-                    size="small"
-                    variant="outlined"
-                    sx={{ mb: 2 }}
-                    disabled={subjectRows.length >= examSubjects.length}
-                  >
-                    Add Subject
-                  </Button>
-
-                  {/* Summary */}
-                  <Box sx={{ 
-                    display: 'flex', 
-                    gap: 2, 
-                    mb: 2, 
-                    p: 2, 
-                    bgcolor: 'grey.50', 
-                    borderRadius: 1,
-                    flexWrap: 'wrap'
-                  }}>
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">
-                        Total Attempted
-                      </Typography>
-                      <Typography variant="h6" fontWeight="bold">
-                        {totalAttempted}
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">
-                        Unattempted
-                      </Typography>
-                      <Typography variant="h6" fontWeight="bold" color={unattempted < 0 ? 'error.main' : 'text.primary'}>
-                        {unattempted}
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">
-                        Total Score
-                      </Typography>
-                      <Typography variant="h6" fontWeight="bold">
-                        {totalScore}
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">
-                        Max Questions
-                      </Typography>
-                      <Typography variant="h6" fontWeight="bold">
-                        {maxQuestions}
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="caption" color="text.secondary">
-                        Max Marks
-                      </Typography>
-                      <Typography variant="h6" fontWeight="bold">
-                        {maxMarks}
-                      </Typography>
-                    </Box>
-                  </Box>
-
-                  {/* Validation Warnings */}
-                  {totalAttempted > maxQuestions && (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                      Total attempted ({totalAttempted}) exceeds max questions ({maxQuestions})
-                    </Alert>
-                  )}
-                  {parseFloat(totalScore) > maxMarks && (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                      Total score ({totalScore}) exceeds max marks ({maxMarks})
-                    </Alert>
-                  )}
-                </>
+                    return (
+                      <div key={row.id} style={{
+                        display: 'grid',
+                        gridTemplateColumns: '2fr 1fr 1fr 1fr auto',
+                        gap: '12px',
+                        alignItems: 'end',
+                        padding: '12px',
+                        background: 'var(--surface2)',
+                        borderRadius: '8px',
+                      }}>
+                        <div>
+                          <label className="input-label">Subject</label>
+                          <select
+                            className="select"
+                            value={row.subjectId}
+                            onChange={(e) => {
+                              const subject = examSubjects.find((s: Subject) => s.id === e.target.value);
+                              if (subject) {
+                                handleSubjectChange(row.id, 'subjectId', subject.id);
+                                handleSubjectChange(row.id, 'subjectName', subject.name);
+                              }
+                            }}
+                          >
+                            {availableSubjects.map((subject: Subject) => (
+                              <option key={subject.id} value={subject.id}>
+                                {subject.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="input-label">Attempted</label>
+                          <input
+                            type="number"
+                            className="input"
+                            value={row.attempted || ''}
+                            onChange={(e) => handleSubjectChange(row.id, 'attempted', parseInt(e.target.value) || 0)}
+                            min="0"
+                          />
+                        </div>
+                        <div>
+                          <label className="input-label">Correct</label>
+                          <input
+                            type="number"
+                            className="input"
+                            value={row.correct || ''}
+                            onChange={(e) => handleSubjectChange(row.id, 'correct', parseInt(e.target.value) || 0)}
+                            min="0"
+                            max={row.attempted}
+                          />
+                        </div>
+                        <div>
+                          <label className="input-label">Score</label>
+                          <div style={{
+                            padding: '10px 14px',
+                            background: 'var(--surface3)',
+                            borderRadius: '10px',
+                            fontSize: '14px',
+                            fontWeight: 600,
+                            color: 'var(--accent2)',
+                          }}>
+                            {calculateScore(row.attempted, row.correct)}
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          className="btn btn-ghost"
+                          onClick={() => handleRemoveSubject(row.id)}
+                          disabled={subjectRows.length === 1}
+                          style={{ padding: '10px', color: 'var(--red)' }}
+                        >
+                          🗑
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
               )}
+            </div>
 
-              {/* Action Buttons */}
-              <Box sx={{ display: 'flex', gap: 2 }}>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  onClick={() => navigate('/dashboard')}
-                  disabled={mutation.isPending}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="contained"
-                  size="small"
-                  type="submit"
-                  disabled={mutation.isPending || examSubjects.length === 0 || subjectRows.length === 0}
-                >
-                  {mutation.isPending ? 'Creating...' : 'Create Mock Test'}
-                </Button>
-              </Box>
-            </form>
-          </CardContent>
-        </Card>
-      </motion.div>
+            {/* Summary */}
+            {subjectRows.length > 0 && (
+              <>
+                <div style={{ height: '1px', background: 'var(--border)', margin: '20px 0' }} />
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+                  gap: '16px',
+                  padding: '16px',
+                  background: 'var(--surface2)',
+                  borderRadius: '8px',
+                  marginBottom: '20px',
+                }}>
+                  <div>
+                    <div className="stat-label">Total Attempted</div>
+                    <div style={{ fontSize: '20px', fontWeight: 700 }}>{totalAttempted}</div>
+                  </div>
+                  <div>
+                    <div className="stat-label">Unattempted</div>
+                    <div style={{
+                      fontSize: '20px',
+                      fontWeight: 700,
+                      color: unattempted < 0 ? 'var(--red)' : 'var(--text)',
+                    }}>
+                      {unattempted}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="stat-label">Total Score</div>
+                    <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--accent2)' }}>{totalScore}</div>
+                  </div>
+                  <div>
+                    <div className="stat-label">Max Questions</div>
+                    <div style={{ fontSize: '20px', fontWeight: 700 }}>{maxQuestions}</div>
+                  </div>
+                  <div>
+                    <div className="stat-label">Max Marks</div>
+                    <div style={{ fontSize: '20px', fontWeight: 700 }}>{maxMarks}</div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => navigate('/dashboard')}
+                disabled={mutation.isPending}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={mutation.isPending || examSubjects.length === 0 || subjectRows.length === 0}
+              >
+                {mutation.isPending ? 'Creating...' : 'Create Mock Test'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </DashboardLayout>
   );
 };
