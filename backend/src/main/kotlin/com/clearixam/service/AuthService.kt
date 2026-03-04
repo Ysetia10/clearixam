@@ -43,4 +43,9 @@ class AuthService(
         val token = jwtUtil.generateToken(user.email)
         return AuthResponse(token)
     }
+
+    fun getUserByEmail(email: String): User {
+        return userRepository.findByEmail(email)
+            ?: throw NoSuchElementException("User not found")
+    }
 }

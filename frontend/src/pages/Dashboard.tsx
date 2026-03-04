@@ -49,6 +49,7 @@ import { MockDetailDialog } from '../components/MockDetailDialog';
 import { DashboardSkeleton } from '../components/SkeletonLoaders';
 import { TrendBadge } from '../components/TrendBadge';
 import { InsightCard } from '../components/InsightCard';
+import { ExamReadinessWidget } from '../components/ExamReadinessWidget';
 
 export const Dashboard = () => {
   const [selectedMockId, setSelectedMockId] = useState<string | null>(null);
@@ -208,6 +209,11 @@ export const Dashboard = () => {
               <Download />
             </IconButton>
           </Tooltip>
+        </Box>
+
+        {/* Exam Readiness Widget */}
+        <Box sx={{ mb: 2 }}>
+          <ExamReadinessWidget />
         </Box>
 
         {/* Performance Insights */}

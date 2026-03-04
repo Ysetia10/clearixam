@@ -16,7 +16,7 @@ export interface AuthResponse {
 
 export const authApi = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
-    const response = await fetch(`${API_CONFIG.baseURL}/api/auth/login`, {
+    const response = await fetch(`${API_CONFIG.baseURL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export const authApi = {
   },
 
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
-    const response = await fetch(`${API_CONFIG.baseURL}/api/auth/register`, {
+    const response = await fetch(`${API_CONFIG.baseURL}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

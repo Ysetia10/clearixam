@@ -19,6 +19,11 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+        val requestPath = request.requestURI
+        val requestMethod = request.method
+        
+        logger.info("JWT Filter - Method: $requestMethod, Path: $requestPath, Origin: ${request.getHeader("Origin")}")
+        
         val authHeader = request.getHeader("Authorization")
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -28,6 +33,8 @@ class JwtAuthenticationFilter(
                 if (jwtUtil.validateToken(token)) {
                     val email = jwtUtil.extractEmail(token)
                     
+                    logger.info("JWT validated successfully for user: $email")
+                    
                     val authentication = UsernamePasswordAuthenticationToken(
                         email,
                         null,
@@ -36,10 +43,14 @@ class JwtAuthenticationFilter(
                     authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
                     
                     SecurityContextHolder.getContext().authentication = authentication
+                } else {
+                    logger.warn("JWT token validation failed")
                 }
             } catch (e: Exception) {
                 logger.error("JWT validation failed: ${e.message}")
             }
+        } else {
+            logger.debug("No JWT token found in request to $requestPath")
         }
 
         filterChain.doFilter(request, response)

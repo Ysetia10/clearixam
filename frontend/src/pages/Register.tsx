@@ -6,38 +6,40 @@ import {
   TextField,
   Button,
   Typography,
-  Alert,
   Link,
   useTheme,
   useMediaQuery,
+  CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { TrendingUp, BarChart, Assessment } from '@mui/icons-material';
 import { authApi, setToken, setUserEmail } from '../api/auth';
+import { useToast } from '../components/Toast';
+import { PasswordStrengthMeter } from '../components/PasswordStrengthMeter';
 
 export const Register = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { showToast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
 
     try {
       const response = await authApi.register({ email, password });
       setToken(response.token);
       setUserEmail(email);
+      showToast('Account created successfully', 'success');
       navigate('/dashboard');
     } catch (err: any) {
-      console.error('Registration error:', err);
-      setError(err.message || 'Registration failed. Please try again.');
+      const errorMessage = err.message || 'Registration failed. Please try again.';
+      showToast(errorMessage, 'error');
     } finally {
       setLoading(false);
     }
@@ -326,18 +328,6 @@ export const Register = () => {
                 </Box>
               </motion.div>
 
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                >
-                  <Alert severity="error" sx={{ mb: 2 }}>
-                    {error}
-                  </Alert>
-                </motion.div>
-              )}
-
               <form onSubmit={handleSubmit}>
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -381,9 +371,8 @@ export const Register = () => {
                     required
                     size="small"
                     inputProps={{ minLength: 8 }}
-                    helperText="Minimum 8 characters with at least one letter and one number"
                     sx={{
-                      mb: 3,
+                      mb: 1,
                       '& .MuiOutlinedInput-root': {
                         transition: 'all 0.3s',
                         '&:hover': {
@@ -395,6 +384,8 @@ export const Register = () => {
                       },
                     }}
                   />
+                  <PasswordStrengthMeter password={password} />
+                  <Box sx={{ mb: 2 }} />
                 </motion.div>
 
                 <motion.div
@@ -410,6 +401,7 @@ export const Register = () => {
                     type="submit"
                     disabled={loading}
                     size="medium"
+                    startIcon={loading ? <CircularProgress size={20} color="inherit" /> : undefined}
                     sx={{
                       mb: 2,
                       py: 1.2,
@@ -428,17 +420,7 @@ export const Register = () => {
                       },
                     }}
                   >
-                    {loading ? (
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                        style={{ display: 'flex', alignItems: 'center' }}
-                      >
-                        ⟳
-                      </motion.div>
-                    ) : (
-                      'Create Account'
-                    )}
+                    {loading ? 'Creating Account...' : 'Create Account'}
                   </Button>
                 </motion.div>
               </form>

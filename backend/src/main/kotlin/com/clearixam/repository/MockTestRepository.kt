@@ -14,6 +14,7 @@ interface MockTestRepository : JpaRepository<MockTest, UUID> {
     fun findByUserIdOrderByTestDateDesc(userId: UUID): List<MockTest>
     fun findByUserIdOrderByTestDateAsc(userId: UUID): List<MockTest>
     fun findByUserIdOrderByTestDateDesc(userId: UUID, pageable: Pageable): Page<MockTest>
+    fun findTop5ByUserIdOrderByTestDateDesc(userId: UUID): List<MockTest>
     fun findByIdAndUserId(id: UUID, userId: UUID): MockTest?
     fun findByUserOrderByTestDateDesc(user: User): List<MockTest>
     fun findByUserAndTestDate(user: User, testDate: LocalDate): MockTest?

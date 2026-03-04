@@ -20,12 +20,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { mocksApi, SubjectInput } from '../api/mocks';
+import { useToast } from '../components/Toast';
 
 const SUBJECTS = ['POLITY', 'HISTORY', 'GEOGRAPHY', 'ECONOMY', 'ENVIRONMENT', 'SCIENCE'];
 
 export const AddMock = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
   const [testDate, setTestDate] = useState('');
   const [cutoffScore, setCutoffScore] = useState('');
   const [subjects, setSubjects] = useState<Record<string, SubjectInput>>(
@@ -41,10 +43,14 @@ export const AddMock = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analytics-overview'] });
       queryClient.invalidateQueries({ queryKey: ['analytics-trend'] });
+      queryClient.invalidateQueries({ queryKey: ['examReadiness'] });
+      showToast('Mock test created successfully', 'success');
       navigate('/dashboard');
     },
-    onError: () => {
-      setError('Failed to create mock test');
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data?.message || 'Failed to create mock test';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
     },
   });
 
