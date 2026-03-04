@@ -26,7 +26,9 @@ export const authApi = {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Login failed');
+      // Extract exact error message from backend
+      const errorMessage = errorData.message || errorData.error || 'Login failed';
+      throw new Error(errorMessage);
     }
 
     return response.json();
@@ -43,7 +45,9 @@ export const authApi = {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Registration failed');
+      // Extract exact error message from backend
+      const errorMessage = errorData.message || errorData.error || 'Registration failed';
+      throw new Error(errorMessage);
     }
 
     return response.json();

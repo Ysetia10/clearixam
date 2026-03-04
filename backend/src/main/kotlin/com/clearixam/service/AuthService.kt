@@ -4,6 +4,7 @@ import com.clearixam.dto.request.LoginRequest
 import com.clearixam.dto.request.RegisterRequest
 import com.clearixam.dto.response.AuthResponse
 import com.clearixam.entity.User
+import com.clearixam.repository.ExamRepository
 import com.clearixam.repository.UserRepository
 import com.clearixam.security.JwtUtil
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Service
 class AuthService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val jwtUtil: JwtUtil
+    private val jwtUtil: JwtUtil,
+    private val examRepository: ExamRepository
 ) {
 
     fun register(request: RegisterRequest): AuthResponse {
@@ -21,9 +23,13 @@ class AuthService(
             throw IllegalArgumentException("Email already exists")
         }
 
+        // Set default exam to UPSC
+        val defaultExam = examRepository.findByName("UPSC")
+
         val user = User(
             email = request.email,
-            password = passwordEncoder.encode(request.password)
+            password = passwordEncoder.encode(request.password),
+            activeExam = defaultExam
         )
 
         userRepository.save(user)

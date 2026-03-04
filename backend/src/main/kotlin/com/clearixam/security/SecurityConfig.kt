@@ -106,13 +106,15 @@ class SecurityConfig(
                         "/health",
                         "/actuator/health",
                         "/swagger-ui/**",
-                        "/v3/api-docs/**"
+                        "/v3/api-docs/**",
+                        "/api/exams/**",
+                        "/api/subjects"
                     ).permitAll()
                     
                     // All other endpoints require authentication
                     .anyRequest().authenticated()
                 
-                logger.info("Authorization rules configured - public endpoints: /api/auth/**, /auth/**, /health")
+                logger.info("Authorization rules configured - public endpoints: /api/auth/**, /api/exams/**, /api/subjects, /health")
             }
             
             // Add JWT filter before Spring Security's authentication filter

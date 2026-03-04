@@ -39,6 +39,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { analyticsApi } from '../api/analytics';
 import { mocksApi } from '../api/mocks';
@@ -50,11 +51,14 @@ import { DashboardSkeleton } from '../components/SkeletonLoaders';
 import { TrendBadge } from '../components/TrendBadge';
 import { InsightCard } from '../components/InsightCard';
 import { ExamReadinessWidget } from '../components/ExamReadinessWidget';
+import { ExamSwitcher } from '../components/ExamSwitcher';
 
 export const Dashboard = () => {
+  const navigate = useNavigate();
   const [selectedMockId, setSelectedMockId] = useState<string | null>(null);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [mockDetailOpen, setMockDetailOpen] = useState(false);
+  const [currentExamId, setCurrentExamId] = useState<string>('');
 
   const downloadReportMutation = useMutation({
     mutationFn: reportsApi.downloadPerformanceReport,
@@ -195,20 +199,41 @@ export const Dashboard = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, flexWrap: 'wrap', gap: 2 }}>
           <Typography variant="h6" fontWeight="bold">
             Dashboard
           </Typography>
-          <Tooltip title="Download Performance Report">
-            <IconButton
-              color="primary"
-              onClick={() => downloadReportMutation.mutate()}
-              disabled={downloadReportMutation.isPending}
+          
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+            <ExamSwitcher currentExamId={currentExamId} onExamChange={setCurrentExamId} />
+            
+            <Button
+              variant="outlined"
               size="small"
+              onClick={() => navigate('/add-performance')}
             >
-              <Download />
-            </IconButton>
-          </Tooltip>
+              + Add Performance
+            </Button>
+            
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => navigate('/performance-history')}
+            >
+              View History
+            </Button>
+            
+            <Tooltip title="Download Performance Report">
+              <IconButton
+                color="primary"
+                onClick={() => downloadReportMutation.mutate()}
+                disabled={downloadReportMutation.isPending}
+                size="small"
+              >
+                <Download />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
 
         {/* Exam Readiness Widget */}

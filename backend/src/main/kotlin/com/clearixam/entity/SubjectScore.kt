@@ -14,9 +14,9 @@ data class SubjectScore(
     @JoinColumn(name = "mock_test_id", nullable = false)
     val mockTest: MockTest,
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    val subjectName: SubjectName,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    val subject: Subject,
 
     @Column(nullable = false)
     val attempted: Int,

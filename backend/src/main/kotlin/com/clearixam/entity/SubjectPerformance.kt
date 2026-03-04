@@ -6,8 +6,8 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
-@Table(name = "mock_tests")
-data class MockTest(
+@Table(name = "subject_performance")
+data class SubjectPerformance(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
@@ -20,17 +20,15 @@ data class MockTest(
     @JoinColumn(name = "exam_id", nullable = false)
     val exam: Exam,
 
-    @Column(nullable = false)
-    val testName: String,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    val subject: Subject,
 
     @Column(nullable = false)
-    val testDate: LocalDate,
+    val marks: Double,
 
     @Column(nullable = false)
-    val totalQuestions: Int,
-
-    @Column(nullable = false)
-    val attempted: Int,
+    val questionsAttempted: Int,
 
     @Column(nullable = false)
     val correct: Int,
@@ -39,23 +37,8 @@ data class MockTest(
     val incorrect: Int,
 
     @Column(nullable = false)
-    val marksObtained: Double,
-
-    @Column
-    val timeTaken: Int? = null, // in minutes
+    val testDate: LocalDate,
 
     @Column(nullable = false)
-    val totalScore: Double,
-
-    @Column(nullable = false)
-    val cutoffScore: Double,
-
-    @Column
-    val probabilityScore: Double? = null,
-
-    @Column(nullable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-
-    @OneToMany(mappedBy = "mockTest", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val subjects: MutableList<SubjectScore> = mutableListOf()
+    val createdAt: LocalDateTime = LocalDateTime.now()
 )

@@ -5,21 +5,21 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
-@Table(name = "users")
-data class User(
+@Table(
+    name = "subjects",
+    uniqueConstraints = [UniqueConstraint(columnNames = ["name", "exam_id"])]
+)
+data class Subject(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
-    @Column(unique = true, nullable = false)
-    val email: String,
-
     @Column(nullable = false)
-    val password: String,
+    val name: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "active_exam_id")
-    var activeExam: Exam? = null,
+    @JoinColumn(name = "exam_id", nullable = false)
+    val exam: Exam,
 
     @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now()

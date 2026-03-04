@@ -3,7 +3,6 @@ package com.clearixam.analytics
 import com.clearixam.dto.response.AnalyticsOverviewResponse
 import com.clearixam.dto.response.AnalyticsTrendResponse
 import com.clearixam.dto.response.TrendPoint
-import com.clearixam.dto.response.WeakSubjectResponse
 import com.clearixam.repository.MockTestRepository
 import com.clearixam.repository.UserRepository
 import com.clearixam.service.GoalService
@@ -46,14 +45,12 @@ class AnalyticsService(
         val averageScore = performanceCalculator.calculateOverallAverage(mocks)
         val movingAverage = performanceCalculator.calculateMovingAverage(mocks)
         val improvementRate = performanceCalculator.calculateImprovementRate(mocks)
-        val weakSubjects = performanceCalculator.detectWeakSubjects(mocks)
 
         val latestCutoff = mocks.first().cutoffScore
         val riskLevel = performanceCalculator.calculateRiskLevel(movingAverage, latestCutoff)
         val probability = performanceCalculator.calculateProbability(movingAverage, latestCutoff)
         
         val overallAccuracy = performanceCalculator.calculateOverallAccuracy(mocks)
-        val attemptStrategy = performanceCalculator.calculateAttemptStrategy(overallAccuracy)
         val consistencyScore = performanceCalculator.calculateConsistencyScore(mocks)
 
         val sortedMocks = mocks.sortedByDescending { it.testDate }
@@ -76,11 +73,9 @@ class AnalyticsService(
             improvementRate = improvementRate,
             probability = probability,
             riskLevel = riskLevel,
-            weakSubjects = weakSubjects.map {
-                WeakSubjectResponse(it.subjectName, it.accuracy)
-            },
-            recommendedAttemptRange = attemptStrategy.recommendedRange,
-            strategyNote = attemptStrategy.note,
+            weakSubjects = emptyList(), // TODO: Implement with new multi-exam system
+            recommendedAttemptRange = "N/A", // TODO: Implement with new multi-exam system
+            strategyNote = "Multi-exam analytics coming soon",
             consistencyScore = consistencyScore,
             goalProgress = goalService.calculateGoalProgress(userEmail),
             lastFiveAverage = lastFiveAverage,
@@ -116,31 +111,7 @@ class AnalyticsService(
 
     @Transactional(readOnly = true)
     fun getSubjectAnalytics(userEmail: String): com.clearixam.dto.response.SubjectAnalyticsResponse {
-        val user = userRepository.findByEmail(userEmail)
-            ?: throw IllegalArgumentException("User not found")
-
-        val mocks = mockTestRepository.findByUserIdOrderByTestDateAsc(user.id!!)
-
-        if (mocks.isEmpty()) {
-            return com.clearixam.dto.response.SubjectAnalyticsResponse(emptyList())
-        }
-
-        val subjectAnalyses = performanceCalculator.analyzeSubjects(mocks)
-
-        return com.clearixam.dto.response.SubjectAnalyticsResponse(
-            subjects = subjectAnalyses.map { analysis ->
-                com.clearixam.dto.response.SubjectAnalysis(
-                    subjectName = analysis.subjectName,
-                    averageScore = analysis.averageScore,
-                    averageAccuracy = analysis.averageAccuracy,
-                    improvementRate = analysis.improvementRate,
-                    trend = com.clearixam.dto.response.SubjectTrend(
-                        dates = analysis.dataPoints.map { it.date },
-                        scores = analysis.dataPoints.map { it.score },
-                        accuracy = analysis.dataPoints.map { it.accuracy }
-                    )
-                )
-            }
-        )
+        // TODO: Implement with new multi-exam system
+        return com.clearixam.dto.response.SubjectAnalyticsResponse(emptyList())
     }
 }
