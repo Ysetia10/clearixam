@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { examsApi } from '../api/exams';
 import { performanceApi, SubjectPerformance } from '../api/performance';
 import { useToast } from '../components/Toast';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 
-export const PerformanceHistory: React.FC = () => {
+export const PerformanceHistory = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const queryClient = useQueryClient();
@@ -37,157 +38,118 @@ export const PerformanceHistory: React.FC = () => {
     },
   });
 
-  const handleDelete = (id: string) => {
+  const handleDelete = useCallback((id: string) => {
     deleteMutation.mutate(id);
-  };
+  }, [deleteMutation]);
 
-  // Set default exam when exams load
-  React.useEffect(() => {
+  useEffect(() => {
     if (exams.length > 0 && !selectedExamId) {
       setSelectedExamId(exams[0].id);
     }
   }, [exams, selectedExamId]);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Performance History</h1>
-            <div className="flex gap-4">
-              <button
-                onClick={() => navigate('/add-performance')}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                + Add Performance
-              </button>
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="text-gray-600 hover:text-gray-900"
-              >
-                ← Back
-              </button>
-            </div>
-          </div>
-
-          {/* Exam Filter */}
-          <div className="mb-6">
-            <label htmlFor="exam-filter" className="block text-sm font-medium text-gray-700 mb-2">
-              Filter by Exam
-            </label>
-            <select
-              id="exam-filter"
-              value={selectedExamId}
-              onChange={(e) => setSelectedExamId(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              {exams.map(exam => (
-                <option key={exam.id} value={exam.id}>
-                  {exam.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Performance List */}
-          {isLoading ? (
-            <div className="text-center py-8">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <p className="mt-2 text-gray-600">Loading performances...</p>
-            </div>
-          ) : performances.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500 mb-4">No performance records found for this exam</p>
-              <button
-                onClick={() => navigate('/add-performance')}
-                className="text-blue-600 hover:text-blue-700 font-medium"
-              >
-                Add your first performance record
-              </button>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Date
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Subject
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Marks
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Questions
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Correct
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Incorrect
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Accuracy
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {performances.map((perf: SubjectPerformance) => (
-                    <tr key={perf.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {new Date(perf.testDate).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {perf.subjectName}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {perf.marks.toFixed(2)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {perf.questionsAttempted}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">
-                        {perf.correct}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">
-                        {perf.incorrect}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            perf.accuracy >= 75
-                              ? 'bg-green-100 text-green-800'
-                              : perf.accuracy >= 60
-                              ? 'bg-yellow-100 text-yellow-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}
-                        >
-                          {perf.accuracy.toFixed(2)}%
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <button
-                          onClick={() => setDeleteId(perf.id)}
-                          className="text-red-600 hover:text-red-800 font-medium"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+    <DashboardLayout>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
+        <h1 className="page-title">Performance History</h1>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <button className="btn btn-primary" onClick={() => navigate('/add-performance')}>
+            + Add Performance
+          </button>
+          <button className="btn btn-ghost" onClick={() => navigate('/dashboard')}>
+            ← Back
+          </button>
         </div>
       </div>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Exam Filter */}
+      <div style={{ marginBottom: '24px' }}>
+        <label className="input-label">Filter by Exam</label>
+        <select
+          value={selectedExamId}
+          onChange={(e) => setSelectedExamId(e.target.value)}
+          className="select"
+          style={{ maxWidth: '300px' }}
+        >
+          {exams.map(exam => (
+            <option key={exam.id} value={exam.id}>
+              {exam.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Performance List */}
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        {isLoading ? (
+          <div className="empty-state">
+            <div className="empty-icon">⏳</div>
+            <div className="empty-title">Loading performances...</div>
+          </div>
+        ) : performances.length === 0 ? (
+          <div className="empty-state">
+            <div className="empty-icon">📊</div>
+            <div className="empty-title">No performance records found</div>
+            <div className="empty-sub">Add your first performance record for this exam</div>
+            <button className="btn btn-primary" style={{ marginTop: '16px' }} onClick={() => navigate('/add-performance')}>
+              + Add Performance
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="table-header" style={{ gridTemplateColumns: '120px 1fr 100px 100px 80px 80px 100px 100px' }}>
+              <div className="th">Date</div>
+              <div className="th">Subject</div>
+              <div className="th" style={{ textAlign: 'right' }}>Marks</div>
+              <div className="th" style={{ textAlign: 'center' }}>Questions</div>
+              <div className="th" style={{ textAlign: 'center' }}>Correct</div>
+              <div className="th" style={{ textAlign: 'center' }}>Incorrect</div>
+              <div className="th" style={{ textAlign: 'center' }}>Accuracy</div>
+              <div className="th" style={{ textAlign: 'center' }}>Actions</div>
+            </div>
+            {performances.map((perf: SubjectPerformance) => (
+              <div key={perf.id} className="table-row" style={{ gridTemplateColumns: '120px 1fr 100px 100px 80px 80px 100px 100px' }}>
+                <div style={{ fontSize: '13px', color: 'var(--text)' }}>
+                  {new Date(perf.testDate).toLocaleDateString()}
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--text)', fontWeight: 600 }}>
+                  {perf.subjectName}
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--text)', textAlign: 'right', fontWeight: 600 }}>
+                  {perf.marks.toFixed(2)}
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--text)', textAlign: 'center' }}>
+                  {perf.questionsAttempted}
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--green)', textAlign: 'center', fontWeight: 600 }}>
+                  {perf.correct}
+                </div>
+                <div style={{ fontSize: '13px', color: 'var(--red)', textAlign: 'center', fontWeight: 600 }}>
+                  {perf.incorrect}
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <span className={`badge ${
+                    perf.accuracy >= 75 ? 'badge-green' :
+                    perf.accuracy >= 60 ? 'badge-amber' : 'badge-red'
+                  }`}>
+                    {perf.accuracy.toFixed(2)}%
+                  </span>
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <button
+                    className="btn btn-ghost"
+                    style={{ padding: '4px 12px', fontSize: '12px', color: 'var(--red)' }}
+                    onClick={() => setDeleteId(perf.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+
       <ConfirmDialog
         open={deleteId !== null}
         onCancel={() => setDeleteId(null)}
@@ -198,6 +160,6 @@ export const PerformanceHistory: React.FC = () => {
         cancelText="Cancel"
         danger={true}
       />
-    </div>
+    </DashboardLayout>
   );
 };

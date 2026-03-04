@@ -13,7 +13,6 @@ export const Dashboard = () => {
   const [selectedMockId, setSelectedMockId] = useState<string | null>(null);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [mockDetailOpen, setMockDetailOpen] = useState(false);
-  const [currentExamId, setCurrentExamId] = useState<string>('');
 
   const downloadReportMutation = useMutation({
     mutationFn: reportsApi.downloadPerformanceReport,

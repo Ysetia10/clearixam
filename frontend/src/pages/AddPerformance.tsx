@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { examsApi } from '../api/exams';
 import { performanceApi, CreatePerformanceRequest } from '../api/performance';
 import { useToast } from '../components/Toast';
 
-export const AddPerformance: React.FC = () => {
+export const AddPerformance = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const queryClient = useQueryClient();
@@ -46,10 +47,9 @@ export const AddPerformance: React.FC = () => {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validations
     if (!formData.examId) {
       showToast('Please select an exam', 'error');
       return;
@@ -76,48 +76,44 @@ export const AddPerformance: React.FC = () => {
     }
 
     createMutation.mutate(formData);
-  };
+  }, [formData, selectedExam, createMutation, showToast]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: name === 'examId' || name === 'subjectId' || name === 'testDate' ? value : Number(value),
     }));
 
-    // Reset subject when exam changes
     if (name === 'examId') {
       setFormData(prev => ({ ...prev, subjectId: '' }));
     }
-  };
+  }, []);
+
+  const accuracy = formData.questionsAttempted > 0 
+    ? ((formData.correct / formData.questionsAttempted) * 100).toFixed(2)
+    : '0.00';
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-2xl mx-auto px-4">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Add Subject Performance</h1>
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="text-gray-600 hover:text-gray-900"
-            >
-              ← Back
-            </button>
-          </div>
+    <DashboardLayout>
+      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <h1 className="page-title">Add Subject Performance</h1>
+          <button className="btn btn-ghost" onClick={() => navigate('/dashboard')}>
+            ← Back
+          </button>
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Exam Selection */}
-            <div>
-              <label htmlFor="examId" className="block text-sm font-medium text-gray-700 mb-2">
-                Exam *
-              </label>
+        <div className="card">
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: '20px' }}>
+              <label className="input-label">Exam *</label>
               <select
-                id="examId"
                 name="examId"
                 value={formData.examId}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="select"
               >
                 <option value="">Select Exam</option>
                 {exams.map(exam => (
@@ -128,19 +124,15 @@ export const AddPerformance: React.FC = () => {
               </select>
             </div>
 
-            {/* Subject Selection */}
-            <div>
-              <label htmlFor="subjectId" className="block text-sm font-medium text-gray-700 mb-2">
-                Subject *
-              </label>
+            <div style={{ marginBottom: '20px' }}>
+              <label className="input-label">Subject *</label>
               <select
-                id="subjectId"
                 name="subjectId"
                 value={formData.subjectId}
                 onChange={handleChange}
                 required
                 disabled={!formData.examId}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                className="select"
               >
                 <option value="">Select Subject</option>
                 {subjects.map(subject => (
@@ -151,117 +143,115 @@ export const AddPerformance: React.FC = () => {
               </select>
             </div>
 
-            {/* Test Date */}
-            <div>
-              <label htmlFor="testDate" className="block text-sm font-medium text-gray-700 mb-2">
-                Test Date *
-              </label>
+            <div style={{ marginBottom: '20px' }}>
+              <label className="input-label">Test Date *</label>
               <input
                 type="date"
-                id="testDate"
                 name="testDate"
                 value={formData.testDate}
                 onChange={handleChange}
                 required
                 max={new Date().toISOString().split('T')[0]}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="input"
               />
             </div>
 
-            {/* Questions Attempted */}
-            <div>
-              <label htmlFor="questionsAttempted" className="block text-sm font-medium text-gray-700 mb-2">
-                Questions Attempted *
-              </label>
-              <input
-                type="number"
-                id="questionsAttempted"
-                name="questionsAttempted"
-                value={formData.questionsAttempted}
-                onChange={handleChange}
-                required
-                min="0"
-                max={selectedExam?.maxQuestions}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+            <div style={{ height: '1px', background: 'var(--border)', margin: '20px 0' }} />
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginBottom: '20px' }}>
+              <div>
+                <label className="input-label">Questions Attempted *</label>
+                <input
+                  type="number"
+                  name="questionsAttempted"
+                  value={formData.questionsAttempted}
+                  onChange={handleChange}
+                  required
+                  min="0"
+                  max={selectedExam?.maxQuestions}
+                  className="input"
+                />
+              </div>
+
+              <div>
+                <label className="input-label">Marks Obtained *</label>
+                <input
+                  type="number"
+                  name="marks"
+                  value={formData.marks}
+                  onChange={handleChange}
+                  required
+                  min="0"
+                  max={selectedExam?.maxMarks}
+                  step="0.01"
+                  className="input"
+                />
+              </div>
+
+              <div>
+                <label className="input-label">Correct Answers *</label>
+                <input
+                  type="number"
+                  name="correct"
+                  value={formData.correct}
+                  onChange={handleChange}
+                  required
+                  min="0"
+                  max={formData.questionsAttempted}
+                  className="input"
+                />
+              </div>
+
+              <div>
+                <label className="input-label">Incorrect Answers *</label>
+                <input
+                  type="number"
+                  name="incorrect"
+                  value={formData.incorrect}
+                  onChange={handleChange}
+                  required
+                  min="0"
+                  max={formData.questionsAttempted}
+                  className="input"
+                />
+              </div>
             </div>
 
-            {/* Correct Answers */}
-            <div>
-              <label htmlFor="correct" className="block text-sm font-medium text-gray-700 mb-2">
-                Correct Answers *
-              </label>
-              <input
-                type="number"
-                id="correct"
-                name="correct"
-                value={formData.correct}
-                onChange={handleChange}
-                required
-                min="0"
-                max={formData.questionsAttempted}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-
-            {/* Incorrect Answers */}
-            <div>
-              <label htmlFor="incorrect" className="block text-sm font-medium text-gray-700 mb-2">
-                Incorrect Answers *
-              </label>
-              <input
-                type="number"
-                id="incorrect"
-                name="incorrect"
-                value={formData.incorrect}
-                onChange={handleChange}
-                required
-                min="0"
-                max={formData.questionsAttempted}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-
-            {/* Marks Obtained */}
-            <div>
-              <label htmlFor="marks" className="block text-sm font-medium text-gray-700 mb-2">
-                Marks Obtained *
-              </label>
-              <input
-                type="number"
-                id="marks"
-                name="marks"
-                value={formData.marks}
-                onChange={handleChange}
-                required
-                min="0"
-                max={selectedExam?.maxMarks}
-                step="0.01"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-
-            {/* Calculated Accuracy */}
             {formData.questionsAttempted > 0 && (
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-700">
-                  <span className="font-medium">Accuracy:</span>{' '}
-                  {((formData.correct / formData.questionsAttempted) * 100).toFixed(2)}%
-                </p>
+              <div style={{
+                padding: '16px',
+                background: 'rgba(124,106,255,0.08)',
+                border: '1px solid rgba(124,106,255,0.2)',
+                borderRadius: '8px',
+                marginBottom: '20px',
+              }}>
+                <div className="stat-label">Calculated Accuracy</div>
+                <div style={{ fontSize: '24px', fontWeight: 700, color: 'var(--accent2)' }}>
+                  {accuracy}%
+                </div>
               </div>
             )}
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={createMutation.isPending}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed font-medium"
-            >
-              {createMutation.isPending ? 'Saving...' : 'Save Performance'}
-            </button>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => navigate('/dashboard')}
+                disabled={createMutation.isPending}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={createMutation.isPending}
+              >
+                {createMutation.isPending ? 'Saving...' : 'Save Performance'}
+              </button>
+            </div>
           </form>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
