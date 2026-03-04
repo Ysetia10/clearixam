@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider, CssBaseline, Box, CircularProgress } from '@mui/material';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { getTheme } from './theme';
 import { ThemeModeProvider, useThemeMode } from './context/ThemeContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -10,7 +10,6 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
-// Lazy load all heavy pages for better performance
 const Dashboard = lazy(() => import('./pages/Dashboard').then(module => ({ default: module.Dashboard })));
 const AddMock = lazy(() => import('./pages/AddMock').then(module => ({ default: module.AddMock })));
 const SubjectAnalytics = lazy(() => import('./pages/SubjectAnalytics').then(module => ({ default: module.SubjectAnalytics })));
@@ -28,7 +27,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Loading fallback component
 const PageLoader = () => (
   <Box
     sx={{
@@ -45,6 +43,10 @@ const PageLoader = () => (
 function AppContent() {
   const { mode } = useThemeMode();
   const theme = getTheme(mode);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', mode);
+  }, [mode]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -135,4 +137,3 @@ function App() {
 }
 
 export default App;
-

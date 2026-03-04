@@ -182,7 +182,7 @@ export const AccountSettings = () => {
             {getInitials(userEmail)}
           </div>
           <div>
-            <div style={{ fontFamily: 'Syne, sans-serif', fontSize: '20px', fontWeight: 700, marginBottom: '4px' }}>
+            <div style={{ fontFamily: 'Syne, sans-serif', fontSize: '20px', fontWeight: 700, marginBottom: '4px', color: 'var(--text)' }}>
               {userEmail.split('@')[0]}
             </div>
             <div style={{ fontSize: '13px', color: 'var(--text2)' }}>
@@ -197,7 +197,7 @@ export const AccountSettings = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0' }}>
           <div>
             <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '4px' }}>EMAIL</div>
-            <div style={{ fontSize: '14px', fontWeight: 500 }}>{userEmail}</div>
+            <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text)' }}>{userEmail}</div>
           </div>
           <button className="btn btn-ghost" style={{ padding: '6px 12px', fontSize: '12px' }}>
             Edit
