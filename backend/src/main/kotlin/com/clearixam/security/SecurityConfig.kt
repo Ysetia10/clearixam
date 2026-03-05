@@ -98,23 +98,21 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     
                     // Public endpoints - no authentication required
-                    .requestMatchers(
-                        "/api/auth/**",
-                        "/auth/**",
-                        "/register",
-                        "/login",
-                        "/health",
-                        "/actuator/health",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/api/exams/**",
-                        "/api/subjects"
-                    ).permitAll()
+                    .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/register").permitAll()
+                    .requestMatchers("/login").permitAll()
+                    .requestMatchers("/health").permitAll()
+                    .requestMatchers("/actuator/health").permitAll()
+                    .requestMatchers("/swagger-ui/**").permitAll()
+                    .requestMatchers("/v3/api-docs/**").permitAll()
+                    .requestMatchers("/api/exams", "/api/exams/**").permitAll()
+                    .requestMatchers("/api/subjects", "/api/subjects/**").permitAll()
                     
                     // All other endpoints require authentication
                     .anyRequest().authenticated()
                 
-                logger.info("Authorization rules configured - public endpoints: /api/auth/**, /api/exams/**, /api/subjects, /health")
+                logger.info("Authorization rules configured - public endpoints: /api/auth/**, /api/exams/**, /api/subjects/**, /health")
             }
             
             // Add JWT filter before Spring Security's authentication filter
