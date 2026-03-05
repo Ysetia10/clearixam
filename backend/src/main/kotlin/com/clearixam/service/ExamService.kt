@@ -24,27 +24,6 @@ class ExamService(
             val exams = examRepository.findAll()
             logger.info("ExamService.getAllExams() - Found ${exams.size} exams in database")
             
-            // Auto-seed if no exams exist
-            if (exams.isEmpty()) {
-                logger.info("ExamService.getAllExams() - No exams found, attempting auto-seed")
-                try {
-                    seedDefaultExams()
-                    logger.info("ExamService.getAllExams() - Auto-seed completed, fetching exams again")
-                    return examRepository.findAll().map { exam ->
-                        ExamResponse(
-                            id = exam.id!!,
-                            name = exam.name,
-                            description = exam.description,
-                            maxMarks = exam.maxMarks,
-                            maxQuestions = exam.maxQuestions
-                        )
-                    }
-                } catch (seedError: Exception) {
-                    logger.error("ExamService.getAllExams() - Auto-seed failed", seedError)
-                    throw seedError
-                }
-            }
-            
             logger.info("ExamService.getAllExams() - Returning ${exams.size} exams")
             exams.map { exam ->
                 ExamResponse(
