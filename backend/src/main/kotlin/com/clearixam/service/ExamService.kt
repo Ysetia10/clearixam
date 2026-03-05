@@ -19,14 +19,34 @@ class ExamService(
     private val logger = LoggerFactory.getLogger(ExamService::class.java)
 
     fun getAllExams(): List<ExamResponse> {
-        logger.info("Fetching all exams")
-        val exams = examRepository.findAll()
-        
-        // Auto-seed if no exams exist
-        if (exams.isEmpty()) {
-            logger.info("No exams found, auto-seeding default exams")
-            seedDefaultExams()
-            return examRepository.findAll().map { exam ->
+        return try {
+            logger.info("ExamService.getAllExams() - Starting")
+            val exams = examRepository.findAll()
+            logger.info("ExamService.getAllExams() - Found ${exams.size} exams in database")
+            
+            // Auto-seed if no exams exist
+            if (exams.isEmpty()) {
+                logger.info("ExamService.getAllExams() - No exams found, attempting auto-seed")
+                try {
+                    seedDefaultExams()
+                    logger.info("ExamService.getAllExams() - Auto-seed completed, fetching exams again")
+                    return examRepository.findAll().map { exam ->
+                        ExamResponse(
+                            id = exam.id!!,
+                            name = exam.name,
+                            description = exam.description,
+                            maxMarks = exam.maxMarks,
+                            maxQuestions = exam.maxQuestions
+                        )
+                    }
+                } catch (seedError: Exception) {
+                    logger.error("ExamService.getAllExams() - Auto-seed failed", seedError)
+                    throw seedError
+                }
+            }
+            
+            logger.info("ExamService.getAllExams() - Returning ${exams.size} exams")
+            exams.map { exam ->
                 ExamResponse(
                     id = exam.id!!,
                     name = exam.name,
@@ -35,16 +55,9 @@ class ExamService(
                     maxQuestions = exam.maxQuestions
                 )
             }
-        }
-        
-        return exams.map { exam ->
-            ExamResponse(
-                id = exam.id!!,
-                name = exam.name,
-                description = exam.description,
-                maxMarks = exam.maxMarks,
-                maxQuestions = exam.maxQuestions
-            )
+        } catch (e: Exception) {
+            logger.error("ExamService.getAllExams() - Unexpected error", e)
+            throw e
         }
     }
 
