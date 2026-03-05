@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import java.time.LocalDateTime
 
 @RestControllerAdvice
@@ -94,6 +95,24 @@ class GlobalExceptionHandler {
         )
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse)
+    }
+
+    @ExceptionHandler(UnsupportedOperationException::class)
+    fun handleUnsupportedOperation(
+        ex: UnsupportedOperationException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorResponse> {
+        logger.warn("Feature not yet implemented on ${request.requestURI}: ${ex.message}")
+
+        val errorResponse = ErrorResponse(
+            timestamp = LocalDateTime.now(),
+            status = HttpStatus.NOT_IMPLEMENTED.value(),
+            error = "Not Implemented",
+            message = ex.message ?: "This feature is coming soon",
+            path = request.requestURI
+        )
+
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(errorResponse)
     }
 
     @ExceptionHandler(Exception::class)

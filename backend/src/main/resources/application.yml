@@ -9,8 +9,12 @@ spring:
       maximum-pool-size: 5
       minimum-idle: 2
       connection-timeout: 30000
+      # Fail fast if DB is unreachable on startup
+      initialization-fail-timeout: 10000
   jpa:
     hibernate:
+      # Production: set DDL_AUTO=validate in Render env vars (after running prod_migration.sql)
+      # Local dev:  set DDL_AUTO=update  in your local environment
       ddl-auto: ${DDL_AUTO:update}
     show-sql: ${SHOW_SQL:false}
     properties:
@@ -32,3 +36,6 @@ logging:
     com.clearixam: INFO
     org.springframework.web: WARN
     org.hibernate: WARN
+    # Enable SQL errors in prod for visibility
+    org.hibernate.SQL: ${LOG_SQL:WARN}
+    org.springframework.jdbc: WARN
