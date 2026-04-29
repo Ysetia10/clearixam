@@ -43,8 +43,8 @@ class MockTestService(
         val totalAttempted = request.subjects.sumOf { it.attempted }
         val totalCorrect = request.subjects.sumOf { it.correct }
         val totalIncorrect = request.subjects.sumOf { it.attempted - it.correct }
-        // Score formula: correct * 2 - incorrect * 0.66
-        val marksObtained = totalCorrect * 2.0 - totalIncorrect * 0.66
+        // Score formula: use exam's marking scheme
+        val marksObtained = totalCorrect * exam.correctMarks - totalIncorrect * exam.negativeMarks
         val totalScore = marksObtained
         val probabilityScore = calculateProbability(totalScore, request.cutoffScore)
 
@@ -71,11 +71,12 @@ class MockTestService(
                 .orElseThrow { IllegalArgumentException("Subject not found: ${subjectInput.subjectId}") }
 
             val incorrect = subjectInput.attempted - subjectInput.correct
-            val score = subjectInput.correct * 2.0 - incorrect * 0.66
+            val score = subjectInput.correct * exam.correctMarks - incorrect * exam.negativeMarks
 
             val subjectScore = SubjectScore(
                 mockTest = savedMock,
                 subject = subject,
+                subjectName = subject.name,
                 attempted = subjectInput.attempted,
                 correct = subjectInput.correct,
                 incorrect = incorrect,

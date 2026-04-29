@@ -82,8 +82,10 @@ export const AddMock = () => {
 
   const calculateScore = useCallback((attempted: number, correct: number) => {
     const incorrect = attempted - correct;
-    return (correct * 2 - incorrect * 0.66).toFixed(2);
-  }, []);
+    const correctMarks = selectedExam?.correctMarks ?? 2;
+    const negativeMarks = selectedExam?.negativeMarks ?? 0.66;
+    return (correct * correctMarks - incorrect * negativeMarks).toFixed(2);
+  }, [selectedExam]);
 
   const calculateTotalScore = useCallback(() => {
     return subjectRows.reduce((sum, row) => {
@@ -178,6 +180,7 @@ export const AddMock = () => {
     }
 
     mutation.mutate({
+      examId: selectedExamId,
       testDate,
       cutoffScore: parseFloat(cutoffScore),
       subjects: subjectList,

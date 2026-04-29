@@ -2,11 +2,13 @@ import { apiClient } from './client';
 
 export interface SubjectInput {
   subjectName: string;
+  subjectId: string;
   attempted: number;
   correct: number;
 }
 
 export interface CreateMockRequest {
+  examId: string;
   testDate: string;
   cutoffScore: number;
   subjects: SubjectInput[];
@@ -14,10 +16,18 @@ export interface CreateMockRequest {
 
 export interface MockResponse {
   id: string;
+  testName: string;
+  examId: string;
+  examName: string;
   testDate: string;
   totalScore: number;
   cutoffScore: number;
   probabilityScore: number | null;
+  attempted: number;
+  correct: number;
+  incorrect: number;
+  totalQuestions: number;
+  marksObtained: number;
 }
 
 export interface PagedMockResponse {
@@ -29,6 +39,7 @@ export interface PagedMockResponse {
 }
 
 export interface SubjectDetail {
+  subjectId: string;
   subjectName: string;
   attempted: number;
   correct: number;
@@ -38,10 +49,18 @@ export interface SubjectDetail {
 
 export interface MockDetailResponse {
   id: string;
+  testName: string;
+  examId: string;
+  examName: string;
   testDate: string;
   totalScore: number;
   cutoffScore: number;
   probabilityScore: number | null;
+  attempted: number;
+  correct: number;
+  incorrect: number;
+  totalQuestions: number;
+  marksObtained: number;
   subjects: SubjectDetail[];
 }
 

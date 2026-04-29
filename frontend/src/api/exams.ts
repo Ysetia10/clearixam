@@ -6,6 +6,8 @@ export interface Exam {
   description: string;
   maxMarks: number;
   maxQuestions: number;
+  correctMarks: number;
+  negativeMarks: number;
 }
 
 export interface Subject {
