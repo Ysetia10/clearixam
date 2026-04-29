@@ -1,7 +1,6 @@
 package com.clearixam.dto.response
 
 import com.clearixam.analytics.PerformanceCalculator
-import com.clearixam.entity.SubjectName
 import java.time.LocalDate
 
 data class AnalyticsOverviewResponse(
@@ -21,7 +20,7 @@ data class AnalyticsOverviewResponse(
 )
 
 data class WeakSubjectResponse(
-    val subjectName: SubjectName,
+    val subjectName: String,
     val accuracy: Double
 )
 

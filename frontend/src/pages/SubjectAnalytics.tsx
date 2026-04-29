@@ -71,9 +71,9 @@ export const SubjectAnalytics = () => {
     stats.sort((a, b) => b.avgMarks - a.avgMarks);
 
     if (filter === 'weak') {
-      return stats.filter(s => s.avgAccuracy < 60);
+      return stats.filter(s => s.avgAccuracy < 80);
     } else if (filter === 'strong') {
-      return stats.filter(s => s.avgAccuracy >= 75);
+      return stats.filter(s => s.avgAccuracy >= 90);
     }
     return stats;
   }, [performances, filter]);
@@ -114,13 +114,13 @@ export const SubjectAnalytics = () => {
             className={`tab ${filter === 'weak' ? 'active' : ''}`}
             onClick={() => handleFilterChange('weak')}
           >
-            Weak (&lt;60%)
+            Weak (&lt;80%)
           </button>
           <button
             className={`tab ${filter === 'strong' ? 'active' : ''}`}
             onClick={() => handleFilterChange('strong')}
           >
-            Strong (≥75%)
+            Strong (≥90%)
           </button>
         </div>
 
@@ -205,11 +205,11 @@ export const SubjectAnalytics = () => {
               </div>
 
               <span className={`badge ${
-                subject.avgAccuracy >= 75 ? 'badge-green' :
-                subject.avgAccuracy >= 60 ? 'badge-amber' : 'badge-red'
+                subject.avgAccuracy >= 90 ? 'badge-green' :
+                subject.avgAccuracy >= 80 ? 'badge-amber' : 'badge-red'
               }`}>
-                {subject.avgAccuracy >= 75 ? 'Strong' :
-                 subject.avgAccuracy >= 60 ? 'Moderate' : 'Needs Focus'}
+                {subject.avgAccuracy >= 90 ? 'Strong' :
+                 subject.avgAccuracy >= 80 ? 'Average' : 'Needs Focus'}
               </span>
             </div>
           ))}

@@ -54,7 +54,9 @@ export interface SubjectAnalyticsResponse {
 }
 
 export const analyticsApi = {
-  getOverview: () => apiClient.get<AnalyticsOverview>('/analytics/overview'),
-  getTrend: () => apiClient.get<AnalyticsTrend>('/analytics/trend'),
+  getOverview: (examId?: string) =>
+    apiClient.get<AnalyticsOverview>(`/analytics/overview${examId ? `?examId=${examId}` : ''}`),
+  getTrend: (examId?: string) =>
+    apiClient.get<AnalyticsTrend>(`/analytics/trend${examId ? `?examId=${examId}` : ''}`),
   getSubjectAnalytics: () => apiClient.get<SubjectAnalyticsResponse>('/analytics/subjects'),
 };
