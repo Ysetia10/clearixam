@@ -20,7 +20,7 @@ export const Sidebar = () => {
     { text: 'Dashboard', path: '/dashboard', icon: '📊' },
     { text: 'Subject Analytics', path: '/subject-analytics', icon: '📈' },
     { text: 'Add Mock', path: '/add-mock', icon: '➕' },
-    { text: 'Performance History', path: '/performance-history', icon: '📋' },
+    { text: 'Mock History', path: '/performance-history', icon: '📋' },
     { text: 'Account', path: '/account', icon: '⚙️' },
   ];
 

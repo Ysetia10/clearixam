@@ -14,7 +14,6 @@ const Dashboard = lazy(() => import('./pages/Dashboard').then(module => ({ defau
 const AddMock = lazy(() => import('./pages/AddMock').then(module => ({ default: module.AddMock })));
 const SubjectAnalytics = lazy(() => import('./pages/SubjectAnalytics').then(module => ({ default: module.SubjectAnalytics })));
 const AccountSettings = lazy(() => import('./pages/AccountSettings').then(module => ({ default: module.AccountSettings })));
-const AddPerformance = lazy(() => import('./pages/AddPerformance').then(module => ({ default: module.AddPerformance })));
 const PerformanceHistory = lazy(() => import('./pages/PerformanceHistory').then(module => ({ default: module.PerformanceHistory })));
 
 const queryClient = new QueryClient({
@@ -72,16 +71,6 @@ function AppContent() {
                 <ProtectedRoute>
                   <Suspense fallback={<PageLoader />}>
                     <AddMock />
-                  </Suspense>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/add-performance"
-              element={
-                <ProtectedRoute>
-                  <Suspense fallback={<PageLoader />}>
-                    <AddPerformance />
                   </Suspense>
                 </ProtectedRoute>
               }

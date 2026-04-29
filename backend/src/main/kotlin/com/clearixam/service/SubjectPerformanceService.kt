@@ -6,6 +6,7 @@ import com.clearixam.entity.SubjectPerformance
 import com.clearixam.repository.ExamRepository
 import com.clearixam.repository.SubjectPerformanceRepository
 import com.clearixam.repository.SubjectRepository
+import com.clearixam.repository.SubjectScoreRepository
 import com.clearixam.repository.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -18,7 +19,8 @@ class SubjectPerformanceService(
     private val subjectPerformanceRepository: SubjectPerformanceRepository,
     private val userRepository: UserRepository,
     private val examRepository: ExamRepository,
-    private val subjectRepository: SubjectRepository
+    private val subjectRepository: SubjectRepository,
+    private val subjectScoreRepository: SubjectScoreRepository
 ) {
     private val logger = LoggerFactory.getLogger(SubjectPerformanceService::class.java)
 
@@ -67,8 +69,26 @@ class SubjectPerformanceService(
 
     fun getPerformanceByExam(userId: UUID, examId: UUID): List<SubjectPerformanceResponse> {
         logger.info("Fetching performance for user: $userId, exam: $examId")
-        return subjectPerformanceRepository.findByUserIdAndExamIdOrderByTestDateDesc(userId, examId)
-            .map { toResponse(it) }
+        return subjectScoreRepository.findByUserIdAndExamId(userId, examId)
+            .map { ss ->
+                val accuracy = if (ss.attempted > 0) {
+                    (ss.correct.toDouble() / ss.attempted.toDouble()) * 100
+                } else 0.0
+
+                SubjectPerformanceResponse(
+                    id = ss.id!!,
+                    userId = userId,
+                    examId = examId,
+                    subjectId = ss.subject.id!!,
+                    subjectName = ss.subjectName,
+                    marks = ss.score,
+                    questionsAttempted = ss.attempted,
+                    correct = ss.correct,
+                    incorrect = ss.incorrect,
+                    accuracy = String.format("%.2f", accuracy).toDouble(),
+                    testDate = ss.mockTest.testDate.toString()
+                )
+            }
     }
 
     @Transactional
