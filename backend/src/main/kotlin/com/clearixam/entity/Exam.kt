@@ -23,6 +23,14 @@ data class Exam(
     @Column(nullable = false)
     val maxQuestions: Int,
 
+    // Marks per correct answer
+    @Column(nullable = false, columnDefinition = "float8 default 2.0")
+    val correctMarks: Double = 2.0,
+
+    // Marks deducted per incorrect answer (positive value, e.g. 0.5 means -0.5)
+    @Column(nullable = false, columnDefinition = "float8 default 0.66")
+    val negativeMarks: Double = 0.66,
+
     @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now()
 )

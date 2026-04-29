@@ -31,7 +31,9 @@ class ExamService(
                     name = exam.name,
                     description = exam.description,
                     maxMarks = exam.maxMarks,
-                    maxQuestions = exam.maxQuestions
+                    maxQuestions = exam.maxQuestions,
+                    correctMarks = exam.correctMarks,
+                    negativeMarks = exam.negativeMarks
                 )
             }
         } catch (e: Exception) {
@@ -50,7 +52,9 @@ class ExamService(
             name = exam.name,
             description = exam.description,
             maxMarks = exam.maxMarks,
-            maxQuestions = exam.maxQuestions
+            maxQuestions = exam.maxQuestions,
+            correctMarks = exam.correctMarks,
+            negativeMarks = exam.negativeMarks
         )
     }
 

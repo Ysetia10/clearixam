@@ -19,6 +19,9 @@ data class SubjectScore(
     val subject: Subject,
 
     @Column(nullable = false)
+    val subjectName: String,
+
+    @Column(nullable = false)
     val attempted: Int,
 
     @Column(nullable = false)

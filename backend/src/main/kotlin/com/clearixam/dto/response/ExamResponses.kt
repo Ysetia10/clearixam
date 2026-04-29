@@ -7,7 +7,9 @@ data class ExamResponse(
     val name: String,
     val description: String,
     val maxMarks: Int,
-    val maxQuestions: Int
+    val maxQuestions: Int,
+    val correctMarks: Double,
+    val negativeMarks: Double
 )
 
 data class SubjectResponse(
