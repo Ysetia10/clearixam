@@ -98,6 +98,43 @@ export interface AttemptAccuracyInsightDTO {
   insight: string;
 }
 
+// ── Improvement Rate ──────────────────────────────────────────────────────────
+export type ImprovementTrend = 'IMPROVING' | 'DECLINING' | 'STABLE';
+
+export interface ImprovementDTO {
+  improvementRate: number;
+  trend: ImprovementTrend;
+  last5Avg: number;
+  prev5Avg: number;
+}
+
+// ── Adaptive Subject Strength ─────────────────────────────────────────────────
+export type SubjectStrengthStatus = 'WEAK' | 'BELOW_AVERAGE' | 'AVERAGE' | 'STRONG';
+
+export interface AdaptiveSubjectStrengthDTO {
+  subjectName: string;
+  accuracy: number;
+  relativeScore: number;
+  status: SubjectStrengthStatus;
+}
+
+export interface AdaptiveStrengthResponse {
+  overallAccuracy: number;
+  subjects: AdaptiveSubjectStrengthDTO[];
+}
+
+// ── Insight Engine ───────────────────────────────────────────────────────────
+export type InsightType = 'WARNING' | 'INFO' | 'SUCCESS';
+
+export interface InsightDTO {
+  type: InsightType;
+  message: string;
+}
+
+export interface InsightsResponse {
+  insights: InsightDTO[];
+}
+
 // ── API ───────────────────────────────────────────────────────────────────────
 const qs = (examId?: string) => (examId ? `?examId=${examId}` : '');
 
@@ -118,4 +155,13 @@ export const analyticsApi = {
 
   getAttemptAccuracyInsight: (examId?: string) =>
     unwrap(apiClient.get<ApiResponse<AttemptAccuracyInsightDTO>>(`/analytics/attempt-accuracy${qs(examId)}`)),
+
+  getImprovement: (examId?: string) =>
+    unwrap(apiClient.get<ApiResponse<ImprovementDTO>>(`/analytics/improvement${qs(examId)}`)),
+
+  getAdaptiveStrength: (examId?: string) =>
+    unwrap(apiClient.get<ApiResponse<AdaptiveStrengthResponse>>(`/analytics/adaptive-strength${qs(examId)}`)),
+
+  getInsights: (examId?: string) =>
+    unwrap(apiClient.get<ApiResponse<InsightsResponse>>(`/analytics/insights${qs(examId)}`)),
 };
