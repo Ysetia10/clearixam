@@ -5,6 +5,8 @@ import com.clearixam.entity.Exam
 import com.clearixam.entity.Subject
 import com.clearixam.repository.ExamRepository
 import com.clearixam.repository.SubjectRepository
+import com.clearixam.repository.MockTestRepository
+import com.clearixam.repository.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,7 +16,9 @@ import java.util.UUID
 @Transactional(readOnly = true)
 class ExamService(
     private val examRepository: ExamRepository,
-    private val subjectRepository: SubjectRepository
+    private val subjectRepository: SubjectRepository,
+    private val mockTestRepository: MockTestRepository,
+    private val userRepository: UserRepository
 ) {
     private val logger = LoggerFactory.getLogger(ExamService::class.java)
 
@@ -39,6 +43,49 @@ class ExamService(
         } catch (e: Exception) {
             logger.error("ExamService.getAllExams() - Unexpected error", e)
             throw e
+        }
+    }
+
+    fun getAllExamsOrderedByMockCount(userEmail: String): List<ExamResponse> {
+        return try {
+            logger.info("ExamService.getAllExamsOrderedByMockCount() - Starting for user: $userEmail")
+            val user = userRepository.findByEmail(userEmail)
+            
+            if (user == null) {
+                logger.info("User not found, returning default exam order")
+                return getAllExams()
+            }
+
+            val exams = examRepository.findAll()
+            logger.info("ExamService.getAllExamsOrderedByMockCount() - Found ${exams.size} exams in database")
+            
+            // Count mocks per exam for this user
+            val examMockCounts = exams.map { exam ->
+                val mockCount = mockTestRepository.findByUserIdAndExamIdOrderByTestDateDesc(user.id!!, exam.id!!).size
+                exam to mockCount
+            }
+            
+            // Sort by mock count (descending), then by name (ascending) for ties
+            val sortedExams = examMockCounts
+                .sortedWith(compareByDescending<Pair<Exam, Int>> { it.second }.thenBy { it.first.name })
+                .map { it.first }
+            
+            logger.info("ExamService.getAllExamsOrderedByMockCount() - Ordered exams by mock count")
+            sortedExams.map { exam ->
+                ExamResponse(
+                    id = exam.id!!,
+                    name = exam.name,
+                    description = exam.description,
+                    maxMarks = exam.maxMarks,
+                    maxQuestions = exam.maxQuestions,
+                    correctMarks = exam.correctMarks,
+                    negativeMarks = exam.negativeMarks
+                )
+            }
+        } catch (e: Exception) {
+            logger.error("ExamService.getAllExamsOrderedByMockCount() - Unexpected error", e)
+            // Fallback to default ordering
+            getAllExams()
         }
     }
 
