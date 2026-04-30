@@ -30,6 +30,11 @@ jwt:
   secret: ${JWT_SECRET:change-this-secret-in-production-minimum-256-bits-required}
   expiration: ${JWT_EXPIRATION:86400000}
 
+gemini:
+  api:
+    key: ${GEMINI_API_KEY:AIzaSyA1XZqor1o8bamRNLGpnjrR6WjQp62492Q}
+    url: ${GEMINI_API_URL:https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent}
+
 logging:
   level:
     root: INFO

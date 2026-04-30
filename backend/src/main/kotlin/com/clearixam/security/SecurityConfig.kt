@@ -108,11 +108,12 @@ class SecurityConfig(
                     .requestMatchers("/v3/api-docs/**").permitAll()
                     .requestMatchers("/api/exams", "/api/exams/**").permitAll()
                     .requestMatchers("/api/subjects", "/api/subjects/**").permitAll()
+                    .requestMatchers("/api/mcq/**").permitAll() // MCQ processing endpoints
                     
                     // All other endpoints require authentication
                     .anyRequest().authenticated()
                 
-                logger.info("Authorization rules configured - public endpoints: /api/auth/**, /api/exams/**, /api/subjects/**, /health")
+                logger.info("Authorization rules configured - public endpoints: /api/auth/**, /api/exams/**, /api/subjects/**, /api/mcq/**, /health")
             }
             
             // Add JWT filter before Spring Security's authentication filter

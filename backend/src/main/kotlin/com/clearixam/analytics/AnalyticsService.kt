@@ -124,7 +124,8 @@ class AnalyticsService(
     }
 
     @Transactional(readOnly = true)
-    fun getSubjectAnalytics(userEmail: String): com.clearixam.dto.response.SubjectAnalyticsResponse {
-        return com.clearixam.dto.response.SubjectAnalyticsResponse(emptyList())
+    fun getSubjectAnalytics(userEmail: String): com.clearixam.dto.response.SubjectAnalyticsListResponse {
+        // Delegated to SubjectAnalyticsService — kept for backward compatibility
+        return com.clearixam.dto.response.SubjectAnalyticsListResponse(emptyList())
     }
 }

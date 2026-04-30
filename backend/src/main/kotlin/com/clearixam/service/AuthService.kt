@@ -54,4 +54,26 @@ class AuthService(
         return userRepository.findByEmail(email)
             ?: throw NoSuchElementException("User not found")
     }
+    
+    /**
+     * Reset password for a user (admin function)
+     */
+    fun resetPassword(email: String, newPassword: String): Boolean {
+        val user = userRepository.findByEmail(email)
+            ?: throw NoSuchElementException("User not found with email: $email")
+        
+        val updatedUser = user.copy(
+            password = passwordEncoder.encode(newPassword)
+        )
+        
+        userRepository.save(updatedUser)
+        return true
+    }
+    
+    /**
+     * Get all users (admin function)
+     */
+    fun getAllUsers(): List<User> {
+        return userRepository.findAll()
+    }
 }
