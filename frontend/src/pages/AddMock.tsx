@@ -29,7 +29,7 @@ export const AddMock = () => {
 
   const { data: exams = [], isLoading: examsLoading } = useQuery({
     queryKey: ['exams'],
-    queryFn: examsApi.getAll,
+    queryFn: examsApi.getAllOrdered,
   });
 
   const { data: examSubjects = [], isLoading: subjectsLoading } = useQuery({

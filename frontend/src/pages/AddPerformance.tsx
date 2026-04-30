@@ -23,7 +23,7 @@ export const AddPerformance = () => {
 
   const { data: exams = [] } = useQuery({
     queryKey: ['exams'],
-    queryFn: examsApi.getAll,
+    queryFn: examsApi.getAllOrdered,
   });
 
   const { data: subjects = [] } = useQuery({

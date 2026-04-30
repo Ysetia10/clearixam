@@ -27,7 +27,7 @@ export const Dashboard = () => {
 
   const { data: exams = [] } = useQuery({
     queryKey: ['exams'],
-    queryFn: examsApi.getAll,
+    queryFn: examsApi.getAllOrdered,
   });
 
   // Default to first exam once loaded

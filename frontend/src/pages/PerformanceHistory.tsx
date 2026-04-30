@@ -19,7 +19,7 @@ export const PerformanceHistory = () => {
 
   const { data: exams = [] } = useQuery({
     queryKey: ['exams'],
-    queryFn: examsApi.getAll,
+    queryFn: examsApi.getAllOrdered,
   });
 
   const { data: mocks, isLoading } = useQuery({

@@ -24,7 +24,7 @@ export const SubjectAnalytics = () => {
 
   const { data: exams = [] } = useQuery({
     queryKey: ['exams'],
-    queryFn: examsApi.getAll,
+    queryFn: examsApi.getAllOrdered,
   });
 
   useEffect(() => {

@@ -14,7 +14,7 @@ export const ExamSwitcher: React.FC<ExamSwitcherProps> = ({ currentExamId, onExa
 
   const { data: exams = [], isLoading } = useQuery({
     queryKey: ['exams'],
-    queryFn: examsApi.getAll,
+    queryFn: examsApi.getAllOrdered,
   });
 
   const setActiveExamMutation = useMutation({
