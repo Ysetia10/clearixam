@@ -29,7 +29,10 @@ const MCQClassification: React.FC = () => {
   };
 
   const handleConfirm = () => {
-    setMessage({ text: 'Classification confirmed!', type: 'success' });
+    // Clear the current result to allow new MCQ classification
+    setResult(null);
+    setShowCorrection(false);
+    setMessage({ text: 'Classification confirmed! Ready for next MCQ.', type: 'success' });
     setTimeout(() => setMessage(null), 3000);
   };
 

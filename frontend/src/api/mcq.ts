@@ -76,24 +76,48 @@ export const processImage = async (file: File): Promise<MCQResult> => {
     throw new Error(errorData.message || 'Image processing failed');
   }
 
-  return response.json();
+  const result = await response.json();
+  
+  if (result.success && result.data) {
+    return result.data;
+  } else {
+    throw new Error(result.message || 'Image processing failed');
+  }
 };
 
 // Process text for MCQ classification
 export const processText = async (text: string): Promise<MCQResult> => {
-  return apiClient.post<MCQResult>('/mcq/process-text', {
+  const response = await apiClient.post<{ success: boolean; data: MCQResult; message?: string }>('/mcq/process-text', {
     text: text.trim(),
   });
+  
+  if (response.success && response.data) {
+    return response.data;
+  } else {
+    throw new Error(response.message || 'Text processing failed');
+  }
 };
 
 // Submit correction
 export const submitCorrection = async (correction: MCQCorrection): Promise<CorrectionResponse> => {
-  return apiClient.post<CorrectionResponse>('/mcq/correct', correction);
+  const response = await apiClient.post<{ success: boolean; data: CorrectionResponse; message?: string }>('/mcq/correct', correction);
+  
+  if (response.success && response.data) {
+    return response.data;
+  } else {
+    throw new Error(response.message || 'Failed to submit correction');
+  }
 };
 
 // Set MCQ outcome
 export const setOutcome = async (outcome: MCQOutcome): Promise<OutcomeResponse> => {
-  return apiClient.post<OutcomeResponse>('/mcq/set-outcome', outcome);
+  const response = await apiClient.post<{ success: boolean; data: OutcomeResponse; message?: string }>('/mcq/set-outcome', outcome);
+  
+  if (response.success && response.data) {
+    return response.data;
+  } else {
+    throw new Error(response.message || 'Failed to set outcome');
+  }
 };
 
 // Get recent corrections
@@ -121,5 +145,5 @@ export const AVAILABLE_SUBJECTS = [
   'Quantitative Aptitude',
   'Reasoning', 
   'English',
-  'General Knowledge'
+  'General Awareness'
 ];

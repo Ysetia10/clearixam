@@ -19,7 +19,7 @@ class RuleBasedClassifier {
     @Autowired
     private lateinit var mcqLearningService: MCQLearningService
     
-    // Subject-wise keyword mappings
+    // Subject-wise keyword mappings for SSC
     private val subjectKeywords = mapOf(
         "English" to mapOf(
             "Grammar" to listOf(
@@ -37,41 +37,18 @@ class RuleBasedClassifier {
             )
         ),
         
-        "Polity" to mapOf(
-            "Constitution" to listOf(
-                "constitution", "article", "amendment", "fundamental rights", "directive principles",
-                "preamble", "constitutional", "supreme court", "high court", "judicial review"
+        "Reasoning" to mapOf(
+            "Logical Reasoning" to listOf(
+                "series", "pattern", "sequence", "coding", "decoding", "blood relation",
+                "direction", "ranking", "arrangement", "puzzle", "syllogism", "statement"
             ),
-            "Parliament" to listOf(
-                "parliament", "lok sabha", "rajya sabha", "speaker", "chairman", "bill",
-                "ordinance", "session", "prorogation", "dissolution", "quorum"
+            "Verbal Reasoning" to listOf(
+                "analogy", "classification", "odd one out", "completion", "logical sequence",
+                "cause effect", "assertion reason"
             ),
-            "Executive" to listOf(
-                "president", "prime minister", "council of ministers", "governor", "chief minister",
-                "cabinet", "executive", "administration", "bureaucracy"
-            ),
-            "Judiciary" to listOf(
-                "judiciary", "judge", "court", "justice", "legal", "law", "trial", "appeal",
-                "jurisdiction", "writ", "habeas corpus", "mandamus"
-            )
-        ),
-        
-        "Economy" to mapOf(
-            "Macroeconomics" to listOf(
-                "gdp", "gnp", "inflation", "deflation", "recession", "growth", "fiscal policy",
-                "monetary policy", "budget", "deficit", "surplus", "debt", "reserve bank"
-            ),
-            "Banking" to listOf(
-                "bank", "banking", "repo rate", "reverse repo", "crr", "slr", "npa",
-                "credit", "loan", "deposit", "interest", "rbi", "monetary"
-            ),
-            "Trade" to listOf(
-                "export", "import", "trade", "wto", "tariff", "quota", "balance of payments",
-                "current account", "capital account", "foreign exchange", "currency"
-            ),
-            "Development" to listOf(
-                "development", "poverty", "unemployment", "human development index",
-                "sustainable development", "planning", "five year plan", "niti aayog"
+            "Non-Verbal Reasoning" to listOf(
+                "figure", "pattern", "mirror image", "water image", "rotation", "folding",
+                "cutting", "embedded figure", "grouping"
             )
         ),
         
@@ -94,37 +71,51 @@ class RuleBasedClassifier {
             )
         ),
         
-        "Reasoning" to mapOf(
-            "Logical Reasoning" to listOf(
-                "series", "pattern", "sequence", "coding", "decoding", "blood relation",
-                "direction", "ranking", "arrangement", "puzzle", "syllogism", "statement"
-            ),
-            "Verbal Reasoning" to listOf(
-                "analogy", "classification", "odd one out", "completion", "logical sequence",
-                "cause effect", "assertion reason"
-            ),
-            "Non-Verbal Reasoning" to listOf(
-                "figure", "pattern", "mirror image", "water image", "rotation", "folding",
-                "cutting", "embedded figure", "grouping"
-            )
-        ),
-        
-        "General Knowledge" to mapOf(
+        "General Awareness" to mapOf(
             "History" to listOf(
                 "history", "ancient", "medieval", "modern", "mughal", "british", "independence",
-                "freedom fighter", "revolt", "dynasty", "empire", "war", "battle"
+                "freedom fighter", "revolt", "dynasty", "empire", "war", "battle", "civilization",
+                "ruler", "king", "emperor", "sultanate", "colonial", "partition"
             ),
             "Geography" to listOf(
                 "geography", "mountain", "river", "ocean", "continent", "country", "capital",
-                "climate", "monsoon", "latitude", "longitude", "plateau", "desert"
+                "climate", "monsoon", "latitude", "longitude", "plateau", "desert", "nation",
+                "neighbour", "neighbor", "border", "area", "largest", "smallest", "population",
+                "state", "district", "city", "island", "peninsula", "bay", "strait", "valley",
+                "forest", "wildlife", "national park", "sanctuary", "mineral", "coal", "iron",
+                "himalaya", "ganga", "yamuna", "narmada", "godavari", "krishna", "cauvery",
+                "arabian sea", "bay of bengal", "indian ocean", "deccan", "thar", "sundarbans"
+            ),
+            "Polity" to listOf(
+                "constitution", "article", "amendment", "fundamental rights", "directive principles",
+                "preamble", "constitutional", "supreme court", "high court", "judicial review",
+                "parliament", "lok sabha", "rajya sabha", "speaker", "chairman", "bill",
+                "ordinance", "session", "prorogation", "dissolution", "quorum",
+                "president", "prime minister", "council of ministers", "governor", "chief minister",
+                "cabinet", "executive", "administration", "bureaucracy",
+                "judiciary", "judge", "court", "justice", "legal", "law", "trial", "appeal",
+                "jurisdiction", "writ", "habeas corpus", "mandamus"
+            ),
+            "Economy" to listOf(
+                "gdp", "gnp", "inflation", "deflation", "recession", "growth", "fiscal policy",
+                "monetary policy", "budget", "deficit", "surplus", "debt", "reserve bank",
+                "bank", "banking", "repo rate", "reverse repo", "crr", "slr", "npa",
+                "credit", "loan", "deposit", "interest", "rbi", "monetary",
+                "export", "import", "trade", "wto", "tariff", "quota", "balance of payments",
+                "current account", "capital account", "foreign exchange", "currency",
+                "development", "poverty", "unemployment", "human development index",
+                "sustainable development", "planning", "five year plan", "niti aayog"
             ),
             "Science" to listOf(
                 "physics", "chemistry", "biology", "science", "atom", "molecule", "cell",
-                "organism", "force", "energy", "motion", "light", "sound", "electricity"
+                "organism", "force", "energy", "motion", "light", "sound", "electricity",
+                "gravity", "magnetism", "photosynthesis", "respiration", "digestion", "circulation",
+                "nervous system", "endocrine", "reproduction", "genetics", "evolution", "ecosystem"
             ),
             "Current Affairs" to listOf(
                 "current", "recent", "news", "award", "prize", "summit", "conference",
-                "policy", "scheme", "launch", "appointment", "resignation"
+                "policy", "scheme", "launch", "appointment", "resignation", "election",
+                "government", "ministry", "minister"
             )
         )
     )
@@ -143,23 +134,49 @@ class RuleBasedClassifier {
             val words = text.lowercase().split("\\s+".toRegex()).toSet()
             val results = mutableListOf<ClassificationMatch>()
             
-            // Score each subject-topic combination with learning boost
+            // Score each subject-topic combination with improved matching
             subjectKeywords.forEach { (subject, topics) ->
                 topics.forEach { (topic, keywords) ->
                     val matches = keywords.filter { keyword -> 
-                        words.any { word -> word.contains(keyword) || keyword.contains(word) }
+                        // More precise matching - look for whole word matches or exact substring matches
+                        words.any { word -> 
+                            word == keyword || // exact match
+                            (word.contains(keyword) && keyword.length > 3) || // substring match for longer keywords
+                            (keyword.contains(word) && word.length > 3) // reverse substring for longer words
+                        }
                     }
                     
                     if (matches.isNotEmpty()) {
                         // Apply learning boost to matched keywords
                         val boostedScore = matches.sumOf { keyword ->
                             val boost = getKeywordBoostSafe(keyword)
-                            boost
+                            // Give higher weight to longer, more specific keywords
+                            val lengthWeight = when {
+                                keyword.length >= 8 -> 2.0
+                                keyword.length >= 5 -> 1.5
+                                else -> 1.0
+                            }
+                            boost * lengthWeight
                         }
-                        val confidence = boostedScore / keywords.size
+                        
+                        // Context-aware scoring: boost geography for country/area questions
+                        val contextBoost = when {
+                            subject == "General Awareness" && topic == "Geography" && 
+                            (text.contains("country", ignoreCase = true) || 
+                             text.contains("nation", ignoreCase = true) ||
+                             text.contains("area", ignoreCase = true) ||
+                             text.contains("neighbour", ignoreCase = true) ||
+                             text.contains("neighbor", ignoreCase = true) ||
+                             text.contains("border", ignoreCase = true) ||
+                             text.contains("largest", ignoreCase = true) ||
+                             text.contains("smallest", ignoreCase = true)) -> 3.0
+                            else -> 1.0
+                        }
+                        
+                        val confidence = (boostedScore * contextBoost) / keywords.size
                         
                         results.add(ClassificationMatch(subject, topic, "", confidence, matches))
-                        logger.debug("Match: $subject/$topic - keywords: $matches, boosted score: $boostedScore, confidence: $confidence")
+                        logger.debug("Match: $subject/$topic - keywords: $matches, boosted score: $boostedScore, context boost: $contextBoost, confidence: $confidence")
                     }
                 }
             }
@@ -207,23 +224,49 @@ class RuleBasedClassifier {
             val words = text.lowercase().split("\\s+".toRegex()).toSet()
             val results = mutableListOf<ClassificationMatch>()
             
-            // Score each subject-topic combination with learning boost
+            // Score each subject-topic combination with improved matching
             subjectKeywords.forEach { (subject, topics) ->
                 topics.forEach { (topic, keywords) ->
                     val matches = keywords.filter { keyword -> 
-                        words.any { word -> word.contains(keyword) || keyword.contains(word) }
+                        // More precise matching - look for whole word matches or exact substring matches
+                        words.any { word -> 
+                            word == keyword || // exact match
+                            (word.contains(keyword) && keyword.length > 3) || // substring match for longer keywords
+                            (keyword.contains(word) && word.length > 3) // reverse substring for longer words
+                        }
                     }
                     
                     if (matches.isNotEmpty()) {
                         // Apply learning boost to matched keywords
                         val boostedScore = matches.sumOf { keyword ->
                             val boost = getKeywordBoostSafe(keyword)
-                            boost
+                            // Give higher weight to longer, more specific keywords
+                            val lengthWeight = when {
+                                keyword.length >= 8 -> 2.0
+                                keyword.length >= 5 -> 1.5
+                                else -> 1.0
+                            }
+                            boost * lengthWeight
                         }
-                        val confidence = boostedScore / keywords.size
+                        
+                        // Context-aware scoring: boost geography for country/area questions
+                        val contextBoost = when {
+                            subject == "General Awareness" && topic == "Geography" && 
+                            (text.contains("country", ignoreCase = true) || 
+                             text.contains("nation", ignoreCase = true) ||
+                             text.contains("area", ignoreCase = true) ||
+                             text.contains("neighbour", ignoreCase = true) ||
+                             text.contains("neighbor", ignoreCase = true) ||
+                             text.contains("border", ignoreCase = true) ||
+                             text.contains("largest", ignoreCase = true) ||
+                             text.contains("smallest", ignoreCase = true)) -> 3.0
+                            else -> 1.0
+                        }
+                        
+                        val confidence = (boostedScore * contextBoost) / keywords.size
                         
                         results.add(ClassificationMatch(subject, topic, "", confidence, matches))
-                        logger.debug("Match: $subject/$topic - keywords: $matches, boosted score: $boostedScore, confidence: $confidence")
+                        logger.debug("Match: $subject/$topic - keywords: $matches, boosted score: $boostedScore, context boost: $contextBoost, confidence: $confidence")
                     }
                 }
             }

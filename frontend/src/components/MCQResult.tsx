@@ -19,6 +19,12 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
     return '#dc3545'; // Red
   };
 
+  const getConfidenceBadge = (confidence: number) => {
+    if (confidence >= 70) return { color: '#28a745', label: 'High Confidence' };
+    if (confidence >= 50) return { color: '#ffc107', label: 'Medium Confidence' };
+    return { color: '#dc3545', label: 'Low Confidence' };
+  };
+
   const getSourceBadgeColor = (source: string) => {
     return source === 'LLM' ? '#6f42c1' : '#17a2b8';
   };
@@ -53,129 +59,239 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
   const getOutcomeButtonStyle = (outcome: string, isSelected: boolean) => ({
     backgroundColor: isSelected 
       ? (outcome === 'CORRECT' ? '#28a745' : outcome === 'INCORRECT' ? '#dc3545' : '#6c757d')
-      : 'transparent',
-    color: isSelected ? 'white' : (outcome === 'CORRECT' ? '#28a745' : outcome === 'INCORRECT' ? '#dc3545' : '#6c757d'),
+      : 'white',
+    color: isSelected 
+      ? 'white' 
+      : (outcome === 'CORRECT' ? '#28a745' : outcome === 'INCORRECT' ? '#dc3545' : '#6c757d'),
     border: `2px solid ${outcome === 'CORRECT' ? '#28a745' : outcome === 'INCORRECT' ? '#dc3545' : '#6c757d'}`,
-    padding: '8px 12px',
-    borderRadius: '4px',
+    padding: '10px 16px',
+    borderRadius: '8px',
     cursor: settingOutcome ? 'not-allowed' : 'pointer',
     fontSize: '14px',
-    fontWeight: '500',
+    fontWeight: '600',
     transition: 'all 0.2s ease',
-    opacity: settingOutcome ? 0.6 : 1
+    opacity: settingOutcome ? 0.6 : 1,
+    minWidth: '120px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px'
   });
+
+  const confidenceBadge = getConfidenceBadge(result.confidence || 0);
 
   return (
     <div style={{ 
-      border: '1px solid #ddd', 
-      padding: '20px', 
-      borderRadius: '8px',
-      marginBottom: '20px',
-      backgroundColor: '#f8f9fa'
+      backgroundColor: 'white',
+      border: '1px solid #e9ecef',
+      borderRadius: '12px',
+      padding: '24px',
+      marginBottom: '24px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
     }}>
-      <h3>Classification Result</h3>
-      
-      {/* Cleaned Text */}
-      <div style={{ marginBottom: '15px' }}>
-        <strong>Cleaned Text:</strong>
+      {/* Header */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'flex-start',
+        marginBottom: '20px'
+      }}>
+        <h3 style={{ 
+          margin: 0, 
+          fontSize: '20px', 
+          fontWeight: '700',
+          color: '#2c3e50'
+        }}>
+          Classification Result
+        </h3>
+        
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <span style={{
+            backgroundColor: getSourceBadgeColor(result.source),
+            color: 'white',
+            padding: '4px 12px',
+            borderRadius: '20px',
+            fontSize: '12px',
+            fontWeight: '600'
+          }}>
+            {result.source}
+          </span>
+          
+          <span style={{
+            backgroundColor: confidenceBadge.color,
+            color: 'white',
+            padding: '4px 12px',
+            borderRadius: '20px',
+            fontSize: '12px',
+            fontWeight: '600'
+          }}>
+            {confidenceBadge.label}
+          </span>
+        </div>
+      </div>
+
+      {/* Question Text */}
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ 
+          fontSize: '14px', 
+          fontWeight: '600', 
+          color: '#6c757d',
+          display: 'block',
+          marginBottom: '8px'
+        }}>
+          Question Text:
+        </label>
         <div style={{ 
-          backgroundColor: 'white',
-          padding: '10px',
-          border: '1px solid #ddd',
-          borderRadius: '4px',
-          marginTop: '5px',
-          fontSize: '14px',
-          maxHeight: '100px',
+          backgroundColor: '#f8f9fa',
+          padding: '16px',
+          border: '1px solid #e9ecef',
+          borderRadius: '8px',
+          fontSize: '15px',
+          lineHeight: '1.5',
+          color: '#495057',
+          maxHeight: '120px',
           overflowY: 'auto'
         }}>
           {result.cleanedText}
         </div>
       </div>
 
-      {/* Classification Details */}
+      {/* Classification Grid */}
       <div style={{ 
         display: 'grid', 
-        gridTemplateColumns: '1fr 1fr', 
-        gap: '15px',
-        marginBottom: '15px'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+        gap: '16px',
+        marginBottom: '20px'
       }}>
-        <div>
-          <strong>Subject:</strong>
+        <div style={{
+          backgroundColor: '#f8f9fa',
+          padding: '16px',
+          borderRadius: '8px',
+          border: '1px solid #e9ecef'
+        }}>
+          <label style={{ 
+            fontSize: '12px', 
+            fontWeight: '600', 
+            color: '#6c757d',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            display: 'block',
+            marginBottom: '8px'
+          }}>
+            Subject
+          </label>
           <div style={{ 
             fontSize: '18px', 
-            color: '#007bff',
-            fontWeight: 'bold'
+            fontWeight: '700',
+            color: '#007bff'
           }}>
             {result.subject}
           </div>
         </div>
         
-        <div>
-          <strong>Topic:</strong>
-          <div style={{ fontSize: '16px' }}>
-            {result.topic}
-          </div>
-        </div>
-        
-        <div>
-          <strong>Subtopic:</strong>
-          <div style={{ fontSize: '14px', color: '#666' }}>
-            {result.subtopic || 'N/A'}
-          </div>
-        </div>
-        
-        <div>
-          <strong>Confidence:</strong>
+        <div style={{
+          backgroundColor: '#f8f9fa',
+          padding: '16px',
+          borderRadius: '8px',
+          border: '1px solid #e9ecef'
+        }}>
+          <label style={{ 
+            fontSize: '12px', 
+            fontWeight: '600', 
+            color: '#6c757d',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            display: 'block',
+            marginBottom: '8px'
+          }}>
+            Topic
+          </label>
           <div style={{ 
             fontSize: '16px', 
-            fontWeight: 'bold',
-            color: getConfidenceColor(result.confidence)
+            fontWeight: '600',
+            color: '#495057'
           }}>
-            {result.confidence.toFixed(1)}%
+            {result.topic || 'Not specified'}
           </div>
         </div>
-      </div>
-
-      {/* Status and Source */}
-      <div style={{ marginBottom: '15px' }}>
-        <span style={{
-          backgroundColor: getSourceBadgeColor(result.source),
-          color: 'white',
-          padding: '4px 8px',
-          borderRadius: '4px',
-          fontSize: '12px',
-          marginRight: '10px'
-        }}>
-          {result.source}
-        </span>
         
-        <span style={{
-          backgroundColor: result.needsLLM ? '#ffc107' : '#28a745',
-          color: result.needsLLM ? '#000' : 'white',
-          padding: '4px 8px',
-          borderRadius: '4px',
-          fontSize: '12px'
+        <div style={{
+          backgroundColor: '#f8f9fa',
+          padding: '16px',
+          borderRadius: '8px',
+          border: '1px solid #e9ecef'
         }}>
-          {result.status}
-        </span>
+          <label style={{ 
+            fontSize: '12px', 
+            fontWeight: '600', 
+            color: '#6c757d',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            display: 'block',
+            marginBottom: '8px'
+          }}>
+            Subtopic
+          </label>
+          <div style={{ 
+            fontSize: '14px', 
+            fontWeight: '500',
+            color: '#6c757d'
+          }}>
+            {result.subtopic || 'Not specified'}
+          </div>
+        </div>
+        
+        <div style={{
+          backgroundColor: '#f8f9fa',
+          padding: '16px',
+          borderRadius: '8px',
+          border: '1px solid #e9ecef'
+        }}>
+          <label style={{ 
+            fontSize: '12px', 
+            fontWeight: '600', 
+            color: '#6c757d',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            display: 'block',
+            marginBottom: '8px'
+          }}>
+            Confidence
+          </label>
+          <div style={{ 
+            fontSize: '20px', 
+            fontWeight: '700',
+            color: getConfidenceColor(result.confidence || 0)
+          }}>
+            {result.confidence ? result.confidence.toFixed(1) : '0.0'}%
+          </div>
+        </div>
       </div>
 
       {/* Matched Keywords */}
       {result.matchedKeywords && result.matchedKeywords.length > 0 && (
-        <div style={{ marginBottom: '20px' }}>
-          <strong>Matched Keywords:</strong>
-          <div style={{ marginTop: '5px' }}>
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ 
+            fontSize: '14px', 
+            fontWeight: '600', 
+            color: '#6c757d',
+            display: 'block',
+            marginBottom: '8px'
+          }}>
+            Matched Keywords:
+          </label>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
             {result.matchedKeywords.map((keyword, index) => (
               <span
                 key={index}
                 style={{
-                  backgroundColor: '#e9ecef',
-                  padding: '2px 6px',
-                  borderRadius: '3px',
+                  backgroundColor: '#e3f2fd',
+                  color: '#1976d2',
+                  padding: '4px 10px',
+                  borderRadius: '16px',
                   fontSize: '12px',
-                  marginRight: '5px',
-                  marginBottom: '5px',
-                  display: 'inline-block'
+                  fontWeight: '500',
+                  border: '1px solid #bbdefb'
                 }}
               >
                 {keyword}
@@ -187,20 +303,28 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
 
       {/* Mark Outcome Section */}
       <div style={{ 
-        marginBottom: '20px',
-        padding: '15px',
-        backgroundColor: '#fff',
+        marginBottom: '24px',
+        padding: '20px',
+        backgroundColor: '#f8f9fa',
         border: '1px solid #e9ecef',
-        borderRadius: '6px'
+        borderRadius: '10px'
       }}>
-        <strong style={{ display: 'block', marginBottom: '10px' }}>Mark Outcome:</strong>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <label style={{ 
+          fontSize: '16px', 
+          fontWeight: '600', 
+          color: '#495057',
+          display: 'block',
+          marginBottom: '12px'
+        }}>
+          Mark Your Performance:
+        </label>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <button
             onClick={() => handleOutcomeClick('CORRECT')}
             disabled={settingOutcome}
             style={getOutcomeButtonStyle('CORRECT', selectedOutcome === 'CORRECT')}
           >
-            ✅ Correct
+            <span>✅</span> Correct
           </button>
           
           <button
@@ -208,7 +332,7 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
             disabled={settingOutcome}
             style={getOutcomeButtonStyle('INCORRECT', selectedOutcome === 'INCORRECT')}
           >
-            ❌ Incorrect
+            <span>❌</span> Incorrect
           </button>
           
           <button
@@ -216,50 +340,69 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
             disabled={settingOutcome}
             style={getOutcomeButtonStyle('UNATTEMPTED', selectedOutcome === 'UNATTEMPTED')}
           >
-            ⏭️ Unattempted
+            <span>⏭️</span> Skipped
           </button>
         </div>
         
         {selectedOutcome && (
           <div style={{ 
-            marginTop: '10px', 
+            marginTop: '12px', 
             fontSize: '14px', 
             color: '#28a745',
-            fontWeight: '500'
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
           }}>
-            Marked as: {selectedOutcome.toLowerCase()}
+            <span>✓</span> Marked as: {selectedOutcome.toLowerCase()}
           </div>
         )}
       </div>
 
       {/* Action Buttons */}
-      <div style={{ display: 'flex', gap: '10px' }}>
-        <button
-          onClick={onConfirm}
-          style={{
-            backgroundColor: '#28a745',
-            color: 'white',
-            border: 'none',
-            padding: '8px 16px',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          ✓ Confirm
-        </button>
-        
+      <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
         <button
           onClick={onEdit}
           style={{
             backgroundColor: '#ffc107',
             color: '#000',
             border: 'none',
-            padding: '8px 16px',
-            borderRadius: '4px',
-            cursor: 'pointer'
+            padding: '12px 20px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            transition: 'all 0.2s ease'
           }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e0a800'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ffc107'}
         >
-          ✏️ Edit
+          <span>✏️</span> Edit Classification
+        </button>
+        
+        <button
+          onClick={onConfirm}
+          style={{
+            backgroundColor: '#28a745',
+            color: 'white',
+            border: 'none',
+            padding: '12px 20px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#218838'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#28a745'}
+        >
+          <span>✓</span> Confirm & Continue
         </button>
       </div>
     </div>
