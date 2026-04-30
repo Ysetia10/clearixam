@@ -15,6 +15,8 @@ const AddMock = lazy(() => import('./pages/AddMock').then(module => ({ default: 
 const SubjectAnalytics = lazy(() => import('./pages/SubjectAnalytics').then(module => ({ default: module.SubjectAnalytics })));
 const AccountSettings = lazy(() => import('./pages/AccountSettings').then(module => ({ default: module.AccountSettings })));
 const PerformanceHistory = lazy(() => import('./pages/PerformanceHistory').then(module => ({ default: module.PerformanceHistory })));
+const MCQClassification = lazy(() => import('./pages/MCQClassification'));
+const TopicPerformance = lazy(() => import('./pages/TopicPerformance'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -101,6 +103,26 @@ function AppContent() {
                 <ProtectedRoute>
                   <Suspense fallback={<PageLoader />}>
                     <AccountSettings />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/mcq-classification"
+              element={
+                <ProtectedRoute>
+                  <Suspense fallback={<PageLoader />}>
+                    <MCQClassification />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/topic-performance"
+              element={
+                <ProtectedRoute>
+                  <Suspense fallback={<PageLoader />}>
+                    <TopicPerformance />
                   </Suspense>
                 </ProtectedRoute>
               }

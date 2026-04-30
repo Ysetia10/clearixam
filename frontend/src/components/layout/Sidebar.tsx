@@ -19,6 +19,8 @@ export const Sidebar = () => {
   const menuItems = [
     { text: 'Dashboard', path: '/dashboard', icon: '📊' },
     { text: 'Subject Analytics', path: '/subject-analytics', icon: '📈' },
+    { text: 'MCQ Classification', path: '/mcq-classification', icon: '🤖' },
+    { text: 'Topic Performance', path: '/topic-performance', icon: '🎯' },
     { text: 'Add Mock', path: '/add-mock', icon: '➕' },
     { text: 'Mock History', path: '/performance-history', icon: '📋' },
     { text: 'Account', path: '/account', icon: '⚙️' },
