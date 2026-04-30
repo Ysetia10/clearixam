@@ -2,6 +2,7 @@ package com.clearixam.controller
 
 import com.clearixam.analytics.AnalyticsService
 import com.clearixam.analytics.SubjectAnalyticsService
+import com.clearixam.analytics.AdvancedAnalyticsService
 import com.clearixam.dto.response.*
 import com.clearixam.service.ExamReadinessService
 import com.clearixam.service.AuthService
@@ -19,6 +20,7 @@ import java.util.UUID
 class AnalyticsController(
     private val analyticsService: AnalyticsService,
     private val subjectAnalyticsService: SubjectAnalyticsService,
+    private val advancedAnalyticsService: AdvancedAnalyticsService,
     private val examReadinessService: ExamReadinessService,
     private val authService: AuthService
 ) {
@@ -71,6 +73,33 @@ class AnalyticsController(
     ): ResponseEntity<ApiResponse<AttemptAccuracyInsightDTO>> {
         val userEmail = authentication.name
         return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getAttemptAccuracyInsight(userEmail, examId)))
+    }
+
+    @GetMapping("/improvement")
+    fun getImprovement(
+        @RequestParam(required = false) examId: UUID?,
+        authentication: Authentication
+    ): ResponseEntity<ApiResponse<ImprovementDTO>> {
+        val userEmail = authentication.name
+        return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getImprovement(userEmail, examId)))
+    }
+
+    @GetMapping("/adaptive-strength")
+    fun getAdaptiveStrength(
+        @RequestParam(required = false) examId: UUID?,
+        authentication: Authentication
+    ): ResponseEntity<ApiResponse<AdaptiveStrengthResponse>> {
+        val userEmail = authentication.name
+        return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getAdaptiveStrength(userEmail, examId)))
+    }
+
+    @GetMapping("/insights")
+    fun getInsights(
+        @RequestParam(required = false) examId: UUID?,
+        authentication: Authentication
+    ): ResponseEntity<ApiResponse<InsightsResponse>> {
+        val userEmail = authentication.name
+        return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getInsights(userEmail, examId)))
     }
 
     @GetMapping("/readiness")
