@@ -3,7 +3,15 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
-import { analyticsApi, SubjectNeglectDTO, AttemptAccuracyInsightDTO } from '../api/analytics';
+import { 
+  analyticsApi, 
+  SubjectNeglectDTO, 
+  AttemptAccuracyInsightDTO, 
+  ImprovementDTO, 
+  AdaptiveStrengthResponse,
+  InsightsResponse,
+  InsightType
+} from '../api/analytics';
 import { mocksApi } from '../api/mocks';
 import { examsApi, Exam } from '../api/exams';
 import { reportsApi } from '../api/reports';
@@ -77,6 +85,27 @@ export const Dashboard = () => {
     staleTime: 60000,
   });
 
+  const { data: improvement } = useQuery({
+    queryKey: ['improvement', selectedExamId],
+    queryFn: () => analyticsApi.getImprovement(selectedExamId || undefined),
+    enabled: !!selectedExamId,
+    staleTime: 60000,
+  });
+
+  const { data: adaptiveStrength } = useQuery({
+    queryKey: ['adaptive-strength', selectedExamId],
+    queryFn: () => analyticsApi.getAdaptiveStrength(selectedExamId || undefined),
+    enabled: !!selectedExamId,
+    staleTime: 60000,
+  });
+
+  const { data: insightsData } = useQuery({
+    queryKey: ['insights', selectedExamId],
+    queryFn: () => analyticsApi.getInsights(selectedExamId || undefined),
+    enabled: !!selectedExamId,
+    staleTime: 60000,
+  });
+
   const neglectedSubjects = useMemo(() =>
     neglectData?.subjects.filter(s => s.status !== 'ACTIVE') ?? [],
   [neglectData]);
@@ -103,7 +132,7 @@ export const Dashboard = () => {
     }));
   }, [trend]);
 
-  const insights = useMemo(() => {
+  const legacyInsights = useMemo(() => {
     if (!overview) return [];
     const list = [];
     if (overview.performanceChange > 3) {
@@ -159,21 +188,21 @@ export const Dashboard = () => {
       </div>
 
       {/* INSIGHT BANNER */}
-      {insights.length > 0 && (
-        <div className={`insight-banner ${insights[0].type === 'success' ? 'insight-banner-green' : 'insight-banner-red'}`} style={{ marginBottom: '24px' }}>
+      {legacyInsights.length > 0 && (
+        <div className={`insight-banner ${legacyInsights[0].type === 'success' ? 'insight-banner-green' : 'insight-banner-red'}`} style={{ marginBottom: '24px' }}>
           <div style={{
             width: '36px', height: '36px', borderRadius: '50%',
-            background: insights[0].type === 'success' ? 'rgba(34,211,160,0.15)' : 'rgba(244,63,94,0.15)',
+            background: legacyInsights[0].type === 'success' ? 'rgba(34,211,160,0.15)' : 'rgba(244,63,94,0.15)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px',
           }}>
-            {insights[0].type === 'success' ? '✓' : '⚠'}
+            {legacyInsights[0].type === 'success' ? '✓' : '⚠'}
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '14px', color: insights[0].type === 'success' ? 'var(--green)' : 'var(--red)', fontWeight: 500 }}>
-              {insights[0].message}
+            <div style={{ fontSize: '14px', color: legacyInsights[0].type === 'success' ? 'var(--green)' : 'var(--red)', fontWeight: 500 }}>
+              {legacyInsights[0].message}
             </div>
-            {insights[1] && (
-              <div style={{ fontSize: '12px', color: 'var(--text3)', marginTop: '2px' }}>{insights[1].message}</div>
+            {legacyInsights[1] && (
+              <div style={{ fontSize: '12px', color: 'var(--text3)', marginTop: '2px' }}>{legacyInsights[1].message}</div>
             )}
           </div>
         </div>
@@ -227,19 +256,10 @@ export const Dashboard = () => {
           <span className="badge badge-amber">{overview?.consistencyScore || 'Insufficient Data'}</span>
         </div>
 
-        {/* Recent Trend */}
-        <div className="card">
-          <div className="stat-label">Recent Trend</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{
-              fontFamily: 'Syne, sans-serif', fontSize: '28px', fontWeight: 700,
-              color: overview && overview.performanceChange >= 0 ? 'var(--green)' : 'var(--red)',
-            }}>
-              {overview && overview.performanceChange >= 0 ? '+' : ''}{overview?.performanceChange?.toFixed(2) || '0.00'}
-            </span>
-          </div>
-          <div style={{ fontSize: '11px', color: 'var(--text3)', marginTop: '4px' }}>vs previous 5 mocks</div>
-        </div>
+        {/* Improvement Trend */}
+        {improvement && (
+          <ImprovementCard improvement={improvement} />
+        )}
 
         {/* Attempt vs Accuracy Insight */}
         {attemptInsight && (
@@ -247,9 +267,19 @@ export const Dashboard = () => {
         )}
       </div>
 
+      {/* INSIGHTS ENGINE */}
+      {insightsData && insightsData.insights.length > 0 && (
+        <InsightsCard insights={insightsData} />
+      )}
+
       {/* NEGLECTED SUBJECTS */}
       {neglectedSubjects.length > 0 && (
         <NeglectCard subjects={neglectedSubjects} windowSize={neglectData?.windowSize ?? 5} />
+      )}
+
+      {/* ADAPTIVE SUBJECT STRENGTH */}
+      {adaptiveStrength && adaptiveStrength.subjects.length > 0 && (
+        <AdaptiveStrengthCard adaptiveStrength={adaptiveStrength} />
       )}
 
       {/* GOAL CARD */}
@@ -427,6 +457,159 @@ export const Dashboard = () => {
     </DashboardLayout>
   );
 };
+
+// ── Improvement Card ─────────────────────────────────────────────────────────
+function ImprovementCard({ improvement }: { improvement: ImprovementDTO }) {
+  const trendBadge =
+    improvement.trend === 'IMPROVING' ? 'badge-green' :
+    improvement.trend === 'DECLINING' ? 'badge-red' : 'badge-amber';
+
+  const trendLabel =
+    improvement.trend === 'IMPROVING' ? '↑ Improving' :
+    improvement.trend === 'DECLINING' ? '↓ Declining' : '→ Stable';
+
+  const trendColor =
+    improvement.trend === 'IMPROVING' ? 'var(--green)' :
+    improvement.trend === 'DECLINING' ? 'var(--red)' : 'var(--text2)';
+
+  return (
+    <div className="card">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <div className="stat-label" style={{ marginBottom: 0 }}>📈 Performance Trend</div>
+        <span className={`badge ${trendBadge}`}>{trendLabel}</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+        <span style={{
+          fontFamily: 'Syne, sans-serif', fontSize: '28px', fontWeight: 700, color: trendColor
+        }}>
+          {improvement.improvementRate >= 0 ? '+' : ''}{improvement.improvementRate.toFixed(1)}
+        </span>
+        <span style={{ fontSize: '12px', color: 'var(--text3)' }}>points</span>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        <div style={{ background: 'var(--surface2)', borderRadius: '8px', padding: '8px 10px' }}>
+          <div style={{ fontSize: '10px', color: 'var(--text3)' }}>Last 5</div>
+          <div style={{ fontSize: '16px', fontWeight: 600 }}>{improvement.last5Avg.toFixed(1)}</div>
+        </div>
+        <div style={{ background: 'var(--surface2)', borderRadius: '8px', padding: '8px 10px' }}>
+          <div style={{ fontSize: '10px', color: 'var(--text3)' }}>Previous 5</div>
+          <div style={{ fontSize: '16px', fontWeight: 600 }}>{improvement.prev5Avg.toFixed(1)}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Insights Engine Card ─────────────────────────────────────────────────────
+function InsightsCard({ insights }: { insights: InsightsResponse }) {
+  const getInsightIcon = (type: InsightType) => {
+    switch (type) {
+      case 'WARNING': return '⚠️';
+      case 'SUCCESS': return '✅';
+      case 'INFO': return 'ℹ️';
+    }
+  };
+
+  const getInsightColor = (type: InsightType) => {
+    switch (type) {
+      case 'WARNING': return 'var(--red)';
+      case 'SUCCESS': return 'var(--green)';
+      case 'INFO': return 'var(--accent2)';
+    }
+  };
+
+  return (
+    <div className="card" style={{ marginBottom: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+        <span style={{ fontSize: '16px' }}>🧠</span>
+        <h3 className="section-title">Insights</h3>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {insights.insights.map((insight, i) => (
+          <div key={i} style={{ 
+            display: 'flex', 
+            alignItems: 'flex-start', 
+            gap: '10px', 
+            padding: '12px', 
+            background: 'var(--surface2)', 
+            borderRadius: '10px',
+            borderLeft: `3px solid ${getInsightColor(insight.type)}`
+          }}>
+            <span style={{ fontSize: '16px', marginTop: '1px' }}>{getInsightIcon(insight.type)}</span>
+            <span style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text)' }}>
+              {insight.message}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Adaptive Strength Card ───────────────────────────────────────────────────
+function AdaptiveStrengthCard({ adaptiveStrength }: { adaptiveStrength: AdaptiveStrengthResponse }) {
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'WEAK': return 'badge-red';
+      case 'BELOW_AVERAGE': return 'badge-amber';
+      case 'AVERAGE': return 'badge-purple';
+      case 'STRONG': return 'badge-green';
+      default: return 'badge-purple';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'WEAK': return 'Weak';
+      case 'BELOW_AVERAGE': return 'Below Avg';
+      case 'AVERAGE': return 'Average';
+      case 'STRONG': return 'Strong';
+      default: return 'Average';
+    }
+  };
+
+  return (
+    <div className="card" style={{ marginBottom: '24px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <h3 className="section-title">Subject Strength Analysis</h3>
+        <span style={{ fontSize: '11px', color: 'var(--text3)' }}>
+          vs {adaptiveStrength.overallAccuracy.toFixed(1)}% avg
+        </span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {adaptiveStrength.subjects.slice(0, 6).map(subject => (
+          <div key={subject.subjectName} style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            padding: '10px 12px', 
+            background: 'var(--surface2)', 
+            borderRadius: '8px' 
+          }}>
+            <div>
+              <span style={{ fontSize: '13px', fontWeight: 500 }}>{subject.subjectName}</span>
+              <div style={{ fontSize: '11px', color: 'var(--text3)' }}>
+                {subject.accuracy.toFixed(1)}% accuracy
+              </div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ 
+                fontSize: '12px', 
+                color: subject.relativeScore >= 0 ? 'var(--green)' : 'var(--red)',
+                fontWeight: 600
+              }}>
+                {subject.relativeScore >= 0 ? '+' : ''}{subject.relativeScore.toFixed(1)}%
+              </span>
+              <span className={`badge ${getStatusBadge(subject.status)}`}>
+                {getStatusLabel(subject.status)}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 // ── Attempt vs Accuracy Card ──────────────────────────────────────────────────
 function AttemptAccuracyCard({ insight }: { insight: AttemptAccuracyInsightDTO }) {
