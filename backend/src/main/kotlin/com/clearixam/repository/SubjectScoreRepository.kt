@@ -14,7 +14,7 @@ interface SubjectScoreRepository : JpaRepository<SubjectScore, UUID> {
 
     @Query("""
         SELECT ss FROM SubjectScore ss
-        JOIN ss.mockTest mt
+        JOIN FETCH ss.mockTest mt
         WHERE mt.user.id = :userId
         AND mt.exam.id = :examId
         ORDER BY mt.testDate DESC

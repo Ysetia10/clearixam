@@ -1,9 +1,8 @@
 package com.clearixam.controller
 
 import com.clearixam.analytics.AnalyticsService
-import com.clearixam.dto.response.AnalyticsOverviewResponse
-import com.clearixam.dto.response.AnalyticsTrendResponse
-import com.clearixam.dto.response.ExamReadinessResponse
+import com.clearixam.analytics.SubjectAnalyticsService
+import com.clearixam.dto.response.*
 import com.clearixam.service.ExamReadinessService
 import com.clearixam.service.AuthService
 import org.slf4j.LoggerFactory
@@ -19,6 +18,7 @@ import java.util.UUID
 @RequestMapping("/api/analytics")
 class AnalyticsController(
     private val analyticsService: AnalyticsService,
+    private val subjectAnalyticsService: SubjectAnalyticsService,
     private val examReadinessService: ExamReadinessService,
     private val authService: AuthService
 ) {
@@ -29,33 +29,55 @@ class AnalyticsController(
     fun getOverview(
         @RequestParam(required = false) examId: UUID?,
         authentication: Authentication
-    ): ResponseEntity<AnalyticsOverviewResponse> {
+    ): ResponseEntity<ApiResponse<AnalyticsOverviewResponse>> {
         val userEmail = authentication.name
         logger.info("Fetching analytics overview for user: $userEmail, examId: $examId")
-        return ResponseEntity.ok(analyticsService.getOverview(userEmail, examId))
+        return ResponseEntity.ok(ApiResponse.ok(analyticsService.getOverview(userEmail, examId)))
     }
 
     @GetMapping("/trend")
     fun getTrend(
         @RequestParam(required = false) examId: UUID?,
         authentication: Authentication
-    ): ResponseEntity<AnalyticsTrendResponse> {
+    ): ResponseEntity<ApiResponse<AnalyticsTrendResponse>> {
         val userEmail = authentication.name
         logger.info("Fetching analytics trend for user: $userEmail, examId: $examId")
-        return ResponseEntity.ok(analyticsService.getTrend(userEmail, examId))
+        return ResponseEntity.ok(ApiResponse.ok(analyticsService.getTrend(userEmail, examId)))
     }
 
     @GetMapping("/subjects")
-    fun getSubjectAnalytics(authentication: Authentication): ResponseEntity<com.clearixam.dto.response.SubjectAnalyticsResponse> {
+    fun getSubjectAnalytics(
+        @RequestParam(required = false) examId: UUID?,
+        authentication: Authentication
+    ): ResponseEntity<ApiResponse<SubjectAnalyticsListResponse>> {
         val userEmail = authentication.name
-        return ResponseEntity.ok(analyticsService.getSubjectAnalytics(userEmail))
+        return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getSubjectAnalytics(userEmail, examId)))
+    }
+
+    @GetMapping("/subjects/neglect")
+    fun getSubjectNeglect(
+        @RequestParam(required = false) examId: UUID?,
+        @RequestParam(required = false, defaultValue = "5") windowSize: Int,
+        authentication: Authentication
+    ): ResponseEntity<ApiResponse<SubjectNeglectResponse>> {
+        val userEmail = authentication.name
+        return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getSubjectNeglect(userEmail, examId, windowSize)))
+    }
+
+    @GetMapping("/attempt-accuracy")
+    fun getAttemptAccuracyInsight(
+        @RequestParam(required = false) examId: UUID?,
+        authentication: Authentication
+    ): ResponseEntity<ApiResponse<AttemptAccuracyInsightDTO>> {
+        val userEmail = authentication.name
+        return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getAttemptAccuracyInsight(userEmail, examId)))
     }
 
     @GetMapping("/readiness")
-    fun getExamReadiness(authentication: Authentication): ResponseEntity<ExamReadinessResponse> {
+    fun getExamReadiness(authentication: Authentication): ResponseEntity<ApiResponse<ExamReadinessResponse>> {
         val userEmail = authentication.name
         val user = authService.getUserByEmail(userEmail)
         logger.info("Calculating exam readiness for user: $userEmail")
-        return ResponseEntity.ok(examReadinessService.calculateReadinessScore(user.id!!))
+        return ResponseEntity.ok(ApiResponse.ok(examReadinessService.calculateReadinessScore(user.id!!)))
     }
 }
