@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
-import { analyticsApi } from '../api/analytics';
+import { analyticsApi, SubjectNeglectDTO, AttemptAccuracyInsightDTO } from '../api/analytics';
 import { mocksApi } from '../api/mocks';
 import { examsApi, Exam } from '../api/exams';
 import { reportsApi } from '../api/reports';
@@ -62,6 +62,24 @@ export const Dashboard = () => {
     queryFn: () => mocksApi.list(0, 10),
     staleTime: 30000,
   });
+
+  const { data: neglectData } = useQuery({
+    queryKey: ['subject-neglect', selectedExamId],
+    queryFn: () => analyticsApi.getSubjectNeglect(selectedExamId || undefined),
+    enabled: !!selectedExamId,
+    staleTime: 60000,
+  });
+
+  const { data: attemptInsight } = useQuery({
+    queryKey: ['attempt-accuracy', selectedExamId],
+    queryFn: () => analyticsApi.getAttemptAccuracyInsight(selectedExamId || undefined),
+    enabled: !!selectedExamId,
+    staleTime: 60000,
+  });
+
+  const neglectedSubjects = useMemo(() =>
+    neglectData?.subjects.filter(s => s.status !== 'ACTIVE') ?? [],
+  [neglectData]);
 
   const { data: mockDetail } = useQuery({
     queryKey: ['mock-detail', selectedMockId],
@@ -201,18 +219,15 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* MID ROW */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+      {/* INSIGHT CARDS ROW */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+        {/* Performance Stability */}
         <div className="card">
           <div className="stat-label">Performance Stability</div>
           <span className="badge badge-amber">{overview?.consistencyScore || 'Insufficient Data'}</span>
         </div>
-        <div className="card">
-          <div className="stat-label">Strategy Note</div>
-          <div style={{ fontSize: '13px', color: 'var(--text2)', marginTop: '4px' }}>
-            {overview?.strategyNote || 'Complete more mocks for recommendations'}
-          </div>
-        </div>
+
+        {/* Recent Trend */}
         <div className="card">
           <div className="stat-label">Recent Trend</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -225,7 +240,17 @@ export const Dashboard = () => {
           </div>
           <div style={{ fontSize: '11px', color: 'var(--text3)', marginTop: '4px' }}>vs previous 5 mocks</div>
         </div>
+
+        {/* Attempt vs Accuracy Insight */}
+        {attemptInsight && (
+          <AttemptAccuracyCard insight={attemptInsight} />
+        )}
       </div>
+
+      {/* NEGLECTED SUBJECTS */}
+      {neglectedSubjects.length > 0 && (
+        <NeglectCard subjects={neglectedSubjects} windowSize={neglectData?.windowSize ?? 5} />
+      )}
 
       {/* GOAL CARD */}
       {!overview?.goalProgress ? (
@@ -402,3 +427,70 @@ export const Dashboard = () => {
     </DashboardLayout>
   );
 };
+
+// ── Attempt vs Accuracy Card ──────────────────────────────────────────────────
+function AttemptAccuracyCard({ insight }: { insight: AttemptAccuracyInsightDTO }) {
+  const trendBadge =
+    insight.trend === 'NEGATIVE' ? 'badge-red' :
+    insight.trend === 'POSITIVE' ? 'badge-green' : 'badge-amber';
+
+  const trendLabel =
+    insight.trend === 'NEGATIVE' ? '↓ Negative' :
+    insight.trend === 'POSITIVE' ? '↑ Positive' : '→ Neutral';
+
+  return (
+    <div className="card">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <div className="stat-label" style={{ marginBottom: 0 }}>Attempt Strategy</div>
+        <span className={`badge ${trendBadge}`}>{trendLabel}</span>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+        <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '10px 12px' }}>
+          <div style={{ fontSize: '10px', color: 'var(--text3)', marginBottom: '4px' }}>High attempt accuracy</div>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: insight.highAttemptAccuracy >= insight.lowAttemptAccuracy ? 'var(--green)' : 'var(--red)' }}>
+            {insight.highAttemptAccuracy.toFixed(1)}%
+          </div>
+          <div style={{ fontSize: '10px', color: 'var(--text3)' }}>avg {insight.highAttemptAvgRate.toFixed(0)}% attempted</div>
+        </div>
+        <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '10px 12px' }}>
+          <div style={{ fontSize: '10px', color: 'var(--text3)', marginBottom: '4px' }}>Low attempt accuracy</div>
+          <div style={{ fontSize: '18px', fontWeight: 700, color: insight.lowAttemptAccuracy >= insight.highAttemptAccuracy ? 'var(--green)' : 'var(--red)' }}>
+            {insight.lowAttemptAccuracy.toFixed(1)}%
+          </div>
+          <div style={{ fontSize: '10px', color: 'var(--text3)' }}>avg {insight.lowAttemptAvgRate.toFixed(0)}% attempted</div>
+        </div>
+      </div>
+      <div style={{ fontSize: '12px', color: 'var(--text2)', lineHeight: 1.5 }}>{insight.insight}</div>
+    </div>
+  );
+}
+
+// ── Neglect Card ──────────────────────────────────────────────────────────────
+function NeglectCard({ subjects, windowSize }: { subjects: SubjectNeglectDTO[]; windowSize: number }) {
+  return (
+    <div className="card" style={{ marginBottom: '24px', borderColor: 'rgba(244,63,94,0.2)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+        <span style={{ fontSize: '16px' }}>⚠️</span>
+        <h3 className="section-title">Neglected Subjects</h3>
+        <span style={{ fontSize: '11px', color: 'var(--text3)', marginLeft: 'auto' }}>last {windowSize} mocks</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {subjects.map(s => (
+          <div key={s.subjectName} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', background: 'var(--surface2)', borderRadius: '8px' }}>
+            <span style={{ fontSize: '13px', fontWeight: 500 }}>{s.subjectName}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text3)' }}>
+                {s.status === 'NEGLECTED'
+                  ? `Not attempted in last ${windowSize} mocks`
+                  : `Only ${s.appearedInLastN}x in last ${windowSize} mocks`}
+              </span>
+              <span className={s.status === 'NEGLECTED' ? 'badge badge-red' : 'badge badge-amber'}>
+                {s.status === 'NEGLECTED' ? 'Neglected' : 'Partial'}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
