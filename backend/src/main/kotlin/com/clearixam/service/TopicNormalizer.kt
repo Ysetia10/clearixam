@@ -102,18 +102,6 @@ class TopicNormalizer {
     }
     
     /**
-     * Validate and normalize subtopic
-     */
-    fun normalizeSubtopic(subtopic: String?): String? {
-        if (subtopic.isNullOrBlank()) {
-            return null
-        }
-        
-        val cleaned = subtopic.trim()
-        return if (cleaned.length < 2) null else cleaned
-    }
-    
-    /**
      * Get all standard topic names for a subject
      */
     fun getStandardTopicsForSubject(subject: String): List<String> {

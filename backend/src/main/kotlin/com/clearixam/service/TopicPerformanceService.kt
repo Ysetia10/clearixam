@@ -29,17 +29,16 @@ class TopicPerformanceService(
                 return emptyList()
             }
             
-            // Group by subject, topic, subtopic
+            // Group by subject, topic
             val grouped = classifications.groupBy { classification ->
-                Triple(
+                Pair(
                     classification.subject,
-                    classification.topic,
-                    classification.subtopic ?: ""
+                    classification.topic
                 )
             }
             
             val results = grouped.map { (key, classificationList) ->
-                val (subject, topic, subtopic) = key
+                val (subject, topic) = key
                 
                 // Count outcomes
                 val correct = classificationList.count { it.outcomeStatus == OutcomeStatus.CORRECT }
@@ -59,7 +58,6 @@ class TopicPerformanceService(
                 TopicPerformanceDTO(
                     subject = subject,
                     topic = topic,
-                    subtopic = if (subtopic.isBlank()) null else subtopic,
                     correct = correct,
                     incorrect = incorrect,
                     unattempted = unattempted,

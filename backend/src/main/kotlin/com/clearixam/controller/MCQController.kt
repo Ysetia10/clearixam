@@ -41,9 +41,9 @@ class MCQController(
             
             // Check if processing failed
             if (result.subject == "ERROR") {
-                logger.error("MCQ processing failed: ${result.subtopic}")
+                logger.error("MCQ processing failed")
                 return ResponseEntity.ok(
-                    ApiResponse.error<MCQProcessingResponse>("Processing failed: ${result.subtopic}")
+                    ApiResponse.error<MCQProcessingResponse>("Processing failed")
                 )
             }
             
@@ -51,7 +51,6 @@ class MCQController(
             val response = MCQProcessingResponse(
                 subject = result.subject,
                 topic = result.topic,
-                subtopic = result.subtopic,
                 confidence = result.confidence,
                 matchedKeywords = result.matchedKeywords,
                 cleanedText = result.cleanedText,
@@ -93,9 +92,9 @@ class MCQController(
             
             // Check if processing failed
             if (result.subject == "ERROR") {
-                logger.error("Text processing failed: ${result.subtopic}")
+                logger.error("Text processing failed")
                 return ResponseEntity.ok(
-                    ApiResponse.error<MCQProcessingResponse>("Processing failed: ${result.subtopic}")
+                    ApiResponse.error<MCQProcessingResponse>("Processing failed")
                 )
             }
             
@@ -103,7 +102,6 @@ class MCQController(
             val response = MCQProcessingResponse(
                 subject = result.subject,
                 topic = result.topic,
-                subtopic = result.subtopic,
                 confidence = result.confidence,
                 matchedKeywords = result.matchedKeywords,
                 cleanedText = result.cleanedText,
@@ -199,8 +197,7 @@ class MCQController(
             val corrected = mcqLearningService.correctClassification(
                 id = request.id,
                 correctedSubject = request.subject,
-                correctedTopic = request.topic,
-                correctedSubtopic = request.subtopic
+                correctedTopic = request.topic
             )
             
             if (corrected == null) {

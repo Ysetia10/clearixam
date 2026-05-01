@@ -41,7 +41,6 @@ class MCQLearningService(
         questionText: String,
         subject: String,
         topic: String,
-        subtopic: String?,
         source: com.clearixam.entity.ClassificationSource,
         confidence: Double,
         matchedKeywords: List<String>
@@ -60,7 +59,6 @@ class MCQLearningService(
         // Normalize subject and topic
         val normalizedSubject = topicNormalizer.normalizeSubject(subject)
         val normalizedTopic = topicNormalizer.normalizeTopic(topic)
-        val normalizedSubtopic = topicNormalizer.normalizeSubtopic(subtopic)
         
         val keywordsJson = if (matchedKeywords.isNotEmpty()) {
             objectMapper.writeValueAsString(matchedKeywords)
@@ -70,7 +68,6 @@ class MCQLearningService(
             questionText = cleanedText,
             subject = normalizedSubject,
             topic = normalizedTopic,
-            subtopic = normalizedSubtopic,
             source = source,
             confidence = confidence,
             matchedKeywords = keywordsJson,
@@ -89,8 +86,7 @@ class MCQLearningService(
     fun correctClassification(
         id: Long,
         correctedSubject: String,
-        correctedTopic: String,
-        correctedSubtopic: String?
+        correctedTopic: String
     ): MCQClassification? {
         
         val classification = mcqClassificationRepository.findById(id).orElse(null)
@@ -102,14 +98,12 @@ class MCQLearningService(
         // Normalize corrected values
         val normalizedSubject = topicNormalizer.normalizeSubject(correctedSubject)
         val normalizedTopic = topicNormalizer.normalizeTopic(correctedTopic)
-        val normalizedSubtopic = topicNormalizer.normalizeSubtopic(correctedSubtopic)
         
         // Update with correction
         val corrected = classification.copy(
             userCorrected = true,
             correctedSubject = normalizedSubject,
             correctedTopic = normalizedTopic,
-            correctedSubtopic = normalizedSubtopic,
             correctedAt = LocalDateTime.now()
         )
         

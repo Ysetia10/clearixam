@@ -119,7 +119,6 @@ class ConfidenceEngine {
     fun createConfidentResult(
         subject: String,
         topic: String,
-        subtopic: String,
         confidence: Double,
         matchedKeywords: List<String>,
         cleanedText: String,
@@ -131,7 +130,6 @@ class ConfidenceEngine {
         val baseResult = ClassificationResult(
             subject = subject,
             topic = topic,
-            subtopic = subtopic,
             confidence = confidence,
             matchedKeywords = matchedKeywords,
             cleanedText = cleanedText,
@@ -152,7 +150,6 @@ class ConfidenceEngine {
         return ClassificationResult(
             subject = "UNKNOWN",
             topic = "UNKNOWN",
-            subtopic = reason,
             confidence = 0.0,
             matchedKeywords = emptyList(),
             cleanedText = cleanedText,
@@ -171,7 +168,6 @@ class ConfidenceEngine {
         return ClassificationResult(
             subject = "ERROR",
             topic = "PROCESSING_FAILED",
-            subtopic = errorMessage,
             confidence = 0.0,
             matchedKeywords = emptyList(),
             cleanedText = cleanedText,
@@ -194,7 +190,6 @@ class ConfidenceEngine {
         return ClassificationResult(
             subject = llmResult.subject,
             topic = llmResult.topic,
-            subtopic = llmResult.subtopic,
             confidence = originalConfidence, // LLM results get high confidence
             matchedKeywords = llmResult.keywords,
             cleanedText = cleanedText,

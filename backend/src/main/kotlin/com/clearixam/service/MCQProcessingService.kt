@@ -82,7 +82,6 @@ class MCQProcessingService(
                 questionText = cleanedText,
                 subject = finalResult.subject,
                 topic = finalResult.topic,
-                subtopic = finalResult.subtopic,
                 source = when (finalResult.source) {
                     ClassificationSource.RULE -> com.clearixam.entity.ClassificationSource.RULE
                     ClassificationSource.LLM -> com.clearixam.entity.ClassificationSource.LLM
@@ -145,7 +144,6 @@ class MCQProcessingService(
                 questionText = cleanedText,
                 subject = finalResult.subject,
                 topic = finalResult.topic,
-                subtopic = finalResult.subtopic,
                 source = when (finalResult.source) {
                     ClassificationSource.RULE -> com.clearixam.entity.ClassificationSource.RULE
                     ClassificationSource.LLM -> com.clearixam.entity.ClassificationSource.LLM

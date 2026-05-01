@@ -80,7 +80,6 @@ class LLMService(
             // Normalize subject and topic
             val normalizedSubject = topicNormalizer.normalizeSubject(rawResult.subject)
             val normalizedTopic = topicNormalizer.normalizeTopic(rawResult.topic)
-            val normalizedSubtopic = topicNormalizer.normalizeSubtopic(rawResult.subtopic)
             
             // Validate subject is in allowed list
             val allowedSubject = AllowedSubject.fromString(normalizedSubject)
@@ -106,7 +105,6 @@ class LLMService(
             return LLMResult(
                 subject = allowedSubject.displayName,
                 topic = normalizedTopic,
-                subtopic = normalizedSubtopic ?: "",
                 difficulty = validDifficulty,
                 keywords = rawResult.keywords.filter { it.isNotBlank() }
             )
@@ -122,19 +120,19 @@ class LLMService(
      */
     private fun buildClassificationPrompt(cleanedText: String): String {
         return """
-You are an exam classification engine for SSC, UPSC, Banking exams.
-Classify the following MCQ into structured JSON.
-Return ONLY JSON.
+You are an MCQ classifier for SSC exams. Classify the question below into JSON.
+Return ONLY valid JSON, no markdown, no explanation.
 
-Fields:
-* subject (Quantitative Aptitude, Reasoning, English, General Knowledge, Polity, Economy)
-* topic
-* subtopic  
-* difficulty (Easy, Medium, Hard)
-* keywords (3-5 words)
+Allowed subjects (use EXACTLY one of these):
+- "English" (grammar, vocabulary, antonym, synonym, comprehension, fill in the blank, error detection)
+- "Reasoning" (logical, verbal, non-verbal, series, coding, analogy, puzzle)
+- "Quantitative Aptitude" (maths, arithmetic, algebra, geometry, data interpretation)
+- "General Awareness" (history, geography, polity, economy, science, current affairs)
 
-MCQ:
-$cleanedText
+JSON format:
+{"subject":"...","topic":"...","difficulty":"Easy|Medium|Hard","keywords":["w1","w2","w3"]}
+
+MCQ: $cleanedText
         """.trimIndent()
     }
     
@@ -215,7 +213,6 @@ $cleanedText
             LLMResult(
                 subject = classificationJson.get("subject")?.asText() ?: "Unknown",
                 topic = classificationJson.get("topic")?.asText() ?: "Unknown",
-                subtopic = classificationJson.get("subtopic")?.asText() ?: "",
                 difficulty = classificationJson.get("difficulty")?.asText() ?: "Medium",
                 keywords = parseKeywords(classificationJson.get("keywords"))
             )
