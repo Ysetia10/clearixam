@@ -4,8 +4,6 @@ import com.clearixam.analytics.AnalyticsService
 import com.clearixam.analytics.SubjectAnalyticsService
 import com.clearixam.analytics.AdvancedAnalyticsService
 import com.clearixam.dto.response.*
-import com.clearixam.service.ExamReadinessService
-import com.clearixam.service.AuthService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
@@ -20,9 +18,7 @@ import java.util.UUID
 class AnalyticsController(
     private val analyticsService: AnalyticsService,
     private val subjectAnalyticsService: SubjectAnalyticsService,
-    private val advancedAnalyticsService: AdvancedAnalyticsService,
-    private val examReadinessService: ExamReadinessService,
-    private val authService: AuthService
+    private val advancedAnalyticsService: AdvancedAnalyticsService
 ) {
 
     private val logger = LoggerFactory.getLogger(AnalyticsController::class.java)
@@ -102,11 +98,4 @@ class AnalyticsController(
         return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getInsights(userEmail, examId)))
     }
 
-    @GetMapping("/readiness")
-    fun getExamReadiness(authentication: Authentication): ResponseEntity<ApiResponse<ExamReadinessResponse>> {
-        val userEmail = authentication.name
-        val user = authService.getUserByEmail(userEmail)
-        logger.info("Calculating exam readiness for user: $userEmail")
-        return ResponseEntity.ok(ApiResponse.ok(examReadinessService.calculateReadinessScore(user.id!!)))
-    }
 }

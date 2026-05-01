@@ -124,69 +124,6 @@ class MCQController(
         }
     }
     
-    @GetMapping("/info")
-    fun getProcessingInfo(): ResponseEntity<ApiResponse<Map<String, Any>>> {
-        return try {
-            logger.info("GET /api/mcq/info - Retrieving processing pipeline information")
-            val info = mcqProcessingService.getProcessingInfo()
-            ResponseEntity.ok(ApiResponse.ok(info))
-        } catch (e: Exception) {
-            logger.error("Failed to retrieve processing info: ${e.message}", e)
-            ResponseEntity.internalServerError().body(
-                ApiResponse.error<Map<String, Any>>("Failed to retrieve info: ${e.message}")
-            )
-        }
-    }
-    
-    @PostMapping("/test-llm")
-    fun testLLM(
-        @RequestBody request: Map<String, String>
-    ): ResponseEntity<ApiResponse<Map<String, Any>>> {
-        return try {
-            val text = request["text"] ?: "What is GDP in economics?"
-            logger.info("POST /api/mcq/test-llm - Testing LLM with text: $text")
-            
-            val result = mcqProcessingService.processText(text)
-            
-            val testResult: Map<String, Any> = mapOf(
-                "input" to text,
-                "result" to mapOf(
-                    "subject" to result.subject,
-                    "topic" to result.topic,
-                    "confidence" to result.confidence,
-                    "status" to result.status.name,
-                    "source" to result.source.name,
-                    "needsLLM" to result.needsLLM,
-                    "difficulty" to (result.difficulty ?: "Unknown")
-                ),
-                "llmAvailable" to (mcqProcessingService.getProcessingInfo()["llmInfo"] ?: mapOf<String, Any>())
-            )
-            
-            ResponseEntity.ok(ApiResponse.ok(testResult))
-        } catch (e: Exception) {
-            logger.error("LLM test failed: ${e.message}", e)
-            ResponseEntity.internalServerError().body(
-                ApiResponse.error<Map<String, Any>>("LLM test failed: ${e.message}")
-            )
-        }
-    }
-    
-    @GetMapping("/health")
-    fun healthCheck(): ResponseEntity<ApiResponse<Map<String, String>>> {
-        return try {
-            val health = mapOf(
-                "status" to "UP",
-                "pipeline" to "OCR -> Preprocessing -> Classification -> Confidence Analysis -> LLM Fallback",
-                "timestamp" to System.currentTimeMillis().toString()
-            )
-            ResponseEntity.ok(ApiResponse.ok(health))
-        } catch (e: Exception) {
-            ResponseEntity.internalServerError().body(
-                ApiResponse.error<Map<String, String>>("Health check failed: ${e.message}")
-            )
-        }
-    }
-    
     @PostMapping("/correct")
     fun correctClassification(
         @RequestBody request: MCQCorrectionRequest
@@ -221,20 +158,6 @@ class MCQController(
             logger.error("Classification correction failed: ${e.message}", e)
             ResponseEntity.internalServerError().body(
                 ApiResponse.error<MCQCorrectionResponse>("Correction failed: ${e.message}")
-            )
-        }
-    }
-    
-    @GetMapping("/learning-stats")
-    fun getLearningStats(): ResponseEntity<ApiResponse<Map<String, Any>>> {
-        return try {
-            logger.info("GET /api/mcq/learning-stats - Retrieving learning statistics")
-            val stats = mcqLearningService.getLearningStats()
-            ResponseEntity.ok(ApiResponse.ok(stats))
-        } catch (e: Exception) {
-            logger.error("Failed to retrieve learning stats: ${e.message}", e)
-            ResponseEntity.internalServerError().body(
-                ApiResponse.error<Map<String, Any>>("Failed to retrieve stats: ${e.message}")
             )
         }
     }
