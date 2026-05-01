@@ -27,9 +27,7 @@ export interface SetActiveExamRequest {
 }
 
 export const examsApi = {
-  getAll: () => apiClient.get<Exam[]>('/exams'),
   getAllOrdered: () => apiClient.get<Exam[]>('/exams/ordered'),
-  getById: (id: string) => apiClient.get<Exam>(`/exams/${id}`),
   getSubjects: (examId: string) => apiClient.get<Subject[]>(`/subjects?examId=${examId}`),
   createSubject: (data: CreateSubjectRequest) => apiClient.post<Subject>('/subjects', data),
   deleteSubject: (id: string) => apiClient.delete<{ message: string }>(`/subjects/${id}`),

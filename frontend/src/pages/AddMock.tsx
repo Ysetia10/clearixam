@@ -69,7 +69,6 @@ export const AddMock = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['analytics-overview'] });
       queryClient.invalidateQueries({ queryKey: ['analytics-trend'] });
-      queryClient.invalidateQueries({ queryKey: ['examReadiness'] });
       showToast('Mock test created successfully', 'success');
       navigate('/dashboard');
     },
