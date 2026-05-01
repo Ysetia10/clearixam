@@ -11,14 +11,7 @@ const RecentCorrections: React.FC = () => {
       setLoading(true);
       setError(null);
       const data = await getRecentCorrections();
-      
-      // Ensure data is an array before calling slice
-      if (Array.isArray(data)) {
-        setCorrections(data.slice(0, 5)); // Show only last 5
-      } else {
-        console.warn('Recent corrections data is not an array:', data);
-        setCorrections([]);
-      }
+      setCorrections(Array.isArray(data) ? data.slice(0, 5) : []);
     } catch (err: any) {
       setError(err.response?.data?.message || err.message || 'Failed to load corrections');
     } finally {
@@ -26,58 +19,37 @@ const RecentCorrections: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    loadCorrections();
-  }, []);
+  useEffect(() => { loadCorrections(); }, []);
 
   const formatDate = (dateString: string) => {
-    try {
-      return new Date(dateString).toLocaleString();
-    } catch {
-      return dateString;
-    }
+    try { return new Date(dateString).toLocaleString(); } catch { return dateString; }
   };
 
-  const truncateText = (text: string, maxLength: number = 60) => {
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-  };
+  const truncateText = (text: string, max = 60) =>
+    text.length > max ? text.substring(0, max) + '...' : text;
 
   if (loading) {
     return (
-      <div style={{ 
-        border: '1px solid #ddd', 
-        padding: '20px', 
-        borderRadius: '8px',
-        textAlign: 'center'
-      }}>
-        <div>Loading recent corrections...</div>
+      <div className="card" style={{ textAlign: 'center', color: 'var(--text2)', fontSize: '14px' }}>
+        Loading recent corrections...
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={{ 
-        border: '1px solid #dc3545', 
-        padding: '20px', 
-        borderRadius: '8px',
-        backgroundColor: '#f8d7da',
-        color: '#721c24'
+      <div style={{
+        border: '1px solid var(--red)',
+        padding: '16px',
+        borderRadius: '10px',
+        backgroundColor: 'var(--red-glow)',
+        color: 'var(--red)',
       }}>
         <strong>Error:</strong> {error}
-        <button
-          onClick={loadCorrections}
-          style={{
-            marginLeft: '10px',
-            backgroundColor: '#dc3545',
-            color: 'white',
-            border: 'none',
-            padding: '5px 10px',
-            borderRadius: '3px',
-            cursor: 'pointer',
-            fontSize: '12px'
-          }}
-        >
+        <button onClick={loadCorrections} className="btn" style={{
+          marginLeft: '10px', backgroundColor: 'var(--red)', color: 'var(--on-color)',
+          border: 'none', fontSize: '12px', padding: '4px 10px',
+        }}>
           Retry
         </button>
       </div>
@@ -85,82 +57,37 @@ const RecentCorrections: React.FC = () => {
   }
 
   return (
-    <div style={{ 
-      border: '1px solid #ddd', 
-      padding: '20px', 
-      borderRadius: '8px'
-    }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '15px'
-      }}>
-        <h3 style={{ margin: 0 }}>Recent Corrections</h3>
-        <button
-          onClick={loadCorrections}
-          style={{
-            backgroundColor: '#17a2b8',
-            color: 'white',
-            border: 'none',
-            padding: '5px 10px',
-            borderRadius: '3px',
-            cursor: 'pointer',
-            fontSize: '12px'
-          }}
-        >
-          Refresh
+    <div className="card">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+        <span style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text)' }}>Recent Corrections</span>
+        <button onClick={loadCorrections} className="btn btn-ghost" style={{ fontSize: '12px', padding: '4px 10px' }}>
+          ↻ Refresh
         </button>
       </div>
 
       {corrections.length === 0 ? (
-        <div style={{ 
-          textAlign: 'center', 
-          color: '#666',
-          fontStyle: 'italic'
-        }}>
+        <div style={{ textAlign: 'center', color: 'var(--text3)', fontSize: '13px', fontStyle: 'italic', padding: '12px 0' }}>
           No corrections yet
         </div>
       ) : (
-        <div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {corrections.map((correction) => (
-            <div
-              key={correction.id}
-              style={{
-                border: '1px solid #e9ecef',
-                padding: '12px',
-                borderRadius: '4px',
-                marginBottom: '10px',
-                backgroundColor: '#f8f9fa'
-              }}
-            >
-              <div style={{ 
-                fontSize: '14px', 
-                marginBottom: '8px',
-                color: '#495057'
-              }}>
-                <strong>Question:</strong> {truncateText(correction.questionText)}
+            <div key={correction.id} style={{
+              border: '1px solid var(--border)',
+              padding: '12px',
+              borderRadius: '8px',
+              backgroundColor: 'var(--surface2)',
+            }}>
+              <div style={{ fontSize: '13px', marginBottom: '8px', color: 'var(--text2)' }}>
+                <strong style={{ color: 'var(--text)' }}>Q:</strong> {truncateText(correction.questionText)}
               </div>
-              
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                fontSize: '12px'
-              }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '12px' }}>
                 <div>
-                  <span style={{ color: '#dc3545' }}>
-                    {correction.original}
-                  </span>
-                  <span style={{ margin: '0 8px', color: '#666' }}>→</span>
-                  <span style={{ color: '#28a745' }}>
-                    {correction.corrected}
-                  </span>
+                  <span style={{ color: 'var(--red)' }}>{correction.original}</span>
+                  <span style={{ margin: '0 8px', color: 'var(--text3)' }}>→</span>
+                  <span style={{ color: 'var(--green)' }}>{correction.corrected}</span>
                 </div>
-                
-                <div style={{ color: '#666' }}>
-                  {formatDate(correction.correctedAt)}
-                </div>
+                <div style={{ color: 'var(--text3)' }}>{formatDate(correction.correctedAt)}</div>
               </div>
             </div>
           ))}

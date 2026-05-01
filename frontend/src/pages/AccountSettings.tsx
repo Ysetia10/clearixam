@@ -174,7 +174,7 @@ export const AccountSettings = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#fff',
+            color: 'var(--on-color)',
             fontSize: '24px',
             fontWeight: 700,
             fontFamily: 'Syne, sans-serif',

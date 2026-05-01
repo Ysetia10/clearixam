@@ -12,134 +12,94 @@ const MCQClassification: React.FC = () => {
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
   const [refreshCorrections, setRefreshCorrections] = useState(0);
 
+  const flash = (text: string, type: 'success' | 'error', duration = 3000) => {
+    setMessage({ text, type });
+    setTimeout(() => setMessage(null), duration);
+  };
+
   const handleResult = (newResult: MCQResultType) => {
     setResult(newResult);
     setShowCorrection(false);
-    setMessage({ text: 'MCQ classified successfully!', type: 'success' });
-    setTimeout(() => setMessage(null), 3000);
-  };
-
-  const handleError = (error: string) => {
-    setMessage({ text: error, type: 'error' });
-    setTimeout(() => setMessage(null), 5000);
-  };
-
-  const handleEdit = () => {
-    setShowCorrection(true);
+    flash('MCQ classified successfully!', 'success');
   };
 
   const handleConfirm = () => {
-    // Clear the current result to allow new MCQ classification
     setResult(null);
     setShowCorrection(false);
-    setMessage({ text: 'Classification confirmed! Ready for next MCQ.', type: 'success' });
-    setTimeout(() => setMessage(null), 3000);
+    flash('Classification confirmed! Ready for next MCQ.', 'success');
   };
 
-  const handleOutcomeSet = (successMessage: string) => {
-    setMessage({ text: successMessage, type: 'success' });
-    setTimeout(() => setMessage(null), 3000);
-  };
-
-  const handleCorrectionSubmitted = (successMessage: string) => {
+  const handleCorrectionSubmitted = (msg: string) => {
     setShowCorrection(false);
-    setMessage({ text: successMessage, type: 'success' });
-    setRefreshCorrections(prev => prev + 1); // Trigger refresh of recent corrections
-    setTimeout(() => setMessage(null), 3000);
-  };
-
-  const handleCancelCorrection = () => {
-    setShowCorrection(false);
+    setRefreshCorrections(prev => prev + 1);
+    flash(msg, 'success');
   };
 
   return (
     <DashboardLayout>
-      <div style={{ 
-        maxWidth: '1200px', 
-        margin: '0 auto', 
-        fontFamily: 'Arial, sans-serif'
-      }}>
-        <h1 style={{ 
-          textAlign: 'center', 
-          marginBottom: '30px',
-          color: '#333'
-        }}>
-          MCQ Classification Tool
-        </h1>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 0' }}>
 
-      {/* Message Display */}
-      {message && (
-        <div style={{
-          padding: '12px',
-          borderRadius: '4px',
-          marginBottom: '20px',
-          backgroundColor: message.type === 'success' ? '#d4edda' : '#f8d7da',
-          color: message.type === 'success' ? '#155724' : '#721c24',
-          border: `1px solid ${message.type === 'success' ? '#c3e6cb' : '#f5c6cb'}`
-        }}>
-          {message.text}
+        <h1 className="page-title" style={{ marginBottom: '28px' }}>MCQ Classification</h1>
+
+        {/* Message Banner */}
+        {message && (
+          <div style={{
+            padding: '12px 16px',
+            borderRadius: '8px',
+            marginBottom: '20px',
+            backgroundColor: message.type === 'success' ? 'var(--green-glow)' : 'var(--red-glow)',
+            color: message.type === 'success' ? 'var(--green)' : 'var(--red)',
+            border: `1px solid ${message.type === 'success' ? 'var(--green)' : 'var(--red)'}`,
+            fontSize: '14px',
+          }}>
+            {message.text}
+          </div>
+        )}
+
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
+          {/* Main */}
+          <div>
+            <MCQUpload onResult={handleResult} onError={(e) => flash(e, 'error', 5000)} />
+
+            {result && !showCorrection && (
+              <MCQResult
+                result={result}
+                onEdit={() => setShowCorrection(true)}
+                onConfirm={handleConfirm}
+                onOutcomeSet={(msg) => flash(msg, 'success')}
+                onError={(e) => flash(e, 'error', 5000)}
+              />
+            )}
+
+            {result && showCorrection && (
+              <MCQCorrection
+                result={result}
+                onCorrectionSubmitted={handleCorrectionSubmitted}
+                onCancel={() => setShowCorrection(false)}
+                onError={(e) => flash(e, 'error', 5000)}
+              />
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <div>
+            <RecentCorrections key={refreshCorrections} />
+
+            {/* How to use */}
+            <div className="card" style={{ marginTop: '16px' }}>
+              <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text3)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '10px' }}>
+                How to use
+              </div>
+              <ol style={{ paddingLeft: '18px', margin: 0, fontSize: '13px', color: 'var(--text2)', lineHeight: '1.8' }}>
+                <li>Choose text or image input</li>
+                <li>Submit your MCQ for classification</li>
+                <li>Review subject, topic, and confidence</li>
+                <li>Confirm if correct, or edit to fix</li>
+                <li>Mark your outcome (correct / wrong / skipped)</li>
+              </ol>
+            </div>
+          </div>
         </div>
-      )}
-
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: '2fr 1fr', 
-        gap: '30px'
-      }}>
-        {/* Main Content */}
-        <div>
-          {/* Upload Component */}
-          <MCQUpload 
-            onResult={handleResult}
-            onError={handleError}
-          />
-
-          {/* Result Display */}
-          {result && !showCorrection && (
-            <MCQResult
-              result={result}
-              onEdit={handleEdit}
-              onConfirm={handleConfirm}
-              onOutcomeSet={handleOutcomeSet}
-              onError={handleError}
-            />
-          )}
-
-          {/* Correction Panel */}
-          {result && showCorrection && (
-            <MCQCorrection
-              result={result}
-              onCorrectionSubmitted={handleCorrectionSubmitted}
-              onCancel={handleCancelCorrection}
-              onError={handleError}
-            />
-          )}
-        </div>
-
-        {/* Sidebar */}
-        <div>
-          <RecentCorrections key={refreshCorrections} />
-        </div>
-      </div>
-
-      {/* Instructions */}
-      <div style={{
-        marginTop: '40px',
-        padding: '20px',
-        backgroundColor: '#e9ecef',
-        borderRadius: '8px',
-        fontSize: '14px',
-        color: '#495057'
-      }}>
-        <h4 style={{ marginTop: 0 }}>How to use:</h4>
-        <ol style={{ marginBottom: 0 }}>
-          <li>Choose between text input or image upload</li>
-          <li>Submit your MCQ for classification</li>
-          <li>Review the results (subject, topic, confidence)</li>
-          <li>Confirm if correct, or edit to make corrections</li>
-          <li>View recent corrections in the sidebar</li>
-        </ol>
-      </div>
       </div>
     </DashboardLayout>
   );

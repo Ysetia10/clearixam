@@ -102,7 +102,7 @@ const TopicPerformancePage: React.FC = () => {
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 0' }}>
           <div style={{ padding: '14px 18px', background: 'var(--red-glow)', border: '1px solid rgba(244,63,94,0.3)', borderRadius: 10, color: 'var(--red)', fontSize: 14 }}>
             {error}
-            <button onClick={loadTopicPerformance} style={{ marginLeft: 12, background: 'var(--red)', color: '#fff', border: 'none', padding: '5px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 13 }}>Retry</button>
+            <button onClick={loadTopicPerformance} style={{ marginLeft: 12, background: 'var(--red)', color: 'var(--on-color)', border: 'none', padding: '5px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 13 }}>Retry</button>
           </div>
         </div>
       </DashboardLayout>
@@ -145,8 +145,8 @@ const TopicPerformancePage: React.FC = () => {
         {/* Stat cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 20 }}>
           <div className="card" style={{ background: 'rgba(33,150,243,0.08)', border: '1px solid rgba(33,150,243,0.25)', padding: '20px 18px' }}>
-            <div style={{ fontSize: 32, fontWeight: 700, color: '#60a5fa', lineHeight: 1 }}>{totalQuestions}</div>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#60a5fa', marginTop: 6 }}>QUESTIONS</div>
+            <div style={{ fontSize: 32, fontWeight: 700, color: 'var(--blue)', lineHeight: 1 }}>{totalQuestions}</div>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--blue)', marginTop: 6 }}>QUESTIONS</div>
           </div>
           <div className="card" style={{ background: weakSubjects > 0 ? 'var(--red-glow)' : 'var(--green-glow)', border: `1px solid ${weakSubjects > 0 ? 'rgba(244,63,94,0.3)' : 'rgba(34,211,160,0.3)'}`, padding: '20px 18px' }}>
             <div style={{ fontSize: 32, fontWeight: 700, color: weakSubjects > 0 ? 'var(--red)' : 'var(--green)', lineHeight: 1 }}>{weakSubjects}</div>

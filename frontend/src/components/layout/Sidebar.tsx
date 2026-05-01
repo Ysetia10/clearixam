@@ -209,7 +209,7 @@ export const Sidebar = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#fff',
+            color: 'var(--on-color)',
             fontSize: '13px',
             fontWeight: 700,
             flexShrink: 0,
