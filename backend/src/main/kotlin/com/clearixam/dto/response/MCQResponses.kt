@@ -6,7 +6,6 @@ import com.clearixam.enums.ClassificationSource
 data class ClassificationResult(
     val subject: String,
     val topic: String,
-    val subtopic: String,
     val confidence: Double,
     val matchedKeywords: List<String>,
     val cleanedText: String,
@@ -20,7 +19,6 @@ data class ClassificationResult(
 data class MCQProcessingResponse(
     val subject: String,
     val topic: String,
-    val subtopic: String,
     val confidence: Double,
     val matchedKeywords: List<String>,
     val cleanedText: String,
@@ -35,7 +33,6 @@ data class MCQProcessingResponse(
 data class LLMResult(
     val subject: String,
     val topic: String,
-    val subtopic: String,
     val difficulty: String,
     val keywords: List<String>
 )
@@ -43,8 +40,7 @@ data class LLMResult(
 data class MCQCorrectionRequest(
     val id: Long,
     val subject: String,
-    val topic: String,
-    val subtopic: String? = null
+    val topic: String
 )
 
 data class MCQCorrectionResponse(
@@ -70,7 +66,6 @@ data class MCQOutcomeResponse(
 data class TopicPerformanceDTO(
     val subject: String,
     val topic: String,
-    val subtopic: String? = null,
     val correct: Int,
     val incorrect: Int,
     val unattempted: Int,

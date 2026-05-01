@@ -4,19 +4,28 @@ enum class AllowedSubject(val displayName: String) {
     QUANT("Quantitative Aptitude"),
     REASONING("Reasoning"),
     ENGLISH("English"),
-    GS("General Knowledge");
-    
+    GS("General Awareness");
+
     companion object {
         fun fromString(subject: String): AllowedSubject? {
-            return values().find { 
+            val normalized = subject.trim().lowercase()
+            return values().find {
                 it.displayName.equals(subject, ignoreCase = true) ||
-                it.name.equals(subject, ignoreCase = true)
+                it.name.equals(subject, ignoreCase = true) ||
+                normalized.contains(it.displayName.lowercase()) ||
+                it.displayName.lowercase().contains(normalized)
+            } ?: when {
+                normalized.contains("general") || normalized.contains("awareness") ||
+                normalized.contains("knowledge") || normalized.contains("gs") -> GS
+                normalized.contains("quant") || normalized.contains("math") ||
+                normalized.contains("aptitude") -> QUANT
+                normalized.contains("reason") -> REASONING
+                normalized.contains("english") || normalized.contains("language") -> ENGLISH
+                else -> null
             }
         }
-        
-        fun getAllowedSubjects(): List<String> {
-            return values().map { it.displayName }
-        }
+
+        fun getAllowedSubjects(): List<String> = values().map { it.displayName }
     }
 }
 

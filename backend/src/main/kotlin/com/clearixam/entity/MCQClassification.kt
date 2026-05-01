@@ -19,9 +19,6 @@ data class MCQClassification(
     @Column(name = "topic", nullable = false)
     val topic: String,
     
-    @Column(name = "subtopic")
-    val subtopic: String? = null,
-    
     @Enumerated(EnumType.STRING)
     @Column(name = "source", nullable = false)
     val source: ClassificationSource,
@@ -47,9 +44,6 @@ data class MCQClassification(
     
     @Column(name = "corrected_topic")
     val correctedTopic: String? = null,
-    
-    @Column(name = "corrected_subtopic")
-    val correctedSubtopic: String? = null,
     
     @Column(name = "created_at", nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
