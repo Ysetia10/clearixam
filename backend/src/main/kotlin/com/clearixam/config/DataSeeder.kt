@@ -35,7 +35,7 @@ class DataSeeder(
     private fun seedExams() {
         val exams = listOf(
             ExamConfig("UPSC", "Union Public Service Commission", 200, 100, 2.0, 0.66),
-            ExamConfig("SSC", "Staff Selection Commission", 200, 200, 2.0, 0.5),
+            ExamConfig("SSC", "Staff Selection Commission", 200, 100, 2.0, 0.5),
             ExamConfig("CAT", "Common Admission Test", 300, 66, 3.0, 1.0)
         )
 

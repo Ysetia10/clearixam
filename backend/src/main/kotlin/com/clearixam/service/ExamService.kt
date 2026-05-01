@@ -111,7 +111,7 @@ class ExamService(
         
         val exams = listOf(
             Triple("UPSC", "Union Public Service Commission", Pair(200, 100)),
-            Triple("SSC", "Staff Selection Commission", Pair(200, 200)),
+            Triple("SSC", "Staff Selection Commission", Pair(200, 100)),
             Triple("CAT", "Common Admission Test", Pair(300, 66))
         )
 
