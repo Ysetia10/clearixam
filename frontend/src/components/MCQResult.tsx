@@ -230,32 +230,6 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
             display: 'block',
             marginBottom: '8px'
           }}>
-            Subtopic
-          </label>
-          <div style={{ 
-            fontSize: '14px', 
-            fontWeight: '500',
-            color: '#6c757d'
-          }}>
-            {result.subtopic || 'Not specified'}
-          </div>
-        </div>
-        
-        <div style={{
-          backgroundColor: '#f8f9fa',
-          padding: '16px',
-          borderRadius: '8px',
-          border: '1px solid #e9ecef'
-        }}>
-          <label style={{ 
-            fontSize: '12px', 
-            fontWeight: '600', 
-            color: '#6c757d',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-            display: 'block',
-            marginBottom: '8px'
-          }}>
             Confidence
           </label>
           <div style={{ 

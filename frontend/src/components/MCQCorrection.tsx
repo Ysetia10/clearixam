@@ -16,7 +16,6 @@ const MCQCorrection: React.FC<MCQCorrectionProps> = ({
 }) => {
   const [subject, setSubject] = useState(result.subject);
   const [topic, setTopic] = useState(result.topic);
-  const [subtopic, setSubtopic] = useState(result.subtopic || '');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -36,8 +35,7 @@ const MCQCorrection: React.FC<MCQCorrectionProps> = ({
       const correction = {
         id: result.id,
         subject: subject.trim(),
-        topic: topic.trim(),
-        subtopic: subtopic.trim() || undefined
+        topic: topic.trim()
       };
 
       const response = await submitCorrection(correction);
@@ -67,7 +65,6 @@ const MCQCorrection: React.FC<MCQCorrectionProps> = ({
       
       <div style={{ marginBottom: '15px' }}>
         <strong>Original:</strong> {result.subject} → {result.topic}
-        {result.subtopic && ` → ${result.subtopic}`}
       </div>
 
       {/* Subject Dropdown */}
@@ -105,26 +102,6 @@ const MCQCorrection: React.FC<MCQCorrectionProps> = ({
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
           placeholder="Enter topic"
-          style={{
-            width: '100%',
-            padding: '8px',
-            border: '1px solid #ccc',
-            borderRadius: '4px',
-            fontSize: '14px'
-          }}
-        />
-      </div>
-
-      {/* Subtopic Input */}
-      <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-          Subtopic (Optional):
-        </label>
-        <input
-          type="text"
-          value={subtopic}
-          onChange={(e) => setSubtopic(e.target.value)}
-          placeholder="Enter subtopic (optional)"
           style={{
             width: '100%',
             padding: '8px',

@@ -5,7 +5,6 @@ export interface MCQResult {
   id?: number;
   subject: string;
   topic: string;
-  subtopic: string;
   confidence: number;
   matchedKeywords: string[];
   cleanedText: string;
@@ -20,7 +19,6 @@ export interface MCQCorrection {
   id: number;
   subject: string;
   topic: string;
-  subtopic?: string;
 }
 
 export interface CorrectionResponse {
@@ -54,7 +52,6 @@ export interface OutcomeResponse {
 export interface TopicPerformance {
   subject: string;
   topic: string;
-  subtopic?: string;
   correct: number;
   incorrect: number;
   unattempted: number;
