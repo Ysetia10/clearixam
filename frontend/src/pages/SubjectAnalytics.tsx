@@ -120,7 +120,7 @@ export const SubjectAnalytics = () => {
               <div key={subject.subjectName} className={`card stagger-${Math.min(i + 1, 6)}`}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                   <div>
-                    <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '16px', fontWeight: 700 }}>
+                    <h3 style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', fontWeight: 700 }}>
                       {subject.subjectName}
                     </h3>
                     <div style={{ fontSize: '11px', color: 'var(--text3)', marginTop: '2px' }}>
@@ -135,7 +135,7 @@ export const SubjectAnalytics = () => {
                   </span>
                 </div>
                 <div style={{ marginBottom: '16px' }}>
-                  <div style={{ fontSize: '32px', fontWeight: 700, color: accuracyColor, fontFamily: 'Syne, sans-serif', marginBottom: '8px' }}>
+                  <div style={{ fontSize: '32px', fontWeight: 700, color: accuracyColor, fontFamily: 'Inter, sans-serif', marginBottom: '8px' }}>
                     {subject.avgAccuracy.toFixed(1)}%
                   </div>
                   <div className="progress-track">

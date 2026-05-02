@@ -177,12 +177,12 @@ export const AccountSettings = () => {
             color: 'var(--on-color)',
             fontSize: '24px',
             fontWeight: 700,
-            fontFamily: 'Syne, sans-serif',
+            fontFamily: 'Inter, sans-serif',
           }}>
             {getInitials(userEmail)}
           </div>
           <div>
-            <div style={{ fontFamily: 'Syne, sans-serif', fontSize: '20px', fontWeight: 700, marginBottom: '4px', color: 'var(--text)' }}>
+            <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', fontWeight: 700, marginBottom: '4px', color: 'var(--text)' }}>
               {userEmail.split('@')[0]}
             </div>
             <div style={{ fontSize: '13px', color: 'var(--text2)' }}>

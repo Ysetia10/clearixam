@@ -280,7 +280,7 @@ export const Dashboard = () => {
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
             <div>
-              <div style={{ fontFamily: 'Syne, sans-serif', fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>Set a Goal</div>
+              <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>Set a Goal</div>
               <div style={{ fontSize: '13px', color: 'var(--text2)' }}>Track your progress toward a target score</div>
             </div>
             <button className="btn btn-primary" onClick={() => setGoalDialogOpen(true)}>Create Goal</button>
@@ -467,7 +467,7 @@ function ImprovementCard({ improvement }: { improvement: ImprovementDTO }) {
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
         <span style={{
-          fontFamily: 'Syne, sans-serif', fontSize: '28px', fontWeight: 700, color: trendColor
+          fontFamily: 'Inter, sans-serif', fontSize: '28px', fontWeight: 700, color: trendColor
         }}>
           {improvement.improvementRate >= 0 ? '+' : ''}{improvement.improvementRate.toFixed(1)}
         </span>

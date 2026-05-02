@@ -47,10 +47,10 @@ export const Sidebar = () => {
         padding: '0 12px 20px',
         borderBottom: '1px solid var(--border)',
       }}>
-        {/* Logo and BETA on first row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
+        {/* Logo */}
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
           <span style={{
-            fontFamily: 'Syne, sans-serif',
+            fontFamily: 'Inter, sans-serif',
             fontSize: '20px',
             fontWeight: 800,
             background: 'linear-gradient(135deg, var(--accent), var(--green))',
@@ -60,18 +60,6 @@ export const Sidebar = () => {
             whiteSpace: 'nowrap',
           }}>
             CleariXam
-          </span>
-          <span style={{
-            fontSize: '9px',
-            color: 'var(--accent2)',
-            background: 'rgba(124,106,255,0.12)',
-            border: '1px solid rgba(124,106,255,0.2)',
-            borderRadius: '4px',
-            padding: '1px 5px',
-            fontWeight: 600,
-            whiteSpace: 'nowrap',
-          }}>
-            BETA
           </span>
         </div>
         
