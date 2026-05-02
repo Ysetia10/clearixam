@@ -237,8 +237,8 @@ class RuleBasedClassifier {
     private fun createUnknownResult(reason: String, cleanedText: String = ""): ClassificationResult {
         logger.warn("Creating unknown result: $reason")
         return ClassificationResult(
-            subject = "UNKNOWN",
-            topic = "UNKNOWN",
+            subject = "Miscellaneous",
+            topic = "General",
             confidence = 0.0,
             matchedKeywords = emptyList(),
             cleanedText = cleanedText,

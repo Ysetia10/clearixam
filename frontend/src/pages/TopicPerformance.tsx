@@ -185,7 +185,7 @@ const TopicPerformancePage: React.FC = () => {
           const perf = getPerf(d.overallAccuracy);
           const totalQ = d.totalCorrect + d.totalIncorrect + d.totalUnattempted;
           const correctRatio = `${d.totalCorrect}/${totalQ}`;
-          const isCollapsed = collapsed[subject] ?? false;
+          const isCollapsed = collapsed[subject] ?? true;
 
           return (
             <div key={subject} className="card" style={{
