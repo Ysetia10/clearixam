@@ -27,7 +27,6 @@ class MCQController(
         return try {
             logger.info("POST /api/mcq/process - Processing image: ${image.originalFilename}")
             
-            // Validate image
             val validationError = mcqProcessingService.validateImage(image)
             if (validationError != null) {
                 logger.warn("Image validation failed: $validationError")
@@ -36,10 +35,8 @@ class MCQController(
                 )
             }
             
-            // Process the image
             val result = mcqProcessingService.processImage(image)
             
-            // Check if processing failed
             if (result.subject == "ERROR") {
                 logger.error("MCQ processing failed")
                 return ResponseEntity.ok(
@@ -47,7 +44,6 @@ class MCQController(
                 )
             }
             
-            // Convert to response DTO
             val response = MCQProcessingResponse(
                 subject = result.subject,
                 topic = result.topic,
@@ -87,10 +83,8 @@ class MCQController(
                 )
             }
             
-            // Process the text
             val result = mcqProcessingService.processText(text)
             
-            // Check if processing failed
             if (result.subject == "ERROR") {
                 logger.error("Text processing failed")
                 return ResponseEntity.ok(
@@ -98,7 +92,6 @@ class MCQController(
                 )
             }
             
-            // Convert to response DTO
             val response = MCQProcessingResponse(
                 subject = result.subject,
                 topic = result.topic,
@@ -185,7 +178,6 @@ class MCQController(
         return try {
             logger.info("POST /api/mcq/set-outcome - Setting outcome for classification ${request.id}: ${request.outcome}")
             
-            // Validate outcome
             val outcomeStatus = try {
                 OutcomeStatus.valueOf(request.outcome.uppercase())
             } catch (e: IllegalArgumentException) {

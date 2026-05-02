@@ -23,27 +23,23 @@ class ApiClient {
     const config: RequestInit = {
       ...options,
       headers,
-      credentials: 'omit', // Don't send cookies cross-origin
+      credentials: 'omit',
     };
 
     try {
       const response = await fetch(`${this.baseURL}${endpoint}`, config);
 
-      // Handle 401/403 - Auto logout
       if (response.status === 401 || response.status === 403) {
         this.handleUnauthorized();
         throw new Error('Unauthorized - Please login again');
       }
 
-      // Handle other errors
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        // Extract the exact error message from backend
         const errorMessage = errorData.message || errorData.error || `HTTP ${response.status}: ${response.statusText}`;
         throw new Error(errorMessage);
       }
 
-      // Handle empty responses
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         return response.json();
@@ -51,7 +47,6 @@ class ApiClient {
       
       return response.text() as any;
     } catch (error: any) {
-      // Network errors
       if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
         throw new Error('Network error - Please check your connection');
       }
@@ -63,7 +58,6 @@ class ApiClient {
     removeToken();
     localStorage.removeItem('userEmail');
     
-    // Only redirect if not already on login/register
     if (!window.location.pathname.includes('/login') && 
         !window.location.pathname.includes('/register')) {
       window.location.href = '/login';
@@ -112,10 +106,8 @@ class ApiClient {
   }
 }
 
-// Export singleton instance
 export const apiClient = new ApiClient();
 
-// Legacy export for backward compatibility
 export async function apiClientLegacy<T>(
   endpoint: string,
   options?: RequestInit

@@ -53,7 +53,6 @@ class DataSeeder(
                 examRepository.save(exam)
                 logger.info("Seeded exam: ${config.name}")
             } else if (existing.correctMarks != config.correctMarks || existing.negativeMarks != config.negativeMarks) {
-                // Update marking scheme if it changed
                 examRepository.save(existing.copy(
                     correctMarks = config.correctMarks,
                     negativeMarks = config.negativeMarks

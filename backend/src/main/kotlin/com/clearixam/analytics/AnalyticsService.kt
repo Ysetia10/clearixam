@@ -67,7 +67,6 @@ class AnalyticsService(
         val previousFiveAverage = if (previousFive.isNotEmpty()) previousFive.map { it.totalScore }.average() else lastFiveAverage
         val performanceChange = lastFiveAverage - previousFiveAverage
 
-        // Compute weak subjects (accuracy < 80%) from subject_scores
         val weakSubjects = if (resolvedExamId != null) {
             val scores = subjectScoreRepository.findByUserIdAndExamId(user.id!!, resolvedExamId)
             scores.groupBy { it.subjectName }
@@ -125,7 +124,6 @@ class AnalyticsService(
 
     @Transactional(readOnly = true)
     fun getSubjectAnalytics(userEmail: String): com.clearixam.dto.response.SubjectAnalyticsListResponse {
-        // Delegated to SubjectAnalyticsService — kept for backward compatibility
         return com.clearixam.dto.response.SubjectAnalyticsListResponse(emptyList())
     }
 }

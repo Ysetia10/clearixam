@@ -18,8 +18,6 @@ class SubjectAnalyticsService(
     private val userRepository: UserRepository
 ) {
 
-    // ── Feature 1: Subject Analytics Aggregation ─────────────────────────────
-
     @Transactional(readOnly = true)
     fun getSubjectAnalytics(userEmail: String, examId: UUID?): SubjectAnalyticsListResponse {
         val user = userRepository.findByEmail(userEmail)
@@ -28,7 +26,6 @@ class SubjectAnalyticsService(
         val resolvedExamId = examId ?: user.activeExam?.id
             ?: return SubjectAnalyticsListResponse(emptyList())
 
-        // Single query — JOIN FETCH avoids N+1 on mockTest.testDate
         val allScores: List<SubjectScore> =
             subjectScoreRepository.findByUserIdAndExamId(user.id!!, resolvedExamId)
 
@@ -37,7 +34,6 @@ class SubjectAnalyticsService(
         val result = allScores
             .groupBy { it.subjectName }
             .map { (name, scores) ->
-                // Scores come back DESC by testDate from the repository query
                 val totalAttempted = scores.sumOf { it.attempted }
                 val totalCorrect   = scores.sumOf { it.correct }
 
@@ -62,16 +58,11 @@ class SubjectAnalyticsService(
                     status               = status
                 )
             }
-            .sortedBy { it.avgAccuracy }   // weakest first
+            .sortedBy { it.avgAccuracy }
 
         return SubjectAnalyticsListResponse(result)
     }
 
-    /**
-     * Trend = avg accuracy of last 5 appearances minus avg accuracy of previous 5.
-     * Returns 0.0 when fewer than 5 appearances (insufficient data).
-     * Scores list is already sorted DESC by testDate.
-     */
     private fun subjectTrend(scores: List<SubjectScore>): Double {
         if (scores.size < 5) return 0.0
         val last5     = scores.take(5)
@@ -86,8 +77,6 @@ class SubjectAnalyticsService(
         return safeAccuracy(correct, attempted)
     }
 
-    // ── Feature 2: Subject Neglect Detection ─────────────────────────────────
-
     @Transactional(readOnly = true)
     fun getSubjectNeglect(userEmail: String, examId: UUID?, windowSize: Int = 5): SubjectNeglectResponse {
         val user = userRepository.findByEmail(userEmail)
@@ -96,18 +85,15 @@ class SubjectAnalyticsService(
         val resolvedExamId = examId ?: user.activeExam?.id
             ?: return SubjectNeglectResponse(windowSize, emptyList())
 
-        // Most recent N mocks — already DESC from repository
         val recentMocks = mockTestRepository
             .findByUserIdAndExamIdOrderByTestDateDesc(user.id!!, resolvedExamId)
             .take(windowSize)
 
         if (recentMocks.isEmpty()) return SubjectNeglectResponse(windowSize, emptyList())
 
-        // Full subject universe from all historical data
         val allScores = subjectScoreRepository.findByUserIdAndExamId(user.id!!, resolvedExamId)
         val allSubjectNames = allScores.map { it.subjectName }.toSet()
 
-        // Index 0 = most recent mock; subjects present in each mock
         val subjectsByMockIndex: List<Set<String>> = recentMocks.map { mock ->
             mock.subjects.map { it.subjectName }.toSet()
         }
@@ -115,7 +101,6 @@ class SubjectAnalyticsService(
         val result = allSubjectNames.map { name ->
             val appearedInLastN      = subjectsByMockIndex.count { name in it }
             val lastAttemptedIndex   = subjectsByMockIndex.indexOfFirst { name in it }
-            // -1 means not found in window → use windowSize as sentinel
             val normalizedIndex      = if (lastAttemptedIndex == -1) windowSize else lastAttemptedIndex
 
             val status = when {
@@ -131,14 +116,11 @@ class SubjectAnalyticsService(
                 appearedInLastN        = appearedInLastN
             )
         }
-        // Sort: NEGLECTED → PARTIALLY_NEGLECTED → ACTIVE, then by how long ago
         .sortedWith(compareByDescending<SubjectNeglectDTO> { it.status.ordinal }
             .thenByDescending { it.lastAttemptedMockIndex })
 
         return SubjectNeglectResponse(windowSize, result)
     }
-
-    // ── Feature 3: Attempt vs Accuracy Tradeoff ──────────────────────────────
 
     @Transactional(readOnly = true)
     fun getAttemptAccuracyInsight(userEmail: String, examId: UUID?): AttemptAccuracyInsightDTO {
@@ -163,7 +145,6 @@ class SubjectAnalyticsService(
             MockMetrics(attemptRate, accuracy)
         }
 
-        // Split by median attempt rate: bottom 50% = low group, top 50% = high group
         val sorted   = metrics.sortedBy { it.attemptRate }
         val mid      = sorted.size / 2
         val lowGroup  = sorted.take(mid)
@@ -202,8 +183,6 @@ class SubjectAnalyticsService(
             insight             = insight
         )
     }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private fun safeAccuracy(correct: Int, attempted: Int): Double =
         if (attempted > 0) (correct.toDouble() / attempted) * 100.0 else 0.0

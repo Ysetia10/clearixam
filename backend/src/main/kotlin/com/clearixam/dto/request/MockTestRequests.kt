@@ -31,7 +31,6 @@ data class SubjectInput(
     @field:NotNull(message = "Subject ID is required")
     val subjectId: UUID,
 
-    // Optional: sent by frontend for display, ignored server-side
     val subjectName: String? = null,
 
     @field:NotNull(message = "Attempted count is required")

@@ -18,13 +18,11 @@ class BackupService(
 ) {
     
     fun exportUserData(userEmail: String): BackupDataResponse {
-        // TODO: Implement with new multi-exam system
         throw UnsupportedOperationException("This endpoint will be updated to support multi-exam system")
     }
     
     @Transactional
     fun importUserData(userEmail: String, request: ImportBackupRequest) {
-        // TODO: Implement with new multi-exam system
         throw UnsupportedOperationException("This endpoint will be updated to support multi-exam system")
     }
 }

@@ -78,7 +78,6 @@ class AuthController(
         logger.info("IP Address: $ipAddress")
         logger.info("Email: ${request.email}")
         
-        // Check rate limit
         if (rateLimitService.isRateLimited(ipAddress)) {
             logger.warn("Rate limit exceeded for IP: $ipAddress")
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
@@ -87,12 +86,10 @@ class AuthController(
         
         try {
             val response = authService.login(request)
-            // Clear attempts on successful login
             rateLimitService.clearAttempts(ipAddress)
             logger.info("Login successful for: ${request.email}")
             return ResponseEntity.ok(response)
         } catch (e: Exception) {
-            // Record failed attempt
             rateLimitService.recordAttempt(ipAddress)
             logger.error("Login failed for ${request.email}: ${e.message}")
             throw e

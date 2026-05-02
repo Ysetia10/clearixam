@@ -1,6 +1,5 @@
 import { apiClient } from './client';
 
-// ── Shared wrapper ────────────────────────────────────────────────────────────
 interface ApiResponse<T> {
   success: boolean;
   data?: T;
@@ -15,7 +14,6 @@ async function unwrap<T>(promise: Promise<ApiResponse<T>>): Promise<T> {
   return res.data;
 }
 
-// ── Overview ──────────────────────────────────────────────────────────────────
 export interface WeakSubject {
   subjectName: string;
   accuracy: number;
@@ -43,7 +41,6 @@ export interface AnalyticsOverview {
   performanceChange: number;
 }
 
-// ── Trend ─────────────────────────────────────────────────────────────────────
 export interface TrendPoint {
   date: string;
   score: number;
@@ -54,7 +51,6 @@ export interface AnalyticsTrend {
   trends: TrendPoint[];
 }
 
-// ── Subject Analytics ─────────────────────────────────────────────────────────
 export type SubjectStatus = 'IMPROVING' | 'DECLINING' | 'STABLE';
 
 export interface SubjectAnalyticsDTO {
@@ -71,7 +67,6 @@ export interface SubjectAnalyticsListResponse {
   subjects: SubjectAnalyticsDTO[];
 }
 
-// ── Subject Neglect ───────────────────────────────────────────────────────────
 export type NeglectStatus = 'NEGLECTED' | 'PARTIALLY_NEGLECTED' | 'ACTIVE';
 
 export interface SubjectNeglectDTO {
@@ -86,7 +81,6 @@ export interface SubjectNeglectResponse {
   subjects: SubjectNeglectDTO[];
 }
 
-// ── Attempt vs Accuracy ───────────────────────────────────────────────────────
 export type AttemptAccuracyTrend = 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL';
 
 export interface AttemptAccuracyInsightDTO {
@@ -98,7 +92,6 @@ export interface AttemptAccuracyInsightDTO {
   insight: string;
 }
 
-// ── Improvement Rate ──────────────────────────────────────────────────────────
 export type ImprovementTrend = 'IMPROVING' | 'DECLINING' | 'STABLE';
 
 export interface ImprovementDTO {
@@ -108,7 +101,6 @@ export interface ImprovementDTO {
   prev5Avg: number;
 }
 
-// ── Adaptive Subject Strength ─────────────────────────────────────────────────
 export type SubjectStrengthStatus = 'WEAK' | 'BELOW_AVERAGE' | 'AVERAGE' | 'STRONG';
 
 export interface AdaptiveSubjectStrengthDTO {
@@ -123,7 +115,6 @@ export interface AdaptiveStrengthResponse {
   subjects: AdaptiveSubjectStrengthDTO[];
 }
 
-// ── Insight Engine ───────────────────────────────────────────────────────────
 export type InsightType = 'WARNING' | 'INFO' | 'SUCCESS';
 
 export interface InsightDTO {
@@ -135,7 +126,6 @@ export interface InsightsResponse {
   insights: InsightDTO[];
 }
 
-// ── API ───────────────────────────────────────────────────────────────────────
 const qs = (examId?: string) => (examId ? `?examId=${examId}` : '');
 
 export const analyticsApi = {

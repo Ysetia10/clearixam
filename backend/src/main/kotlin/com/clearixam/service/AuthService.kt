@@ -23,7 +23,6 @@ class AuthService(
             throw IllegalArgumentException("Email already exists")
         }
 
-        // Set default exam to UPSC
         val defaultExam = examRepository.findByName("UPSC")
 
         val user = User(
@@ -55,9 +54,6 @@ class AuthService(
             ?: throw NoSuchElementException("User not found")
     }
     
-    /**
-     * Reset password for a user (admin function)
-     */
     fun resetPassword(email: String, newPassword: String): Boolean {
         val user = userRepository.findByEmail(email)
             ?: throw NoSuchElementException("User not found with email: $email")
@@ -70,9 +66,6 @@ class AuthService(
         return true
     }
     
-    /**
-     * Get all users (admin function)
-     */
     fun getAllUsers(): List<User> {
         return userRepository.findAll()
     }

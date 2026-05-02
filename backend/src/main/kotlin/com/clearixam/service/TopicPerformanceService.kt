@@ -14,14 +14,10 @@ class TopicPerformanceService(
     
     private val logger = LoggerFactory.getLogger(TopicPerformanceService::class.java)
     
-    /**
-     * Get topic-level performance analytics for all classifications
-     */
     fun getTopicPerformance(): List<TopicPerformanceDTO> {
         return try {
             logger.info("Calculating topic performance analytics")
             
-            // Get all classifications with outcomes
             val classifications = mcqClassificationRepository.findByOutcomeStatusIsNotNull()
             
             if (classifications.isEmpty()) {
@@ -29,7 +25,6 @@ class TopicPerformanceService(
                 return emptyList()
             }
             
-            // Group by subject, topic
             val grouped = classifications.groupBy { classification ->
                 Pair(
                     classification.subject,
@@ -40,15 +35,13 @@ class TopicPerformanceService(
             val results = grouped.map { (key, classificationList) ->
                 val (subject, topic) = key
                 
-                // Count outcomes
                 val correct = classificationList.count { it.outcomeStatus == OutcomeStatus.CORRECT }
                 val incorrect = classificationList.count { it.outcomeStatus == OutcomeStatus.INCORRECT }
                 val unattempted = classificationList.count { it.outcomeStatus == OutcomeStatus.UNATTEMPTED }
                 
-                // Calculate accuracy (ignore unattempted)
                 val attempted = correct + incorrect
                 val accuracy = if (attempted > 0) {
-                    round((correct.toDouble() / attempted) * 100 * 10) / 10 // Round to 1 decimal
+                    round((correct.toDouble() / attempted) * 100 * 10) / 10
                 } else {
                     0.0
                 }
@@ -65,7 +58,6 @@ class TopicPerformanceService(
                 )
             }
             
-            // Sort by accuracy (lowest first) for identifying weak topics
             val sortedResults = results.sortedBy { it.accuracy }
             
             logger.info("Generated topic performance for ${sortedResults.size} topics")
@@ -77,16 +69,10 @@ class TopicPerformanceService(
         }
     }
     
-    /**
-     * Get topic performance grouped by subject
-     */
     fun getTopicPerformanceBySubject(): Map<String, List<TopicPerformanceDTO>> {
         return getTopicPerformance().groupBy { it.subject }
     }
     
-    /**
-     * Get performance statistics summary
-     */
     fun getPerformanceSummary(): Map<String, Any> {
         val allPerformance = getTopicPerformance()
         

@@ -20,7 +20,6 @@ class ExamReadinessService(
     fun calculateReadinessScore(userId: UUID): ExamReadinessResponse {
         val startTime = System.currentTimeMillis()
         
-        // Get last 5 mocks
         val recentMocks = mockTestRepository.findTop5ByUserIdOrderByTestDateDesc(userId)
         
         if (recentMocks.isEmpty()) {
@@ -34,42 +33,35 @@ class ExamReadinessService(
             )
         }
 
-        // Calculate average score
         val averageScore = recentMocks.map { it.totalScore }.average()
         
-        // Calculate consistency (lower variance = higher consistency)
         val variance = calculateVariance(recentMocks.map { it.totalScore.toDouble() })
         val standardDeviation = sqrt(variance)
         
-        // Consistency score: 100 - (std dev as percentage of mean)
         val consistencyScore = if (averageScore > 0) {
             maxOf(0.0, 100.0 - (standardDeviation / averageScore * 100))
         } else {
             0.0
         }
         
-        // Get target score from goal (if exists)
         val goal = goalRepository.findByUserId(userId).firstOrNull()
-        val targetScore = goal?.targetScore?.toDouble() ?: 450.0 // Default UPSC cutoff
+        val targetScore = goal?.targetScore?.toDouble() ?: 450.0
         
-        // Calculate target achievement percentage
         val targetAchievement = (averageScore / targetScore) * 100.0
         
         // Calculate final readiness score (weighted average)
         val readinessScore = (
-            (averageScore / 5.0) * 0.5 +  // 50% weight on average score (normalized to 100)
-            consistencyScore * 0.3 +        // 30% weight on consistency
-            minOf(targetAchievement, 100.0) * 0.2  // 20% weight on target achievement
+            (averageScore / 5.0) * 0.5 +
+            consistencyScore * 0.3 +
+            minOf(targetAchievement, 100.0) * 0.2
         ).toInt().coerceIn(0, 100)
         
-        // Determine status
         val status = when {
             readinessScore <= 40 -> ReadinessStatus.NEEDS_IMPROVEMENT
             readinessScore <= 70 -> ReadinessStatus.ON_TRACK
             else -> ReadinessStatus.EXAM_READY
         }
         
-        // Generate message
         val message = when (status) {
             ReadinessStatus.NEEDS_IMPROVEMENT -> 
                 "Focus on improving your scores and consistency. Take more mocks regularly."

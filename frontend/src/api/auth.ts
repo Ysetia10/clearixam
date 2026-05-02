@@ -26,7 +26,6 @@ export const authApi = {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      // Extract exact error message from backend
       const errorMessage = errorData.message || errorData.error || 'Login failed';
       throw new Error(errorMessage);
     }
@@ -45,7 +44,6 @@ export const authApi = {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      // Extract exact error message from backend
       const errorMessage = errorData.message || errorData.error || 'Registration failed';
       throw new Error(errorMessage);
     }
@@ -54,7 +52,6 @@ export const authApi = {
   },
 };
 
-// Token management
 export const getToken = (): string | null => {
   return localStorage.getItem('token');
 };
@@ -72,7 +69,6 @@ export const isAuthenticated = (): boolean => {
   return !!getToken();
 };
 
-// User email management
 export const getUserEmail = (): string | null => {
   return localStorage.getItem('userEmail');
 };
@@ -81,7 +77,6 @@ export const setUserEmail = (email: string): void => {
   localStorage.setItem('userEmail', email);
 };
 
-// Logout helper
 export const logout = (): void => {
   removeToken();
   window.location.href = '/login';

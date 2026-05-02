@@ -19,11 +19,10 @@
   --red-glow: rgba(244,63,94,0.2);
   --blue: #60a5fa;
   --blue-glow: rgba(96,165,250,0.15);
-  --on-accent: #ffffff;   /* text on accent/colored backgrounds */
-  --on-color: #ffffff;    /* text on any solid colored button/badge */
+  --on-accent: #ffffff;
+  --on-color: #ffffff;
 }
 
-/* Light mode theme */
 [data-theme="light"] {
   --bg: #f9fafb;
   --surface: #ffffff;
@@ -49,7 +48,6 @@
   --on-color: #ffffff;
 }
 
-/* Dark mode theme (default) */
 [data-theme="dark"] {
   --bg: #09090f;
   --surface: #111118;
@@ -118,7 +116,12 @@ body::before {
   50% { opacity: 0.5; }
 }
 
-/* CARDS */
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -149,7 +152,6 @@ body::before {
   border-color: rgba(124,106,255,0.2); 
 }
 
-/* BUTTONS */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -186,7 +188,6 @@ body::before {
   color: var(--text); 
 }
 
-/* BADGES */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -221,7 +222,6 @@ body::before {
   border: 1px solid rgba(124,106,255,0.2); 
 }
 
-/* INPUTS */
 .input {
   background: var(--surface2);
   border: 1px solid var(--border2);
@@ -253,7 +253,6 @@ body::before {
   display: block;
 }
 
-/* TABLES */
 .table-header {
   display: grid;
   padding: 14px 24px;
@@ -285,7 +284,6 @@ body::before {
   border-bottom: none; 
 }
 
-/* EMPTY STATES */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -319,7 +317,6 @@ body::before {
   color: var(--text3); 
 }
 
-/* PROGRESS BARS */
 .progress-track {
   height: 6px;
   border-radius: 3px;
@@ -334,7 +331,6 @@ body::before {
   transition: width 1s ease;
 }
 
-/* INSIGHT BANNER */
 .insight-banner {
   display: flex;
   align-items: center;
@@ -354,7 +350,6 @@ body::before {
   border: 1px solid rgba(244,63,94,0.2);
 }
 
-/* SECTION TITLES */
 .section-title {
   font-family: 'Syne', sans-serif;
   font-size: 15px;
@@ -386,7 +381,6 @@ body::before {
   margin-bottom: 14px;
 }
 
-/* TABS */
 .tabs {
   display: flex;
   gap: 4px;
@@ -415,7 +409,6 @@ body::before {
   box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
-/* SELECT */
 .select {
   appearance: none;
   background: var(--surface2);
@@ -437,7 +430,6 @@ body::before {
   border-color: var(--accent); 
 }
 
-/* STAGGER ANIMATIONS */
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.10s; }
 .stagger-3 { animation-delay: 0.15s; }
@@ -445,7 +437,6 @@ body::before {
 .stagger-5 { animation-delay: 0.25s; }
 .stagger-6 { animation-delay: 0.30s; }
 
-/* SCROLLBARS */
 ::-webkit-scrollbar { 
   width: 6px; 
   height: 6px; 

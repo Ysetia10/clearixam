@@ -30,7 +30,6 @@ export const Dashboard = () => {
     queryFn: examsApi.getAllOrdered,
   });
 
-  // Default to first exam once loaded
   useEffect(() => {
     if (exams.length > 0 && !selectedExamId) {
       setSelectedExamId(exams[0].id);
@@ -163,14 +162,12 @@ export const Dashboard = () => {
 
   return (
     <DashboardLayout>
-      {/* TOPBAR */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 className="page-title">Dashboard</h1>
           <p style={{ fontSize: '13px', color: 'var(--text2)', marginTop: '4px' }}>Track your performance and progress</p>
         </div>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-          {/* Exam Selector */}
           {exams.length > 0 && (
             <select
               className="select"
@@ -187,7 +184,6 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* INSIGHT BANNER */}
       {legacyInsights.length > 0 && (
         <div className={`insight-banner ${legacyInsights[0].type === 'success' ? 'insight-banner-green' : 'insight-banner-red'}`} style={{ marginBottom: '24px' }}>
           <div style={{
@@ -208,7 +204,6 @@ export const Dashboard = () => {
         </div>
       )}
 
-      {/* STATS GRID */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <div className="card stagger-1">
           <div className="stat-label">Average Score</div>
@@ -248,7 +243,6 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* INSIGHT CARDS ROW */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         {/* Performance Stability */}
         <div className="card">
@@ -267,22 +261,18 @@ export const Dashboard = () => {
         )}
       </div>
 
-      {/* INSIGHTS ENGINE */}
       {insightsData && insightsData.insights.length > 0 && (
         <InsightsCard insights={insightsData} />
       )}
 
-      {/* NEGLECTED SUBJECTS */}
       {neglectedSubjects.length > 0 && (
         <NeglectCard subjects={neglectedSubjects} windowSize={neglectData?.windowSize ?? 5} />
       )}
 
-      {/* ADAPTIVE SUBJECT STRENGTH */}
       {adaptiveStrength && adaptiveStrength.subjects.length > 0 && (
         <AdaptiveStrengthCard adaptiveStrength={adaptiveStrength} />
       )}
 
-      {/* GOAL CARD */}
       {!overview?.goalProgress ? (
         <div className="card card-accent" style={{
           background: 'linear-gradient(135deg, rgba(124,106,255,0.12), rgba(124,106,255,0.04))',
@@ -326,7 +316,6 @@ export const Dashboard = () => {
         </div>
       )}
 
-      {/* BOTTOM GRID */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '16px', marginBottom: '24px' }}>
         {/* Performance Trend Chart */}
         <div className="card">
@@ -408,7 +397,6 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* MOCK HISTORY TABLE */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div style={{ padding: '22px 24px', borderBottom: '1px solid var(--border)' }}>
           <h3 className="section-title">Recent Mocks</h3>
@@ -458,7 +446,6 @@ export const Dashboard = () => {
   );
 };
 
-// ── Improvement Card ─────────────────────────────────────────────────────────
 function ImprovementCard({ improvement }: { improvement: ImprovementDTO }) {
   const trendBadge =
     improvement.trend === 'IMPROVING' ? 'badge-green' :
@@ -500,7 +487,6 @@ function ImprovementCard({ improvement }: { improvement: ImprovementDTO }) {
   );
 }
 
-// ── Insights Engine Card ─────────────────────────────────────────────────────
 function InsightsCard({ insights }: { insights: InsightsResponse }) {
   const getInsightIcon = (type: InsightType) => {
     switch (type) {
@@ -546,7 +532,6 @@ function InsightsCard({ insights }: { insights: InsightsResponse }) {
   );
 }
 
-// ── Adaptive Strength Card ───────────────────────────────────────────────────
 function AdaptiveStrengthCard({ adaptiveStrength }: { adaptiveStrength: AdaptiveStrengthResponse }) {
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -611,7 +596,6 @@ function AdaptiveStrengthCard({ adaptiveStrength }: { adaptiveStrength: Adaptive
   );
 }
 
-// ── Attempt vs Accuracy Card ──────────────────────────────────────────────────
 function AttemptAccuracyCard({ insight }: { insight: AttemptAccuracyInsightDTO }) {
   const trendBadge =
     insight.trend === 'NEGATIVE' ? 'badge-red' :
@@ -648,7 +632,6 @@ function AttemptAccuracyCard({ insight }: { insight: AttemptAccuracyInsightDTO }
   );
 }
 
-// ── Neglect Card ──────────────────────────────────────────────────────────────
 function NeglectCard({ subjects, windowSize }: { subjects: SubjectNeglectDTO[]; windowSize: number }) {
   return (
     <div className="card" style={{ marginBottom: '24px', borderColor: 'rgba(244,63,94,0.2)' }}>

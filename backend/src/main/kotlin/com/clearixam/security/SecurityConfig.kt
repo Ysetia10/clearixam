@@ -27,7 +27,6 @@ class SecurityConfig(
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         
-        // Allow specific origins
         configuration.allowedOrigins = listOf(
             "http://localhost:3000",
             "http://localhost:3001",
@@ -35,19 +34,14 @@ class SecurityConfig(
             "https://clearixam.vercel.app"
         )
         
-        // Allow all HTTP methods
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
         
-        // Allow all headers
         configuration.allowedHeaders = listOf("*")
         
-        // Expose headers
         configuration.exposedHeaders = listOf("Authorization", "Content-Type")
         
-        // Allow credentials
         configuration.allowCredentials = true
         
-        // Cache preflight for 1 hour
         configuration.maxAge = 3600L
         
         logger.info("CORS Configuration initialized with origins: ${configuration.allowedOrigins}")
@@ -62,13 +56,10 @@ class SecurityConfig(
         logger.info("Configuring Security Filter Chain")
         
         http
-            // Enable CORS with our configuration
             .cors { it.configurationSource(corsConfigurationSource()) }
             
-            // Disable CSRF for stateless JWT API
             .csrf { it.disable() }
             
-            // Add security headers
             .headers { headers ->
                 headers
                     .contentSecurityPolicy { csp ->
@@ -86,18 +77,14 @@ class SecurityConfig(
                     }
             }
             
-            // Stateless session management
             .sessionManagement { 
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
             }
             
-            // Configure authorization rules
             .authorizeHttpRequests { auth ->
                 auth
-                    // Allow all OPTIONS requests (CORS preflight)
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     
-                    // Public endpoints - no authentication required
                     .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/auth/**").permitAll()
                     .requestMatchers("/register").permitAll()
@@ -108,15 +95,13 @@ class SecurityConfig(
                     .requestMatchers("/v3/api-docs/**").permitAll()
                     .requestMatchers("/api/exams", "/api/exams/**").permitAll()
                     .requestMatchers("/api/subjects", "/api/subjects/**").permitAll()
-                    .requestMatchers("/api/mcq/**").permitAll() // MCQ processing endpoints
+                    .requestMatchers("/api/mcq/**").permitAll()
                     
-                    // All other endpoints require authentication
                     .anyRequest().authenticated()
                 
                 logger.info("Authorization rules configured - public endpoints: /api/auth/**, /api/exams/**, /api/subjects/**, /api/mcq/**, /health")
             }
             
-            // Add JWT filter before Spring Security's authentication filter
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()

@@ -1,4 +1,3 @@
-// Production-safe error logging utility
 interface ErrorContext {
   component?: string;
   action?: string;
@@ -19,12 +18,10 @@ class ErrorLogger {
       ...context,
     };
 
-    // Only log to console in development
     if (this.isDevelopment) {
       console.error('Error logged:', errorInfo);
     }
 
-    // Store in sessionStorage for debugging (limit to 10 errors)
     try {
       const errors = JSON.parse(sessionStorage.getItem('app_errors') || '[]');
       errors.push(errorInfo);
@@ -33,11 +30,7 @@ class ErrorLogger {
       }
       sessionStorage.setItem('app_errors', JSON.stringify(errors));
     } catch (e) {
-      // Silently fail if storage is full
     }
-
-    // In production, this would send to a monitoring service
-    // Example: Sentry.captureException(error, { extra: context });
   }
 
   logApiError(error: any, endpoint: string) {

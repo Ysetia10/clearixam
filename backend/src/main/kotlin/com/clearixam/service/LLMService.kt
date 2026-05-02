@@ -29,9 +29,6 @@ class LLMService(
     
     private val timeout = Duration.ofSeconds(3)
     
-    /**
-     * Classify MCQ using Gemini LLM when rule-based classification needs fallback
-     */
     fun classifyWithLLM(cleanedText: String): LLMResult? {
         return try {
             logger.info("LLM_CALL_START text_length=${cleanedText.length}")
@@ -51,7 +48,6 @@ class LLMService(
                 return null
             }
             
-            // Validate and normalize LLM result
             val validatedResult = validateAndNormalizeLLMResult(rawResult, cleanedText)
             
             val processingTime = System.currentTimeMillis() - startTime
@@ -72,29 +68,22 @@ class LLMService(
         }
     }
     
-    /**
-     * Validate and normalize LLM result against allowed values
-     */
     private fun validateAndNormalizeLLMResult(rawResult: LLMResult, cleanedText: String): LLMResult? {
         try {
-            // Normalize subject and topic
             val normalizedSubject = topicNormalizer.normalizeSubject(rawResult.subject)
             val normalizedTopic = topicNormalizer.normalizeTopic(rawResult.topic)
             
-            // Validate subject is in allowed list
             val allowedSubject = AllowedSubject.fromString(normalizedSubject)
             if (allowedSubject == null) {
                 logger.warn("LLM_INVALID_SUBJECT subject='$normalizedSubject' allowed=${AllowedSubject.getAllowedSubjects()}")
                 return null
             }
             
-            // Validate topic is not empty
             if (normalizedTopic.isBlank()) {
                 logger.warn("LLM_EMPTY_TOPIC subject='$normalizedSubject'")
                 return null
             }
             
-            // Validate difficulty
             val validDifficulty = when (rawResult.difficulty.lowercase()) {
                 "easy", "medium", "hard" -> rawResult.difficulty
                 else -> "Medium" // Default fallback
@@ -115,9 +104,6 @@ class LLMService(
         }
     }
     
-    /**
-     * Build structured prompt for MCQ classification
-     */
     private fun buildClassificationPrompt(cleanedText: String): String {
         return """
 You are an MCQ classifier for SSC exams. Classify the question below into JSON.
@@ -136,9 +122,6 @@ MCQ: $cleanedText
         """.trimIndent()
     }
     
-    /**
-     * Call Gemini API with the classification prompt
-     */
     private fun callGeminiAPI(prompt: String): String {
         val headers = HttpHeaders().apply {
             contentType = MediaType.APPLICATION_JSON
@@ -179,9 +162,6 @@ MCQ: $cleanedText
         return response.body ?: throw RuntimeException("Empty response from Gemini API")
     }
     
-    /**
-     * Parse Gemini API response and extract classification JSON
-     */
     private fun parseGeminiResponse(response: String): LLMResult? {
         return try {
             logger.debug("Parsing Gemini response: ${response.take(200)}...")
@@ -206,7 +186,6 @@ MCQ: $cleanedText
                 return null
             }
             
-            // Extract JSON from response (remove markdown formatting if present)
             val jsonContent = extractJsonFromContent(content)
             val classificationJson = objectMapper.readTree(jsonContent)
             
@@ -223,17 +202,12 @@ MCQ: $cleanedText
         }
     }
     
-    /**
-     * Extract JSON content from Gemini response (handle markdown formatting)
-     */
     private fun extractJsonFromContent(content: String): String {
-        // Remove markdown code blocks if present
         val cleaned = content
             .replace("```json", "")
             .replace("```", "")
             .trim()
         
-        // Find JSON object boundaries
         val startIndex = cleaned.indexOf('{')
         val endIndex = cleaned.lastIndexOf('}')
         
@@ -244,9 +218,6 @@ MCQ: $cleanedText
         return cleaned.substring(startIndex, endIndex + 1)
     }
     
-    /**
-     * Parse keywords array from JSON node
-     */
     private fun parseKeywords(keywordsNode: JsonNode?): List<String> {
         return try {
             when {
@@ -261,16 +232,10 @@ MCQ: $cleanedText
         }
     }
     
-    /**
-     * Check if LLM service is available and configured
-     */
     fun isAvailable(): Boolean {
         return geminiApiKey.isNotBlank()
     }
     
-    /**
-     * Get LLM service configuration info
-     */
     fun getServiceInfo(): Map<String, Any> {
         return mapOf(
             "provider" to "Google Gemini",

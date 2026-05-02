@@ -59,13 +59,11 @@ class ExamService(
             val exams = examRepository.findAll()
             logger.info("ExamService.getAllExamsOrderedByMockCount() - Found ${exams.size} exams in database")
             
-            // Count mocks per exam for this user
             val examMockCounts = exams.map { exam ->
                 val mockCount = mockTestRepository.findByUserIdAndExamIdOrderByTestDateDesc(user.id!!, exam.id!!).size
                 exam to mockCount
             }
             
-            // Sort by mock count (descending), then by name (ascending) for ties
             val sortedExams = examMockCounts
                 .sortedWith(compareByDescending<Pair<Exam, Int>> { it.second }.thenBy { it.first.name })
                 .map { it.first }
@@ -84,7 +82,6 @@ class ExamService(
             }
         } catch (e: Exception) {
             logger.error("ExamService.getAllExamsOrderedByMockCount() - Unexpected error", e)
-            // Fallback to default ordering
             getAllExams()
         }
     }

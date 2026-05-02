@@ -10,11 +10,9 @@ export const PasswordStrengthMeter = ({ password }: PasswordStrengthMeterProps) 
 
     let score = 0;
     
-    // Length check
     if (pwd.length >= 8) score += 25;
     if (pwd.length >= 12) score += 10;
     
-    // Character variety checks
     if (/[a-z]/.test(pwd)) score += 15;
     if (/[A-Z]/.test(pwd)) score += 15;
     if (/[0-9]/.test(pwd)) score += 15;

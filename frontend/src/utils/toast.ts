@@ -1,4 +1,3 @@
-// Simple toast notification utility
 type ToastType = 'success' | 'error' | 'info' | 'warning';
 
 interface ToastOptions {
@@ -47,7 +46,6 @@ class ToastManager {
     `;
     toast.textContent = message;
 
-    // Add animation
     const style = document.createElement('style');
     style.textContent = `
       @keyframes slideIn {
@@ -78,7 +76,6 @@ class ToastManager {
 
     container.appendChild(toast);
 
-    // Auto remove
     setTimeout(() => {
       toast.style.animation = 'slideOut 0.3s ease-out';
       setTimeout(() => {

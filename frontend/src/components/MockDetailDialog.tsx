@@ -53,8 +53,6 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
   };
 
   const handleEdit = () => {
-    // For now, navigate to add mock page
-    // In future, could pre-populate form with existing data
     navigate('/add-mock');
     onClose();
   };

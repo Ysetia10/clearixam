@@ -11,13 +11,9 @@ class ConfidenceEngine {
     
     private val logger = LoggerFactory.getLogger(ConfidenceEngine::class.java)
     
-    // Confidence thresholds
-    private val CONFIDENT_THRESHOLD = 60.0 // 60%
-    private val AMBIGUITY_THRESHOLD = 15.0 // 15% difference
+    private val CONFIDENT_THRESHOLD = 60.0
+    private val AMBIGUITY_THRESHOLD = 15.0
     
-    /**
-     * Analyze classification result and determine if LLM fallback is needed
-     */
     fun analyzeConfidence(
         primaryResult: ClassificationResult,
         allCandidates: List<ClassificationCandidate>
@@ -36,7 +32,6 @@ class ConfidenceEngine {
             
         } catch (e: Exception) {
             logger.error("Confidence analysis failed: ${e.message}", e)
-            // Fallback to low confidence requiring LLM
             primaryResult.copy(
                 status = ClassificationStatus.LOW_CONFIDENCE,
                 needsLLM = true
@@ -44,15 +39,11 @@ class ConfidenceEngine {
         }
     }
     
-    /**
-     * Make confidence decision based on multiple criteria
-     */
     private fun makeConfidenceDecision(
         primaryResult: ClassificationResult,
         allCandidates: List<ClassificationCandidate>
     ): ConfidenceDecision {
         
-        // Edge case: No keywords found or unknown classification
         if (primaryResult.subject == "UNKNOWN" || 
             primaryResult.subject == "ERROR" ||
             primaryResult.confidence == 0.0 ||
@@ -62,9 +53,7 @@ class ConfidenceEngine {
             return ConfidenceDecision(ClassificationStatus.LOW_CONFIDENCE, true)
         }
         
-        // Rule 1: Confidence threshold check
         if (primaryResult.confidence >= CONFIDENT_THRESHOLD) {
-            // High confidence, but still check for ambiguity
             val ambiguityCheck = checkAmbiguity(allCandidates)
             if (ambiguityCheck.isAmbiguous) {
                 logger.debug("High confidence but ambiguous results detected")
@@ -75,9 +64,7 @@ class ConfidenceEngine {
             return ConfidenceDecision(ClassificationStatus.CONFIDENT, false)
         }
         
-        // Rule 2: Low confidence check
         if (primaryResult.confidence < CONFIDENT_THRESHOLD) {
-            // Check if it's ambiguous or just low confidence
             val ambiguityCheck = checkAmbiguity(allCandidates)
             if (ambiguityCheck.isAmbiguous) {
                 logger.debug("Low confidence with ambiguous results")
@@ -88,19 +75,14 @@ class ConfidenceEngine {
             return ConfidenceDecision(ClassificationStatus.LOW_CONFIDENCE, true)
         }
         
-        // Fallback
         return ConfidenceDecision(ClassificationStatus.LOW_CONFIDENCE, true)
     }
     
-    /**
-     * Check for ambiguity between top classification candidates
-     */
     private fun checkAmbiguity(candidates: List<ClassificationCandidate>): AmbiguityResult {
         if (candidates.size < 2) {
             return AmbiguityResult(false, 0.0)
         }
         
-        // Sort by confidence descending
         val sortedCandidates = candidates.sortedByDescending { it.confidence }
         val topScore = sortedCandidates[0].confidence
         val secondScore = sortedCandidates[1].confidence
@@ -113,9 +95,6 @@ class ConfidenceEngine {
         return AmbiguityResult(isAmbiguous, scoreDifference)
     }
     
-    /**
-     * Create classification result with confidence analysis
-     */
     fun createConfidentResult(
         subject: String,
         topic: String,
@@ -133,8 +112,8 @@ class ConfidenceEngine {
             confidence = confidence,
             matchedKeywords = matchedKeywords,
             cleanedText = cleanedText,
-            status = ClassificationStatus.LOW_CONFIDENCE, // Will be updated
-            needsLLM = true, // Will be updated
+            status = ClassificationStatus.LOW_CONFIDENCE,
+            needsLLM = true,
             source = source,
             difficulty = difficulty
         )
@@ -142,9 +121,6 @@ class ConfidenceEngine {
         return analyzeConfidence(baseResult, allCandidates)
     }
     
-    /**
-     * Create unknown/error result that always needs LLM
-     */
     fun createUnknownResult(reason: String, cleanedText: String): ClassificationResult {
         logger.warn("Creating unknown result: $reason")
         return ClassificationResult(
@@ -160,9 +136,6 @@ class ConfidenceEngine {
         )
     }
     
-    /**
-     * Create error result that always needs LLM
-     */
     fun createErrorResult(errorMessage: String, cleanedText: String): ClassificationResult {
         logger.error("Creating error result: $errorMessage")
         return ClassificationResult(
@@ -178,9 +151,6 @@ class ConfidenceEngine {
         )
     }
     
-    /**
-     * Create LLM-enhanced result
-     */
     fun createLLMResult(
         llmResult: com.clearixam.dto.response.LLMResult,
         cleanedText: String,
@@ -190,31 +160,25 @@ class ConfidenceEngine {
         return ClassificationResult(
             subject = llmResult.subject,
             topic = llmResult.topic,
-            confidence = originalConfidence, // LLM results get high confidence
+            confidence = originalConfidence,
             matchedKeywords = llmResult.keywords,
             cleanedText = cleanedText,
             status = ClassificationStatus.LLM_ENHANCED,
-            needsLLM = false, // Already processed by LLM
+            needsLLM = false,
             source = ClassificationSource.LLM,
             difficulty = llmResult.difficulty,
-            id = null // Will be set when saved
+            id = null
         )
     }
     
-    /**
-     * Create fallback rule result when LLM fails
-     */
     fun createFallbackResult(originalResult: ClassificationResult): ClassificationResult {
         logger.warn("Creating fallback result after LLM failure")
         return originalResult.copy(
             status = ClassificationStatus.FALLBACK_RULE,
-            needsLLM = false // Don't retry LLM
+            needsLLM = false
         )
     }
     
-    /**
-     * Get confidence thresholds for debugging/configuration
-     */
     fun getThresholds(): Map<String, Double> {
         return mapOf(
             "confidentThreshold" to CONFIDENT_THRESHOLD,
@@ -222,7 +186,6 @@ class ConfidenceEngine {
         )
     }
     
-    // Data classes for internal use
     data class ClassificationCandidate(
         val subject: String,
         val topic: String,

@@ -39,11 +39,9 @@ class MockTestService(
         val exam = examRepository.findById(request.examId)
             .orElseThrow { IllegalArgumentException("Exam not found: ${request.examId}") }
 
-        // Calculate totals from subject inputs
         val totalAttempted = request.subjects.sumOf { it.attempted }
         val totalCorrect = request.subjects.sumOf { it.correct }
         val totalIncorrect = request.subjects.sumOf { it.attempted - it.correct }
-        // Score formula: use exam's marking scheme
         val marksObtained = totalCorrect * exam.correctMarks - totalIncorrect * exam.negativeMarks
         val totalScore = marksObtained
         val probabilityScore = calculateProbability(totalScore, request.cutoffScore)
@@ -65,7 +63,6 @@ class MockTestService(
 
         val savedMock = mockTestRepository.save(mockTest)
 
-        // Save subject scores
         request.subjects.forEach { subjectInput ->
             val subject = subjectRepository.findById(subjectInput.subjectId)
                 .orElseThrow { IllegalArgumentException("Subject not found: ${subjectInput.subjectId}") }
@@ -167,8 +164,6 @@ class MockTestService(
 
         logger.info("Deleted mock test $mockId")
     }
-
-    // ---- Helpers ----
 
     private fun toMockResponse(mock: MockTest) = MockResponse(
         id = mock.id!!,

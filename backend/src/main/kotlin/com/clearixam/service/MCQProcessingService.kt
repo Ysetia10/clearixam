@@ -18,15 +18,11 @@ class MCQProcessingService(
     
     private val logger = LoggerFactory.getLogger(MCQProcessingService::class.java)
     
-    /**
-     * Complete MCQ processing pipeline: Image → OCR → Preprocessing → Classification
-     */
     fun processImage(image: MultipartFile): ClassificationResult {
         return try {
             logger.info("Starting MCQ processing pipeline for image: ${image.originalFilename}")
             val startTime = System.currentTimeMillis()
             
-            // Step 1: OCR - Extract text from image
             logger.debug("Step 1: Performing OCR extraction")
             val rawText = ocrService.extractText(image)
             
@@ -37,7 +33,6 @@ class MCQProcessingService(
             
             logger.debug("OCR completed. Extracted ${rawText.length} characters")
             
-            // Step 2: Text Preprocessing - Clean the extracted text
             logger.debug("Step 2: Preprocessing extracted text")
             val cleanedText = textPreprocessor.cleanMCQText(rawText)
             
@@ -48,11 +43,9 @@ class MCQProcessingService(
             
             logger.debug("Text preprocessing completed. Cleaned text: ${cleanedText.take(100)}...")
             
-            // Step 3: Classification - Classify the cleaned text
             logger.debug("Step 3: Classifying processed text")
             val classificationWithCandidates = ruleBasedClassifier.classifyWithCandidates(cleanedText)
             
-            // Step 4: Confidence Analysis - Determine if LLM fallback is needed
             logger.debug("Step 4: Analyzing confidence and determining LLM fallback need")
             val confidenceResult = confidenceEngine.analyzeConfidence(
                 classificationWithCandidates.primaryResult,
@@ -61,7 +54,6 @@ class MCQProcessingService(
             
             logger.info("RULE_RESULT subject='${confidenceResult.subject}' topic='${confidenceResult.topic}' confidence=${confidenceResult.confidence} status=${confidenceResult.status} needsLLM=${confidenceResult.needsLLM}")
             
-            // Step 5: LLM Fallback (if needed)
             val finalResult = if (confidenceResult.needsLLM && llmService.isAvailable()) {
                 logger.info("LLM_FALLBACK_TRIGGERED reason='${confidenceResult.status}' confidence=${confidenceResult.confidence}")
                 applyLLMFallback(confidenceResult, cleanedText)
@@ -90,7 +82,6 @@ class MCQProcessingService(
                 matchedKeywords = finalResult.matchedKeywords
             )
             
-            // Return result with classification ID
             finalResult.copy(
                 cleanedText = cleanedText,
                 id = savedClassification.id
@@ -102,9 +93,6 @@ class MCQProcessingService(
         }
     }
     
-    /**
-     * Process text directly (bypass OCR step)
-     */
     fun processText(text: String): ClassificationResult {
         return try {
             logger.info("Processing text directly (bypassing OCR)")
@@ -113,23 +101,19 @@ class MCQProcessingService(
                 return confidenceEngine.createUnknownResult("Empty text provided", text)
             }
             
-            // Step 1: Text Preprocessing
             val cleanedText = textPreprocessor.cleanMCQText(text)
             
             if (cleanedText.isBlank()) {
                 return confidenceEngine.createUnknownResult("Text preprocessing failed", text)
             }
             
-            // Step 2: Classification with candidates
             val classificationWithCandidates = ruleBasedClassifier.classifyWithCandidates(cleanedText)
             
-            // Step 3: Confidence Analysis
             val confidenceResult = confidenceEngine.analyzeConfidence(
                 classificationWithCandidates.primaryResult,
                 classificationWithCandidates.allCandidates
             )
             
-            // Step 4: LLM Fallback (if needed)
             val finalResult = if (confidenceResult.needsLLM && llmService.isAvailable()) {
                 logger.debug("Applying LLM fallback for text processing")
                 applyLLMFallback(confidenceResult, cleanedText)
@@ -139,7 +123,6 @@ class MCQProcessingService(
             
             logger.info("Text processing completed. Result: ${finalResult.subject} -> ${finalResult.topic} (Status: ${finalResult.status}, Source: ${finalResult.source})")
             
-            // Save classification for learning
             val savedClassification = mcqLearningService.saveClassification(
                 questionText = cleanedText,
                 subject = finalResult.subject,
@@ -163,9 +146,6 @@ class MCQProcessingService(
         }
     }
     
-    /**
-     * Apply LLM fallback when rule-based classification needs enhancement
-     */
     private fun applyLLMFallback(originalResult: ClassificationResult, cleanedText: String): ClassificationResult {
         return try {
             logger.info("LLM_FALLBACK_START original_subject='${originalResult.subject}' original_confidence=${originalResult.confidence}")
@@ -186,9 +166,6 @@ class MCQProcessingService(
         }
     }
     
-    /**
-     * Get processing pipeline status and configuration
-     */
     fun getProcessingInfo(): Map<String, Any> {
         return mapOf(
             "ocrInfo" to ocrService.getOCRInfo(),
@@ -200,15 +177,12 @@ class MCQProcessingService(
         )
     }
     
-    /**
-     * Validate image file before processing
-     */
     fun validateImage(image: MultipartFile): String? {
         return when {
             image.isEmpty -> "Image file is empty"
             image.size > 10 * 1024 * 1024 -> "Image file too large (max 10MB)"
             image.contentType?.startsWith("image/") != true -> "File is not an image"
-            else -> null // Valid
+            else -> null
         }
     }
 }

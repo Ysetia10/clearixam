@@ -18,25 +18,17 @@ class MCQLearningService(
     
     private val logger = LoggerFactory.getLogger(MCQLearningService::class.java)
     
-    // In-memory keyword boost cache for performance
     private val keywordBoosts = ConcurrentHashMap<String, Double>()
     
-    // Track keyword-classification pairs for noise control
     private val keywordClassificationCounts = ConcurrentHashMap<String, Int>()
     
-    // Minimum confidence threshold for learning
     private val MIN_CONFIDENCE_FOR_LEARNING = 30.0
     
     init {
-        // Populate text hashes for existing records first
         populateTextHashesForExistingRecords()
-        // Load existing corrections on startup
         loadExistingCorrections()
     }
     
-    /**
-     * Save initial classification result with duplicate detection
-     */
     fun saveClassification(
         questionText: String,
         subject: String,
@@ -49,14 +41,12 @@ class MCQLearningService(
         val cleanedText = questionText.lowercase().trim()
         val textHash = generateTextHash(cleanedText)
         
-        // Check for duplicate
         val existing = mcqClassificationRepository.findByTextHash(textHash)
         if (existing != null) {
             logger.info("DUPLICATE_DETECTED hash=$textHash existing_id=${existing.id}")
             return existing
         }
         
-        // Normalize subject and topic
         val normalizedSubject = topicNormalizer.normalizeSubject(subject)
         val normalizedTopic = topicNormalizer.normalizeTopic(topic)
         
@@ -80,9 +70,6 @@ class MCQLearningService(
         return saved
     }
     
-    /**
-     * Apply user correction and trigger learning with noise control
-     */
     fun correctClassification(
         id: Long,
         correctedSubject: String,
@@ -95,11 +82,9 @@ class MCQLearningService(
             return null
         }
         
-        // Normalize corrected values
         val normalizedSubject = topicNormalizer.normalizeSubject(correctedSubject)
         val normalizedTopic = topicNormalizer.normalizeTopic(correctedTopic)
         
-        // Update with correction
         val corrected = classification.copy(
             userCorrected = true,
             correctedSubject = normalizedSubject,
@@ -110,7 +95,6 @@ class MCQLearningService(
         val saved = mcqClassificationRepository.save(corrected)
         logger.info("CORRECTION_APPLIED id=${saved.id} original='${classification.subject}/${classification.topic}' corrected='$normalizedSubject/$normalizedTopic' confidence=${classification.confidence}")
         
-        // Apply learning with noise control
         if (classification.confidence >= MIN_CONFIDENCE_FOR_LEARNING) {
             learnFromCorrection(saved)
         } else {
@@ -120,12 +104,8 @@ class MCQLearningService(
         return saved
     }
     
-    /**
-     * Learn from user correction with noise control
-     */
     private fun learnFromCorrection(correction: MCQClassification) {
         try {
-            // Extract keywords from question text with improved filtering
             val questionKeywords = extractKeywordsFromText(correction.questionText)
             
             if (questionKeywords.isEmpty()) {
@@ -139,14 +119,12 @@ class MCQLearningService(
             questionKeywords.forEach { keyword ->
                 val keywordClassificationKey = "$keyword->$targetClassification"
                 
-                // Increment count for this keyword-classification pair
                 val currentCount = keywordClassificationCounts.getOrDefault(keywordClassificationKey, 0) + 1
                 keywordClassificationCounts[keywordClassificationKey] = currentCount
                 
-                // Only apply boost if we've seen this pattern at least 2 times OR it's the first time
                 if (currentCount >= 2 || keywordClassificationCounts.size < 10) {
                     val currentBoost = keywordBoosts.getOrDefault(keyword, 1.0)
-                    val newBoost = (currentBoost + 0.1).coerceAtMost(2.0) // Max 2x boost
+                    val newBoost = (currentBoost + 0.1).coerceAtMost(2.0)
                     keywordBoosts[keyword] = newBoost
                     boostedCount++
                     
@@ -163,12 +141,8 @@ class MCQLearningService(
         }
     }
     
-    /**
-     * Extract meaningful keywords from question text with improved filtering
-     */
     private fun extractKeywordsFromText(text: String): List<String> {
         val stopWords = setOf(
-            // Basic stop words
             "what", "which", "the", "is", "are", "of", "in", "on", "at", "to", "for", "with", "by",
             "from", "up", "about", "into", "through", "during", "before", "after", "above", "below", 
             "between", "among", "this", "that", "these", "those", "i", "you", "he", "she", "it", 
@@ -176,9 +150,7 @@ class MCQLearningService(
             "their", "am", "are", "was", "were", "be", "been", "being", "have", "has", "had", 
             "do", "does", "did", "will", "would", "could", "should", "may", "might", "must", 
             "can", "shall", "a", "an", "and", "or", "but", "not", "no", "yes", "if", "then",
-            // Question words
             "how", "when", "where", "why", "who", "whom", "whose", "whether",
-            // Common MCQ words
             "following", "given", "above", "below", "correct", "incorrect", "true", "false",
             "option", "options", "choose", "select", "find", "calculate", "determine"
         )
@@ -187,24 +159,18 @@ class MCQLearningService(
             .replace(Regex("[^a-zA-Z\\s]"), " ") // Remove non-alphabetic chars
             .split("\\s+".toRegex())
             .filter { word ->
-                word.length >= 3 && // Minimum length
-                !stopWords.contains(word) && // Not a stop word
-                word.matches(Regex("[a-z]+")) // Only alphabetic characters
+                word.length >= 3 &&
+                !stopWords.contains(word) &&
+                word.matches(Regex("[a-z]+"))
             }
             .distinct()
-            .take(10) // Limit to top 10 keywords to avoid noise
+            .take(10)
     }
     
-    /**
-     * Get keyword boost for rule-based classifier
-     */
     fun getKeywordBoost(keyword: String): Double {
         return keywordBoosts.getOrDefault(keyword.lowercase(), 1.0)
     }
     
-    /**
-     * Populate text hashes for existing records that don't have them
-     */
     private fun populateTextHashesForExistingRecords() {
         try {
             val recordsWithoutHash = mcqClassificationRepository.findAll()
@@ -226,9 +192,6 @@ class MCQLearningService(
         }
     }
     
-    /**
-     * Load existing corrections on startup
-     */
     private fun loadExistingCorrections() {
         try {
             val corrections = mcqClassificationRepository.findByUserCorrectedTrue()
@@ -245,9 +208,6 @@ class MCQLearningService(
         }
     }
     
-    /**
-     * Get learning statistics
-     */
     fun getLearningStats(): Map<String, Any> {
         val totalClassifications = mcqClassificationRepository.count()
         val correctedClassifications = mcqClassificationRepository.countByUserCorrectedTrue()
@@ -266,9 +226,6 @@ class MCQLearningService(
         )
     }
     
-    /**
-     * Get recent corrections for debugging
-     */
     fun getRecentCorrections(limit: Int = 10): List<Map<String, Any>> {
         return mcqClassificationRepository.findByUserCorrectedTrue()
             .sortedByDescending { it.correctedAt }
@@ -284,9 +241,6 @@ class MCQLearningService(
             }
     }
     
-    /**
-     * Set outcome for a classification
-     */
     fun setOutcome(id: Long, outcome: com.clearixam.entity.OutcomeStatus): MCQClassification? {
         val classification = mcqClassificationRepository.findById(id).orElse(null)
         if (classification == null) {
@@ -301,9 +255,6 @@ class MCQLearningService(
         return saved
     }
     
-    /**
-     * Generate MD5 hash for text deduplication
-     */
     private fun generateTextHash(text: String): String {
         val md = MessageDigest.getInstance("MD5")
         val digest = md.digest(text.toByteArray())

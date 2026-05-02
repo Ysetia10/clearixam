@@ -18,8 +18,6 @@ class AdvancedAnalyticsService(
     private val subjectAnalyticsService: SubjectAnalyticsService
 ) {
 
-    // ── Feature 4: Reliable Improvement Rate ─────────────────────────────────
-
     @Transactional(readOnly = true)
     fun getImprovement(userEmail: String, examId: UUID?): ImprovementDTO {
         val user = userRepository.findByEmail(userEmail)
@@ -61,8 +59,6 @@ class AdvancedAnalyticsService(
         )
     }
 
-    // ── Feature 5: Adaptive Subject Strength ─────────────────────────────────
-
     @Transactional(readOnly = true)
     fun getAdaptiveStrength(userEmail: String, examId: UUID?): AdaptiveStrengthResponse {
         val user = userRepository.findByEmail(userEmail)
@@ -74,13 +70,11 @@ class AdvancedAnalyticsService(
         val allScores = subjectScoreRepository.findByUserIdAndExamId(user.id!!, resolvedExamId)
         if (allScores.isEmpty()) return AdaptiveStrengthResponse(0.0, emptyList())
 
-        // Calculate overall accuracy across all subjects
         val totalAttempted = allScores.sumOf { it.attempted }
         val totalCorrect = allScores.sumOf { it.correct }
         val overallAccuracy = if (totalAttempted > 0) 
             (totalCorrect.toDouble() / totalAttempted) * 100 else 0.0
 
-        // Group by subject and calculate relative performance
         val subjectResults = allScores
             .groupBy { it.subjectName }
             .map { (name, scores) ->
@@ -113,20 +107,16 @@ class AdvancedAnalyticsService(
         )
     }
 
-    // ── Feature 6: Rule-Based Insight Engine ─────────────────────────────────
-
     @Transactional(readOnly = true)
     fun getInsights(userEmail: String, examId: UUID?): InsightsResponse {
         val insights = mutableListOf<InsightDTO>()
 
         try {
-            // Get data from existing services
             val neglectData = subjectAnalyticsService.getSubjectNeglect(userEmail, examId)
             val attemptInsight = subjectAnalyticsService.getAttemptAccuracyInsight(userEmail, examId)
             val improvement = getImprovement(userEmail, examId)
             val adaptiveStrength = getAdaptiveStrength(userEmail, examId)
 
-            // Rule 1: Neglected subjects (highest priority)
             val neglectedSubjects = neglectData.subjects.filter { it.status == NeglectStatus.NEGLECTED }
             if (neglectedSubjects.isNotEmpty()) {
                 val subject = neglectedSubjects.first().subjectName
@@ -136,7 +126,6 @@ class AdvancedAnalyticsService(
                 ))
             }
 
-            // Rule 2: Weak subjects from adaptive analysis
             val weakSubjects = adaptiveStrength.subjects.filter { it.status == SubjectStrengthStatus.WEAK }
             if (weakSubjects.isNotEmpty() && insights.size < 5) {
                 val subject = weakSubjects.first()
@@ -146,7 +135,6 @@ class AdvancedAnalyticsService(
                 ))
             }
 
-            // Rule 3: Attempt strategy issues
             if (attemptInsight.trend == AttemptAccuracyTrend.NEGATIVE && insights.size < 5) {
                 insights.add(InsightDTO(
                     type = InsightType.WARNING,
@@ -154,7 +142,6 @@ class AdvancedAnalyticsService(
                 ))
             }
 
-            // Rule 4: Performance declining
             if (improvement.trend == ImprovementTrend.DECLINING && insights.size < 5) {
                 insights.add(InsightDTO(
                     type = InsightType.WARNING,
@@ -162,7 +149,6 @@ class AdvancedAnalyticsService(
                 ))
             }
 
-            // Rule 5: Performance improving (positive reinforcement)
             if (improvement.trend == ImprovementTrend.IMPROVING && insights.size < 5) {
                 insights.add(InsightDTO(
                     type = InsightType.SUCCESS,
@@ -170,7 +156,6 @@ class AdvancedAnalyticsService(
                 ))
             }
 
-            // Rule 6: Strong subjects (encouragement)
             val strongSubjects = adaptiveStrength.subjects.filter { it.status == SubjectStrengthStatus.STRONG }
             if (strongSubjects.isNotEmpty() && insights.size < 5) {
                 val subject = strongSubjects.first()
@@ -180,7 +165,6 @@ class AdvancedAnalyticsService(
                 ))
             }
 
-            // Rule 7: Attempt strategy positive
             if (attemptInsight.trend == AttemptAccuracyTrend.POSITIVE && insights.size < 5) {
                 insights.add(InsightDTO(
                     type = InsightType.INFO,
@@ -188,7 +172,6 @@ class AdvancedAnalyticsService(
                 ))
             }
 
-            // Fallback if no insights
             if (insights.isEmpty()) {
                 insights.add(InsightDTO(
                     type = InsightType.INFO,
@@ -197,7 +180,6 @@ class AdvancedAnalyticsService(
             }
 
         } catch (e: Exception) {
-            // Graceful fallback
             insights.add(InsightDTO(
                 type = InsightType.INFO,
                 message = "Add more mock test data to see detailed performance insights."
@@ -206,8 +188,6 @@ class AdvancedAnalyticsService(
 
         return InsightsResponse(insights.take(5))
     }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private fun round2(value: Double): Double =
         (value * 100.0).roundToInt() / 100.0

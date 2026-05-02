@@ -14,15 +14,12 @@ class RateLimitService {
         val now = Instant.now()
         val attempts = loginAttempts.getOrPut(ipAddress) { mutableListOf() }
         
-        // Remove attempts older than the window
         attempts.removeIf { it.isBefore(now.minusSeconds(windowSeconds)) }
         
-        // Check if rate limit exceeded
         if (attempts.size >= maxAttemptsPerMinute) {
             return true
         }
         
-        // Record this attempt
         attempts.add(now)
         
         return false
@@ -33,7 +30,6 @@ class RateLimitService {
         val attempts = loginAttempts.getOrPut(ipAddress) { mutableListOf() }
         attempts.add(now)
         
-        // Clean up old attempts
         attempts.removeIf { it.isBefore(now.minusSeconds(windowSeconds)) }
     }
     

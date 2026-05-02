@@ -58,7 +58,6 @@ export interface TopicPerformance {
   accuracy: number;
 }
 
-// Process image for MCQ classification
 export const processImage = async (file: File): Promise<MCQResult> => {
   const formData = new FormData();
   formData.append('image', file);
@@ -82,7 +81,6 @@ export const processImage = async (file: File): Promise<MCQResult> => {
   }
 };
 
-// Process text for MCQ classification
 export const processText = async (text: string): Promise<MCQResult> => {
   const response = await apiClient.post<{ success: boolean; data: MCQResult; message?: string }>('/mcq/process-text', {
     text: text.trim(),
@@ -95,7 +93,6 @@ export const processText = async (text: string): Promise<MCQResult> => {
   }
 };
 
-// Submit correction
 export const submitCorrection = async (correction: MCQCorrection): Promise<CorrectionResponse> => {
   const response = await apiClient.post<{ success: boolean; data: CorrectionResponse; message?: string }>('/mcq/correct', correction);
   
@@ -106,7 +103,6 @@ export const submitCorrection = async (correction: MCQCorrection): Promise<Corre
   }
 };
 
-// Set MCQ outcome
 export const setOutcome = async (outcome: MCQOutcome): Promise<OutcomeResponse> => {
   const response = await apiClient.post<{ success: boolean; data: OutcomeResponse; message?: string }>('/mcq/set-outcome', outcome);
   
@@ -117,11 +113,9 @@ export const setOutcome = async (outcome: MCQOutcome): Promise<OutcomeResponse> 
   }
 };
 
-// Get recent corrections
 export const getRecentCorrections = async (): Promise<RecentCorrection[]> => {
   const response = await apiClient.get<{ success: boolean; data: any[] }>('/mcq/recent-corrections');
   
-  // Transform the backend response to match our interface
   return (response.data || []).map((item: any) => ({
     id: item.id,
     questionText: item.questionText,
@@ -131,13 +125,11 @@ export const getRecentCorrections = async (): Promise<RecentCorrection[]> => {
   }));
 };
 
-// Get topic performance
 export const getTopicPerformance = async (): Promise<TopicPerformance[]> => {
   const response = await apiClient.get<{ success: boolean; data: TopicPerformance[] }>('/mcq/topic-performance');
   return response.data;
 };
 
-// Available subjects for dropdown
 export const AVAILABLE_SUBJECTS = [
   'Quantitative Aptitude',
   'Reasoning', 

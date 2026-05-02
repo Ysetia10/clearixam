@@ -17,25 +17,20 @@ class OCRService {
     
     init {
         try {
-            // Configure Tesseract
-            tesseract.setDatapath("/usr/share/tesseract-ocr/4.00/tessdata") // Default Linux path
+            tesseract.setDatapath("/usr/share/tesseract-ocr/4.00/tessdata")
             tesseract.setLanguage("eng")
-            tesseract.setPageSegMode(1) // Automatic page segmentation with OSD
-            tesseract.setOcrEngineMode(1) // Neural nets LSTM engine only
+            tesseract.setPageSegMode(1)
+            tesseract.setOcrEngineMode(1)
             logger.info("Tesseract OCR initialized successfully")
         } catch (e: Exception) {
             logger.warn("Tesseract initialization failed, will attempt runtime configuration: ${e.message}")
         }
     }
     
-    /**
-     * Extract text from uploaded image using Tesseract OCR
-     */
     fun extractText(image: MultipartFile): String {
         return try {
             logger.info("Starting OCR extraction for image: ${image.originalFilename}")
             
-            // Validate image
             if (image.isEmpty) {
                 logger.warn("Empty image file provided")
                 return ""
@@ -46,12 +41,10 @@ class OCRService {
                 return ""
             }
             
-            // Convert MultipartFile to BufferedImage
             val bufferedImage: BufferedImage = ByteArrayInputStream(image.bytes).use { inputStream ->
                 ImageIO.read(inputStream) ?: throw IllegalArgumentException("Could not read image")
             }
             
-            // Perform OCR
             val extractedText = tesseract.doOCR(bufferedImage)
             
             logger.info("OCR extraction completed. Text length: ${extractedText.length}")
@@ -68,9 +61,6 @@ class OCRService {
         }
     }
     
-    /**
-     * Validate if the uploaded file is a supported image type
-     */
     private fun isValidImageType(file: MultipartFile): Boolean {
         val supportedTypes = setOf(
             "image/jpeg", "image/jpg", "image/png", 
@@ -79,9 +69,6 @@ class OCRService {
         return file.contentType in supportedTypes
     }
     
-    /**
-     * Get OCR engine info for debugging
-     */
     fun getOCRInfo(): Map<String, String> {
         return try {
             mapOf(

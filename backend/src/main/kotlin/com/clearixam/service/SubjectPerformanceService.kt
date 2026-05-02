@@ -37,7 +37,6 @@ class SubjectPerformanceService(
         val subject = subjectRepository.findById(request.subjectId)
             .orElseThrow { IllegalArgumentException("Subject not found") }
         
-        // Validations
         if (request.questionsAttempted > exam.maxQuestions) {
             throw IllegalArgumentException("Questions attempted (${request.questionsAttempted}) cannot exceed exam max questions (${exam.maxQuestions})")
         }

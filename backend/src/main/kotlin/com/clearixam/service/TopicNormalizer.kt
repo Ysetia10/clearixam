@@ -8,28 +8,23 @@ class TopicNormalizer {
     
     private val logger = LoggerFactory.getLogger(TopicNormalizer::class.java)
     
-    // Topic normalization mappings
     private val topicMappings = mapOf(
-        // Economics variations
         "economics" to "Economy",
         "macroeconomics" to "Economy", 
         "microeconomics" to "Economy",
         "economic" to "Economy",
         
-        // English variations
         "english vocabulary" to "Vocabulary",
         "english grammar" to "Grammar",
         "vocabulary" to "Vocabulary",
         "grammar" to "Grammar",
         "comprehension" to "Comprehension",
         
-        // Reasoning variations
         "logical reasoning" to "Logical Reasoning",
         "verbal reasoning" to "Verbal Reasoning", 
         "non-verbal reasoning" to "Non-Verbal Reasoning",
         "reasoning" to "Logical Reasoning",
         
-        // Quantitative variations
         "arithmetic" to "Arithmetic",
         "algebra" to "Algebra", 
         "geometry" to "Geometry",
@@ -37,7 +32,6 @@ class TopicNormalizer {
         "quantitative" to "Arithmetic",
         "quant" to "Arithmetic",
         
-        // General Knowledge variations
         "history" to "History",
         "geography" to "Geography",
         "science" to "Science",
@@ -45,7 +39,6 @@ class TopicNormalizer {
         "general knowledge" to "General Knowledge",
         "gk" to "General Knowledge",
         
-        // Polity variations
         "polity" to "Polity",
         "constitution" to "Constitution",
         "parliament" to "Parliament",
@@ -53,9 +46,6 @@ class TopicNormalizer {
         "judiciary" to "Judiciary"
     )
     
-    /**
-     * Normalize topic name to standard format
-     */
     fun normalizeTopic(topic: String?): String {
         if (topic.isNullOrBlank()) {
             logger.debug("Empty topic provided for normalization")
@@ -72,9 +62,6 @@ class TopicNormalizer {
         return normalized
     }
     
-    /**
-     * Normalize subject name to standard format
-     */
     fun normalizeSubject(subject: String?): String {
         if (subject.isNullOrBlank()) {
             logger.debug("Empty subject provided for normalization")
@@ -83,7 +70,6 @@ class TopicNormalizer {
         
         val cleanSubject = subject.trim()
         
-        // Map common variations to standard names
         val normalized = when (cleanSubject.lowercase()) {
             "economics", "economy" -> "Economy"
             "quantitative aptitude", "quant", "quantitative" -> "Quantitative Aptitude"
@@ -101,9 +87,6 @@ class TopicNormalizer {
         return normalized
     }
     
-    /**
-     * Get all standard topic names for a subject
-     */
     fun getStandardTopicsForSubject(subject: String): List<String> {
         return when (subject.lowercase()) {
             "economy", "economics" -> listOf("Macroeconomics", "Banking", "Trade", "Development")
