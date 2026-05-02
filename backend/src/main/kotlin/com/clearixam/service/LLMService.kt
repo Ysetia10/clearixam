@@ -138,7 +138,7 @@ MCQ: $cleanedText
             ),
             "generationConfig" to mapOf(
                 "temperature" to 0.1,
-                "maxOutputTokens" to 200,
+                "maxOutputTokens" to 500,
                 "topP" to 0.8,
                 "topK" to 10
             )
@@ -173,20 +173,32 @@ MCQ: $cleanedText
                 logger.warn("No candidates found in Gemini response")
                 return null
             }
-            
-            val content = candidates[0]
-                .get("content")
-                ?.get("parts")
-                ?.get(0)
-                ?.get("text")
-                ?.asText()
-            
-            if (content.isNullOrBlank()) {
-                logger.warn("No content found in Gemini response")
+
+            // Iterate all parts — thinking models put <think> in part[0], actual output in a later part
+            val parts = candidates[0].get("content")?.get("parts")
+            if (parts == null || !parts.isArray) {
+                logger.warn("No parts found in Gemini response")
                 return null
             }
-            
-            val jsonContent = extractJsonFromContent(content)
+
+            var jsonContent: String? = null
+            for (part in parts) {
+                val text = part.get("text")?.asText() ?: continue
+                // Skip pure thinking blocks
+                if (text.trimStart().startsWith("<think>")) continue
+                try {
+                    jsonContent = extractJsonFromContent(text)
+                    break
+                } catch (_: Exception) {
+                    // this part had no JSON, try next
+                }
+            }
+
+            if (jsonContent == null) {
+                logger.warn("No JSON found in any response part")
+                return null
+            }
+
             val classificationJson = objectMapper.readTree(jsonContent)
             
             LLMResult(
