@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { processImage, processText, MCQResult } from '../api/mcq';
 
 interface MCQUploadProps {
@@ -9,15 +9,33 @@ interface MCQUploadProps {
 const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onError }) => {
   const [text, setText] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [inputMode, setInputMode] = useState<'text' | 'image'>('text');
+  const [dragging, setDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  const acceptFile = useCallback((file: File) => {
     if (!file.type.startsWith('image/')) { onError('Please select an image file'); return; }
     if (file.size > 10 * 1024 * 1024) { onError('File size must be less than 10MB'); return; }
     setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => setPreview(e.target?.result as string);
+    reader.readAsDataURL(file);
+  }, [onError]);
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) acceptFile(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); setDragging(true); };
+  const handleDragLeave = (e: React.DragEvent) => { e.preventDefault(); setDragging(false); };
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) acceptFile(file);
   };
 
   const handleSubmit = async () => {
@@ -29,6 +47,7 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onError }) => {
       onResult(result);
       setText('');
       setSelectedFile(null);
+      setPreview(null);
     } catch (error: any) {
       onError(error.response?.data?.message || error.message || 'Classification failed');
     } finally {
@@ -74,17 +93,71 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onError }) => {
       {/* Image Input */}
       {inputMode === 'image' && (
         <div style={{ marginBottom: '16px' }}>
+          {/* Drop Zone */}
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => !selectedFile && fileInputRef.current?.click()}
+            style={{
+              border: `2px dashed ${dragging ? 'var(--accent)' : selectedFile ? 'var(--green)' : 'var(--border)'}`,
+              borderRadius: '12px',
+              padding: '32px 20px',
+              textAlign: 'center',
+              cursor: selectedFile ? 'default' : 'pointer',
+              background: dragging ? 'var(--accent-glow, rgba(99,102,241,0.07))' : 'var(--bg2)',
+              transition: 'border-color 0.2s, background 0.2s',
+              minHeight: '180px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+            }}
+          >
+            {preview ? (
+              <>
+                <img
+                  src={preview}
+                  alt="Preview"
+                  style={{ maxHeight: '200px', maxWidth: '100%', borderRadius: '8px', objectFit: 'contain' }}
+                />
+                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>
+                  {selectedFile?.name} · {((selectedFile?.size ?? 0) / 1024 / 1024).toFixed(2)} MB
+                </div>
+                <button
+                  className="btn"
+                  style={{ fontSize: '12px', padding: '4px 12px' }}
+                  onClick={(e) => { e.stopPropagation(); setSelectedFile(null); setPreview(null); if (fileInputRef.current) fileInputRef.current.value = ''; }}
+                >
+                  Remove
+                </button>
+              </>
+            ) : (
+              <>
+                <div style={{ fontSize: '36px', lineHeight: 1 }}>🖼️</div>
+                <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text)' }}>
+                  {dragging ? 'Drop image here' : 'Drag & drop an image here'}
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>or</div>
+                <button
+                  className="btn"
+                  style={{ fontSize: '13px' }}
+                  onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+                >
+                  Browse Image
+                </button>
+                <div style={{ fontSize: '11px', color: 'var(--text3)' }}>PNG, JPG, WEBP · max 10 MB</div>
+              </>
+            )}
+          </div>
           <input
+            ref={fileInputRef}
             type="file"
             accept="image/*"
             onChange={handleFileSelect}
-            style={{ marginBottom: '8px', color: 'var(--text2)', fontSize: '13px' }}
+            style={{ display: 'none' }}
           />
-          {selectedFile && (
-            <div style={{ fontSize: '13px', color: 'var(--text2)' }}>
-              Selected: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
-            </div>
-          )}
         </div>
       )}
 

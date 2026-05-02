@@ -24,7 +24,7 @@ class LLMService(
     @Value("\${gemini.api.key:}")
     private lateinit var geminiApiKey: String
     
-    @Value("\${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent}")
+    @Value("\${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent}")
     private lateinit var geminiApiUrl: String
     
     private val timeout = Duration.ofSeconds(3)
@@ -239,7 +239,7 @@ MCQ: $cleanedText
     fun getServiceInfo(): Map<String, Any> {
         return mapOf(
             "provider" to "Google Gemini",
-            "model" to "gemini-1.5-flash-latest",
+            "model" to "gemini-2.5-flash",
             "available" to isAvailable(),
             "timeout" to "${timeout.seconds}s",
             "tier" to "free"
