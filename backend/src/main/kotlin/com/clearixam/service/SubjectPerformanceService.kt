@@ -8,7 +8,6 @@ import com.clearixam.repository.SubjectPerformanceRepository
 import com.clearixam.repository.SubjectRepository
 import com.clearixam.repository.SubjectScoreRepository
 import com.clearixam.repository.UserRepository
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -22,12 +21,8 @@ class SubjectPerformanceService(
     private val subjectRepository: SubjectRepository,
     private val subjectScoreRepository: SubjectScoreRepository
 ) {
-    private val logger = LoggerFactory.getLogger(SubjectPerformanceService::class.java)
-
     @Transactional
     fun createPerformance(userId: UUID, request: CreateSubjectPerformanceRequest): SubjectPerformanceResponse {
-        logger.info("Creating subject performance for user: $userId")
-        
         val user = userRepository.findById(userId)
             .orElseThrow { IllegalArgumentException("User not found") }
         
@@ -61,13 +56,10 @@ class SubjectPerformanceService(
         )
         
         val saved = subjectPerformanceRepository.save(performance)
-        logger.info("Subject performance created: ${saved.id}")
-        
         return toResponse(saved)
     }
 
     fun getPerformanceByExam(userId: UUID, examId: UUID): List<SubjectPerformanceResponse> {
-        logger.info("Fetching performance for user: $userId, exam: $examId")
         return subjectScoreRepository.findByUserIdAndExamId(userId, examId)
             .map { ss ->
                 val accuracy = if (ss.attempted > 0) {
@@ -92,8 +84,6 @@ class SubjectPerformanceService(
 
     @Transactional
     fun deletePerformance(userId: UUID, performanceId: UUID) {
-        logger.info("Deleting performance: $performanceId for user: $userId")
-        
         val performance = subjectPerformanceRepository.findById(performanceId)
             .orElseThrow { IllegalArgumentException("Performance record not found") }
         
@@ -102,7 +92,6 @@ class SubjectPerformanceService(
         }
         
         subjectPerformanceRepository.deleteById(performanceId)
-        logger.info("Performance deleted: $performanceId")
     }
 
     private fun toResponse(performance: SubjectPerformance): SubjectPerformanceResponse {

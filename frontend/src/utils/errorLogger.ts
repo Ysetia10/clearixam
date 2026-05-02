@@ -6,8 +6,6 @@ interface ErrorContext {
 }
 
 class ErrorLogger {
-  private isDevelopment = import.meta.env.DEV;
-
   log(error: Error, context?: ErrorContext) {
     const errorInfo = {
       message: error.message,
@@ -17,10 +15,6 @@ class ErrorLogger {
       url: window.location.href,
       ...context,
     };
-
-    if (this.isDevelopment) {
-      console.error('Error logged:', errorInfo);
-    }
 
     try {
       const errors = JSON.parse(sessionStorage.getItem('app_errors') || '[]');

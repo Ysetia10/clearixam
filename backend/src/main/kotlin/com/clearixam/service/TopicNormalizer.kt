@@ -1,12 +1,9 @@
 package com.clearixam.service
 
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 @Service
 class TopicNormalizer {
-    
-    private val logger = LoggerFactory.getLogger(TopicNormalizer::class.java)
     
     private val topicMappings = mapOf(
         "economics" to "Economy",
@@ -47,30 +44,18 @@ class TopicNormalizer {
     )
     
     fun normalizeTopic(topic: String?): String {
-        if (topic.isNullOrBlank()) {
-            logger.debug("Empty topic provided for normalization")
-            return "General"
-        }
-        
+        if (topic.isNullOrBlank()) return "General"
+
         val cleanTopic = topic.trim().lowercase()
-        val normalized = topicMappings[cleanTopic] ?: topic.trim()
-        
-        if (normalized != topic.trim()) {
-            logger.debug("Normalized topic: '$topic' -> '$normalized'")
-        }
-        
-        return normalized
+        return topicMappings[cleanTopic] ?: topic.trim()
     }
-    
+
     fun normalizeSubject(subject: String?): String {
-        if (subject.isNullOrBlank()) {
-            logger.debug("Empty subject provided for normalization")
-            return "General Knowledge"
-        }
-        
+        if (subject.isNullOrBlank()) return "General Knowledge"
+
         val cleanSubject = subject.trim()
-        
-        val normalized = when (cleanSubject.lowercase()) {
+
+        return when (cleanSubject.lowercase()) {
             "economics", "economy" -> "Economy"
             "quantitative aptitude", "quant", "quantitative" -> "Quantitative Aptitude"
             "reasoning" -> "Reasoning"
@@ -79,12 +64,6 @@ class TopicNormalizer {
             "polity" -> "Polity"
             else -> cleanSubject
         }
-        
-        if (normalized != cleanSubject) {
-            logger.debug("Normalized subject: '$subject' -> '$normalized'")
-        }
-        
-        return normalized
     }
     
     fun getStandardTopicsForSubject(subject: String): List<String> {

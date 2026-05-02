@@ -4,8 +4,4 @@ export const API_CONFIG = {
   withCredentials: false,
 } as const;
 
-if (!import.meta.env.VITE_API_BASE_URL) {
-  console.warn('VITE_API_BASE_URL not set, using default localhost');
-}
-
 export default API_CONFIG;

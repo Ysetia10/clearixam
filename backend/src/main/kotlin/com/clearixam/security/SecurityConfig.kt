@@ -1,6 +1,5 @@
 package com.clearixam.security
 
-import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -21,8 +20,6 @@ class SecurityConfig(
     private val jwtAuthenticationFilter: JwtAuthenticationFilter
 ) {
     
-    private val logger = LoggerFactory.getLogger(SecurityConfig::class.java)
-
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
@@ -44,8 +41,6 @@ class SecurityConfig(
         
         configuration.maxAge = 3600L
         
-        logger.info("CORS Configuration initialized with origins: ${configuration.allowedOrigins}")
-        
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
         return source
@@ -53,8 +48,6 @@ class SecurityConfig(
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
-        logger.info("Configuring Security Filter Chain")
-        
         http
             .cors { it.configurationSource(corsConfigurationSource()) }
             
@@ -98,8 +91,6 @@ class SecurityConfig(
                     .requestMatchers("/api/mcq/**").permitAll()
                     
                     .anyRequest().authenticated()
-                
-                logger.info("Authorization rules configured - public endpoints: /api/auth/**, /api/exams/**, /api/subjects/**, /api/mcq/**, /health")
             }
             
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

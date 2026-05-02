@@ -4,7 +4,6 @@ import com.clearixam.analytics.AnalyticsService
 import com.clearixam.analytics.SubjectAnalyticsService
 import com.clearixam.analytics.AdvancedAnalyticsService
 import com.clearixam.dto.response.*
-import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,16 +20,12 @@ class AnalyticsController(
     private val advancedAnalyticsService: AdvancedAnalyticsService
 ) {
 
-    private val logger = LoggerFactory.getLogger(AnalyticsController::class.java)
-
     @GetMapping("/overview")
     fun getOverview(
         @RequestParam(required = false) examId: UUID?,
         authentication: Authentication
     ): ResponseEntity<ApiResponse<AnalyticsOverviewResponse>> {
-        val userEmail = authentication.name
-        logger.info("Fetching analytics overview for user: $userEmail, examId: $examId")
-        return ResponseEntity.ok(ApiResponse.ok(analyticsService.getOverview(userEmail, examId)))
+        return ResponseEntity.ok(ApiResponse.ok(analyticsService.getOverview(authentication.name, examId)))
     }
 
     @GetMapping("/trend")
@@ -38,9 +33,7 @@ class AnalyticsController(
         @RequestParam(required = false) examId: UUID?,
         authentication: Authentication
     ): ResponseEntity<ApiResponse<AnalyticsTrendResponse>> {
-        val userEmail = authentication.name
-        logger.info("Fetching analytics trend for user: $userEmail, examId: $examId")
-        return ResponseEntity.ok(ApiResponse.ok(analyticsService.getTrend(userEmail, examId)))
+        return ResponseEntity.ok(ApiResponse.ok(analyticsService.getTrend(authentication.name, examId)))
     }
 
     @GetMapping("/subjects")
@@ -48,8 +41,7 @@ class AnalyticsController(
         @RequestParam(required = false) examId: UUID?,
         authentication: Authentication
     ): ResponseEntity<ApiResponse<SubjectAnalyticsListResponse>> {
-        val userEmail = authentication.name
-        return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getSubjectAnalytics(userEmail, examId)))
+        return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getSubjectAnalytics(authentication.name, examId)))
     }
 
     @GetMapping("/subjects/neglect")
@@ -58,8 +50,7 @@ class AnalyticsController(
         @RequestParam(required = false, defaultValue = "5") windowSize: Int,
         authentication: Authentication
     ): ResponseEntity<ApiResponse<SubjectNeglectResponse>> {
-        val userEmail = authentication.name
-        return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getSubjectNeglect(userEmail, examId, windowSize)))
+        return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getSubjectNeglect(authentication.name, examId, windowSize)))
     }
 
     @GetMapping("/attempt-accuracy")
@@ -67,8 +58,7 @@ class AnalyticsController(
         @RequestParam(required = false) examId: UUID?,
         authentication: Authentication
     ): ResponseEntity<ApiResponse<AttemptAccuracyInsightDTO>> {
-        val userEmail = authentication.name
-        return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getAttemptAccuracyInsight(userEmail, examId)))
+        return ResponseEntity.ok(ApiResponse.ok(subjectAnalyticsService.getAttemptAccuracyInsight(authentication.name, examId)))
     }
 
     @GetMapping("/improvement")
@@ -76,8 +66,7 @@ class AnalyticsController(
         @RequestParam(required = false) examId: UUID?,
         authentication: Authentication
     ): ResponseEntity<ApiResponse<ImprovementDTO>> {
-        val userEmail = authentication.name
-        return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getImprovement(userEmail, examId)))
+        return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getImprovement(authentication.name, examId)))
     }
 
     @GetMapping("/adaptive-strength")
@@ -85,8 +74,7 @@ class AnalyticsController(
         @RequestParam(required = false) examId: UUID?,
         authentication: Authentication
     ): ResponseEntity<ApiResponse<AdaptiveStrengthResponse>> {
-        val userEmail = authentication.name
-        return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getAdaptiveStrength(userEmail, examId)))
+        return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getAdaptiveStrength(authentication.name, examId)))
     }
 
     @GetMapping("/insights")
@@ -94,8 +82,6 @@ class AnalyticsController(
         @RequestParam(required = false) examId: UUID?,
         authentication: Authentication
     ): ResponseEntity<ApiResponse<InsightsResponse>> {
-        val userEmail = authentication.name
-        return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getInsights(userEmail, examId)))
+        return ResponseEntity.ok(ApiResponse.ok(advancedAnalyticsService.getInsights(authentication.name, examId)))
     }
-
 }

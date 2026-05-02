@@ -3,15 +3,12 @@ package com.clearixam.service
 import com.clearixam.dto.response.ClassificationResult
 import com.clearixam.enums.ClassificationStatus
 import com.clearixam.enums.ClassificationSource
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Service
 
 @Service
 class RuleBasedClassifier {
-
-    private val logger = LoggerFactory.getLogger(RuleBasedClassifier::class.java)
 
     @Lazy
     @Autowired
@@ -160,7 +157,7 @@ class RuleBasedClassifier {
     fun classifyWithCandidates(text: String): ClassificationResultWithCandidates {
         return try {
             if (text.isBlank()) {
-                val unknown = createUnknownResult("Empty text provided", text)
+                val unknown = createUnknownResult(text)
                 return ClassificationResultWithCandidates(unknown, emptyList())
             }
 
@@ -184,7 +181,6 @@ class RuleBasedClassifier {
 
                         val confidence = baseConfidence * contextBoost
                         results.add(ClassificationMatch(subject, topic, confidence, matches))
-                        logger.debug("Match: $subject/$topic - keywords: $matches, confidence: $confidence")
                     }
                 }
             }
@@ -193,8 +189,7 @@ class RuleBasedClassifier {
             val bestMatch = sortedResults.firstOrNull()
 
             if (bestMatch == null || bestMatch.confidence < 0.05) {
-                logger.info("No rule match found for text: ${text.take(80)}, will use LLM")
-                val unknown = createUnknownResult("No significant keyword matches found", text)
+                val unknown = createUnknownResult(text)
                 return ClassificationResultWithCandidates(unknown, emptyList())
             }
 
@@ -206,8 +201,6 @@ class RuleBasedClassifier {
                     matchedKeywords = match.matchedKeywords
                 )
             }
-
-            logger.info("Rule match: ${bestMatch.subject} -> ${bestMatch.topic} (confidence: ${bestMatch.confidence})")
 
             val primaryResult = ClassificationResult(
                 subject = bestMatch.subject,
@@ -224,8 +217,7 @@ class RuleBasedClassifier {
             ClassificationResultWithCandidates(primaryResult, candidates)
 
         } catch (e: Exception) {
-            logger.error("Classification failed: ${e.message}", e)
-            val error = createUnknownResult("Classification error: ${e.message}", text)
+            val error = createUnknownResult(text)
             ClassificationResultWithCandidates(error, emptyList())
         }
     }
@@ -234,8 +226,7 @@ class RuleBasedClassifier {
         return classifyWithCandidates(text).primaryResult
     }
 
-    private fun createUnknownResult(reason: String, cleanedText: String = ""): ClassificationResult {
-        logger.warn("Creating unknown result: $reason")
+    private fun createUnknownResult(cleanedText: String = ""): ClassificationResult {
         return ClassificationResult(
             subject = "Miscellaneous",
             topic = "General",

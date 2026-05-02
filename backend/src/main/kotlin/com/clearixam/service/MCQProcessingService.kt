@@ -2,7 +2,6 @@ package com.clearixam.service
 
 import com.clearixam.dto.response.ClassificationResult
 import com.clearixam.enums.ClassificationSource
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -15,61 +14,33 @@ class MCQProcessingService(
     private val llmService: LLMService,
     private val mcqLearningService: MCQLearningService
 ) {
-    
-    private val logger = LoggerFactory.getLogger(MCQProcessingService::class.java)
-    
+
     fun processImage(image: MultipartFile): ClassificationResult {
         return try {
-            logger.info("Starting MCQ processing pipeline for image: ${image.originalFilename}")
-            val startTime = System.currentTimeMillis()
-            
-            logger.debug("Step 1: Performing OCR extraction")
             val rawText = ocrService.extractText(image)
-            
+
             if (rawText.isBlank()) {
-                logger.warn("OCR extraction returned empty text")
                 return confidenceEngine.createUnknownResult("No text could be extracted from the image", "")
             }
-            
-            logger.debug("OCR completed. Extracted ${rawText.length} characters")
-            
-            logger.debug("Step 2: Preprocessing extracted text")
+
             val cleanedText = textPreprocessor.cleanMCQText(rawText)
-            
+
             if (cleanedText.isBlank()) {
-                logger.warn("Text preprocessing returned empty result")
                 return confidenceEngine.createUnknownResult("Text preprocessing failed to extract meaningful content", rawText)
             }
-            
-            logger.debug("Text preprocessing completed. Cleaned text: ${cleanedText.take(100)}...")
-            
-            logger.debug("Step 3: Classifying processed text")
+
             val classificationWithCandidates = ruleBasedClassifier.classifyWithCandidates(cleanedText)
-            
-            logger.debug("Step 4: Analyzing confidence and determining LLM fallback need")
             val confidenceResult = confidenceEngine.analyzeConfidence(
                 classificationWithCandidates.primaryResult,
                 classificationWithCandidates.allCandidates
             )
-            
-            logger.info("RULE_RESULT subject='${confidenceResult.subject}' topic='${confidenceResult.topic}' confidence=${confidenceResult.confidence} status=${confidenceResult.status} needsLLM=${confidenceResult.needsLLM}")
-            
+
             val finalResult = if (confidenceResult.needsLLM && llmService.isAvailable()) {
-                logger.info("LLM_FALLBACK_TRIGGERED reason='${confidenceResult.status}' confidence=${confidenceResult.confidence}")
                 applyLLMFallback(confidenceResult, cleanedText)
             } else {
-                if (confidenceResult.needsLLM) {
-                    logger.warn("LLM_FALLBACK_SKIPPED reason=llm_unavailable")
-                } else {
-                    logger.info("LLM_FALLBACK_SKIPPED reason=high_confidence")
-                }
                 confidenceResult
             }
-            
-            val processingTime = System.currentTimeMillis() - startTime
-            logger.info("FINAL_RESULT subject='${finalResult.subject}' topic='${finalResult.topic}' source=${finalResult.source} status=${finalResult.status} confidence=${finalResult.confidence} time_ms=$processingTime")
-            
-            // Save classification for learning
+
             val savedClassification = mcqLearningService.saveClassification(
                 questionText = cleanedText,
                 subject = finalResult.subject,
@@ -81,48 +52,38 @@ class MCQProcessingService(
                 confidence = finalResult.confidence,
                 matchedKeywords = finalResult.matchedKeywords
             )
-            
-            finalResult.copy(
-                cleanedText = cleanedText,
-                id = savedClassification.id
-            )
-            
+
+            finalResult.copy(cleanedText = cleanedText, id = savedClassification.id)
+
         } catch (e: Exception) {
-            logger.error("MCQ processing pipeline failed: ${e.message}", e)
             confidenceEngine.createErrorResult("Processing failed: ${e.message}", "")
         }
     }
-    
+
     fun processText(text: String): ClassificationResult {
         return try {
-            logger.info("Processing text directly (bypassing OCR)")
-            
             if (text.isBlank()) {
                 return confidenceEngine.createUnknownResult("Empty text provided", text)
             }
-            
+
             val cleanedText = textPreprocessor.cleanMCQText(text)
-            
+
             if (cleanedText.isBlank()) {
                 return confidenceEngine.createUnknownResult("Text preprocessing failed", text)
             }
-            
+
             val classificationWithCandidates = ruleBasedClassifier.classifyWithCandidates(cleanedText)
-            
             val confidenceResult = confidenceEngine.analyzeConfidence(
                 classificationWithCandidates.primaryResult,
                 classificationWithCandidates.allCandidates
             )
-            
+
             val finalResult = if (confidenceResult.needsLLM && llmService.isAvailable()) {
-                logger.debug("Applying LLM fallback for text processing")
                 applyLLMFallback(confidenceResult, cleanedText)
             } else {
                 confidenceResult
             }
-            
-            logger.info("Text processing completed. Result: ${finalResult.subject} -> ${finalResult.topic} (Status: ${finalResult.status}, Source: ${finalResult.source})")
-            
+
             val savedClassification = mcqLearningService.saveClassification(
                 questionText = cleanedText,
                 subject = finalResult.subject,
@@ -134,38 +95,27 @@ class MCQProcessingService(
                 confidence = finalResult.confidence,
                 matchedKeywords = finalResult.matchedKeywords
             )
-            
-            finalResult.copy(
-                cleanedText = cleanedText,
-                id = savedClassification.id
-            )
-            
+
+            finalResult.copy(cleanedText = cleanedText, id = savedClassification.id)
+
         } catch (e: Exception) {
-            logger.error("Text processing failed: ${e.message}", e)
             confidenceEngine.createErrorResult("Text processing failed: ${e.message}", text)
         }
     }
-    
+
     private fun applyLLMFallback(originalResult: ClassificationResult, cleanedText: String): ClassificationResult {
         return try {
-            logger.info("LLM_FALLBACK_START original_subject='${originalResult.subject}' original_confidence=${originalResult.confidence}")
-            
             val llmResult = llmService.classifyWithLLM(cleanedText)
-            
             if (llmResult != null) {
-                logger.info("LLM_FALLBACK_SUCCESS llm_subject='${llmResult.subject}' llm_topic='${llmResult.topic}'")
                 confidenceEngine.createLLMResult(llmResult, cleanedText)
             } else {
-                logger.warn("LLM_FALLBACK_FAILED reason=null_result")
                 confidenceEngine.createFallbackResult(originalResult)
             }
-            
-        } catch (e: Exception) {
-            logger.error("LLM_FALLBACK_ERROR message='${e.message}'", e)
+        } catch (_: Exception) {
             confidenceEngine.createFallbackResult(originalResult)
         }
     }
-    
+
     fun getProcessingInfo(): Map<String, Any> {
         return mapOf(
             "ocrInfo" to ocrService.getOCRInfo(),
@@ -176,7 +126,7 @@ class MCQProcessingService(
             "llmInfo" to llmService.getServiceInfo()
         )
     }
-    
+
     fun validateImage(image: MultipartFile): String? {
         return when {
             image.isEmpty -> "Image file is empty"

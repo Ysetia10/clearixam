@@ -4,7 +4,6 @@ import com.clearixam.dto.response.ExamReadinessResponse
 import com.clearixam.dto.response.ReadinessStatus
 import com.clearixam.repository.MockTestRepository
 import com.clearixam.repository.GoalRepository
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.UUID
 import kotlin.math.sqrt
@@ -14,14 +13,10 @@ class ExamReadinessService(
     private val mockTestRepository: MockTestRepository,
     private val goalRepository: GoalRepository
 ) {
-    
-    private val logger = LoggerFactory.getLogger(ExamReadinessService::class.java)
 
     fun calculateReadinessScore(userId: UUID): ExamReadinessResponse {
-        val startTime = System.currentTimeMillis()
-        
         val recentMocks = mockTestRepository.findTop5ByUserIdOrderByTestDateDesc(userId)
-        
+
         if (recentMocks.isEmpty()) {
             return ExamReadinessResponse(
                 score = 0,
@@ -34,46 +29,40 @@ class ExamReadinessService(
         }
 
         val averageScore = recentMocks.map { it.totalScore }.average()
-        
         val variance = calculateVariance(recentMocks.map { it.totalScore.toDouble() })
         val standardDeviation = sqrt(variance)
-        
+
         val consistencyScore = if (averageScore > 0) {
             maxOf(0.0, 100.0 - (standardDeviation / averageScore * 100))
         } else {
             0.0
         }
-        
+
         val goal = goalRepository.findByUserId(userId).firstOrNull()
         val targetScore = goal?.targetScore?.toDouble() ?: 450.0
-        
         val targetAchievement = (averageScore / targetScore) * 100.0
-        
-        // Calculate final readiness score (weighted average)
+
         val readinessScore = (
             (averageScore / 5.0) * 0.5 +
             consistencyScore * 0.3 +
             minOf(targetAchievement, 100.0) * 0.2
         ).toInt().coerceIn(0, 100)
-        
+
         val status = when {
             readinessScore <= 40 -> ReadinessStatus.NEEDS_IMPROVEMENT
             readinessScore <= 70 -> ReadinessStatus.ON_TRACK
             else -> ReadinessStatus.EXAM_READY
         }
-        
+
         val message = when (status) {
-            ReadinessStatus.NEEDS_IMPROVEMENT -> 
+            ReadinessStatus.NEEDS_IMPROVEMENT ->
                 "Focus on improving your scores and consistency. Take more mocks regularly."
-            ReadinessStatus.ON_TRACK -> 
+            ReadinessStatus.ON_TRACK ->
                 "You're making good progress! Keep practicing to reach exam-ready status."
-            ReadinessStatus.EXAM_READY -> 
+            ReadinessStatus.EXAM_READY ->
                 "Excellent! You're well-prepared. Maintain this performance."
         }
-        
-        val duration = System.currentTimeMillis() - startTime
-        logger.info("Calculated readiness score for user $userId in ${duration}ms: $readinessScore")
-        
+
         return ExamReadinessResponse(
             score = readinessScore,
             status = status,
@@ -83,7 +72,7 @@ class ExamReadinessService(
             message = message
         )
     }
-    
+
     private fun calculateVariance(values: List<Double>): Double {
         if (values.isEmpty()) return 0.0
         val mean = values.average()

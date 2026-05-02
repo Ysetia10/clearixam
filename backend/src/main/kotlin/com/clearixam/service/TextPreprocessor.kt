@@ -1,81 +1,56 @@
 package com.clearixam.service
 
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
 @Service
 class TextPreprocessor {
-    
-    private val logger = LoggerFactory.getLogger(TextPreprocessor::class.java)
-    
+
     private val optionPattern = Pattern.compile("\\b[A-D]\\)\\s*", Pattern.CASE_INSENSITIVE)
     private val numberedOptionPattern = Pattern.compile("\\b\\d+\\)\\s*", Pattern.CASE_INSENSITIVE)
     private val multipleSpacesPattern = Pattern.compile("\\s+")
     private val multipleLineBreaksPattern = Pattern.compile("\\n{2,}")
     private val specialCharsPattern = Pattern.compile("[^a-zA-Z0-9\\s]")
-    
+
     fun cleanMCQText(rawText: String): String {
         return try {
-            logger.debug("Starting text preprocessing. Input length: ${rawText.length}")
-            
-            if (rawText.isBlank()) {
-                logger.warn("Empty or blank text provided for preprocessing")
-                return ""
-            }
-            
+            if (rawText.isBlank()) return ""
+
             var cleanedText = rawText
-            
             cleanedText = optionPattern.matcher(cleanedText).replaceAll(" ")
-            
             cleanedText = numberedOptionPattern.matcher(cleanedText).replaceAll(" ")
-            
             cleanedText = extractQuestionBody(cleanedText)
-            
             cleanedText = specialCharsPattern.matcher(cleanedText).replaceAll(" ")
-            
             cleanedText = multipleLineBreaksPattern.matcher(cleanedText).replaceAll(" ")
             cleanedText = multipleSpacesPattern.matcher(cleanedText).replaceAll(" ")
-            
-            cleanedText = cleanedText.lowercase().trim()
-            
-            logger.debug("Text preprocessing completed. Output length: ${cleanedText.length}")
-            logger.debug("Cleaned text preview: ${cleanedText.take(100)}...")
-            
-            cleanedText
-            
-        } catch (e: Exception) {
-            logger.error("Text preprocessing failed: ${e.message}", e)
-            rawText.lowercase().trim() // Fallback to basic cleaning
+            cleanedText.lowercase().trim()
+        } catch (_: Exception) {
+            rawText.lowercase().trim()
         }
     }
-    
+
     private fun extractQuestionBody(text: String): String {
         val lines = text.split("\n").map { it.trim() }.filter { it.isNotEmpty() }
-        
         if (lines.isEmpty()) return text
-        
+
         val questionLine = lines
-            .filter { line -> 
+            .filter { line ->
                 line.length > 10 &&
                 !line.matches(Regex("^[A-D]\\).*", RegexOption.IGNORE_CASE)) &&
                 !line.matches(Regex("^\\d+\\).*"))
             }
             .maxByOrNull { it.length }
-        
+
         return questionLine ?: lines.firstOrNull() ?: text
     }
-    
+
     fun extractKeywords(cleanedText: String): List<String> {
         return cleanedText
             .split("\\s+".toRegex())
-            .filter { word -> 
-                word.length > 2 &&
-                !isStopWord(word)
-            }
+            .filter { word -> word.length > 2 && !isStopWord(word) }
             .distinct()
     }
-    
+
     private fun isStopWord(word: String): Boolean {
         val stopWords = setOf(
             "the", "is", "are", "was", "were", "be", "been", "being",

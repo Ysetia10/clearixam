@@ -12,7 +12,6 @@ import com.clearixam.repository.MockTestRepository
 import com.clearixam.repository.SubjectRepository
 import com.clearixam.repository.SubjectScoreRepository
 import com.clearixam.repository.UserRepository
-import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -27,12 +26,8 @@ class MockTestService(
     private val subjectScoreRepository: SubjectScoreRepository
 ) {
 
-    private val logger = LoggerFactory.getLogger(MockTestService::class.java)
-
     @Transactional
     fun createMock(userEmail: String, request: CreateMockRequest): MockResponse {
-        logger.info("Creating mock test for user: $userEmail, exam: ${request.examId}")
-
         val user = userRepository.findByEmail(userEmail)
             ?: throw IllegalArgumentException("User not found: $userEmail")
 
@@ -82,14 +77,11 @@ class MockTestService(
             subjectScoreRepository.save(subjectScore)
         }
 
-        logger.info("Created mock test ${savedMock.id} for user: $userEmail")
-
         return toMockResponse(savedMock)
     }
 
     @Transactional(readOnly = true)
     fun getMocksForUser(userEmail: String, page: Int, size: Int): PagedMockResponse {
-        logger.info("Fetching mocks for user: $userEmail, page: $page, size: $size")
 
         val user = userRepository.findByEmail(userEmail)
             ?: throw IllegalArgumentException("User not found: $userEmail")
@@ -110,7 +102,6 @@ class MockTestService(
 
     @Transactional(readOnly = true)
     fun getMockDetail(mockId: UUID, userEmail: String): MockDetailResponse {
-        logger.info("Fetching mock detail $mockId for user: $userEmail")
 
         val user = userRepository.findByEmail(userEmail)
             ?: throw IllegalArgumentException("User not found: $userEmail")
@@ -151,7 +142,6 @@ class MockTestService(
 
     @Transactional
     fun deleteMock(mockId: UUID, userEmail: String) {
-        logger.info("Deleting mock $mockId for user: $userEmail")
 
         val user = userRepository.findByEmail(userEmail)
             ?: throw IllegalArgumentException("User not found: $userEmail")
@@ -161,8 +151,6 @@ class MockTestService(
 
         subjectScoreRepository.deleteByMockTest(mockTest)
         mockTestRepository.delete(mockTest)
-
-        logger.info("Deleted mock test $mockId")
     }
 
     private fun toMockResponse(mock: MockTest) = MockResponse(

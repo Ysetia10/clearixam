@@ -1,7 +1,6 @@
 package com.clearixam.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.*
 import org.springframework.stereotype.Service
@@ -12,7 +11,6 @@ import java.util.Base64
 @Service
 class OCRService {
 
-    private val logger = LoggerFactory.getLogger(OCRService::class.java)
     private val restTemplate = RestTemplate()
     private val objectMapper = ObjectMapper()
 
@@ -24,20 +22,15 @@ class OCRService {
 
     fun extractText(image: MultipartFile): String {
         return try {
-            logger.info("Starting OCR extraction via Gemini Vision for: ${image.originalFilename}")
-
             if (image.isEmpty) {
-                logger.warn("Empty image file provided")
                 return ""
             }
 
             if (!isValidImageType(image)) {
-                logger.warn("Invalid image type: ${image.contentType}")
                 return ""
             }
 
             if (geminiApiKey.isBlank()) {
-                logger.error("Gemini API key not configured — cannot perform OCR")
                 return ""
             }
 
@@ -74,11 +67,10 @@ class OCRService {
             val response = restTemplate.exchange(url, HttpMethod.POST, entity, String::class.java)
 
             if (response.statusCode != HttpStatus.OK) {
-                logger.error("Gemini Vision API returned status: ${response.statusCode}")
                 return ""
             }
 
-            val jsonNode = objectMapper.readTree(response.body)
+            val jsonNode = objectMapper.readTree(response.body ?: "")
             val extractedText = jsonNode
                 .get("candidates")
                 ?.get(0)
@@ -90,11 +82,9 @@ class OCRService {
                 ?.trim()
                 ?: ""
 
-            logger.info("OCR extraction completed. Text length: ${extractedText.length}")
             extractedText
 
         } catch (e: Exception) {
-            logger.error("OCR extraction failed: ${e.message}", e)
             ""
         }
     }
@@ -104,7 +94,7 @@ class OCRService {
             "image/jpeg", "image/jpg", "image/png",
             "image/bmp", "image/tiff", "image/gif", "image/webp"
         )
-        return file.contentType in supportedTypes
+        return file.contentType != null && file.contentType in supportedTypes
     }
 
     fun getOCRInfo(): Map<String, String> = mapOf(
