@@ -13,6 +13,8 @@ export interface MCQResult {
   source: 'RULE' | 'LLM';
   difficulty?: string;
   canEdit: boolean;
+  presetOutcome?: 'CORRECT' | 'INCORRECT' | 'UNATTEMPTED';
+  imagePreview?: string;
 }
 
 export interface MCQCorrection {

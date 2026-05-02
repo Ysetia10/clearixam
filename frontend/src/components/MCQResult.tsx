@@ -10,7 +10,7 @@ interface MCQResultProps {
 }
 
 const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutcomeSet, onError }) => {
-  const [selectedOutcome, setSelectedOutcome] = useState<string | null>(null);
+  const [selectedOutcome, setSelectedOutcome] = useState<string | null>(result.presetOutcome ?? null);
   const [settingOutcome, setSettingOutcome] = useState(false);
 
   const getConfidenceVar = (confidence: number) => {
@@ -101,6 +101,18 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
         </div>
       </div>
 
+      {/* Image Preview (bulk mode) */}
+      {result.imagePreview && (
+        <div style={{ marginBottom: '20px' }}>
+          <label className="input-label">Image</label>
+          <img
+            src={result.imagePreview}
+            alt="MCQ"
+            style={{ maxWidth: '100%', maxHeight: '220px', objectFit: 'contain', borderRadius: '8px', border: '1px solid var(--border)', display: 'block' }}
+          />
+        </div>
+      )}
+
       {/* Question Text */}
       <div style={{ marginBottom: '20px' }}>
         <label className="input-label">Question Text</label>
@@ -161,29 +173,36 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
       )}
 
       {/* Mark Outcome */}
-      <div style={{
-        marginBottom: '20px',
-        padding: '18px',
-        backgroundColor: 'var(--surface2)',
-        border: '1px solid var(--border)',
-        borderRadius: '10px',
-      }}>
-        <label className="input-label" style={{ marginBottom: '12px' }}>Mark Your Performance</label>
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          {(['CORRECT', 'INCORRECT', 'UNATTEMPTED'] as const).map((o) => (
-            <button key={o} onClick={() => handleOutcomeClick(o)} disabled={settingOutcome}
-              style={getOutcomeButtonStyle(o, selectedOutcome === o)}>
-              <span>{o === 'CORRECT' ? '✅' : o === 'INCORRECT' ? '❌' : '⏭️'}</span>
-              {o === 'CORRECT' ? 'Correct' : o === 'INCORRECT' ? 'Incorrect' : 'Skipped'}
-            </button>
-          ))}
-        </div>
-        {selectedOutcome && (
-          <div style={{ marginTop: '10px', fontSize: '13px', color: 'var(--green)', fontWeight: '600' }}>
-            ✓ Marked as: {selectedOutcome.toLowerCase()}
+      {!result.presetOutcome && (
+        <div style={{
+          marginBottom: '20px',
+          padding: '18px',
+          backgroundColor: 'var(--surface2)',
+          border: '1px solid var(--border)',
+          borderRadius: '10px',
+        }}>
+          <label className="input-label" style={{ marginBottom: '12px' }}>Mark Your Performance</label>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            {(['CORRECT', 'INCORRECT', 'UNATTEMPTED'] as const).map((o) => (
+              <button key={o} onClick={() => handleOutcomeClick(o)} disabled={settingOutcome}
+                style={getOutcomeButtonStyle(o, selectedOutcome === o)}>
+                <span>{o === 'CORRECT' ? '✅' : o === 'INCORRECT' ? '❌' : '⏭️'}</span>
+                {o === 'CORRECT' ? 'Correct' : o === 'INCORRECT' ? 'Incorrect' : 'Skipped'}
+              </button>
+            ))}
           </div>
-        )}
-      </div>
+          {selectedOutcome && (
+            <div style={{ marginTop: '10px', fontSize: '13px', color: 'var(--green)', fontWeight: '600' }}>
+              ✓ Marked as: {selectedOutcome.toLowerCase()}
+            </div>
+          )}
+        </div>
+      )}
+      {result.presetOutcome && (
+        <div style={{ marginBottom: '20px', fontSize: '13px', color: 'var(--green)', fontWeight: '600' }}>
+          ✓ Outcome already set: {result.presetOutcome.toLowerCase()}
+        </div>
+      )}
 
       {/* Action Buttons */}
       <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>

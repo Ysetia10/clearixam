@@ -3,7 +3,7 @@ import { MCQResult, submitCorrection, AVAILABLE_SUBJECTS } from '../api/mcq';
 
 interface MCQCorrectionProps {
   result: MCQResult;
-  onCorrectionSubmitted: (message: string) => void;
+  onCorrectionSubmitted: (message: string, correctedSubject: string, correctedTopic: string) => void;
   onCancel: () => void;
   onError: (error: string) => void;
 }
@@ -19,7 +19,7 @@ const MCQCorrection: React.FC<MCQCorrectionProps> = ({ result, onCorrectionSubmi
     setLoading(true);
     try {
       const response = await submitCorrection({ id: result.id, subject: subject.trim(), topic: topic.trim() });
-      if (response.success) onCorrectionSubmitted(response.message);
+      if (response.success) onCorrectionSubmitted(response.message, subject.trim(), topic.trim());
       else onError(response.message || 'Correction failed');
     } catch (error: any) {
       onError(error.response?.data?.message || error.message || 'Correction failed');

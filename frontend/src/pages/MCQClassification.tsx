@@ -12,6 +12,11 @@ const MCQClassification: React.FC = () => {
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
   const [refreshCorrections, setRefreshCorrections] = useState(0);
 
+  // Bulk queue
+  const [bulkQueue, setBulkQueue] = useState<MCQResultType[]>([]);
+  const [bulkIndex, setBulkIndex] = useState(0);
+  const [bulkMode, setBulkMode] = useState(false);
+
   const flash = (text: string, type: 'success' | 'error', duration = 3000) => {
     setMessage({ text, type });
     setTimeout(() => setMessage(null), duration);
@@ -23,17 +28,53 @@ const MCQClassification: React.FC = () => {
     flash('MCQ classified successfully!', 'success');
   };
 
-  const handleConfirm = () => {
-    setResult(null);
-    setShowCorrection(false);
-    flash('Classification confirmed! Ready for next MCQ.', 'success');
+  const handleBulkResults = (results: MCQResultType[]) => {
+    const valid = results.filter(r => r.subject !== 'ERROR');
+    const failed = results.length - valid.length;
+    if (valid.length === 0) { flash('All images failed to process.', 'error', 5000); return; }
+    setBulkQueue(valid);
+    setBulkIndex(0);
+    setBulkMode(true);
+    flash(`${valid.length} MCQs classified${failed > 0 ? `, ${failed} failed` : ''}. Review them below.`, 'success', 5000);
   };
 
-  const handleCorrectionSubmitted = (msg: string) => {
+  const handleConfirm = () => {
+    if (bulkMode) {
+      const next = bulkIndex + 1;
+      if (next >= bulkQueue.length) {
+        // done with queue
+        setBulkMode(false);
+        setBulkQueue([]);
+        setBulkIndex(0);
+        setRefreshCorrections(prev => prev + 1);
+        flash('All MCQs reviewed!', 'success');
+      } else {
+        setBulkIndex(next);
+        setShowCorrection(false);
+        flash(`${next + 1} of ${bulkQueue.length}`, 'success', 1500);
+      }
+    } else {
+      setResult(null);
+      setShowCorrection(false);
+      flash('Classification confirmed! Ready for next MCQ.', 'success');
+    }
+  };
+
+  const handleCorrectionSubmitted = (msg: string, correctedSubject: string, correctedTopic: string) => {
     setShowCorrection(false);
     setRefreshCorrections(prev => prev + 1);
     flash(msg, 'success');
+    // Update the active result with corrected values
+    if (bulkMode) {
+      setBulkQueue(prev => prev.map((r, i) =>
+        i === bulkIndex ? { ...r, subject: correctedSubject, topic: correctedTopic } : r
+      ));
+    } else {
+      setResult(prev => prev ? { ...prev, subject: correctedSubject, topic: correctedTopic } : prev);
+    }
   };
+
+  const activeResult = bulkMode ? bulkQueue[bulkIndex] : result;
 
   return (
     <DashboardLayout>
@@ -59,11 +100,42 @@ const MCQClassification: React.FC = () => {
         <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
           {/* Main */}
           <div>
-            <MCQUpload onResult={handleResult} onError={(e) => flash(e, 'error', 5000)} />
+            {/* Bulk progress header */}
+            {bulkMode && (
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '12px 16px', marginBottom: '16px',
+                background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '10px',
+              }}>
+                <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text)' }}>
+                  Reviewing {bulkIndex + 1} of {bulkQueue.length}
+                </div>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  {bulkQueue.map((_, i) => (
+                    <div key={i} style={{
+                      width: '8px', height: '8px', borderRadius: '50%',
+                      background: i < bulkIndex ? 'var(--green)' : i === bulkIndex ? 'var(--accent)' : 'var(--border)',
+                    }} />
+                  ))}
+                </div>
+                <button className="btn" style={{ fontSize: '12px', padding: '4px 10px' }}
+                  onClick={() => { setBulkMode(false); setBulkQueue([]); setBulkIndex(0); }}>
+                  Exit Bulk
+                </button>
+              </div>
+            )}
 
-            {result && !showCorrection && (
+            {!bulkMode && (
+              <MCQUpload
+                onResult={handleResult}
+                onBulkResults={handleBulkResults}
+                onError={(e) => flash(e, 'error', 5000)}
+              />
+            )}
+
+            {activeResult && !showCorrection && (
               <MCQResult
-                result={result}
+                result={activeResult}
                 onEdit={() => setShowCorrection(true)}
                 onConfirm={handleConfirm}
                 onOutcomeSet={(msg) => flash(msg, 'success')}
@@ -71,9 +143,9 @@ const MCQClassification: React.FC = () => {
               />
             )}
 
-            {result && showCorrection && (
+            {activeResult && showCorrection && (
               <MCQCorrection
-                result={result}
+                result={activeResult}
                 onCorrectionSubmitted={handleCorrectionSubmitted}
                 onCancel={() => setShowCorrection(false)}
                 onError={(e) => flash(e, 'error', 5000)}
@@ -91,11 +163,11 @@ const MCQClassification: React.FC = () => {
                 How to use
               </div>
               <ol style={{ paddingLeft: '18px', margin: 0, fontSize: '13px', color: 'var(--text2)', lineHeight: '1.8' }}>
-                <li>Choose text or image input</li>
-                <li>Submit your MCQ for classification</li>
-                <li>Review subject, topic, and confidence</li>
-                <li>Confirm if correct, or edit to fix</li>
-                <li>Mark your outcome (correct / wrong / skipped)</li>
+                <li>Choose image, text, or bulk input</li>
+                <li>Mark your outcome before submitting</li>
+                <li>Submit for classification</li>
+                <li>Review subject and topic</li>
+                <li>Confirm or edit each result</li>
               </ol>
             </div>
           </div>
