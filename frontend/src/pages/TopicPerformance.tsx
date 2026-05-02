@@ -22,6 +22,12 @@ const TopicPerformancePage: React.FC = () => {
     }
   };
 
+  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+
+  const toggleCollapse = (subject: string) => {
+    setCollapsed(prev => ({ ...prev, [subject]: !prev[subject] }));
+  };
+
   const getPerf = (accuracy: number) => {
     if (accuracy >= 80) return {
       level: 'Strong',
@@ -134,12 +140,8 @@ const TopicPerformancePage: React.FC = () => {
     <DashboardLayout>
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 0' }}>
 
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 }}>
+        <div style={{ marginBottom: 28 }}>
           <h1 className="page-title">Performance Analytics</h1>
-          <button className="btn btn-ghost" onClick={loadTopicPerformance}>
-            ↻ Refresh
-          </button>
         </div>
 
         {/* Stat cards */}
@@ -177,17 +179,13 @@ const TopicPerformancePage: React.FC = () => {
           </div>
         )}
 
-        {/* Section label */}
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1.5px', textTransform: 'uppercase', color: 'var(--text3)', marginBottom: 16 }}>
-          SUBJECT PERFORMANCE — WEAKEST FIRST
-        </div>
-
         {/* Subject cards */}
         {sorted.map(subject => {
           const d = subjectData[subject];
           const perf = getPerf(d.overallAccuracy);
           const totalQ = d.totalCorrect + d.totalIncorrect + d.totalUnattempted;
           const correctRatio = `${d.totalCorrect}/${totalQ}`;
+          const isCollapsed = collapsed[subject] ?? false;
 
           return (
             <div key={subject} className="card" style={{
@@ -196,26 +194,17 @@ const TopicPerformancePage: React.FC = () => {
               borderLeft: `3px solid ${perf.borderColor}`,
               overflow: 'hidden',
             }}>
-              {/* Subject header row */}
-              <div style={{ padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              {/* Subject header row — clickable to collapse */}
+              <div
+                onClick={() => toggleCollapse(subject)}
+                style={{ padding: '18px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', userSelect: 'none' }}
+              >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 18, color: 'var(--text3)', transition: 'transform 0.2s', display: 'inline-block', transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)' }}>▾</span>
                   <span style={{ fontSize: 17, fontWeight: 600, color: 'var(--text)' }}>{subject}</span>
-                  {d.overallAccuracy < 60 && (
-                    <span className="badge" style={{ background: perf.badgeBg, color: perf.color, border: `1px solid ${perf.badgeBorder}`, fontSize: 11 }}>
-                      Needs attention
-                    </span>
-                  )}
-                  {d.overallAccuracy >= 80 && (
-                    <span className="badge" style={{ background: perf.badgeBg, color: perf.color, border: `1px solid ${perf.badgeBorder}`, fontSize: 11 }}>
-                      Strong
-                    </span>
-                  )}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <span style={{ fontSize: 20, fontWeight: 700, color: perf.color }}>{d.overallAccuracy.toFixed(0)}%</span>
-                  <span className="badge" style={{ background: perf.badgeBg, color: perf.color, border: `1px solid ${perf.badgeBorder}`, fontSize: 11 }}>
-                    {perf.level}
-                  </span>
                 </div>
               </div>
 
@@ -230,78 +219,61 @@ const TopicPerformancePage: React.FC = () => {
                 </span>
               </div>
 
-              {/* Divider */}
-              <div style={{ height: 1, background: 'var(--border)', margin: '0 22px' }} />
+              {/* Collapsible content */}
+              {!isCollapsed && (
+                <>
+                  {/* Divider */}
+                  <div style={{ height: 1, background: 'var(--border)', margin: '0 22px' }} />
 
-              {/* Topics section */}
-              <div style={{ padding: '14px 22px 6px', fontSize: 12, fontWeight: 600, letterSpacing: '0.5px', color: 'var(--text3)' }}>
-                Topics
-              </div>
-
-              {d.topics.map((item, idx) => {
-                const total = item.correct + item.incorrect + item.unattempted;
-                const tp = getPerf(item.accuracy);
-                const topicWeak = item.accuracy < 60;
-                const highSkip = item.unattempted > total * 0.4;
-
-                return (
-                  <div key={`${item.topic}-${idx}`} style={{
-                    padding: '14px 22px',
-                    borderTop: idx > 0 ? '1px solid var(--border)' : 'none',
-                  }}>
-                    {/* Topic name row */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)' }}>{item.topic}</span>
-                        {topicWeak && (
-                          <span className="badge" style={{ background: perf.badgeBg, color: tp.color, border: `1px solid ${tp.badgeBorder}`, fontSize: 10 }}>
-                            Weak topic
-                          </span>
-                        )}
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, marginLeft: 12 }}>
-                        <span style={{ fontSize: 16, fontWeight: 700, color: tp.color }}>{item.accuracy.toFixed(1)}%</span>
-                        <span className="badge" style={{ background: tp.badgeBg, color: tp.color, border: `1px solid ${tp.badgeBorder}`, fontSize: 10 }}>
-                          {tp.level}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Outcome counts */}
-                    <div style={{ display: 'flex', gap: 16, fontSize: 13, color: 'var(--text3)', marginBottom: (topicWeak || highSkip) ? 10 : 0 }}>
-                      <span>
-                        <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: 'var(--green)', marginRight: 5, verticalAlign: 'middle' }} />
-                        {item.correct} correct
-                      </span>
-                      <span>
-                        <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: 'var(--red)', marginRight: 5, verticalAlign: 'middle' }} />
-                        {item.incorrect} wrong
-                      </span>
-                      <span>
-                        <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: 'var(--text3)', marginRight: 5, verticalAlign: 'middle' }} />
-                        {item.unattempted} skipped
-                      </span>
-                    </div>
-
-                    {/* Hint */}
-                    {(topicWeak || highSkip) && (
-                      <div style={{
-                        marginTop: 8,
-                        padding: '8px 12px',
-                        background: topicWeak ? 'rgba(244,63,94,0.07)' : 'rgba(245,158,11,0.07)',
-                        border: `1px solid ${topicWeak ? 'rgba(244,63,94,0.2)' : 'rgba(245,158,11,0.2)'}`,
-                        borderRadius: 8,
-                        fontSize: 12,
-                        color: topicWeak ? 'var(--red)' : 'var(--amber)',
-                      }}>
-                        {topicWeak
-                          ? 'Focus on this topic — low accuracy indicates knowledge gaps'
-                          : 'High skip rate — may indicate topic avoidance or difficulty'}
-                      </div>
-                    )}
+                  {/* Topics section */}
+                  <div style={{ padding: '14px 22px 6px', fontSize: 12, fontWeight: 600, letterSpacing: '0.5px', color: 'var(--text3)' }}>
+                    Topics
                   </div>
-                );
-              })}
+
+                  {d.topics.map((item, idx) => {
+                    const total = item.correct + item.incorrect + item.unattempted;
+                    const tp = getPerf(item.accuracy);
+                    const highSkip = item.unattempted > total * 0.4;
+
+                    return (
+                      <div key={`${item.topic}-${idx}`} style={{
+                        padding: '14px 22px',
+                        borderTop: idx > 0 ? '1px solid var(--border)' : 'none',
+                      }}>
+                        {/* Topic name row */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                            <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)' }}>{item.topic}</span>
+                            {highSkip && (
+                              <span style={{ fontSize: 11, color: 'var(--amber)', fontWeight: 500 }}>· high skip rate</span>
+                            )}
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, marginLeft: 12 }}>
+                            <span style={{ fontSize: 16, fontWeight: 700, color: tp.color }}>{item.accuracy.toFixed(1)}%</span>
+                          </div>
+                        </div>
+
+                        {/* Outcome counts */}
+                        <div style={{ display: 'flex', gap: 16, fontSize: 13, color: 'var(--text3)' }}>
+                          <span>
+                            <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: 'var(--green)', marginRight: 5, verticalAlign: 'middle' }} />
+                            {item.correct}
+                          </span>
+                          <span>
+                            <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: 'var(--red)', marginRight: 5, verticalAlign: 'middle' }} />
+                            {item.incorrect}
+                          </span>
+                          <span>
+                            <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: 'var(--text3)', marginRight: 5, verticalAlign: 'middle' }} />
+                            {item.unattempted}
+                          </span>
+                        </div>
+
+                      </div>
+                    );
+                  })}
+                </>
+              )}
             </div>
           );
         })}

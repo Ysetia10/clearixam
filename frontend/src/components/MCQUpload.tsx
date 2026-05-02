@@ -11,7 +11,7 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onError }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [inputMode, setInputMode] = useState<'text' | 'image'>('text');
+  const [inputMode, setInputMode] = useState<'text' | 'image'>('image');
   const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -65,7 +65,7 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onError }) => {
 
       {/* Mode Toggle */}
       <div className="tabs" style={{ marginBottom: '16px', width: 'fit-content' }}>
-        {(['text', 'image'] as const).map((mode) => (
+        {(['image', 'text'] as const).map((mode) => (
           <button
             key={mode}
             className={`tab${inputMode === mode ? ' active' : ''}`}
