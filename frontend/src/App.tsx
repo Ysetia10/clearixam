@@ -17,6 +17,7 @@ const AccountSettings = lazy(() => import('./pages/AccountSettings').then(module
 const PerformanceHistory = lazy(() => import('./pages/PerformanceHistory').then(module => ({ default: module.PerformanceHistory })));
 const MCQClassification = lazy(() => import('./pages/MCQClassification'));
 const TopicPerformance = lazy(() => import('./pages/TopicPerformance'));
+const SectionalTests = lazy(() => import('./pages/SectionalTests').then(m => ({ default: m.SectionalTests })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -123,6 +124,16 @@ function AppContent() {
                 <ProtectedRoute>
                   <Suspense fallback={<PageLoader />}>
                     <TopicPerformance />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sectional-tests"
+              element={
+                <ProtectedRoute>
+                  <Suspense fallback={<PageLoader />}>
+                    <SectionalTests />
                   </Suspense>
                 </ProtectedRoute>
               }

@@ -21,6 +21,7 @@ export const Sidebar = () => {
     { text: 'Subject Analytics', path: '/subject-analytics', icon: '📈' },
     { text: 'MCQ Classification', path: '/mcq-classification', icon: '🤖' },
     { text: 'Topic Performance', path: '/topic-performance', icon: '🎯' },
+    { text: 'Sectional Tests', path: '/sectional-tests', icon: '📝' },
     { text: 'Add Mock', path: '/add-mock', icon: '➕' },
     { text: 'Mock History', path: '/performance-history', icon: '📋' },
     { text: 'Account', path: '/account', icon: '⚙️' },
