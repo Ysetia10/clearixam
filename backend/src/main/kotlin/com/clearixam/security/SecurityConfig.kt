@@ -89,7 +89,8 @@ class SecurityConfig(
                     .requestMatchers("/api/exams", "/api/exams/**").permitAll()
                     .requestMatchers("/api/subjects", "/api/subjects/**").permitAll()
                     .requestMatchers("/api/mcq/**").permitAll()
-                    
+                    .requestMatchers("/api/sectional-tests/**").authenticated()
+
                     .anyRequest().authenticated()
             }
             
