@@ -12,3 +12,12 @@ data class CreateGoalRequest(
     @field:NotNull(message = "Target date is required")
     val targetDate: LocalDate
 )
+
+data class UpdateGoalRequest(
+    @field:NotNull(message = "Target score is required")
+    @field:Positive(message = "Target score must be positive")
+    val targetScore: Double,
+
+    @field:NotNull(message = "Target date is required")
+    val targetDate: LocalDate
+)

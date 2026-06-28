@@ -17,10 +17,10 @@ data class Goal(
     val user: User,
 
     @Column(nullable = false)
-    val targetScore: Double,
+    var targetScore: Double,
 
     @Column(nullable = false)
-    val targetDate: LocalDate,
+    var targetDate: LocalDate,
 
     @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now()

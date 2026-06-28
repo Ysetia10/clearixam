@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -9,20 +9,45 @@ import {
   Box,
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { goalsApi } from '../api/goals';
+import { goalsApi, GoalResponse } from '../api/goals';
 
 interface GoalSettingDialogProps {
   open: boolean;
   onClose: () => void;
+  existingGoal?: GoalResponse;
 }
 
-export const GoalSettingDialog = ({ open, onClose }: GoalSettingDialogProps) => {
+export const GoalSettingDialog = ({ open, onClose, existingGoal }: GoalSettingDialogProps) => {
   const queryClient = useQueryClient();
   const [targetScore, setTargetScore] = useState('');
   const [targetDate, setTargetDate] = useState('');
 
-  const mutation = useMutation({
+  const isEditMode = !!existingGoal;
+
+  useEffect(() => {
+    if (existingGoal) {
+      setTargetScore(existingGoal.targetScore.toString());
+      setTargetDate(existingGoal.targetDate);
+    } else {
+      setTargetScore('');
+      setTargetDate('');
+    }
+  }, [existingGoal, open]);
+
+  const createMutation = useMutation({
     mutationFn: goalsApi.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['goals'] });
+      queryClient.invalidateQueries({ queryKey: ['analytics-overview'] });
+      onClose();
+      setTargetScore('');
+      setTargetDate('');
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { targetScore: number; targetDate: string } }) =>
+      goalsApi.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['goals'] });
       queryClient.invalidateQueries({ queryKey: ['analytics-overview'] });
@@ -34,16 +59,24 @@ export const GoalSettingDialog = ({ open, onClose }: GoalSettingDialogProps) => 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutation.mutate({
+    const data = {
       targetScore: parseFloat(targetScore),
       targetDate,
-    });
+    };
+
+    if (isEditMode && existingGoal) {
+      updateMutation.mutate({ id: existingGoal.id, data });
+    } else {
+      createMutation.mutate(data);
+    }
   };
+
+  const isPending = createMutation.isPending || updateMutation.isPending;
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <form onSubmit={handleSubmit}>
-        <DialogTitle>Set Your Goal</DialogTitle>
+        <DialogTitle>{isEditMode ? 'Edit Your Goal' : 'Set Your Goal'}</DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
             <TextField
@@ -68,8 +101,8 @@ export const GoalSettingDialog = ({ open, onClose }: GoalSettingDialogProps) => 
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="contained" disabled={mutation.isPending}>
-            {mutation.isPending ? 'Creating...' : 'Create Goal'}
+          <Button type="submit" variant="contained" disabled={isPending}>
+            {isPending ? (isEditMode ? 'Updating...' : 'Creating...') : (isEditMode ? 'Update Goal' : 'Create Goal')}
           </Button>
         </DialogActions>
       </form>

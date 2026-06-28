@@ -15,6 +15,7 @@ import {
 import { mocksApi } from '../api/mocks';
 import { examsApi, Exam } from '../api/exams';
 import { reportsApi } from '../api/reports';
+import { goalsApi } from '../api/goals';
 import { GoalSettingDialog } from '../components/GoalSettingDialog';
 import { MockDetailDialog } from '../components/MockDetailDialog';
 
@@ -24,6 +25,7 @@ export const Dashboard = () => {
   const [selectedMockId, setSelectedMockId] = useState<string | null>(null);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [mockDetailOpen, setMockDetailOpen] = useState(false);
+  const [editingGoal, setEditingGoal] = useState<any>(null);
 
   const { data: exams = [] } = useQuery({
     queryKey: ['exams'],
@@ -103,6 +105,12 @@ export const Dashboard = () => {
     queryFn: () => analyticsApi.getInsights(selectedExamId || undefined),
     enabled: !!selectedExamId,
     staleTime: 60000,
+  });
+
+  const { data: goals = [] } = useQuery({
+    queryKey: ['goals'],
+    queryFn: goalsApi.list,
+    staleTime: 30000,
   });
 
   const neglectedSubjects = useMemo(() =>
@@ -283,7 +291,7 @@ export const Dashboard = () => {
               <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>Set a Goal</div>
               <div style={{ fontSize: '13px', color: 'var(--text2)' }}>Track your progress toward a target score</div>
             </div>
-            <button className="btn btn-primary" onClick={() => setGoalDialogOpen(true)}>Create Goal</button>
+            <button className="btn btn-primary" onClick={() => { setEditingGoal(null); setGoalDialogOpen(true); }}>Create Goal</button>
           </div>
         </div>
       ) : (
@@ -291,7 +299,22 @@ export const Dashboard = () => {
           background: 'linear-gradient(135deg, rgba(124,106,255,0.12), rgba(124,106,255,0.04))',
           border: '1px solid rgba(124,106,255,0.25)', marginBottom: '24px',
         }}>
-          <div className="stat-label">Goal Progress</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <div className="stat-label">Goal Progress</div>
+            <button 
+              className="btn btn-ghost" 
+              style={{ padding: '4px 12px', fontSize: '12px' }}
+              onClick={() => {
+                const activeGoal = goals.length > 0 ? goals[goals.length - 1] : null;
+                if (activeGoal) {
+                  setEditingGoal(activeGoal);
+                  setGoalDialogOpen(true);
+                }
+              }}
+            >
+              ✏️ Edit Goal
+            </button>
+          </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span style={{ fontSize: '13px', color: 'var(--text2)' }}>
               {overview.goalProgress.goalProgressPercent.toFixed(1)}% toward {overview.goalProgress.targetScore.toFixed(2)}
@@ -441,7 +464,14 @@ export const Dashboard = () => {
       </div>
 
       <MockDetailDialog open={mockDetailOpen} onClose={() => { setMockDetailOpen(false); setSelectedMockId(null); }} mockDetail={mockDetail} />
-      <GoalSettingDialog open={goalDialogOpen} onClose={() => setGoalDialogOpen(false)} />
+      <GoalSettingDialog 
+        open={goalDialogOpen} 
+        onClose={() => { 
+          setGoalDialogOpen(false); 
+          setEditingGoal(null); 
+        }} 
+        existingGoal={editingGoal} 
+      />
     </DashboardLayout>
   );
 };

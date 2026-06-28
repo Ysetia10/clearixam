@@ -1,6 +1,7 @@
 package com.clearixam.controller
 
 import com.clearixam.dto.request.CreateGoalRequest
+import com.clearixam.dto.request.UpdateGoalRequest
 import com.clearixam.dto.response.GoalResponse
 import com.clearixam.service.GoalService
 import jakarta.validation.Valid
@@ -30,6 +31,17 @@ class GoalController(
         val userEmail = authentication.name
         val goals = goalService.getGoals(userEmail)
         return ResponseEntity.ok(goals)
+    }
+
+    @PutMapping("/{id}")
+    fun updateGoal(
+        @PathVariable id: UUID,
+        @Valid @RequestBody request: UpdateGoalRequest,
+        authentication: Authentication
+    ): ResponseEntity<GoalResponse> {
+        val userEmail = authentication.name
+        val goal = goalService.updateGoal(id, userEmail, request)
+        return ResponseEntity.ok(goal)
     }
 
     @DeleteMapping("/{id}")

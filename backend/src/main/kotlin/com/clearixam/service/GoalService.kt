@@ -45,6 +45,21 @@ class GoalService(
     }
 
     @Transactional
+    fun updateGoal(goalId: UUID, userEmail: String, request: com.clearixam.dto.request.UpdateGoalRequest): GoalResponse {
+        val user = userRepository.findByEmail(userEmail)
+            ?: throw IllegalArgumentException("User not found")
+
+        val goal = goalRepository.findByIdAndUserId(goalId, user.id!!)
+            ?: throw IllegalArgumentException("Goal not found or access denied")
+
+        goal.targetScore = request.targetScore
+        goal.targetDate = request.targetDate
+
+        val updatedGoal = goalRepository.save(goal)
+        return toGoalResponse(updatedGoal)
+    }
+
+    @Transactional
     fun deleteGoal(goalId: UUID, userEmail: String) {
         val user = userRepository.findByEmail(userEmail)
             ?: throw IllegalArgumentException("User not found")
