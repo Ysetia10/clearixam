@@ -1,0 +1,21 @@
+# Existing Render service: set Dockerfile Path = backend/Dockerfile
+# and Docker Context = . (repository root), then deploy.
+services:
+  - type: web
+    name: clearixam-backend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: DDL_AUTO
+        value: update
