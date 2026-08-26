@@ -1,0 +1,42 @@
+# Keep Render free tier awake and smoke-check production health.
+name: Production ops
+
+on:
+  schedule:
+    # Every 5 minutes — under Render's ~15 min idle window, with margin for GitHub delay
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: prod-ops
+  cancel-in-progress: false
+
+jobs:
+  keep-warm-and-uptime:
+    name: Keep-warm + uptime
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Health (keep-warm)
+        run: |
+          set -euo pipefail
+          API="${PROD_API_BASE:-https://clearixam-backend.onrender.com}"
+          echo "GET ${API}/health"
+          curl -fsS --retry 2 --retry-delay 5 --max-time 90 \
+            "${API}/health" | tee /tmp/health.json
+          grep -q '"status":"UP"' /tmp/health.json
+
+      - name: Frontend reachable
+        run: |
+          set -euo pipefail
+          UI="${PROD_UI_BASE:-https://clearixam.vercel.app}"
+          for i in 1 2 3 4 5; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 "${UI}/" || echo "000")
+            echo "UI HTTP ${code} (attempt ${i})"
+            if [ "${code}" = "200" ]; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Frontend did not return HTTP 200" >&2
+          exit 1
