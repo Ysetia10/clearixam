@@ -8,6 +8,7 @@ backend/.gradle/
 backend/out/
 *.class
 *.jar
+!**/gradle-wrapper.jar
 *.war
 
 # Frontend
@@ -29,3 +30,6 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Database dumps (contain user data)
+*.dump
