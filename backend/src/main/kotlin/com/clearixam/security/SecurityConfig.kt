@@ -82,7 +82,7 @@ class SecurityConfig(
                     .requestMatchers("/auth/**").permitAll()
                     .requestMatchers("/register").permitAll()
                     .requestMatchers("/login").permitAll()
-                    .requestMatchers("/health").permitAll()
+                    .requestMatchers("/health", "/api/health").permitAll()
                     .requestMatchers("/actuator/health").permitAll()
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/v3/api-docs/**").permitAll()
