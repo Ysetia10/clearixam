@@ -110,7 +110,7 @@ export const SubjectAnalytics = () => {
           </div>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 260px), 1fr))', gap: '16px' }}>
           {subjects.map((subject, i) => {
             const accuracyColor =
               subject.avgAccuracy >= 90 ? 'var(--green)' :

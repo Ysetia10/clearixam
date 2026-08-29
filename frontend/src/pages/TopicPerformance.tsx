@@ -145,7 +145,7 @@ const TopicPerformancePage: React.FC = () => {
         </div>
 
         {/* Stat cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 20 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))', gap: 14, marginBottom: 20 }}>
           <div className="card" style={{ background: 'rgba(33,150,243,0.08)', border: '1px solid rgba(33,150,243,0.25)', padding: '20px 18px' }}>
             <div style={{ fontSize: 32, fontWeight: 700, color: 'var(--blue)', lineHeight: 1 }}>{totalQuestions}</div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--blue)', marginTop: 6 }}>QUESTIONS</div>

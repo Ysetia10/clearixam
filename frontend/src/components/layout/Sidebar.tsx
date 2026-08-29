@@ -1,20 +1,31 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import { removeToken } from '../../api/auth';
-import { useThemeMode } from '../../context/ThemeContext';
+import { Drawer } from '@mui/material'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { removeToken } from '../../api/auth'
+import { useThemeMode } from '../../context/ThemeContext'
+import { DRAWER_WIDTH } from './constants'
 
-const DRAWER_WIDTH = 230;
+interface SidebarProps {
+  isMobile?: boolean
+  open?: boolean
+  onClose?: () => void
+}
 
-export const Sidebar = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { mode, toggleTheme } = useThemeMode();
-  const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps) => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { mode, toggleTheme } = useThemeMode()
+  const userEmail = localStorage.getItem('userEmail') || 'user@example.com'
 
   const handleLogout = () => {
-    removeToken();
-    localStorage.removeItem('userEmail');
-    navigate('/login');
-  };
+    removeToken()
+    localStorage.removeItem('userEmail')
+    navigate('/login')
+  }
+
+  const go = (path: string) => {
+    navigate(path)
+    onClose?.()
+  }
 
   const menuItems = [
     { text: 'Dashboard', path: '/dashboard', icon: '📊' },
@@ -25,46 +36,46 @@ export const Sidebar = () => {
     { text: 'Add Mock', path: '/add-mock', icon: '➕' },
     { text: 'Mock History', path: '/performance-history', icon: '📋' },
     { text: 'Account', path: '/account', icon: '⚙️' },
-  ];
+  ]
 
-  const getInitials = (email: string) => {
-    return email.substring(0, 2).toUpperCase();
-  };
+  const getInitials = (email: string) => email.substring(0, 2).toUpperCase()
 
-  return (
-    <div style={{
-      position: 'fixed',
-      width: `${DRAWER_WIDTH}px`,
-      height: '100vh',
-      background: 'var(--surface)',
-      borderRight: '1px solid var(--border)',
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '24px 0',
-      zIndex: 1000,
-    }}>
-      {/* Logo Section */}
-      <div style={{
-        padding: '0 12px 20px',
-        borderBottom: '1px solid var(--border)',
-      }}>
-        {/* Logo */}
+  const content = (
+    <div
+      style={{
+        width: `${DRAWER_WIDTH}px`,
+        height: '100%',
+        background: 'var(--surface)',
+        borderRight: isMobile ? 'none' : '1px solid var(--border)',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '24px 0',
+        overflowY: 'auto',
+      }}
+    >
+      <div
+        style={{
+          padding: '0 12px 20px',
+          borderBottom: '1px solid var(--border)',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
-          <span style={{
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '20px',
-            fontWeight: 800,
-            background: 'linear-gradient(135deg, var(--accent), var(--green))',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            whiteSpace: 'nowrap',
-          }}>
+          <span
+            style={{
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '20px',
+              fontWeight: 800,
+              background: 'linear-gradient(135deg, var(--accent), var(--green))',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              whiteSpace: 'nowrap',
+            }}
+          >
             CleariXam
           </span>
         </div>
-        
-        {/* Theme Toggle Button on second row */}
+
         <button
           onClick={toggleTheme}
           style={{
@@ -82,28 +93,20 @@ export const Sidebar = () => {
             color: 'var(--text2)',
             gap: '8px',
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'var(--surface3)';
-            e.currentTarget.style.borderColor = 'var(--border2)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'var(--surface2)';
-            e.currentTarget.style.borderColor = 'var(--border2)';
-          }}
           title={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
         >
           {mode === 'dark' ? (
             <>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="5"/>
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
               </svg>
               <span style={{ fontSize: '12px', fontWeight: 500 }}>Light Mode</span>
             </>
           ) : (
             <>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
               <span style={{ fontSize: '12px', fontWeight: 500 }}>Dark Mode</span>
             </>
@@ -111,25 +114,26 @@ export const Sidebar = () => {
         </button>
       </div>
 
-      {/* Navigation */}
       <nav style={{ flex: 1, padding: '24px 12px' }}>
-        <div style={{
-          fontSize: '10px',
-          fontWeight: 600,
-          letterSpacing: '1.5px',
-          textTransform: 'uppercase',
-          color: 'var(--text3)',
-          padding: '0 12px',
-          marginBottom: '12px',
-        }}>
+        <div
+          style={{
+            fontSize: '10px',
+            fontWeight: 600,
+            letterSpacing: '1.5px',
+            textTransform: 'uppercase',
+            color: 'var(--text3)',
+            padding: '0 12px',
+            marginBottom: '12px',
+          }}
+        >
           MAIN MENU
         </div>
         {menuItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive = location.pathname === item.path
           return (
             <div
               key={item.path}
-              onClick={() => navigate(item.path)}
+              onClick={() => go(item.path)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -142,92 +146,93 @@ export const Sidebar = () => {
                 transition: 'all 0.18s',
                 marginBottom: '4px',
                 position: 'relative',
-                background: isActive ? 'linear-gradient(135deg, rgba(124,106,255,0.18), rgba(124,106,255,0.08))' : 'transparent',
+                background: isActive
+                  ? 'linear-gradient(135deg, rgba(124,106,255,0.18), rgba(124,106,255,0.08))'
+                  : 'transparent',
                 border: isActive ? '1px solid rgba(124,106,255,0.2)' : '1px solid transparent',
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = 'var(--surface2)';
-                  e.currentTarget.style.color = 'var(--text)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = 'var(--text2)';
-                }
               }}
             >
               {isActive && (
-                <div style={{
-                  position: 'absolute',
-                  left: '-12px',
-                  width: '3px',
-                  height: '18px',
-                  background: 'var(--accent)',
-                  borderRadius: '0 3px 3px 0',
-                }} />
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '-12px',
+                    width: '3px',
+                    height: '18px',
+                    background: 'var(--accent)',
+                    borderRadius: '0 3px 3px 0',
+                  }}
+                />
               )}
               <span style={{ fontSize: '16px' }}>{item.icon}</span>
               <span style={{ fontWeight: isActive ? 600 : 500 }}>{item.text}</span>
             </div>
-          );
+          )
         })}
       </nav>
 
-      {/* User Chip */}
-      <div style={{
-        marginTop: 'auto',
-        padding: '16px 12px 0',
-        borderTop: '1px solid var(--border)',
-      }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          padding: '10px 12px',
-          borderRadius: '10px',
-          background: 'var(--surface2)',
-          border: '1px solid var(--border)',
-        }}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--accent), var(--green))',
+      <div
+        style={{
+          marginTop: 'auto',
+          padding: '16px 12px 0',
+          borderTop: '1px solid var(--border)',
+        }}
+      >
+        <div
+          style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--on-color)',
-            fontSize: '13px',
-            fontWeight: 700,
-            flexShrink: 0,
-          }}>
+            gap: '10px',
+            padding: '10px 12px',
+            borderRadius: '10px',
+            background: 'var(--surface2)',
+            border: '1px solid var(--border)',
+          }}
+        >
+          <div
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, var(--accent), var(--green))',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--on-color)',
+              fontSize: '13px',
+              fontWeight: 700,
+              flexShrink: 0,
+            }}
+          >
             {getInitials(userEmail)}
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{
-              fontSize: '13px',
-              fontWeight: 500,
-              color: 'var(--text)',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}>
+            <div
+              style={{
+                fontSize: '13px',
+                fontWeight: 500,
+                color: 'var(--text)',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {userEmail.split('@')[0]}
             </div>
-            <div style={{
-              fontSize: '11px',
-              color: 'var(--text3)',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}>
+            <div
+              style={{
+                fontSize: '11px',
+                color: 'var(--text3)',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {userEmail}
             </div>
           </div>
         </div>
-        
+
         <button
           onClick={handleLogout}
           className="btn btn-ghost"
@@ -241,5 +246,41 @@ export const Sidebar = () => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+
+  if (isMobile) {
+    return (
+      <Drawer
+        variant="temporary"
+        open={open}
+        onClose={onClose}
+        ModalProps={{ keepMounted: true }}
+        PaperProps={{
+          sx: {
+            width: DRAWER_WIDTH,
+            background: 'var(--surface)',
+            backgroundImage: 'none',
+            borderRight: '1px solid var(--border)',
+          },
+        }}
+      >
+        {content}
+      </Drawer>
+    )
+  }
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: `${DRAWER_WIDTH}px`,
+        height: '100vh',
+        zIndex: 1000,
+      }}
+    >
+      {content}
+    </div>
+  )
+}

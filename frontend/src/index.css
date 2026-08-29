@@ -448,3 +448,75 @@ body::before {
 ::-webkit-scrollbar-thumb:hover { 
   background: var(--border2); 
 }
+
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+.stack-md {
+  /* Desktop default kept by inline styles; overridden below md */
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 899px) {
+  .page-title {
+    font-size: 22px;
+  }
+
+  .stat-value {
+    font-size: 28px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .stack-md {
+    grid-template-columns: 1fr !important;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .tab {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .insight-banner {
+    flex-wrap: wrap;
+    padding: 12px 14px;
+  }
+
+  .table-header,
+  .table-row {
+    min-width: 640px;
+  }
+
+  .page-header {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 599px) {
+  .stack-sm {
+    grid-template-columns: 1fr !important;
+  }
+
+  .table-header,
+  .table-row {
+    min-width: 560px;
+    padding: 12px 16px;
+  }
+}

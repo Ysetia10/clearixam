@@ -97,7 +97,7 @@ const MCQClassification: React.FC = () => {
           </div>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
+        <div className="stack-md" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
           {/* Main */}
           <div>
             {/* Bulk progress header */}

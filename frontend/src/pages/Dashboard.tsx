@@ -251,7 +251,7 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '16px', marginBottom: '24px' }}>
         {/* Performance Stability */}
         <div className="card">
           <div className="stat-label">Performance Stability</div>
@@ -339,7 +339,7 @@ export const Dashboard = () => {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '16px', marginBottom: '24px' }}>
+      <div className="stack-md" style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '16px', marginBottom: '24px' }}>
         {/* Performance Trend Chart */}
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -432,7 +432,7 @@ export const Dashboard = () => {
             <button className="btn btn-primary" style={{ marginTop: '16px' }} onClick={() => navigate('/add-mock')}>+ Add Mock Test</button>
           </div>
         ) : (
-          <>
+          <div className="table-scroll">
             <div className="table-header" style={{ gridTemplateColumns: '1fr 100px 120px 120px 120px 120px' }}>
               <div className="th">Date</div>
               <div className="th">Exam</div>
@@ -459,7 +459,7 @@ export const Dashboard = () => {
                 </div>
               </div>
             ))}
-          </>
+          </div>
         )}
       </div>
 
@@ -503,7 +503,7 @@ function ImprovementCard({ improvement }: { improvement: ImprovementDTO }) {
         </span>
         <span style={{ fontSize: '12px', color: 'var(--text3)' }}>points</span>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+      <div className="stack-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <div style={{ background: 'var(--surface2)', borderRadius: '8px', padding: '8px 10px' }}>
           <div style={{ fontSize: '10px', color: 'var(--text3)' }}>Last 5</div>
           <div style={{ fontSize: '16px', fontWeight: 600 }}>{improvement.last5Avg.toFixed(1)}</div>
@@ -641,7 +641,7 @@ function AttemptAccuracyCard({ insight }: { insight: AttemptAccuracyInsightDTO }
         <div className="stat-label" style={{ marginBottom: 0 }}>Attempt Strategy</div>
         <span className={`badge ${trendBadge}`}>{trendLabel}</span>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+      <div className="stack-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
         <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '10px 12px' }}>
           <div style={{ fontSize: '10px', color: 'var(--text3)', marginBottom: '4px' }}>High attempt accuracy</div>
           <div style={{ fontSize: '18px', fontWeight: 700, color: insight.highAttemptAccuracy >= insight.lowAttemptAccuracy ? 'var(--green)' : 'var(--red)' }}>
@@ -672,9 +672,9 @@ function NeglectCard({ subjects, windowSize }: { subjects: SubjectNeglectDTO[]; 
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {subjects.map(s => (
-          <div key={s.subjectName} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', background: 'var(--surface2)', borderRadius: '8px' }}>
+          <div key={s.subjectName} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap', padding: '8px 12px', background: 'var(--surface2)', borderRadius: '8px' }}>
             <span style={{ fontSize: '13px', fontWeight: 500 }}>{s.subjectName}</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '11px', color: 'var(--text3)' }}>
                 {s.status === 'NEGLECTED'
                   ? `Not attempted in last ${windowSize} mocks`

@@ -345,7 +345,7 @@ function AddEntryForm({
 
       <form onSubmit={handleSubmit}>
         {/* row 1 — exam + subject */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+        <div className="stack-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
           <div>
             <label className="input-label">Exam</label>
             <select className="select" value={examId} onChange={e => { setExamId(e.target.value); setSubjectId(''); }}>
@@ -361,7 +361,7 @@ function AddEntryForm({
         </div>
 
         {/* row 2 — date + total qs + time */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '16px' }}>
+        <div className="stack-sm" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '16px' }}>
           <div>
             <label className="input-label">Date</label>
             <input type="date" className="input" value={testDate} onChange={e => setTestDate(e.target.value)} max={new Date().toISOString().split('T')[0]} required />
@@ -377,7 +377,7 @@ function AddEntryForm({
         </div>
 
         {/* row 3 — attempted + correct */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
+        <div className="stack-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
           <div>
             <label className="input-label">Attempted</label>
             <input type="number" className="input" value={attempted} onChange={e => setAttempted(e.target.value)} min="0" placeholder="0" required />

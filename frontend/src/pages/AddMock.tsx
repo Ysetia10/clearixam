@@ -336,7 +336,7 @@ export const AddMock = () => {
                     );
 
                     return (
-                      <div key={row.id} style={{
+                      <div key={row.id} className="stack-sm" style={{
                         display: 'grid',
                         gridTemplateColumns: '2fr 1fr 1fr 1fr auto',
                         gap: '12px',

@@ -84,7 +84,7 @@ export const PerformanceHistory = () => {
             </button>
           </div>
         ) : (
-          <>
+          <div className="table-scroll">
             <div className="table-header" style={{ gridTemplateColumns: '110px 1fr 110px 110px 100px 110px 110px' }}>
               <div className="th">Date</div>
               <div className="th">Exam</div>
@@ -136,7 +136,7 @@ export const PerformanceHistory = () => {
 
             {/* Pagination */}
             {mocks.totalPages > 1 && (
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', padding: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', padding: '16px', flexWrap: 'wrap' }}>
                 <button
                   className="btn btn-ghost"
                   disabled={page === 0}
@@ -156,7 +156,7 @@ export const PerformanceHistory = () => {
                 </button>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
 

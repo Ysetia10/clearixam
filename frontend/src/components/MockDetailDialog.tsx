@@ -16,6 +16,8 @@ import {
   Chip,
   IconButton,
   Alert,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Close, Delete, Edit } from '@mui/icons-material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -32,6 +34,8 @@ interface MockDetailDialogProps {
 export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialogProps) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const deleteMutation = useMutation({
@@ -64,7 +68,7 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
   const overallAccuracy = totalAttempted > 0 ? (totalCorrect / totalAttempted) * 100 : 0;
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth fullScreen={isMobile}>
       <DialogTitle sx={{ pb: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="subtitle1" fontWeight="bold">
@@ -109,7 +113,7 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
             {mockDetail.testDate}
           </Typography>
 
-          <Box sx={{ display: 'flex', gap: 2, mt: 1.5 }}>
+          <Box sx={{ display: 'flex', gap: 2, mt: 1.5, flexWrap: 'wrap' }}>
             <Box>
               <Typography variant="caption" color="text.secondary">
                 Total Score
@@ -159,8 +163,8 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
         <Typography variant="caption" color="text.secondary" gutterBottom display="block">
           Subject Breakdown
         </Typography>
-        <TableContainer component={Paper} variant="outlined">
-          <Table size="small">
+        <TableContainer component={Paper} variant="outlined" sx={{ overflowX: 'auto' }}>
+          <Table size="small" sx={{ minWidth: 480 }}>
             <TableHead>
               <TableRow>
                 <TableCell sx={{ py: 0.75 }}>Subject</TableCell>
