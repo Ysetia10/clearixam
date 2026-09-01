@@ -1,5 +1,6 @@
 import { apiClient } from './client';
 import { API_CONFIG } from '../config/apiConfig';
+import { apiFetch } from './http';
 
 export interface MCQResult {
   id?: number;
@@ -64,7 +65,7 @@ export const processImage = async (file: File): Promise<MCQResult> => {
   const formData = new FormData();
   formData.append('image', file);
 
-  const response = await fetch(`${API_CONFIG.baseURL}/mcq/process`, {
+  const response = await apiFetch(`${API_CONFIG.baseURL}/mcq/process`, {
     method: 'POST',
     body: formData,
   });

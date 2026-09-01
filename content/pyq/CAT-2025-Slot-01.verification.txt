@@ -1,0 +1,74 @@
+CAT 2025 Slot 1 — Question ↔ Answer verification
+======================================================================
+Parsed: 68/68 | Answer key: 68/68 | MCQ: 45 (mapped text: 45) | TITA: 23
+Chart figures: [30, 31, 32, 33] -> assets/CAT-2025-Slot-01-Q30-33-charts.png
+Needs manual review: none
+
+Q01 [VARC] TITA MATCH          TITA=2143
+Q02 [VARC] MCQ  MATCH          (3) After a major equity crash, researchers find dense clusters of large daily moves for sever
+Q03 [VARC] MCQ  MATCH          (3) the text attributes the COVID -19 pandemic rebound in financial markets solely to displace
+Q04 [VARC] MCQ  MATCH          (1) Individuals base movement choices partly on observed infections and on the behaviour of ot
+Q05 [VARC] MCQ  MATCH          (3) The passage explains how noise can create order, then shows why complex systems with conta
+Q06 [VARC] MCQ  MATCH          (1) Referring to the practice of ‘confession’ in some faiths, here it is a metaphor for the re
+Q07 [VARC] MCQ  MATCH          (3) Judgement, Insanity, Punishment, Responsibility.
+Q08 [VARC] MCQ  MATCH          (3) Physicians who specialised in the study of madness and the care of the insane in the ninet
+Q09 [VARC] MCQ  MATCH          (1) The borders of criminal responsibility.
+Q10 [VARC] TITA MATCH          TITA=3421
+Q11 [VARC] MCQ  MATCH          (1) Option 3
+Q12 [VARC] MCQ  MATCH          (4) Aging leads to less effective apoptosis, and therefore zombie cells start to accumulate in
+Q13 [VARC] TITA MATCH          TITA=4
+Q14 [VARC] TITA MATCH          TITA=1
+Q15 [VARC] MCQ  MATCH          (3) Artists in a globalised world must navigate between drawing inspiration from diverse cultu
+Q16 [VARC] MCQ  MATCH          (4) Pay rewards on verifiable performance for highly productive workers.
+Q17 [VARC] MCQ  MATCH          (3) After the emergency decree, the regime shifted toward authoritarianism as suffrage narrowe
+Q18 [VARC] MCQ  MATCH          (3) The passage outlines investment, incentive, and governance channels through which income i
+Q19 [VARC] MCQ  MATCH          (1) inequality can aid short -term growth in settings with high sunk costs, incentive alignmen
+Q20 [VARC] MCQ  MATCH          (3) Option 1
+Q21 [VARC] MCQ  MATCH          (1) Unfamiliar forms and terms might get in the way of our seeing electronic music as music, b
+Q22 [VARC] MCQ  MATCH          (2) defend electronic music from certain common charges.
+Q23 [VARC] MCQ  MATCH          (1) help us determine which sounds are musical and which are not.
+Q24 [VARC] MCQ  MATCH          (1) Particular
+Q25 [DILR] MCQ  MATCH          (3) 70%
+Q26 [DILR] TITA MATCH          TITA=50
+Q27 [DILR] TITA MATCH          TITA=80
+Q28 [DILR] TITA MATCH          TITA=40
+Q29 [DILR] TITA MATCH          TITA=60
+Q30 [DILR] MCQ  MATCH+CHART    (4) 7.0 Billion USD
+Q31 [DILR] MCQ  MATCH+CHART    (1) Imports by US from France
+Q32 [DILR] MCQ  MATCH+CHART    (3) Deficit of 15.0 Billion USD
+Q33 [DILR] MCQ  MATCH+CHART    (2) Only France
+Q34 [DILR] TITA MATCH          TITA=4
+Q35 [DILR] TITA MATCH          TITA=0
+Q36 [DILR] TITA MATCH          TITA=5
+Q37 [DILR] TITA MATCH          TITA=4
+Q38 [DILR] MCQ  MATCH          (1) Only II
+Q39 [DILR] TITA MATCH          TITA=7
+Q40 [DILR] MCQ  MATCH          (1) Alia and Badal
+Q41 [DILR] MCQ  MATCH          (2) No
+Q42 [DILR] TITA MATCH          TITA=6
+Q43 [DILR] TITA MATCH          TITA=4
+Q44 [DILR] MCQ  MATCH          (4) No one
+Q45 [DILR] MCQ  MATCH          (4) Chairs numbered 4, 5, 6, and 7
+Q46 [DILR] MCQ  MATCH          (4) Davies only
+Q47 [QA] MCQ  MATCH          (2) 20(3+√14)
+Q48 [QA] TITA MATCH          TITA=15
+Q49 [QA] TITA MATCH          TITA=16
+Q50 [QA] MCQ  MATCH          (4) 18
+Q51 [QA] MCQ  MATCH          (4) 1/2
+Q52 [QA] MCQ  MATCH          (1) 27
+Q53 [QA] TITA MATCH          TITA=55
+Q54 [QA] MCQ  MATCH          (1) (3,√10)∪[5,√26 )∪{6}
+Q55 [QA] MCQ  MATCH          (1) 99
+Q56 [QA] MCQ  MATCH          (2) 38400
+Q57 [QA] MCQ  MATCH          (4) 3221
+Q58 [QA] TITA MATCH          TITA=175
+Q59 [QA] MCQ  MATCH          (4) 41
+Q60 [QA] MCQ  MATCH          (1) 2
+Q61 [QA] MCQ  MATCH          (2) 29/9
+Q62 [QA] MCQ  MATCH          (2) 58
+Q63 [QA] TITA MATCH          TITA=60
+Q64 [QA] TITA MATCH          TITA=3
+Q65 [QA] TITA MATCH          TITA=900
+Q66 [QA] MCQ  MATCH          (3) 86400
+Q67 [QA] MCQ  MATCH          (3) 880
+Q68 [QA] TITA MATCH          TITA=6

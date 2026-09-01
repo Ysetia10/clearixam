@@ -1,15 +1,19 @@
-# Build context must be the backend/ directory (not the repo root).
+# Build context must be the backend/ directory.
 #   docker build -f backend/Dockerfile backend
 # On Render:
 #   Dockerfile Path = backend/Dockerfile
 #   Docker Build Context Directory = backend
+#   Manual Deploy → Clear build cache & deploy
 
 FROM eclipse-temurin:21-jdk AS build
 WORKDIR /workspace
-COPY gradle gradle
+COPY gradle/wrapper/gradle-wrapper.jar gradle/wrapper/gradle-wrapper.jar
+COPY gradle/wrapper/gradle-wrapper.properties gradle/wrapper/gradle-wrapper.properties
 COPY gradlew build.gradle.kts settings.gradle.kts ./
 COPY src src
-RUN chmod +x gradlew && ./gradlew bootJar -x test --no-daemon
+RUN test -s gradle/wrapper/gradle-wrapper.jar \
+    && chmod +x gradlew \
+    && ./gradlew bootJar -x test --no-daemon
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app

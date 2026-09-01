@@ -1,4 +1,5 @@
 import { API_CONFIG } from '../config/apiConfig';
+import { apiFetch } from './http';
 
 export interface LoginRequest {
   email: string;
@@ -16,7 +17,7 @@ export interface AuthResponse {
 
 export const authApi = {
   login: async (data: LoginRequest): Promise<AuthResponse> => {
-    const response = await fetch(`${API_CONFIG.baseURL}/auth/login`, {
+    const response = await apiFetch(`${API_CONFIG.baseURL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +35,7 @@ export const authApi = {
   },
 
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
-    const response = await fetch(`${API_CONFIG.baseURL}/auth/register`, {
+    const response = await apiFetch(`${API_CONFIG.baseURL}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

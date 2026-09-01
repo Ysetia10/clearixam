@@ -1,5 +1,6 @@
 import { API_CONFIG } from '../config/apiConfig';
 import { getToken, removeToken } from './auth';
+import { apiFetch } from './http';
 
 class ApiClient {
   private baseURL: string;
@@ -20,38 +21,29 @@ class ApiClient {
       ...options?.headers,
     };
 
-    const config: RequestInit = {
+    const response = await apiFetch(`${this.baseURL}${endpoint}`, {
       ...options,
       headers,
       credentials: 'omit',
-    };
+    });
 
-    try {
-      const response = await fetch(`${this.baseURL}${endpoint}`, config);
-
-      if (response.status === 401 || response.status === 403) {
-        this.handleUnauthorized();
-        throw new Error('Unauthorized - Please login again');
-      }
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        const errorMessage = errorData.message || errorData.error || `HTTP ${response.status}: ${response.statusText}`;
-        throw new Error(errorMessage);
-      }
-
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        return response.json();
-      }
-      
-      return response.text() as any;
-    } catch (error: any) {
-      if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
-        throw new Error('Network error - Please check your connection');
-      }
-      throw error;
+    if (response.status === 401 || response.status === 403) {
+      this.handleUnauthorized();
+      throw new Error('Unauthorized - Please login again');
     }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const errorMessage = errorData.message || errorData.error || `HTTP ${response.status}: ${response.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return response.json();
+    }
+    
+    return response.text() as T;
   }
 
   private handleUnauthorized(): void {
@@ -68,14 +60,14 @@ class ApiClient {
     return this.request<T>(endpoint, { method: 'GET' });
   }
 
-  async post<T>(endpoint: string, data?: any): Promise<T> {
+  async post<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
     });
   }
 
-  async put<T>(endpoint: string, data?: any): Promise<T> {
+  async put<T>(endpoint: string, data?: unknown): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: data ? JSON.stringify(data) : undefined,
@@ -93,7 +85,7 @@ class ApiClient {
       ...(token && { Authorization: `Bearer ${token}` }),
     };
 
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
+    const response = await apiFetch(`${this.baseURL}${endpoint}`, {
       method: 'GET',
       headers,
     });

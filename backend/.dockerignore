@@ -1,7 +1,6 @@
-# Gradle build artifacts
+# Gradle build artifacts (do not ignore gradle/wrapper/gradle-wrapper.jar)
 .gradle/
 build/
-!build/libs/*.jar
 
 # IDE files
 .idea/

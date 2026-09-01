@@ -5,10 +5,12 @@ import com.clearixam.entity.Subject
 import com.clearixam.repository.ExamRepository
 import com.clearixam.repository.SubjectRepository
 import org.springframework.boot.CommandLineRunner
+import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
+@Order(1)
 class DataSeeder(
     private val examRepository: ExamRepository,
     private val subjectRepository: SubjectRepository
@@ -33,7 +35,7 @@ class DataSeeder(
         val exams = listOf(
             ExamConfig("UPSC", "Union Public Service Commission", 200, 100, 2.0, 0.66),
             ExamConfig("SSC", "Staff Selection Commission", 200, 100, 2.0, 0.5),
-            ExamConfig("CAT", "Common Admission Test", 300, 66, 3.0, 1.0)
+            ExamConfig("CAT", "Common Admission Test", 204, 68, 3.0, 1.0)
         )
 
         exams.forEach { config ->
@@ -49,8 +51,20 @@ class DataSeeder(
                         negativeMarks = config.negativeMarks
                     )
                 )
-            } else if (existing.correctMarks != config.correctMarks || existing.negativeMarks != config.negativeMarks) {
-                examRepository.save(existing.copy(correctMarks = config.correctMarks, negativeMarks = config.negativeMarks))
+            } else if (
+                existing.correctMarks != config.correctMarks ||
+                existing.negativeMarks != config.negativeMarks ||
+                existing.maxQuestions != config.maxQuestions ||
+                existing.maxMarks != config.maxMarks
+            ) {
+                examRepository.save(
+                    existing.copy(
+                        correctMarks = config.correctMarks,
+                        negativeMarks = config.negativeMarks,
+                        maxQuestions = config.maxQuestions,
+                        maxMarks = config.maxMarks
+                    )
+                )
             }
         }
     }

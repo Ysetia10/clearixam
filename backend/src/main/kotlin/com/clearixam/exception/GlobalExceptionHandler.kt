@@ -2,6 +2,7 @@ package com.clearixam.exception
 
 import com.clearixam.dto.response.ErrorResponse
 import jakarta.servlet.http.HttpServletRequest
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.BadCredentialsException
@@ -13,6 +14,8 @@ import java.time.LocalDateTime
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+
+    private val log = LoggerFactory.getLogger(javaClass)
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationExceptions(
@@ -106,12 +109,13 @@ class GlobalExceptionHandler {
         ex: Exception,
         request: HttpServletRequest
     ): ResponseEntity<ErrorResponse> {
+        log.error("Unhandled error on {} {}", request.method, request.requestURI, ex)
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
             ErrorResponse(
                 timestamp = LocalDateTime.now(),
                 status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 error = "Internal Server Error",
-                message = "An unexpected error occurred. Please try again later.",
+                message = ex.message ?: "An unexpected error occurred. Please try again later.",
                 path = request.requestURI
             )
         )

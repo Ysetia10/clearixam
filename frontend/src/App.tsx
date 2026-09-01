@@ -6,6 +6,7 @@ import { getTheme } from './theme';
 import { ThemeModeProvider, useThemeMode } from './context/ThemeContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './components/Toast';
+import { ApiWakeBanner } from './components/ApiWakeBanner';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -18,12 +19,22 @@ const PerformanceHistory = lazy(() => import('./pages/PerformanceHistory').then(
 const MCQClassification = lazy(() => import('./pages/MCQClassification'));
 const TopicPerformance = lazy(() => import('./pages/TopicPerformance'));
 const SectionalTests = lazy(() => import('./pages/SectionalTests').then(m => ({ default: m.SectionalTests })));
+const PyqPapers = lazy(() => import('./pages/PyqPapers').then(m => ({ default: m.PyqPapers })));
+const TakeTest = lazy(() => import('./pages/TakeTest').then(m => ({ default: m.TakeTest })));
+const TestResult = lazy(() => import('./pages/TestResult').then(m => ({ default: m.TestResult })));
+const PyqAnalyze = lazy(() => import('./pages/PyqAnalyze').then(m => ({ default: m.PyqAnalyze })));
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      retry: 1,
+      retry: (failureCount, error) => {
+        if (error instanceof Error && error.message.includes('Unauthorized')) {
+          return false;
+        }
+        return failureCount < (import.meta.env.PROD ? 2 : 1);
+      },
+      retryDelay: (attempt) => Math.min(1_000 * 2 ** attempt, 8_000),
       staleTime: 30000,
     },
   },
@@ -54,6 +65,7 @@ function AppContent() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ToastProvider>
+        <ApiWakeBanner />
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -134,6 +146,46 @@ function AppContent() {
                 <ProtectedRoute>
                   <Suspense fallback={<PageLoader />}>
                     <SectionalTests />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pyq-tests"
+              element={
+                <ProtectedRoute>
+                  <Suspense fallback={<PageLoader />}>
+                    <PyqPapers />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/take-test/:paperId"
+              element={
+                <ProtectedRoute>
+                  <Suspense fallback={<PageLoader />}>
+                    <TakeTest />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/test-result/:attemptId"
+              element={
+                <ProtectedRoute>
+                  <Suspense fallback={<PageLoader />}>
+                    <TestResult />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pyq-analyze/:attemptId"
+              element={
+                <ProtectedRoute>
+                  <Suspense fallback={<PageLoader />}>
+                    <PyqAnalyze />
                   </Suspense>
                 </ProtectedRoute>
               }

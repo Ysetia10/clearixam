@@ -37,7 +37,13 @@ export const Login = () => {
       showToast('Login successful', 'success');
       navigate('/dashboard');
     } catch (err) {
-      showToast('Invalid email or password', 'error');
+      const message = err instanceof Error ? err.message : ''
+      showToast(
+        message && !/failed to fetch|load failed/i.test(message)
+          ? message
+          : "Couldn't reach the API. If you're on 127.0.0.1, try http://localhost:3000 or wait for the backend.",
+        'error',
+      );
     } finally {
       setLoading(false);
     }

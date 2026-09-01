@@ -12,14 +12,14 @@ CleariXam is a production-ready full-stack performance analytics system designed
 
 - **Frontend**: https://clearixam.vercel.app (Vercel)
 - **Backend**: https://clearixam-backend.onrender.com (Render)
-- **Database**: PostgreSQL on Render (Singapore region)
+- **Database**: Supabase Postgres (Session pooler JDBC from Render)
 
 ## 🛠️ Tech Stack
 
 ### Backend
 - **Framework**: Spring Boot 3.2.4
 - **Language**: Kotlin 1.9.23
-- **Database**: PostgreSQL 16 with optimized indexes
+- **Database**: PostgreSQL (Supabase in production, local Postgres for development)
 - **Authentication**: JWT with rate limiting (5 attempts/min)
 - **PDF Generation**: OpenPDF
 - **Build Tool**: Gradle 8.5
@@ -300,15 +300,18 @@ npm run build
 
 ### Environment Variables (Production)
 
-**Backend (Render)**:
+**Backend (Render → Supabase Session pooler)**:
 ```env
-SPRING_DATASOURCE_URL=<postgres_external_url>
-SPRING_DATASOURCE_USERNAME=<db_username>
-SPRING_DATASOURCE_PASSWORD=<db_password>
+DATABASE_URL=jdbc:postgresql://aws-0-<region>.pooler.supabase.com:5432/postgres?sslmode=require
+DATABASE_USERNAME=postgres.<project-ref>
+DATABASE_PASSWORD=<supabase-db-password>
 JWT_SECRET=<256-bit-secret>
 JWT_EXPIRATION=86400000
 PORT=8080
+DDL_AUTO=update
 ```
+
+See [docs/ops.md](./docs/ops.md) for the Supabase cutover and keep-warm cron.
 
 **Frontend (Vercel)**:
 ```env
