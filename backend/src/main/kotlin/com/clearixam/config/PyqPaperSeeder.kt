@@ -21,40 +21,48 @@ class PyqPaperSeeder(
 
     private val log = LoggerFactory.getLogger(javaClass)
 
+    private val papers = listOf(
+        "cat-2025-slot-1" to "pyq/CAT-2025-Slot-01.json",
+        "cat-2025-slot-2" to "pyq/CAT-2025-Slot-02.json",
+        "cat-2025-slot-3" to "pyq/CAT-2025-Slot-03.json",
+    )
+
     @Transactional
     override fun run(vararg args: String?) {
-        seedCat2025Slot1()
+        for ((slug, resourcePath) in papers) {
+            seedPaper(slug, resourcePath)
+        }
     }
 
-    private fun seedCat2025Slot1() {
-        val slug = "cat-2025-slot-1"
+    private fun seedPaper(slug: String, resourcePath: String) {
         if (paperRepository.findBySlug(slug) != null) {
             return
         }
 
         val exam = examRepository.findByName("CAT")
         if (exam == null) {
-            log.warn("CAT exam not found; skip PYQ paper seed")
+            log.warn("CAT exam not found; skip PYQ paper seed for {}", slug)
             return
         }
 
-        val resource = ClassPathResource("pyq/CAT-2025-Slot-01.json")
+        val resource = ClassPathResource(resourcePath)
         if (!resource.exists()) {
-            log.warn("Classpath pyq/CAT-2025-Slot-01.json missing; skip PYQ seed")
+            log.warn("Classpath {} missing; skip PYQ seed", resourcePath)
             return
         }
 
         val json = resource.inputStream.bufferedReader().use { it.readText() }
         val root = objectMapper.readTree(json)
         val questionCount = root.path("questions").size()
+        val slot = root.path("slot").asText(slug.substringAfterLast("-"))
 
         paperRepository.save(
             QuestionPaper(
                 exam = exam,
                 slug = slug,
-                title = root.path("title").asText("CAT 2025 Slot 1"),
+                title = root.path("title").asText("CAT 2025 Slot $slot"),
                 year = root.path("year").asInt(2025),
-                slot = root.path("slot").asText("1"),
+                slot = slot,
                 durationMinutes = root.path("durationMinutes").asInt(120),
                 questionCount = questionCount,
                 contentJson = json

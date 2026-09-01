@@ -1,0 +1,74 @@
+CAT 2025 Slot 3 — Question ↔ Answer verification
+======================================================================
+Parsed: 68/68 | Answer key: 68/68 | MCQ: 45 (mapped text: 45) | TITA: 23
+Chart figures: [35, 36, 37, 38] -> assets/CAT-2025-Slot-03-Q35-38-all-puzzles.jpg
+Needs manual review: none
+
+Q01 [VARC] MCQ  MATCH          (2) The mindful Indian shopper is shifting away from convenience and uniformity of clothing, a
+Q02 [VARC] MCQ  MATCH          (4) accommodate existential fluidity.
+Q03 [VARC] MCQ  MATCH          (3) Imagination helps humans make sense of space while memory helps them understand time.
+Q04 [VARC] MCQ  MATCH          (3) For tribals, conversing with the dead becomes a way of seeking control over time.
+Q05 [VARC] MCQ  MATCH          (4) shamanic rituals involving conversing with the dead often feature in tribal stories.
+Q06 [VARC] TITA MATCH          TITA=4312
+Q07 [VARC] TITA MATCH          TITA=2143
+Q08 [VARC] MCQ  MATCH          (1) Option 4
+Q09 [VARC] TITA MATCH          TITA=1
+Q10 [VARC] MCQ  MATCH          (1) smaller, though not inconsequential, dams are safer than large dam projects.
+Q11 [VARC] MCQ  MATCH          (1) Mega -infrastructure – Sacrifice zone – Worshipping modernity – Water impoundment
+Q12 [VARC] MCQ  MATCH          (2) Exemplification and manifestation
+Q13 [VARC] MCQ  MATCH          (3) The drive to control nature is evident not only in mega -infrastructures like the Hoover a
+Q14 [VARC] MCQ  MATCH          (2) There is a principled way to decide which ethical framework applies to which class of case
+Q15 [VARC] MCQ  MATCH          (2) with fixed moral starting points and expanding computational resources, the argument forec
+Q16 [VARC] MCQ  MATCH          (2) The passage weighs the appeal of an impersonal AI judge against doubts about moral grasp. 
+Q17 [VARC] MCQ  MATCH          (3) The council followed a prioritarian approach, assigning greater moral weight to improvemen
+Q18 [VARC] MCQ  MATCH          (2) That which we call ‘knowledge of the past’ is logically independent of the past, since the
+Q19 [VARC] MCQ  MATCH          (1) nineteenth century German forestry experts were infamous for violating the rights of indig
+Q20 [VARC] MCQ  MATCH          (1) Both resulted in large scale deforestation.
+Q21 [VARC] MCQ  MATCH          (4) The 1982 draft forest act replicated colonial measures of control and regulation of forest
+Q22 [VARC] MCQ  MATCH          (2) Involving local people in cultivating forests.
+Q23 [VARC] TITA MATCH          TITA=3
+Q24 [VARC] MCQ  MATCH          (2) Option 3
+Q25 [DILR] TITA MATCH          TITA=41000
+Q26 [DILR] TITA MATCH          TITA=13000
+Q27 [DILR] TITA MATCH          TITA=1500
+Q28 [DILR] MCQ  MATCH          (1) 8
+Q29 [DILR] MCQ  MATCH          (2) Jano spent 2000 in Aurevia
+Q30 [DILR] TITA MATCH          TITA=48
+Q31 [DILR] TITA MATCH          TITA=200
+Q32 [DILR] TITA MATCH          TITA=1008
+Q33 [DILR] MCQ  MATCH          (3) 200
+Q34 [DILR] MCQ  MATCH          (3) Both X and C
+Q35 [DILR] MCQ  MATCH+CHART    (4) Koushik
+Q36 [DILR] TITA MATCH+CHART    TITA=2
+Q37 [DILR] TITA MATCH+CHART    TITA=6
+Q38 [DILR] MCQ  MATCH+CHART    (1) 4.0 minutes
+Q39 [DILR] TITA MATCH          TITA=50
+Q40 [DILR] TITA MATCH          TITA=525
+Q41 [DILR] TITA MATCH          TITA=350
+Q42 [DILR] MCQ  MATCH          (2) 100
+Q43 [DILR] MCQ  MATCH          (3) Eshan
+Q44 [DILR] MCQ  MATCH          (4) Chirag
+Q45 [DILR] MCQ  MATCH          (2) Immediately to the right
+Q46 [DILR] MCQ  MATCH          (3) Gaurav
+Q47 [QA] MCQ  MATCH          (4) 525
+Q48 [QA] MCQ  MATCH          (1) 15
+Q49 [QA] MCQ  MATCH          (4) 811
+Q50 [QA] MCQ  MATCH          (4) 3+√33 2
+Q51 [QA] MCQ  MATCH          (3) 221
+Q52 [QA] MCQ  MATCH          (3) 73
+Q53 [QA] TITA MATCH          TITA=112
+Q54 [QA] MCQ  MATCH          (3) 54000
+Q55 [QA] TITA MATCH          TITA=205
+Q56 [QA] MCQ  MATCH          (2) – 3
+Q57 [QA] TITA MATCH          TITA=444
+Q58 [QA] TITA MATCH          TITA=126
+Q59 [QA] TITA MATCH          TITA=272
+Q60 [QA] TITA MATCH          TITA=16
+Q61 [QA] MCQ  MATCH          (2) (−∞,1 8] ∪[1 2,∞)
+Q62 [QA] TITA MATCH          TITA=65
+Q63 [QA] MCQ  MATCH          (4) 44853 √3
+Q64 [QA] MCQ  MATCH          (1) 48
+Q65 [QA] MCQ  MATCH          (3) 18
+Q66 [QA] MCQ  MATCH          (1) 35
+Q67 [QA] MCQ  MATCH          (4) 2
+Q68 [QA] TITA MATCH          TITA=700

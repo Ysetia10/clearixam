@@ -17,12 +17,13 @@ from pathlib import Path
 
 
 NOISE_RE = re.compile(
+    r"===== PAGE \d+ =====|"
     r"CAT ACTUAL PAPER 2025|"
-    r"CAT 2025\s*-?\s*SLOT\s*-?\s*I\s*\d+|"
-    r"CAT 2025 Slot 01|"
+    r"CAT 2025\s*-?\s*SLOT\s*-?\s*(?:I{1,3}|IV|V|[0-9]+)\s*\d+|"
+    r"CAT 2025 Slot 0?[1-5]|"
     r"Response Sheet|"
-    r"Slot 01|"
-    r"-- \d+ of 15 --",
+    r"Slot 0?[1-5]|"
+    r"-- \d+ of \d+ --",
     re.I,
 )
 
@@ -35,12 +36,22 @@ ANSWER_KEY_RE = re.compile(r"(?i)Answer\s+Key")
 
 QUESTIONISH = re.compile(
     r"^(?:"
-    r"Which|What|How|All of|The passage|Study|Five jumbled|The given|"
+    r"Which|What|How|Why|Who|Whom|Whose|Where|When|Choose|"
+    r"All of|None of|To which|On the basis|"
+    r"The passage|Study|Five jumbled|The given|"
     r"The four sentences|The primary|The mention|The goal|From the context|"
     r"According to|In a |In the |If |Let |The number|The ratio|The \(|"
     r"A value|A container|A train|A shopkeeper|A cafeteria|A round table|"
-    r"At a |At Innovate|Among |Who |Arun|Kamala|Shruti|Stocks |For any|"
-    r"For how|Five countries|Alia,"
+    r"At a |At Innovate|Among |Arun|Kamala|Shruti|Stocks |For any|"
+    r"For how|Five countries|Alia,|"
+    r"The author|There are|There is|Non[- ]|"
+    r"Aurevia|Ananya|Anirbid|Anu,|"
+    r"Rita |Teams |In Δ|In a class|In a school|"
+    r"Three countries|Seven children|Time and again|"
+    r"Different sciences|This book|In \[|"
+    r"Often the|Once a |Over the|Imagine a|In 1982|"
+    r"The Sustainability|The following|The two most|"
+    r"The average|The return"
     r")",
     re.I,
 )
@@ -56,9 +67,18 @@ SECTION_CUTS = [
     (47, 68, "Quantitative Ability", "QA"),
 ]
 
-CHART_Q = {30, 31, 32, 33}
-# First RC is labelled "3 to 5" in the PDF but Q2 belongs to that passage.
-RANGE_OVERRIDES = {(3, 5): (2, 5)}
+# Slot-specific: label range in PDF → actual question span
+RANGE_OVERRIDES_BY_SLOT = {
+    "1": {(3, 5): (2, 5)},  # Slot 1: first RC labelled 3–5 but includes Q2
+}
+
+CHART_HINT = re.compile(
+    r"(?i)("
+    r"radar chart|bar chart|the following charts?|charts? depict|"
+    r"charts? describe|the plot represents|shown in the (?:figure|chart|graph)|"
+    r"refer to the (?:figure|chart|graph)"
+    r")"
+)
 
 
 def clean_text(raw: str) -> str:
@@ -96,7 +116,7 @@ def find_question_starts(body: str, expected: int) -> dict[int, int]:
     for num, start, end in candidates:
         if num != next_q:
             continue
-        peek = body[end : end + 240]
+        peek = body[end : end + 280]
         # After VARC, numbered DILR constraints only appear for already-accepted
         # question numbers, so a sequential hit is the real next question.
         sequential_safe = next_q >= 25 and len(peek.strip()) > 40
@@ -130,6 +150,56 @@ def parse_answer_key(raw: str) -> dict[int, str]:
     return answers
 
 
+def extract_plain_numbered_options(block_body: str) -> tuple[dict[str, str] | None, str]:
+    """Fallback for summary MCQs whose options are labelled 1. 2. 3. 4. (no parentheses)."""
+    if not re.search(r"(?i)four summaries|followed by four summaries", block_body):
+        return None, block_body
+    markers = [
+        (m.start(), m.end(), int(m.group(1)))
+        for m in re.finditer(r"(?m)^\s*([1-4])\.\s+", block_body)
+    ]
+    if not markers:
+        return None, block_body
+    # Prefer the last complete 1–2–3–4 run (passage text may contain earlier numbers)
+    seq = None
+    for i in range(len(markers) - 1, -1, -1):
+        if markers[i][2] != 4:
+            continue
+        # walk back expecting 3,2,1 immediately preceding in the marker list
+        run = [markers[i]]
+        expect = 3
+        j = i - 1
+        while j >= 0 and expect >= 1:
+            if markers[j][2] == expect:
+                run.append(markers[j])
+                expect -= 1
+                j -= 1
+            else:
+                break
+        if len(run) == 4:
+            seq = list(reversed(run))
+            break
+    if not seq:
+        return None, block_body
+    stem = block_body[: seq[0][0]].strip()
+    opts: dict[str, str] = {}
+    for idx in range(4):
+        a = seq[idx][1]
+        b = seq[idx + 1][0] if idx < 3 else len(block_body)
+        text = squash(block_body[a:b])
+        text = re.sub(
+            r"\s*(DATA INTERPRETATION|QUANTITATIVE APTITUDE|VERBAL ABILITY|"
+            r"Directions for questions).*$",
+            "",
+            text,
+            flags=re.I,
+        ).strip()
+        opts[str(idx + 1)] = text
+    if not all(opts.get(str(k)) for k in range(1, 5)):
+        return None, block_body
+    return opts, stem
+
+
 def extract_options(block_body: str) -> tuple[dict[str, str] | None, str]:
     # Q45 PDF typo: last option labelled (3) instead of (4)
     tail = block_body[-450:]
@@ -146,7 +216,7 @@ def extract_options(block_body: str) -> tuple[dict[str, str] | None, str]:
             continue
         markers.append((m.start(), m.end(), int(m.group(1))))
     if not markers:
-        return None, block_body
+        return extract_plain_numbered_options(block_body)
 
     # First complete (1)(2)(3)(4) run — later sets belong to following questions
     seq = None
@@ -170,7 +240,7 @@ def extract_options(block_body: str) -> tuple[dict[str, str] | None, str]:
             break
 
     if not seq:
-        return None, block_body
+        return extract_plain_numbered_options(block_body)
 
     stem = block_body[: seq[0][0]].strip()
     opts: dict[str, str] = {}
@@ -200,13 +270,15 @@ def section_for(qno: int) -> tuple[str, str]:
     return "Unknown", "UNK"
 
 
-def extract_sets(body: str, q_starts: dict[int, int]) -> list[dict]:
+def extract_sets(
+    body: str, q_starts: dict[int, int], range_overrides: dict[tuple[int, int], tuple[int, int]]
+) -> list[dict]:
     sets: list[dict] = []
     matches = list(DIR_RE.finditer(body))
     ordered = sorted(q_starts.items())
     for i, m in enumerate(matches):
         raw_lo, raw_hi = parse_int_token(m.group(1)), parse_int_token(m.group(2))
-        q_from, q_to = RANGE_OVERRIDES.get((raw_lo, raw_hi), (raw_lo, raw_hi))
+        q_from, q_to = range_overrides.get((raw_lo, raw_hi), (raw_lo, raw_hi))
         end = matches[i + 1].start() if i + 1 < len(matches) else len(body)
         # Stimulus is directions text until the first question in this set
         first_q_start = None
@@ -222,17 +294,26 @@ def extract_sets(body: str, q_starts: dict[int, int]) -> list[dict]:
             stimulus,
             count=1,
         )
+        stimulus = squash(stimulus)
+        chart_dependent = bool(CHART_HINT.search(stimulus))
         sets.append(
             {
                 "qFrom": q_from,
                 "qTo": q_to,
                 "labelFrom": raw_lo,
                 "labelTo": raw_hi,
-                "stimulus": squash(stimulus),
-                "chartDependent": any(n in CHART_Q for n in range(q_from, q_to + 1)),
+                "stimulus": stimulus,
+                "chartDependent": chart_dependent,
             }
         )
     return sets
+
+
+def slot_from_path(raw_path: Path) -> str:
+    m = re.search(r"Slot-0*(\d+)", raw_path.name, re.I)
+    if not m:
+        raise ValueError(f"Cannot infer slot from filename: {raw_path.name}")
+    return str(int(m.group(1)))
 
 
 def classify(stem: str, opts: dict | None, ans: str) -> tuple[str, dict | None, str | None]:
@@ -246,15 +327,23 @@ def classify(stem: str, opts: dict | None, ans: str) -> tuple[str, dict | None, 
 
 
 def discover_chart_images(raw_path: Path) -> list[str]:
-    """Pick up companion chart PNGs saved next to the paper (assets/)."""
+    """Pick up companion chart images saved next to the paper (assets/)."""
     assets = raw_path.parent / "assets"
     if not assets.is_dir():
         return []
     stem = raw_path.name.replace(".raw.txt", "")
-    hits = sorted(assets.glob(f"{stem}*chart*.png")) + sorted(
-        assets.glob(f"{stem}*Q30*.png")
-    )
-    # de-dupe while preserving order
+    hits: list[Path] = []
+    for pat in (
+        f"{stem}*chart*.png",
+        f"{stem}*chart*.jpg",
+        f"{stem}*chart*.jpeg",
+        f"{stem}*Q*.png",
+        f"{stem}*Q*.jpg",
+        f"{stem}*Q*.jpeg",
+        f"{stem}*puzzle*.jpg",
+        f"{stem}*puzzle*.png",
+    ):
+        hits.extend(sorted(assets.glob(pat)))
     seen: set[str] = set()
     rels: list[str] = []
     for p in hits:
@@ -267,9 +356,11 @@ def discover_chart_images(raw_path: Path) -> list[str]:
 
 def parse_paper(raw_path: Path) -> dict:
     raw = raw_path.read_text(encoding="utf-8")
+    slot = slot_from_path(raw_path)
     answers = parse_answer_key(raw)
     expected = max(answers) if answers else 68
     chart_images = discover_chart_images(raw_path)
+    range_overrides = RANGE_OVERRIDES_BY_SLOT.get(slot, {})
 
     cleaned = clean_text(raw)
     ak = ANSWER_KEY_RE.search(cleaned)
@@ -280,13 +371,24 @@ def parse_paper(raw_path: Path) -> dict:
     if missing:
         raise RuntimeError(f"Failed to locate question starts: {missing}")
 
-    sets = extract_sets(body, starts)
-    set_by_q = {}
+    sets = extract_sets(body, starts, range_overrides)
+    set_by_q: dict[int, dict] = {}
+    chart_q: set[int] = set()
     for s in sets:
         for n in range(s["qFrom"], s["qTo"] + 1):
             set_by_q[n] = s
+            if s.get("chartDependent"):
+                chart_q.add(n)
         if s.get("chartDependent") and chart_images:
-            s["images"] = chart_images
+            matched = [
+                img
+                for img in chart_images
+                if any(
+                    f"Q{n}" in img or f"Q{n:02d}" in img
+                    for n in range(s["qFrom"], s["qTo"] + 1)
+                )
+            ]
+            s["images"] = matched or chart_images
 
     ordered = sorted(starts.items())
     questions = []
@@ -305,8 +407,8 @@ def parse_paper(raw_path: Path) -> dict:
         qtype, options, correct_option = classify(stem, opts, ans)
         section, section_code = section_for(qno)
         shared = set_by_q.get(qno)
-        chart_dependent = qno in CHART_Q
-        images = chart_images if chart_dependent else None
+        chart_dependent = qno in chart_q
+        images = (shared.get("images") if shared else None) if chart_dependent else None
         needs_review = bool(
             (chart_dependent and not images)
             or not stem
@@ -339,24 +441,32 @@ def parse_paper(raw_path: Path) -> dict:
         for q in mcq
         if q["options"] and q["correctOption"] in q["options"] and q["options"][q["correctOption"]]
     )
+    chart_sets = [s for s in sets if s.get("chartDependent")]
+    notes = ["Topics not tagged yet — deferred until 4–5 papers are ingested."]
+    if slot == "1":
+        notes.extend(
+            [
+                "Q45 source PDF labels the last option as '(3)' twice; corrected to '(4)'.",
+                "First RC directions say questions 3–5; Q2 is on the same passage.",
+            ]
+        )
+    for s in chart_sets:
+        imgs = s.get("images") or []
+        span = f"Q{s['qFrom']}–{s['qTo']}"
+        if imgs:
+            notes.append(f"{span} chart image(s): {', '.join(imgs)}.")
+        else:
+            notes.append(f"{span} need chart/figure image(s) from the PDF.")
+
     return {
         "exam": "CAT",
         "year": 2025,
-        "slot": "1",
-        "title": "CAT 2025 Slot 1",
+        "slot": slot,
+        "title": f"CAT 2025 Slot {slot}",
         "durationMinutes": 120,
         "sourceFile": raw_path.name.replace(".raw.txt", ".pdf"),
         "marking": {"correct": 3, "incorrect": 1, "unattempted": 0},
-        "notes": [
-            "Topics not tagged yet — deferred until 4–5 papers are ingested.",
-            "Q45 source PDF labels the last option as '(3)' twice; corrected to '(4)'.",
-            "First RC directions say questions 3–5; Q2 is on the same passage.",
-        ]
-        + (
-            [f"Q30–33 chart image saved at {chart_images[0]} (radar + bar)."]
-            if chart_images
-            else ["Q30–33 need radar/bar chart images (option text is parsed)."]
-        ),
+        "notes": notes,
         "sets": sets,
         "questions": questions,
         "verification": {
@@ -368,7 +478,7 @@ def parse_paper(raw_path: Path) -> dict:
             "titaCount": len(tita),
             "mcqWithMappedAnswerText": mapped,
             "titaQuestionNos": [q["qNo"] for q in tita],
-            "chartDependentQuestionNos": sorted(CHART_Q),
+            "chartDependentQuestionNos": sorted(chart_q),
             "chartImage": chart_images[0] if chart_images else None,
             "needsManualReview": [q["qNo"] for q in questions if q["needsManualReview"]],
         },

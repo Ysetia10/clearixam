@@ -1,0 +1,74 @@
+CAT 2025 Slot 2 — Question ↔ Answer verification
+======================================================================
+Parsed: 68/68 | Answer key: 68/68 | MCQ: 45 (mapped text: 45) | TITA: 23
+Chart figures: [25, 26, 27, 28, 29, 30, 31, 32] -> assets/CAT-2025-Slot-02-Q29-32-charts.png
+Needs manual review: none
+
+Q01 [VARC] MCQ  MATCH          (1) Option 1
+Q02 [VARC] MCQ  MATCH          (4) Contrary to the idea that humans always hurt nature and that it thrives in their absence, 
+Q03 [VARC] MCQ  MATCH          (3) humans do not interact with places in subjective, emotional ways because places are only p
+Q04 [VARC] MCQ  MATCH          (3) A comprehensive understanding of the human condition can best be achieved by combining the
+Q05 [VARC] MCQ  MATCH          (1) The emotional and spiritual experience of a place can replace a surveyor’s map.
+Q06 [VARC] MCQ  MATCH          (1) literature can convey how different people experience the same place differently.
+Q07 [VARC] MCQ  MATCH          (2) the author distinguishes between the receptive and interventionist uses of instruments in 
+Q08 [VARC] MCQ  MATCH          (4) Milestone
+Q09 [VARC] MCQ  MATCH          (3) because of the relatively recent entry of computational machinery in mathematics, the fiel
+Q10 [VARC] MCQ  MATCH          (1) In both astronomy and microbiology, progress has been the consequence of improvements in t
+Q11 [VARC] TITA MATCH          TITA=3
+Q12 [VARC] MCQ  MATCH          (1) It is ironical that a left -wing feminist lost credit for the Landlord’s Game to an unempl
+Q13 [VARC] MCQ  MATCH          (4) Option 3
+Q14 [VARC] MCQ  MATCH          (3) “When I prompted Microsoft’s Bing Image Creator to produce a picture of engineers and spac
+Q15 [VARC] MCQ  MATCH          (1) “I’m not aware of research on whether ChatGPT tends to favor big tech, OpenAI or Altman, a
+Q16 [VARC] MCQ  MATCH          (4) AI tends to blame its training data when scrutinised for its biases.
+Q17 [VARC] MCQ  MATCH          (2) The neutrality of AI is conducive to critical thinking.
+Q18 [VARC] TITA MATCH          TITA=1423
+Q19 [VARC] TITA MATCH          TITA=2413
+Q20 [VARC] TITA MATCH          TITA=3
+Q21 [VARC] MCQ  MATCH          (2) To control inflammation from the bursting of fat cells.
+Q22 [VARC] MCQ  MATCH          (1) “‘But when these cells get too big, they can burst, which is why we often see chronic infl
+Q23 [VARC] MCQ  MATCH          (2) Only eyeless offspring had yellow fat.
+Q24 [VARC] MCQ  MATCH          (4) Mexican tetra cavefish are similar to non -cave -dwelling variants in their early stages o
+Q25 [DILR] TITA MATCH+CHART    TITA=60
+Q26 [DILR] TITA MATCH+CHART    TITA=40
+Q27 [DILR] TITA MATCH+CHART    TITA=84
+Q28 [DILR] MCQ  MATCH+CHART    (3) 45
+Q29 [DILR] TITA MATCH+CHART    TITA=4
+Q30 [DILR] MCQ  MATCH+CHART    (2) Neither i nor ii
+Q31 [DILR] MCQ  MATCH+CHART    (2) Both i and ii
+Q32 [DILR] TITA MATCH+CHART    TITA=3
+Q33 [DILR] MCQ  MATCH          (2) 2020
+Q34 [DILR] MCQ  MATCH          (3) 2015
+Q35 [DILR] MCQ  MATCH          (3) 2022
+Q36 [DILR] MCQ  MATCH          (4) Charu was training under Ustad Samiran in 2019.
+Q37 [DILR] TITA MATCH          TITA=4
+Q38 [DILR] TITA MATCH          TITA=45
+Q39 [DILR] TITA MATCH          TITA=35
+Q40 [DILR] TITA MATCH          TITA=50
+Q41 [DILR] MCQ  MATCH          (1) Noodleton, Quackford
+Q42 [DILR] TITA MATCH          TITA=9
+Q43 [DILR] TITA MATCH          TITA=6
+Q44 [DILR] MCQ  MATCH          (3) B1 < B6 < B3
+Q45 [DILR] MCQ  MATCH          (3) H2 < H3 < H4 < H1
+Q46 [DILR] MCQ  MATCH          (4) 12 or 13
+Q47 [QA] MCQ  MATCH          (3) 42
+Q48 [QA] MCQ  MATCH          (1) 5
+Q49 [QA] MCQ  MATCH          (1) 8
+Q50 [QA] MCQ  MATCH          (2) 5 : 24
+Q51 [QA] MCQ  MATCH          (4) (− ∞, − 3) ∪ (3, ∞)
+Q52 [QA] MCQ  MATCH          (4) −1,1 2,and 1
+Q53 [QA] MCQ  MATCH          (1) 3 : 5
+Q54 [QA] MCQ  MATCH          (3) 14
+Q55 [QA] MCQ  MATCH          (4) 11 : 4
+Q56 [QA] TITA MATCH          TITA=25
+Q57 [QA] MCQ  MATCH          (1) 8 3−𝑝+3 2𝑞
+Q58 [QA] TITA MATCH          TITA=80
+Q59 [QA] TITA MATCH          TITA=340
+Q60 [QA] TITA MATCH          TITA=12
+Q61 [QA] MCQ  MATCH          (4) 48
+Q62 [QA] TITA MATCH          TITA=2
+Q63 [QA] TITA MATCH          TITA=49
+Q64 [QA] TITA MATCH          TITA=17
+Q65 [QA] MCQ  MATCH          (1) 54
+Q66 [QA] TITA MATCH          TITA=8
+Q67 [QA] MCQ  MATCH          (1) 20
+Q68 [QA] MCQ  MATCH          (2) 5 : 8
