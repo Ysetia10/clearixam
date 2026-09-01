@@ -37,7 +37,8 @@ data class PaperQuestionResponse(
     val stimulus: String?,
     val setRange: List<Int>?,
     val images: List<String>?,
-    val chartDependent: Boolean
+    val chartDependent: Boolean,
+    val topic: String? = null
 )
 
 data class PaperDetailResponse(

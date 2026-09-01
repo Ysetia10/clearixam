@@ -11,7 +11,8 @@
     "unattempted": 0
   },
   "notes": [
-    "Topics not tagged yet — deferred until 4–5 papers are ingested.",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Q35–38 chart image(s): assets/CAT-2025-Slot-03-Q35-38-all-puzzles.jpg, assets/CAT-2025-Slot-03-Q35-38-visual-puzzles.jpg.",
     "Q35–38 chart images: all-puzzles + visual-puzzles.",
     "Q39–42 table image: assets/CAT-2025-Slot-03-Q39-42-table.png.",
@@ -24,7 +25,8 @@
       "labelFrom": 2,
       "labelTo": 5,
       "stimulus": "Once a society accepts a secular mode of creativity, within which the creator replaces God, imaginative transactions assume a self -conscious form. The tribal imagination, on the other hand, is still to a large extent dreamlike and hallucinatory. It admits fusion between various planes of existence and levels of time in a natural and artless manner. In tribal stories, oceans fly in the sky as birds, mountains swim in water as fish, animals speak as humans and stars grow like plants. Spatial order and temporal sequence do not restrict the narrative. This is not to say that tribal creations have no conventions or rules, but simply that they admit the principle of association between emotion and the narrative motif. Thus stars, seas, mountains, trees, men and animals can be angry, sad or happy. It might be said that tribal artists work more on the basis of their racial and sensory memory than on the basis of a cultivated imagination. In order to understand this distinction, we must understand the difference between imagination and memory. In the animate world, consciousness meets two immediate material realities: space and time. We put meaning into space by perceiving it in terms of images. The imagemaking faculty is a genetic gift to the human mind —this power of imagination helps us understand the space that envelops us. With regard to time, we make connections with the help of memory; one remembers being the same person today as one was yesterday. The tribal mind has a more acute sense of time than the sense of space. Somewhere along the history of human civilization, tribal communities seem to have realized that domination over territorial space was not their lot. Thus, they seem to have turned almost obsessively to gaining domination over time. This urge is substantiated in their ritual of conversing with their dead ancestors: year after year, tribals in many parts of India worship terracotta or carved -wood objects representing their ancestors, aspiring to enter a trance in which they can converse with the dead. Over the centuries, an amazingly sharp memory has helped tribals classify material and natural objects into a highly complex system of knowledge. . . . One of the main characteristics of the tribal arts is their distinct manner of constructing space and imagery, which might be described as ‘hallucinatory’. In both oral and visual forms of representation, tribal artists seem to interpret verbal or pictorial space as demarcated by an extremely flexible ‘frame’. The boundaries between art and nonart become almost invisible. A tribal epic can begin its narration from a trivial everyday event; tribal paintings merge with living space as i f the two were one and the same. And within the narrative itself, or within the painted imagery, there is no deliberate attempt to follow a sequence. The episodes retold and the images created take on the apparently chaotic shapes of dreams. In a way, the syntax of language and the grammar of painting are the same, as if literature were painted words and painting were a song of images.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 10,
@@ -32,7 +34,8 @@
       "labelFrom": 10,
       "labelTo": 13,
       "stimulus": "Over the course of the twentieth century, humans built, on average, one large dam a day, hulking structures of steel and concrete designed to control flooding, facilitate irrigation, and generate electricity. Dams were also lucrative contracts, large -scale employers, and the physical instantiation of a messianic drive to conquer territories and control nature. Some of the results of that drive were charismatic mega -infrastructure — the Hoover on the Colorado River or the Aswan on the Nile —but most of the tens of thousands of dams that dot the Earth’s landscape have drawn little attention. These are the smaller, though not inconsequential, barriers that today impede the flow of water on nearly two -thirds of the world’s large waterways. Chances are, what your map calls a “lake” is actually a reservoir, and that thin blue line that emerges from it once flowed very differently. Damming a river is always a partisan act. Even when explicit infrastructure goals — irrigation, flood control, electrification —were met, other consequences were significant and often deleterious. Across the world, river control displaced millions of people, threatening livelihoods, foodways, and cultures. In the western United States, dams were often an instrument of colonialism, used to dispossess Indigenous people and subsidize settler agriculture. And as dams slowed the flow of water, inhibited the movement of nutrients, and increased the amount of toxic algae and other parasites, they snuffed out entire river ecologies. Declining fish populations are the most evident effect, but dams also threaten a host of other animals —from birds and reptiles to fungi and plants —with extinction. Every major dam, then, is also a sacrifice zone, a place where lives, livelihoods, and ways of life are eliminated so that new sorts of landscapes can support water -intensive agriculture and cities that sprout downstream of new reservoirs. Such sacrifices have been justified as offerings at the temples of modernity. Justified by —and for —whom, though? Over the course of the twentieth century, rarely were the costs and benefits weighed thoughtfully and decided democratically. As Kader Asmal, chair of the landmark 2000 World Commission on Dams, concluded, “There have been precious few, if any, comprehensive, independent analyses as to why dams came about, how dams perform over time, and whether we are getting a fair return from our $2 trillion investment.” A quarter -century later, Asmal’s words ring ever truer. A litany of dams built in the mid -twentieth century are approaching the end of their expected lives, with worrying prospects for their durability. Droughts, magnified and multiplied by the effects of climate change, have forced more and more to run below capacity. If ever there were a time to rethink the mania for dams, it would be now. There is some evidence that a combination of opposition, alternative energy sources, and a lack of viable projects has slowed the construction of major dams. But a wave of recent and ongoing construction, from India and China to Ethiopia and Canada, continues to tilt the global balance firmly in favor of water impoundment.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 14,
@@ -40,7 +43,8 @@
       "labelFrom": 14,
       "labelTo": 17,
       "stimulus": "Imagine a world in which artificial intelligence is entrusted with the highest moral responsibilities: sentencing criminals, allocating medical resources, and even mediating conflicts between nations. This might seem like the pinnacle of human progress: an entity unburdened by emotion, prejudice or inconsistency, making ethical decisions with impeccable precision. . . . Yet beneath this vision of an idealised moral arbiter lies a fundamental question: can a machine understand morality as humans do, or is it confined to a simulacrum of ethical reasoning? AI might replicate human decisions without improving on them, carrying forward the same biases, blind spots and cultural distortions from human moral judgment. In trying to emulate us, it might only reproduce our limitations, not transcend them. But there is a deeper concern. Moral judgment draws on intuition, historical awareness and context – qualities that resist formalisation. Ethics may be so embedded in lived experience that any attempt to encode it into formal structures risks flattening its most essential features. If so, AI would not merely reflect human shortcomings; it would strip morality of the very depth that makes ethical reflection possible in the first place. Still, many have tried to formalise ethics, by treating certain moral claims not as conclusions, but as starting points. A classic example comes from utilitarianism, which often takes as a foundational axiom the principle that one should act to maximise overall wellbeing. From this, more specific principles can be derived, for example, that it is right to benefit the greatest number, or that actions should be judged by their consequences for total happiness. As computational resources increase, AI becomes increasingly well -suited to the task of starting from fixed ethical assumptions and reasoning through their implications in complex situations. But what, exactly, does it mean to formalise something like ethics? The question is easier to grasp by looking at fields in which formal systems have long played a central role. Physics, for instance, has relied on formalisation for centuries. There is no single physical theory that explains everything. Instead, we have many physical theories, each designed to describe specific aspects of the Universe: from the behaviour of quarks and electrons to the motion of galaxies. These theories often diverge. Aristotelian physics, for instance, explained falling objects in terms of natural motion toward Earth’s centre; Newtonian mechanics replaced this with a universal force of gravity. These explanations are not just different; they are incompatible. Yet both share a common structure: they begin with basic postulates – assumptions about motion, force or mass – and derive increasingly complex consequences. . . . Ethical theories have a similar structure. Like physical theories, they attempt to describe a domain – in this case, the moral landscape. They aim to answer questions about which actions are right or wrong, and why. These theories also diverge and, even when they recommend similar actions, such as giving to charity, they justify them in different ways. Ethical theories also often begin witqh a small set of foundational principles or claims, from which they reason about more complex moral problems.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 19,
@@ -48,7 +52,8 @@
       "labelFrom": 19,
       "labelTo": 22,
       "stimulus": "In 1982, a raging controversy broke out over a forest act drafted by the Government of India. This act sought to strengthen the already extensive powers enjoyed by the forest bureaucracy in controlling the extraction, disposal and sale of forest produce. It also gave forest officials greater powers to strictly regulate the entry of any person into reserved forest areas . While forest officials justified the act on the grounds that it was necessary to stop the continuing deforestation, it was bitterly opposed by representatives of grassroots organisations, who argued that it was a major violation of the rights of peasants and tribals living in and around forest areas. . . . The debate over the draft forest act fuelled a larger controversy over the orientation of state forest policy. It was pointed out, for example, that the draft act was closely modelled on its predecessor, the Forest Act of 1878. The earlier Act rested on a usurpation of rights of ownership by the colonial state which had little precedent in precolonial history. It was furthe r argued that the system of forestry introduced by the British —and continued, with little modification, after 1947 — emphasized revenue generation and commercial exploitation, while its policing orientation excluded villagers who had the most longstanding claim on forest resources. Critics called for a complete overhaul of forest administration, pressing the government to formulate policy and legislation more appropriate to present needs. . . . That debate is not over yet. The draft act was shelved, though it has not as yet been formally withdrawn. Meanwhile, the 1878 Act (as modified by an amendment in 1927) continues to be in operation. In response to its critics, the government has made some important changes in forest policy, e.g., no longer treating forests as a source of revenue, and stopping ecologically hazardous practices such as the clearfelling of natural forests. At the same time, it has shown little inclinati on to meet the major demand of the critics of forest policy —namely, abandoning the principle of state monopoly over forest land by handing over areas of degraded forests to individuals and communities for afforestation. . . . [The] 1878 Forest Act itself was passed only after a bitter and prolonged debate within the colonial bureaucracy, in which protagonists put forward arguments strikingly similar to those being advanced today. As is well known, the Indian Forest Department owes its origin to the requirements of railway companies. The early years of the expansion of the railway network, c. 1853 onwards, led to tremendous deforestation in peninsular India owing to the railway’s requirements of fuelwood and construction timber. Huge quantities of durable timbers were also needed for use as sleepers across the newly laid tracks. Inexperienced in forestry, the British called in German experts to commence systematic forest management. The Indian Forest Department was started in 1864, with Dietrich Brandis, formerly a Lecturer at Bonn, as the first Inspector General of Forests. The new department needed legislative backing to function effectively, and in the following year, 1865, the first forest act was passed. . . .",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Sets & Logic"
     },
     {
       "qFrom": 25,
@@ -56,7 +61,8 @@
       "labelFrom": 25,
       "labelTo": 29,
       "stimulus": "Aurevia, Brelosia, Cyrenia and Zerathania are four countries with their currencies being Aurels, Brins, Crowns, and Zentars, respectively. The currencies have different exchange values. Crown’s currency exchange rate with Zentars = 0.5, i.e., 1 Crown is worth 0.5 Zentars. Three travelers, Jano, Kira, and Lian set out from Zerathania visiting exactly two of the countries. Each country is visited by exactly two travelers. Each traveler has a unique Flight Cost, which represents the total cost of airfare in traveling to bot h the countries and back to Zerathania. The Flight Cost of Jano was 4000 Zentars, while that of the other two travelers were 5000 and 6000 Zentars, not necessarily in that order. When visiting a country, a traveler spent either 1000, 2000 or 3000 in the country’s local currency. Each traveler had different spends (in the country’s local currency) in the two countries he/she visited. Across all the visits, there were exactly two spends of 1000 and exactly one spend of 3000 (in the country’s local currency). The total “Travel Cost” for a traveler is the sum of his/her Flight Cost and the money spent in the countries visited. The citizens of the four countries with knowledge of these travels made a few observations, with spends measured in their respective local currencies: i. Aurevia citizen: Jano and Kira visited our country, and their Travel Costs were 3500 and 8000, respectively. ii. Brelosia citizen: Kira and Lian visited our country, spending 2000 and 3000, respectively. Kira’s Travel Cost was 4000. iii. Cyrenia citizen: Lian visited our country and her Travel Cost was 36000.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 30,
@@ -64,7 +70,8 @@
       "labelFrom": 30,
       "labelTo": 34,
       "stimulus": "Three countries — Pumpland (P), Xiland (X) and Cheeseland (C) — trade among themselves and with the (other countries in) Rest of World (ROW). All trade volumes are given in IC (international currency). The following terminology is used: • Trade balance = Exports – Imports • Total trade = Exports + Imports • Normalized trade balance = Trade balance / Total trade, expressed in percentage terms The following information is known. 1. The normalized trade balances of P, X and C are 0%, 10%, and –20%, respectively. 2. 40% of exports of X are to P. 22% of imports of P are from X. 3. 90% of exports of C are to P; 4% are to ROW. 4. 12% of exports of ROW are to X, 40% are to P. 5. The export volumes of P, in IC, to X and C are 600 and 1200, respectively. P is the only country that exports to C.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 35,
@@ -76,7 +83,8 @@
       "images": [
         "assets/CAT-2025-Slot-03-Q35-38-all-puzzles.jpg",
         "assets/CAT-2025-Slot-03-Q35-38-visual-puzzles.jpg"
-      ]
+      ],
+      "topic": "Charts & Graphs"
     },
     {
       "qFrom": 39,
@@ -87,7 +95,8 @@
       "chartDependent": false,
       "images": [
         "assets/CAT-2025-Slot-03-Q39-42-table.png"
-      ]
+      ],
+      "topic": "Tables"
     },
     {
       "qFrom": 43,
@@ -98,7 +107,8 @@
       "chartDependent": false,
       "images": [
         "assets/CAT-2025-Slot-03-Q43-46-table.png"
-      ]
+      ],
+      "topic": "Tables"
     }
   ],
   "questions": [
@@ -120,7 +130,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Summary"
     },
     {
       "qNo": 2,
@@ -143,7 +154,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 3,
@@ -166,7 +178,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 4,
@@ -189,7 +202,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 5,
@@ -212,7 +226,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 6,
@@ -227,7 +242,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Jumbles"
     },
     {
       "qNo": 7,
@@ -242,7 +258,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Jumbles"
     },
     {
       "qNo": 8,
@@ -262,7 +279,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Completion"
     },
     {
       "qNo": 9,
@@ -277,7 +295,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Odd Sentence Out"
     },
     {
       "qNo": 10,
@@ -300,7 +319,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 11,
@@ -323,7 +343,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 12,
@@ -346,7 +367,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 13,
@@ -369,7 +391,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 14,
@@ -392,7 +415,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 15,
@@ -415,7 +439,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 16,
@@ -438,7 +463,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 17,
@@ -461,7 +487,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 18,
@@ -481,7 +508,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Summary"
     },
     {
       "qNo": 19,
@@ -504,7 +532,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 20,
@@ -527,7 +556,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 21,
@@ -550,7 +580,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 22,
@@ -573,7 +604,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 23,
@@ -588,7 +620,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Odd Sentence Out"
     },
     {
       "qNo": 24,
@@ -608,7 +641,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Completion"
     },
     {
       "qNo": 25,
@@ -626,7 +660,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 26,
@@ -644,7 +679,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 27,
@@ -662,7 +698,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 28,
@@ -685,7 +722,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 29,
@@ -708,7 +746,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 30,
@@ -726,7 +765,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 31,
@@ -744,7 +784,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 32,
@@ -762,7 +803,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 33,
@@ -785,7 +827,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 34,
@@ -808,7 +851,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 35,
@@ -834,7 +878,8 @@
         "assets/CAT-2025-Slot-03-Q35-38-visual-puzzles.jpg"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 36,
@@ -855,7 +900,8 @@
         "assets/CAT-2025-Slot-03-Q35-38-visual-puzzles.jpg"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 37,
@@ -876,7 +922,8 @@
         "assets/CAT-2025-Slot-03-Q35-38-visual-puzzles.jpg"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 38,
@@ -902,7 +949,8 @@
         "assets/CAT-2025-Slot-03-Q35-38-visual-puzzles.jpg"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 39,
@@ -922,7 +970,8 @@
         "assets/CAT-2025-Slot-03-Q39-42-table.png"
       ],
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Tables"
     },
     {
       "qNo": 40,
@@ -942,7 +991,8 @@
         "assets/CAT-2025-Slot-03-Q39-42-table.png"
       ],
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Tables"
     },
     {
       "qNo": 41,
@@ -962,7 +1012,8 @@
         "assets/CAT-2025-Slot-03-Q39-42-table.png"
       ],
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Tables"
     },
     {
       "qNo": 42,
@@ -987,7 +1038,8 @@
         "assets/CAT-2025-Slot-03-Q39-42-table.png"
       ],
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Tables"
     },
     {
       "qNo": 43,
@@ -1012,7 +1064,8 @@
         "assets/CAT-2025-Slot-03-Q43-46-table.png"
       ],
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Tables"
     },
     {
       "qNo": 44,
@@ -1037,7 +1090,8 @@
         "assets/CAT-2025-Slot-03-Q43-46-table.png"
       ],
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Tables"
     },
     {
       "qNo": 45,
@@ -1062,7 +1116,8 @@
         "assets/CAT-2025-Slot-03-Q43-46-table.png"
       ],
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Tables"
     },
     {
       "qNo": 46,
@@ -1087,7 +1142,8 @@
         "assets/CAT-2025-Slot-03-Q43-46-table.png"
       ],
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Tables"
     },
     {
       "qNo": 47,
@@ -1107,7 +1163,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 48,
@@ -1127,7 +1184,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 49,
@@ -1147,7 +1205,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Number Systems"
     },
     {
       "qNo": 50,
@@ -1167,7 +1226,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 51,
@@ -1187,7 +1247,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 52,
@@ -1207,7 +1268,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 53,
@@ -1222,7 +1284,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 54,
@@ -1242,7 +1305,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 55,
@@ -1257,7 +1321,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     },
     {
       "qNo": 56,
@@ -1277,7 +1342,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 57,
@@ -1292,7 +1358,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 58,
@@ -1307,7 +1374,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     },
     {
       "qNo": 59,
@@ -1322,7 +1390,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 60,
@@ -1337,7 +1406,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 61,
@@ -1357,7 +1427,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 62,
@@ -1372,7 +1443,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 63,
@@ -1392,7 +1464,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 64,
@@ -1412,7 +1485,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     },
     {
       "qNo": 65,
@@ -1432,7 +1506,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     },
     {
       "qNo": 66,
@@ -1452,7 +1527,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 67,
@@ -1472,7 +1548,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 68,
@@ -1487,7 +1564,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     }
   ],
   "verification": {

@@ -345,7 +345,8 @@ class PyqPaperService(
                     q.path("setRange").map { it.asInt() }
                 } else null,
                 images = rewriteImages(q.path("images")),
-                chartDependent = q.path("chartDependent").asBoolean(false)
+                chartDependent = q.path("chartDependent").asBoolean(false),
+                topic = q.path("topic").takeIf { !it.isNull && !it.isMissingNode && it.asText().isNotBlank() }?.asText()
             )
         }
 

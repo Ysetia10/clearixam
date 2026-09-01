@@ -11,7 +11,8 @@
     "unattempted": 0
   },
   "notes": [
-    "Topics not tagged yet — deferred until 4–5 papers are ingested.",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Q25–28 chart image(s): assets/CAT-2025-Slot-02-Q25-28-chart.jpg.",
     "Q29–32 chart image(s): assets/CAT-2025-Slot-02-Q29-32-charts.png."
   ],
@@ -22,7 +23,8 @@
       "labelFrom": 3,
       "labelTo": 6,
       "stimulus": "This book takes the position that setting in literature is more than just backdrop, that important insight into literary text s can be made by paying close attention to how authors craft place, as well as to how place functions in a narrative. The authors included in this reference work engage deeply with either real or imagined geographies. They care about how human decisions have shaped landscapes and how landscapes have shaped human practices and values. Some of the best writing is highly vivid, employing the language of the senses because this is the primary means through which humans know physical space. Literature can offer valuable perspectives on physical and cultural geography. Unlike scientific reports, a literary narrativ e can provide the emotional component missing from the scientific record. In human experience, geographical places have a spiritual or emotional component in addition to and as part of a physical layout and topography. This emotional component, although subjective, is no less “real” than a surveyor’s map. Human consciousness of place is experienced in a multimodal manner. Histories of places live on in many forms, one of which is the human memory or imagination. Both real and imaginary landscapes provide insight into the human experience of place. The pursuit of such a topic speaks to the valuable knowledge produced from bridging disciplines and combining material from both the arts and the sciences to better understand the human condition. The perspectives that most concern cultural geographers are often those regarding movement and migration, cultivation of natural resources, and organization of space. The latter two reflect concerns of the built environment, a topic shared with the field of architectural study. Many of these concerns are also reflected in work sociologists do. Scholars from literary studies can contribute an aesthetic dimension to what might otherwise be a purely ideological approach. Literature can bring together material that spans different branches of science. For example, a literary description of place may involve not only the environment and geography but the noises and quality of light, or how people from different races or classes can experience the same place in different ways linked to those racial or class disparities. Literary texts can also account for the way in which absence —of other people, animals, and so on —affects a human observer or inhabitant. Both literary and scientific approaches to place are necessary, working in unison, to achieve a complete record of an environment. It is important to note that the interdisciplinary nature of this work teaches us that landscapes are not static, that they are not unchanged by human culture. At least part of their identity derives from the people who inhabit them and from the way space can alter and inspire human perspective. The intersection of scientific and literary expression that happens in the study of literary geography is of prime importance due to the complexity of the personal and political ways that humans experience place.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 7,
@@ -30,7 +32,8 @@
       "labelFrom": 7,
       "labelTo": 10,
       "stimulus": "Different sciences exhibit different science cultures and practices. For example, in astronomy, observation – until what is today called the new astronomy – had always been limited to what could be seen within the limits of optical light. Indeed, until early modernity the limits to optical light were also limits of what humans could themselves see within their limited and relative perceptual spectrum of human vision. With early modernity and the invention of lensed optical instruments – telescopes – astronomers could begin to observe phenomena never seen before. Magnification and resolution began to allow what was previously imperceptible to be perceived – but within the familiar limits of optical vision. Galileo, having learned of the Dutch invention of a telescope by Hans Lippershey, went on to build some hundred of his own, improving from the Dutch 3x to nearly 30x telescopes – which turn out to be the limit of magnificational power without chromatic distortion. And it was with his own telescopes that he made the observations launching early modern astronomy (phases of Venus, satellites of Jupiter, etc.). Isaac Newton’s later improvement with reflecting telescopes expanded upon the magnificational -resolution capacity of optical observation; and, from Newton to the twentieth century, improvement continued on to the later very large array of light telescopes today – following the usual technological trajectory of “more - is-better” but still remaining within the limits of the light spectrum. Today’s astronomy has now had the benefit of some four centuries of optical telescopy. The “new astronomy,” however, opens the full known electromagnetic spectrum to observation, beginning with the accidental discovery of radio astronomy early in the twentieth century, and leading today to the diverse variety of EMS telescopes which can explore the range from gamma to radio waves. Thus, astronomy, now outfitted with new instruments, “smart” adaptive optics, very large arrays, etc., illustrates one style of instrumentally embodied science – a technoscience. Of course astronomy, with the very recent exceptions of probes to solar system bodies (Moon, Mars, Venus, asteroids), remains largely a “receptive” science, dependent upon instrumentation which can detect and receive emissions. Contemporary biology displays a quite different instrument array and, according to Evelyn Fox - Keller, also a different scientific culture. She cites her own experience, coming from mathematical physics into microbiology, and takes account of the distinctive instrumental culture in her Making Sense of Life (2002). Here, particularly with the development of biotechnology, instrumentation is far more interventional than in the astronomy case. Microscopic instrumentation can be and often is interventional in style: “gene -splicing” and other techniques of biotechnology, while still in their infancy, are clearly part of the interventional trajectory of biological instrumentation. Yet, in both disciplines, the sciences involved are today highly instrumentalized and could not progress successfully without constant improvements upon the respective instrumental trajectories. So, minimalistically, one may conclude that the sciences are technologically, instrumentally embodied. But the styles of embodiment differ, and perhaps the last of the scientific disciplines to move into such technical embodiment is mathematics, which only contemporarily has come to rely more and more upon the computational machinery now in common use.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 14,
@@ -38,7 +41,8 @@
       "labelFrom": 14,
       "labelTo": 17,
       "stimulus": "In [my book “Searches”], I chronicle how big technology companies have exploited human language for their gain. We let this happen, I argue, because we also benefit somewhat from using the products. It’s a dynamic that makes us complicit in big tech’s accumulation of wealth and power: we’re both victims and beneficiaries. I describe this complicity, but I also enact it, through my own internet archives: my Google searches, my Amazon product reviews and, yes, my ChatGPT dialogues. . . . People often describe chatbots’ textual output as “bland” or “generic” – the linguistic equivalent of a beige office building. OpenAI’s products are built to “sound like a colleague”, as OpenAI puts it, using language that, coming from a person, would sound “polite”, “empathetic”, “kind”, “rationally optimistic” and “engaging”, among other qualities. OpenAI describes these strategies as helping its products seem “professional” and “approachable”. This appears to be bound up with making us feel safe . . . Trust is a challenge for artificial intelligence (AI) companies, partly because their products regularly produce falsehoods and reify sexist, racist, US -centric cultural norms. While the companies are working on these problems, they persist: OpenAI found that its latest systems generate errors at a higher rate than its previous system. In the book, I wrote about the inaccuracies and biases and also demonstrated them with the products. When I prompted Microsoft’s Bing Image Creator to produce a picture of engineers and space explorers, it gave me an entirely male cast of characters; when my father asked ChatGPT to edit his writing, it transmuted his perfectly correct Indian English into American English. Those weren’t flukes. Research suggests that both tendencies are widespread. In my own ChatGPT dialogues, I wanted to enact how the product’s veneer of collegial neutrality could lull us into absorbing false or biased responses without much critical engagement. Over time, ChatGPT seemed to be guiding me to write a more positive book about big tech – including editing my description of OpenAI’s CEO, Sam Altman, to call him “a visionary and a pragmatist”. I’m not aware of research on whether ChatGPT tends to favor big tech, OpenAI or Altman, and I can only guess why it seemed that way in our conversation. OpenAI explicitly states that its products shouldn’t attempt to influence users’ thinking. When I asked ChatGPT about some of the issues, it blamed biases in its training data – though I suspect my arguably leading questions played a role too. When I queried ChatGPT about its rhetoric, it responded: “The way I communicate is designed to foster trust and confidence in my responses, which can be both helpful and potentially misleading.”. . . OpenAI has its own goals, of course. Among them, it emphasizes wanting to build AI that “benefits all of humanity”. But while the company is controlled by a non -profit with that mission, its funders still seek a return on their investment. That will presumably require getting people using products such as ChatGPT even more than they already are – a goal that is easier to accomplish if people see those products as trustworthy collaborators.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Sets & Logic"
     },
     {
       "qFrom": 21,
@@ -46,7 +50,8 @@
       "labelFrom": 21,
       "labelTo": 24,
       "stimulus": "Time and again, whenever a population [of Mexican tetra fish] was swept into a cave and survived long enough for natural selection to have its way, the eyes disappeared. “But it’s not that everything has been lost in cavefish . . . Many enhancements have also happened.” . . . Studies have found that cave -dwelling fish can detect lower levels of amino acids than surface fish can. They also have more tastebuds and a higher density of sensitive cells alongside their bodies that let them sense water pressure and flow. . . . Killing the processes that support the formation of the eye is quite literally what happens. Just like non -cave -dwelling members of the species, all cavefish embryos start making eyes. But after a few hours, cells in the developing eye start dying, until the entire structure has disappeared. [Developmental biologist Misty] Riddle thinks this apparent inefficiency may be unavoidable. “The early development of the brain and the eye are completely intertwined —they happen together,” she says. That means the least disruptive way for eyelessness to evolve may be to start making an eye and then get rid of it. . . . It’s easy to see why cavefish would be at a disadvantage if they were to maintain expensive tissues they aren’t using. Since relatively little lives or grows in their caves, the fish are likely surviving on a meager diet of mostly bat feces and organ ic waste that washes in during the rainy season. Researchers keeping cavefish in labs have discovered that, genetically, the creatures are exquisitely adapted to absorbing and storing nutrients. . . . Fats can be toxic for tissues, [evolutionary physiologist Nicolas] Rohner explains, so they are stored in fat cells. “But whe n these cells get too big, they can burst, which is why we often see chronic inflammation in humans and other animals that have stored a lot of fat in their tissues.” Yet a 2020 study by Rohner, Krishnan and their colleagues revealed that even very well -fed cavefish had fewer signs of inflammation in their fat tissues than surface fish do. Even in their sparse cave conditions, wild cavefish can sometimes get very fat, says Riddle. This is presumably because, whenever food ends up in the cave, the fish eat as much of it as possible, since there may be nothing else for a long time to come. Intriguingly, Ridd le says, their fat is usually bright yellow, because of high levels of carotenoids, the substance in the carrots that your grandmother used to tell you were good for your…eyes. “The first thing that came to our mind, of course, was that they were accumulating these because they don’t have eyes,” says Riddle. In this species, such ideas can be tested: Scientists can cross surface fish (with eyes) and cavefish (without eyes) and look at what their offspring are like. When that’s done, Riddle says, researchers see no link between eye presence or size and the accumulation of carotenoids. Some eyeless cavefish had fat that was practically white, indicating lower carotenoid levels. Instead, Riddle thinks these carotenoids may be another adaptation to suppress inflammation, which might be important in the wild, as cavefish are likely overeating whenever food arrives.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Sets & Logic"
     },
     {
       "qFrom": 25,
@@ -57,7 +62,8 @@
       "chartDependent": true,
       "images": [
         "assets/CAT-2025-Slot-02-Q25-28-chart.jpg"
-      ]
+      ],
+      "topic": "Charts & Graphs"
     },
     {
       "qFrom": 29,
@@ -68,7 +74,8 @@
       "chartDependent": true,
       "images": [
         "assets/CAT-2025-Slot-02-Q29-32-charts.png"
-      ]
+      ],
+      "topic": "Charts & Graphs"
     },
     {
       "qFrom": 33,
@@ -76,7 +83,8 @@
       "labelFrom": 33,
       "labelTo": 37,
       "stimulus": "Ananya Raga, Bhaskar Tala, Charu Veena, and Devendra Sur are four musicians. Each of them started and completed their training as students under each of three Gurus — Pandit Meghnath, Ustad Samiran, and Acharya Raghunath between 2013 and 2024, including both the years. Each Guru trains any student for consecutive years only, for a span of 2, 3, or 4 years, with each Guru having a different span. During some of these years, a student may not have trained under these Gurus; however, they never trained under multiple Gurus in the same year. In none of these years, any of these Gurus trained more than two of these students at the same time. When two students train under the same Guru at the same time, they are referred to as Gurubhai, irrespective of their gender. The following additional facts are known. 1. Ustad Samiran never trained more than one of these students in the same year. 2. Acharya Raghunath did not train any of these students during 2015 -2018, as well as during 2021 -24. 3. Ananya and Devendra were never Gurubhai; neither were Bhaskar and Charu. All other pairs of musicians were Gurubhai for exactly 2 years. 4. In 2013, Ananya and Bhaskar started their trainings under Pandit Meghnath and under Ustad Samiran, respectively.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Scheduling"
     },
     {
       "qFrom": 38,
@@ -84,7 +92,8 @@
       "labelFrom": 38,
       "labelTo": 42,
       "stimulus": "The two most populous cities and the non -urban region (NUR) of each of three states, Whimshire, Fogglia, and Humbleset, are assigned Pollution Measures (PMs). These nine PMs are all distinct multiples of 10, ranging from 10 to 90. The six cities in increasing order of their PMs are: Blusterburg, Noodleton, Splutterville, Quackford, Mumpypore, Zingaloo. The Pollution Index (PI) of a state is a weighted average of the PMs of its NUR and cities, with a weight of 50% for the NUR, and 25% each for its two cities. There is only one pair of an NUR and a city (considering all cities and all NURs) where the PM of the NUR is greater than that of the city. That NUR and the city both belong to Humbleset. The PIs of all three states are distinct integers, with Humbleset and Fogglia having the highest and the lowest PI respectively.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 43,
@@ -92,7 +101,8 @@
       "labelFrom": 43,
       "labelTo": 46,
       "stimulus": "There are six spherical balls, B1, B2, B3, B4, B5, and B6, and four circular hoops H1, H2, H3, and H4. Each ball was tested on each hoop once, by attempting to pass the ball through the hoop. If the diameter of a ball is not larger than the diameter of the hoop, the ball passes through the hoop and makes a “ping”. Any ball having a diameter larger than that of the hoop gets stuck on that hoop and does not make a ping. The following additional information is known: 1. B1 and B6 each made a ping on H4, but B5 did not. 2. B4 made a ping on H3, but B1 did not. 3. All balls, except B3, made pings on H1. 4. None of the balls, except B2, made a ping on H2.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Sets & Logic"
     }
   ],
   "questions": [
@@ -114,7 +124,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Completion"
     },
     {
       "qNo": 2,
@@ -134,7 +145,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Summary"
     },
     {
       "qNo": 3,
@@ -157,7 +169,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 4,
@@ -180,7 +193,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 5,
@@ -203,7 +217,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 6,
@@ -226,7 +241,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 7,
@@ -249,7 +265,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 8,
@@ -272,7 +289,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 9,
@@ -295,7 +313,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 10,
@@ -318,7 +337,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 11,
@@ -333,7 +353,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Odd Sentence Out"
     },
     {
       "qNo": 12,
@@ -353,7 +374,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Summary"
     },
     {
       "qNo": 13,
@@ -373,7 +395,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Completion"
     },
     {
       "qNo": 14,
@@ -396,7 +419,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 15,
@@ -419,7 +443,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 16,
@@ -442,7 +467,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 17,
@@ -465,7 +491,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 18,
@@ -480,7 +507,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Jumbles"
     },
     {
       "qNo": 19,
@@ -495,7 +523,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Jumbles"
     },
     {
       "qNo": 20,
@@ -510,7 +539,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Odd Sentence Out"
     },
     {
       "qNo": 21,
@@ -533,7 +563,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 22,
@@ -556,7 +587,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 23,
@@ -579,7 +611,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 24,
@@ -602,7 +635,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 25,
@@ -622,7 +656,8 @@
         "assets/CAT-2025-Slot-02-Q25-28-chart.jpg"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 26,
@@ -642,7 +677,8 @@
         "assets/CAT-2025-Slot-02-Q25-28-chart.jpg"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 27,
@@ -662,7 +698,8 @@
         "assets/CAT-2025-Slot-02-Q25-28-chart.jpg"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 28,
@@ -687,7 +724,8 @@
         "assets/CAT-2025-Slot-02-Q25-28-chart.jpg"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 29,
@@ -707,7 +745,8 @@
         "assets/CAT-2025-Slot-02-Q29-32-charts.png"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 30,
@@ -732,7 +771,8 @@
         "assets/CAT-2025-Slot-02-Q29-32-charts.png"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 31,
@@ -757,7 +797,8 @@
         "assets/CAT-2025-Slot-02-Q29-32-charts.png"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 32,
@@ -777,7 +818,8 @@
         "assets/CAT-2025-Slot-02-Q29-32-charts.png"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 33,
@@ -800,7 +842,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Scheduling"
     },
     {
       "qNo": 34,
@@ -823,7 +866,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Scheduling"
     },
     {
       "qNo": 35,
@@ -846,7 +890,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Scheduling"
     },
     {
       "qNo": 36,
@@ -869,7 +914,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Scheduling"
     },
     {
       "qNo": 37,
@@ -887,7 +933,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Scheduling"
     },
     {
       "qNo": 38,
@@ -905,7 +952,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 39,
@@ -923,7 +971,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 40,
@@ -941,7 +990,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 41,
@@ -964,7 +1014,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 42,
@@ -982,7 +1033,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 43,
@@ -1000,7 +1052,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Sets & Logic"
     },
     {
       "qNo": 44,
@@ -1023,7 +1076,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Sets & Logic"
     },
     {
       "qNo": 45,
@@ -1046,7 +1100,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Sets & Logic"
     },
     {
       "qNo": 46,
@@ -1069,7 +1124,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Sets & Logic"
     },
     {
       "qNo": 47,
@@ -1089,7 +1145,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 48,
@@ -1109,7 +1166,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 49,
@@ -1129,7 +1187,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 50,
@@ -1149,7 +1208,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     },
     {
       "qNo": 51,
@@ -1169,7 +1229,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 52,
@@ -1189,7 +1250,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 53,
@@ -1209,7 +1271,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 54,
@@ -1229,7 +1292,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 55,
@@ -1249,7 +1313,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     },
     {
       "qNo": 56,
@@ -1264,7 +1329,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 57,
@@ -1284,7 +1350,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 58,
@@ -1299,7 +1366,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     },
     {
       "qNo": 59,
@@ -1314,7 +1382,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 60,
@@ -1329,7 +1398,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 61,
@@ -1349,7 +1419,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 62,
@@ -1364,7 +1435,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 63,
@@ -1379,7 +1451,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 64,
@@ -1394,7 +1467,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 65,
@@ -1414,7 +1488,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 66,
@@ -1429,7 +1504,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 67,
@@ -1449,7 +1525,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 68,
@@ -1469,7 +1546,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     }
   ],
   "verification": {

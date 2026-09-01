@@ -35,10 +35,6 @@ class PyqPaperSeeder(
     }
 
     private fun seedPaper(slug: String, resourcePath: String) {
-        if (paperRepository.findBySlug(slug) != null) {
-            return
-        }
-
         val exam = examRepository.findByName("CAT")
         if (exam == null) {
             log.warn("CAT exam not found; skip PYQ paper seed for {}", slug)
@@ -55,12 +51,29 @@ class PyqPaperSeeder(
         val root = objectMapper.readTree(json)
         val questionCount = root.path("questions").size()
         val slot = root.path("slot").asText(slug.substringAfterLast("-"))
+        val title = root.path("title").asText("CAT 2025 Slot $slot")
+
+        val existing = paperRepository.findBySlug(slug)
+        if (existing != null) {
+            if (existing.contentJson == json && existing.questionCount == questionCount) {
+                return
+            }
+            paperRepository.save(
+                existing.copy(
+                    title = title,
+                    questionCount = questionCount,
+                    contentJson = json
+                )
+            )
+            log.info("Updated PYQ paper {} ({} questions)", slug, questionCount)
+            return
+        }
 
         paperRepository.save(
             QuestionPaper(
                 exam = exam,
                 slug = slug,
-                title = root.path("title").asText("CAT 2025 Slot $slot"),
+                title = title,
                 year = root.path("year").asInt(2025),
                 slot = slot,
                 durationMinutes = root.path("durationMinutes").asInt(120),

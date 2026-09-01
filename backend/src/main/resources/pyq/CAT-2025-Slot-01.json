@@ -11,7 +11,9 @@
     "unattempted": 0
   },
   "notes": [
-    "Topics not tagged yet — deferred until 4–5 papers are ingested.",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Q45 source PDF labels the last option as '(3)' twice; corrected to '(4)'.",
     "First RC directions say questions 3–5; Q2 is on the same passage.",
     "Q30–33 chart image(s): assets/CAT-2025-Slot-01-Q30-33-charts.png."
@@ -23,7 +25,8 @@
       "labelFrom": 3,
       "labelTo": 5,
       "stimulus": "Understanding the key properties of complex systems can help us clarify and deal with many new and existing global challenges, from pandemics to poverty . . . A recent study in Nature Physics found transitions to orderly states such as schooling in fish (all fish swimming in the same direction), can be caused, paradoxically, by randomness, or ‘noise’ feeding back on itself. That is, a misalignment among the fish causes further misalignment, eventually inducing a transition to schooling. Most of us wouldn’t guess that noise can produce predictable behaviour. The result invites us to consider how technology such as contact -tracing apps, although informing us locally, might negatively impact our collective movement. If each of us changes our behavior to avoid the infected, we might generate a collective pattern we had aimed to avoid: higher levels of interaction between the infected and susceptible, or high levels of interaction among the asymptomatic. Complex systems also suffer from a special vulnerability to events that don’t follow a normal distribution or ‘bell curve’. When events are distributed normally, most outcomes are familiar and don’t seem particularly striking. Height is a good example: it’s pretty unusual for a man to be over 7 feet tall; most adults are between 5 and 6 feet, and there is no known person over 9 feet tall. But in collective settings where contagion shapes behaviour – a run on the banks, a scramble to buy toilet paper – the probability distributions for possible events are often heavy -tailed. There is a much higher probability of extreme events, such as a stock market crash or a massive surge in infections. These events are still unlikely, but they occur more frequently and are larger than would be expected under normal distributions. What’s more, once a rare but hugely significant ‘tail’ event takes place, this raises the probability of further tail events. We might call them second -order tail events; they include stock market gyrations after a big fall and earthquake aftershocks. The initial probability of second -order tail events is so tiny it’s almost impossible to calculate – but once a first -order tail event occurs, the rules change, and the probability of a second -order tail event increases. The dynamics of tail events are complicated by the fact that they result from cascades of other unlikely events. When COVID -19 first struck, the stock market suffered stunning losses followed by an equally stunning recovery. Some of these dynamics are potentially attributable to former sports bettors, with no sports to bet on, entering the market as speculators rather than investors. The arrival of these new players might have increased inefficiencies and allowed savvy long -term investors to gain an edge over bettors with different goals. . . . One reason a first -order tail event can induce further tail events is that it changes the perceived costs of our actions and changes the rules that we play by. This game -change is an example of another key complex systems concept: nonstationarity. A second, canonical example of nonstationarity is adaptation, as illustrated by the arms race involved in the coevolution of hosts and parasites [in which] each has to ‘run’ faster, just to keep up with the novel solutions the othe r one presents as they battle it out in evolutionary time.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Logic Games"
     },
     {
       "qFrom": 6,
@@ -31,7 +34,8 @@
       "labelFrom": 6,
       "labelTo": 9,
       "stimulus": "How can we know what someone else is thinking or feeling, let alone prove it in court? In his 1863 book, A General View of the Criminal Law of England, James Fitzjames Stephen, among the most celebrated legal thinkers of his generation, was of the opinion that the assessment of a person’s mental state was an inference made with “little consciousness.” In a criminal case, jurors, doctors, and lawyers could watch defendants —scrutinizing clothing, mannerisms, tone of voice —but the best they could hope for were clues. . . . Rounding these clues up to a judgment about a defendant’s guilt, or a defendant’s life, was an act of empathy and imagination. . . . The closer the resemblance between defendants and their judges, the easier it was to overlook the gap that inference filled. Conversely, when a defendant struck officials as unlike themselves, whether by dint of disease, gender, confession, or race, the precariousness of judgments about mental state was exposed. In the nineteenth century, physicians who specialized in the study of madness and the care of the insane held themselves out as experts in the new field of mental science. Often called alienists or mad doctors, they were the predecessors of modern psychiatrists, neurologists, and psychologists. . . . The opinions of family and neighbors had once been sufficient to sift the sane from the insane, but a growing belief that insanity was a subtle condition that required expert, medical diagnosis pushed physicians into the witness box. . . . Lawyers for both prosecution and defense began to recruit alienists to assess defendants’ sanity and to testify to it in court. Irresponsibility and insanity were not identical, however. Criminal responsibility was a legal concept and not, fundamentally, a medical one. Stephen explained: “The question ‘What are the mental elements of responsibility?’ is, and must be, a legal question. It cannot be anything else, for the meaning of responsibility is liability to punishment.” . . . Nonetheless, medical and legal accounts of what it meant to be mentally sound became entangled and mutually referential throughout the nineteenth century. Lawyers relied on medical knowledge to inform their opinions and arguments about the sanity of their clients. Doctors commented on the legal responsibility of their patients. Ultimately, the fields of crimi nal law and mental science were both invested in constructing an image of the broken and damaged psyche that could be contrasted with the whole and healthy one. This shared interest, and the shared space of the criminal courtroom, made it nearly impossible to consider responsibility without medicine, or insanity without law. . . . Physicians and lawyers shared more than just concern for the mind. Class, race, and gender bound these middle -class, white, professional men together, as did family ties, patriotism, Protestantism, business ventures, the alumni networks of elite schools and universities, and structures of political patronage. But for all their affinities, men of medicine and law were divided by contests over the borders of criminal responsibility, as much within each profession as between them. Alienists steadily pushed the boundaries of their field, developing increasingly complex and capacious definitions of insanity. Eccentricity and aggression came to be classified as symptoms of mental disease, at least by some.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Puzzles"
     },
     {
       "qFrom": 16,
@@ -39,7 +43,8 @@
       "labelFrom": 16,
       "labelTo": 19,
       "stimulus": "Studies showing that income inequality plays a positive role in economic growth are largely based on three arguments. The first argument focuses on investment indivisibilities wherein large sunk costs are required when implementing new fundamental innovations. Without stock markets and financial institutions to mobilize large sums of money, a high concentration of wealth is needed for individuals to undertake new industrial activities accompanied by high sunk costs . . . [One study] shows the relation between economic growth and income inequality for 45 countries during 1966 -1995. [It was found] that the increase in income inequality has a significant positive relationship with economic growth in the short and medium term. Using system GMM, [another study estimated] the relation between income inequality and economic growth for 106 countries during 1965 –2005 period. The results show that income inequality has a positive impact on economic growth in the short run, but the two are negatively correlated in the long run. The second argument is related to moral hazard and incentives . . . Because economic performance is determined by the unobservable level of effort that agents make, paying compensations without taking into account the economic performance achieved by individual agents will fail to elicit optimum effort from the agents. Thus, certain income inequalities contribute to growth by enhancing worker motivation . . . and by giving motivation to innovators and entrepreneurs . . . Finally, [another study] point[s] out that the concentration of wealth or stock ownership in relation to corporate governance contributes to growth. If stock ownership is distributed and owned by a large number of shareholders, it is not easy to make quick decisions due to the conflicting interests among shareholders, and this may also cause a free -rider problem in terms of monitoring and supervising managers and workers. . . . Various studies have examined the relationships between income inequality and economic growth, and most of these assert that a negative correlation exists between the two. . . . Analyzing 159 countries for 1980 –2012, they conclude that there exists a negative relation between income inequality and economic growth; when the income share of the richest 20% of population increases by 1%, the GDP decreases by 0.08%, whereas when the income share of the poorest 20% of population increases by 1%, the GDP increases by 0.38%. Some studies find that inequality has a negative impact on growth due to poor human capital accumulation and low fertility rates . . . while [others] point out that inequality creates political instability, resulting in lower investment. . . . [Some economists] argue that widening income inequality has a negative impact on economic growth because it negatively affects social consensus or social capital formation. One important research topic is the correlation between democratization and income redistribution. [Some scholars] explain that social pressure for income redistribution rises as income inequality increases in a democratic society. In other words, when democratization extends suffrage to a wider class of people, the increased political power of low - and middle - income voters results in broader support for income redistribution and social welfare expansion. However . . . if the rich have more political influence than the poor, the democratic system actually worsens income inequality rather than improving it.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Puzzles"
     },
     {
       "qFrom": 21,
@@ -47,7 +52,8 @@
       "labelFrom": 21,
       "labelTo": 24,
       "stimulus": "Often the well intentioned music lover or the traditionally -minded professional composer asks two basic questions when faced with the electronic music phenomena: (1) . . . is this type of artistic creation music at all? and, (2) given that the product is accepted as music of a new type or order, is not such music “inhuman”? . . . As Lejaren Hiller points out in his book Experimental Music (coauthor Leonard M. Isaacson), two questions which often arise when music is discussed are: (a) the substance of musical communication and its symbolic and semantic significance, if any, and (b) the particular processes, both mental and technical, which are involved in creating and responding to musical composition. The ever - present popular concept of music as a direct, open, emotional expression and as a subjective form of communication from the composer, is, of course still that of the nineteenth century, when composers themselves spoke of music in those terms . . . But since the third decade of our century many composers have preferred more objective definitions of music, epitomized in Stravinsky’s description of it as “a form of speculation in terms of sound and time”. An acceptance of this more characteristic twentieth -century view of the art of musical composition will of course immediately bring the layman closer to an understanding of, and sympathetic response to, electronic music, even if the forms, sounds and approaches it uses will still be of a foreign nature to him. A communication problem however will still remain. The principal barrier that electronic music presents at large, in relation to the communication process, is that composers in this medium are employing a new language of forms . . . where terms like ‘densities’, ‘indefinite pitch relations’, ‘dynamic serialization’, ‘permutation’, etc., are substitutes (or remot e equivalents) for the traditional concepts of harmony, melody, rhythm, etc. . . . When the new structural procedures of electronic music are at last fully understood by the listener the barriers between him and the work he faces will be removed. . . . The medium of electronic music has of course tempted many kinds of composers to try their hand at it . . . But the serious - minded composer approaches the world of electronic music with a more sophisticated and profound concept of creation. Although he knows that he can reproduce and employ melodic, rhythmic patterns and timbres of a traditional nature, he feels that it is in the exploration of sui generis languages and forms that the aesthetic magic of the new medium lies. And, conscientiously, he plunges into this search. The second objection usually levelled against electronic music is much more innocent in nature. When people speak — sometimes very vehemently —of the ‘inhuman’ quality of this music they seem to forget that the composer is the one who fires the machines, collects the sounds, manipulates them, pushes the buttons, programs the computer, filters the sounds, establishes pitches and scales, splices tape, thinks of forms, and rounds up the over -all structure of the piece, as well as every detail of it.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 25,
@@ -55,7 +61,8 @@
       "labelFrom": 25,
       "labelTo": 29,
       "stimulus": "A train travels from Station A to Station E, passing through stations B, C, and D, in that order. The train has a seating capacity of 200. A ticket may be booked from any station to any other station ahead on the route, but not to any earlier station. A ticket from one station to another reserves one seat on every intermediate segment of the route. For example, a ticket from B to E reserves a seat in the intermediate segments B – C, C – D, and D – E. The occupancy factor for a segment is the total number of seats reserved in the segment as a percentage of the seating capacity. The total number of seats reserved for any segment cannot exceed 200. The following information is known. 1. Segment C – D had an occupancy factor of 95%. Only segment B – C had a higher occupancy factor. 2. Exactly 40 tickets were booked from B to C and 30 tickets were booked from B to E. 3. Among the seats reserved on segment D – E, exactly four -sevenths were from stations before C. 4. The number of tickets booked from A to C was equal to that booked from A to E, and it was higher than that from B to E. 5. No tickets were booked from A to B, from B to D and from D to E. 6. The number of tickets booked for any segment was a multiple of 10.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Data Interpretation"
     },
     {
       "qFrom": 30,
@@ -66,7 +73,8 @@
       "chartDependent": true,
       "images": [
         "assets/CAT-2025-Slot-01-Q30-33-charts.png"
-      ]
+      ],
+      "topic": "Charts & Graphs"
     },
     {
       "qFrom": 34,
@@ -74,7 +82,8 @@
       "labelFrom": 34,
       "labelTo": 38,
       "stimulus": "At InnovateX , six employees, Asha, Bunty, Chintu, Dolly, Eklavya, and Falguni, were split into two groups of three each: Elite led by Manager Kuku, and Novice led by Manager Lalu. At the end of each quarter, Kuku and Lalu handed out ratings to all members in their respective groups. In each group, each employee received a distinct integer rating from 1 to 3. The score for an employee at the end of a quarter is defined as their cumulative rating from the beginning of the year. At the end of each quarter the employee in Novice with the highest score was promoted to Elite, and the employee in Elite with the minimum score was demoted to Novice. If there was a tie in scores, the employee with a higher rating in the latest quarter was ranked higher. 1. Asha, Bunty, and Chintu were in Elite at the beginning of Quarter 1. All of them were in Novice at the beginning of Quarter 4. 2. Dolly and Falguni were the only employees who got the same rating across all the quarters. 3. The following is known about ratings given by Lalu: • Bunty received a rating of 1 in Quarter 2. • Asha and Dolly received ratings of 1 and 2, respectively, in Quarter 3.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Puzzles"
     },
     {
       "qFrom": 39,
@@ -82,7 +91,8 @@
       "labelFrom": 39,
       "labelTo": 42,
       "stimulus": "Alia, Badal, Clive, Dilshan, and Ehsaan played a game in which each asks a unique question to all the others and they respond by tapping their feet, either once or twice or thrice. One tap means “Yes”, two taps mean “No”, and three taps mean “Maybe”. A total of 40 taps were heard across the five questions. Each question received at least one “Yes”, one “No”, and one “Maybe.” The following information is known. 1. Alia tapped a total of 6 times and received 9 taps to her question. She responded “Yes” to the questions asked by both Clive and Dilshan. 2. Dilshan and Ehsaan tapped a total of 11 and 9 times respectively. Dilshan responded “No” to Badal. 3. Badal, Dilshan, and Ehsaan received equal number of taps to their respective questions. 4. No one responded “Yes” more than twice. 5. No one’s answer to Alia’s question matched the answer that Alia gave to that person’s question. This was also true for Ehsaan. 6. Clive tapped more times in total than Badal.",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Logic Games"
     },
     {
       "qFrom": 43,
@@ -90,7 +100,8 @@
       "labelFrom": 43,
       "labelTo": 46,
       "stimulus": "A round table has seven chairs around it. The chairs are numbered 1 through 7 in a clockwise direction. Four friends, Aslam, Bashir, Chhavi, and Davies, sit on four of the chairs. In the starting position, Aslam and Chhavi are sitting next to each other, while for Bashir as well as Davies, there are empty chairs on either side of the chairs that are sitting on. The friends take turns moving either clockwise or counterclockwise from their chair. The friend who has to move in a turn occupies the first empty chair in whichever direction (s)he chooses to move. Aslam moves first (Turn 1), followed by Bashir, Chhavi, and Davies (Turns 2, 3, and 4, respectively). Then Aslam moves again followed by Bashir, and Chhavi (Turns 5, 6, and 7, respectively). The following information is known. 1. The four friends occupy adjacent chairs only at the end of Turn 2 and Turn 6. 2. Davies occupies Chair 2 after Turn 1 and Chair 4 after Turn 5, and Chhavi occupies Chair 7 after Turn 2",
-      "chartDependent": false
+      "chartDependent": false,
+      "topic": "Arrangements"
     }
   ],
   "questions": [
@@ -107,7 +118,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Jumbles"
     },
     {
       "qNo": 2,
@@ -130,7 +142,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 3,
@@ -153,7 +166,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 4,
@@ -176,7 +190,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 5,
@@ -199,7 +214,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 6,
@@ -222,7 +238,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 7,
@@ -245,7 +262,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 8,
@@ -268,7 +286,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 9,
@@ -291,7 +310,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 10,
@@ -306,7 +326,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Jumbles"
     },
     {
       "qNo": 11,
@@ -326,7 +347,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Completion"
     },
     {
       "qNo": 12,
@@ -346,7 +368,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Summary"
     },
     {
       "qNo": 13,
@@ -361,7 +384,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Odd Sentence Out"
     },
     {
       "qNo": 14,
@@ -376,7 +400,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Odd Sentence Out"
     },
     {
       "qNo": 15,
@@ -396,7 +421,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Summary"
     },
     {
       "qNo": 16,
@@ -419,7 +445,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 17,
@@ -442,7 +469,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 18,
@@ -465,7 +493,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 19,
@@ -488,7 +517,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 20,
@@ -508,7 +538,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Para Completion"
     },
     {
       "qNo": 21,
@@ -531,7 +562,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 22,
@@ -554,7 +586,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 23,
@@ -577,7 +610,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 24,
@@ -600,7 +634,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Reading Comprehension"
     },
     {
       "qNo": 25,
@@ -623,7 +658,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 26,
@@ -641,7 +677,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 27,
@@ -659,7 +696,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 28,
@@ -677,7 +715,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 29,
@@ -695,7 +734,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Data Interpretation"
     },
     {
       "qNo": 30,
@@ -720,7 +760,8 @@
         "assets/CAT-2025-Slot-01-Q30-33-charts.png"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 31,
@@ -745,7 +786,8 @@
         "assets/CAT-2025-Slot-01-Q30-33-charts.png"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 32,
@@ -770,7 +812,8 @@
         "assets/CAT-2025-Slot-01-Q30-33-charts.png"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 33,
@@ -795,7 +838,8 @@
         "assets/CAT-2025-Slot-01-Q30-33-charts.png"
       ],
       "chartDependent": true,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Charts & Graphs"
     },
     {
       "qNo": 34,
@@ -813,7 +857,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Puzzles"
     },
     {
       "qNo": 35,
@@ -831,7 +876,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Puzzles"
     },
     {
       "qNo": 36,
@@ -849,7 +895,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Puzzles"
     },
     {
       "qNo": 37,
@@ -867,7 +914,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Puzzles"
     },
     {
       "qNo": 38,
@@ -890,7 +938,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Puzzles"
     },
     {
       "qNo": 39,
@@ -908,7 +957,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Logic Games"
     },
     {
       "qNo": 40,
@@ -931,7 +981,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Logic Games"
     },
     {
       "qNo": 41,
@@ -954,7 +1005,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Logic Games"
     },
     {
       "qNo": 42,
@@ -972,7 +1024,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Logic Games"
     },
     {
       "qNo": 43,
@@ -990,7 +1043,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arrangements"
     },
     {
       "qNo": 44,
@@ -1013,7 +1067,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arrangements"
     },
     {
       "qNo": 45,
@@ -1036,7 +1091,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arrangements"
     },
     {
       "qNo": 46,
@@ -1059,7 +1115,8 @@
       ],
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arrangements"
     },
     {
       "qNo": 47,
@@ -1079,7 +1136,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 48,
@@ -1094,7 +1152,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 49,
@@ -1109,7 +1168,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Modern Math"
     },
     {
       "qNo": 50,
@@ -1129,7 +1189,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 51,
@@ -1149,7 +1210,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 52,
@@ -1169,7 +1231,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 53,
@@ -1184,7 +1247,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 54,
@@ -1204,7 +1268,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 55,
@@ -1224,7 +1289,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 56,
@@ -1244,7 +1310,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 57,
@@ -1264,7 +1331,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 58,
@@ -1279,7 +1347,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 59,
@@ -1299,7 +1368,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 60,
@@ -1319,7 +1389,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 61,
@@ -1339,7 +1410,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     },
     {
       "qNo": 62,
@@ -1359,7 +1431,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 63,
@@ -1374,7 +1447,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     },
     {
       "qNo": 64,
@@ -1389,7 +1463,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 65,
@@ -1404,7 +1479,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Algebra"
     },
     {
       "qNo": 66,
@@ -1424,7 +1500,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Arithmetic"
     },
     {
       "qNo": 67,
@@ -1444,7 +1521,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Modern Math"
     },
     {
       "qNo": 68,
@@ -1459,7 +1537,8 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "needsManualReview": false
+      "needsManualReview": false,
+      "topic": "Geometry"
     }
   ],
   "verification": {

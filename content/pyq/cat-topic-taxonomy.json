@@ -1,0 +1,29 @@
+{
+  "exam": "CAT",
+  "sections": {
+    "VARC": [
+      "Reading Comprehension",
+      "Para Summary",
+      "Para Jumbles",
+      "Odd Sentence Out",
+      "Para Completion"
+    ],
+    "DILR": [
+      "Data Interpretation",
+      "Charts & Graphs",
+      "Tables",
+      "Arrangements",
+      "Scheduling",
+      "Logic Games",
+      "Puzzles",
+      "Sets & Logic"
+    ],
+    "QA": [
+      "Arithmetic",
+      "Algebra",
+      "Geometry",
+      "Number Systems",
+      "Modern Math"
+    ]
+  }
+}

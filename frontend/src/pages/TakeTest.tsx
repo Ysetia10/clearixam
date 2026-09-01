@@ -416,6 +416,7 @@ export const TakeTest = () => {
           <div style={{ fontWeight: 700 }}>{paper.title}</div>
           <div style={{ fontSize: 12, color: 'var(--text3)' }}>
             {question.section} · Q{question.qNo}/{paper.questionCount} · {question.type}
+            {question.topic ? ` · ${question.topic}` : ''}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>

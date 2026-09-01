@@ -33,6 +33,7 @@ export interface PaperQuestion {
   setRange: number[] | null;
   images: string[] | null;
   chartDependent: boolean;
+  topic?: string | null;
 }
 
 export interface PaperDetail {
