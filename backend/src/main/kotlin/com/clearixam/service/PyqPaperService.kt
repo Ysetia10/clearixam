@@ -167,7 +167,8 @@ class PyqPaperService(
             unattemptedCount = attempt.unattemptedCount ?: scored.totalUnattempted,
             questionCount = paper.questionCount,
             topicsTagged = scored.topicsTagged,
-            sections = scored.sectionAnalysis
+            sections = scored.sectionAnalysis,
+            questions = scored.questionReviews
         )
     }
 
@@ -188,6 +189,7 @@ class PyqPaperService(
         val totalUnattempted: Int,
         val sections: List<SectionScoreResponse>,
         val sectionAnalysis: List<SectionAnalysisResponse>,
+        val questionReviews: List<QuestionReviewResponse>,
         val topicsTagged: Boolean
     )
 
@@ -199,6 +201,7 @@ class PyqPaperService(
     ): ScoredPaper {
         val bySection = linkedMapOf<String, Acc>()
         val bySectionTopic = linkedMapOf<String, LinkedHashMap<String, Acc>>()
+        val questionReviews = mutableListOf<QuestionReviewResponse>()
         var totalCorrect = 0
         var totalIncorrect = 0
         var totalUnattempted = 0
@@ -209,11 +212,15 @@ class PyqPaperService(
             val code = q.path("sectionCode").asText("UNK")
             val sectionName = q.path("section").asText(code)
             val type = q.path("type").asText("MCQ")
+            val stem = q.path("stem").asText("")
             val correctAnswer = q.path("correctAnswer").asText("").trim()
             val rawTopic = q.path("topic").asText("").trim()
             if (rawTopic.isNotEmpty()) topicsTagged = true
             val topic = rawTopic.ifEmpty { "Uncategorized" }
             val userAns = answers[qNo.toString()]?.trim().orEmpty()
+            val options = if (q.path("options").isObject) {
+                q.path("options").fields().asSequence().associate { it.key to it.value.asText() }
+            } else null
 
             val secAcc = bySection.getOrPut(code) { Acc(section = sectionName) }
             val topicMap = bySectionTopic.getOrPut(code) { linkedMapOf() }
@@ -221,29 +228,52 @@ class PyqPaperService(
             secAcc.total += 1
             topicAcc.total += 1
 
+            val status: String
+            val scoreDelta: Double
             if (userAns.isEmpty()) {
                 secAcc.unattempted += 1
                 topicAcc.unattempted += 1
                 totalUnattempted += 1
-                return@forEach
+                status = "UNATTEMPTED"
+                scoreDelta = 0.0
+            } else {
+                secAcc.attempted += 1
+                topicAcc.attempted += 1
+                val isCorrect = answersMatch(type, userAns, correctAnswer)
+                if (isCorrect) {
+                    secAcc.correct += 1
+                    topicAcc.correct += 1
+                    secAcc.score += correctMarks
+                    topicAcc.score += correctMarks
+                    totalCorrect += 1
+                    status = "CORRECT"
+                    scoreDelta = correctMarks
+                } else {
+                    secAcc.incorrect += 1
+                    topicAcc.incorrect += 1
+                    secAcc.score -= negativeMarks
+                    topicAcc.score -= negativeMarks
+                    totalIncorrect += 1
+                    status = "INCORRECT"
+                    scoreDelta = -negativeMarks
+                }
             }
 
-            secAcc.attempted += 1
-            topicAcc.attempted += 1
-            val isCorrect = answersMatch(type, userAns, correctAnswer)
-            if (isCorrect) {
-                secAcc.correct += 1
-                topicAcc.correct += 1
-                secAcc.score += correctMarks
-                topicAcc.score += correctMarks
-                totalCorrect += 1
-            } else {
-                secAcc.incorrect += 1
-                topicAcc.incorrect += 1
-                secAcc.score -= negativeMarks
-                topicAcc.score -= negativeMarks
-                totalIncorrect += 1
-            }
+            questionReviews.add(
+                QuestionReviewResponse(
+                    qNo = qNo,
+                    sectionCode = code,
+                    section = sectionName,
+                    topic = rawTopic.ifEmpty { null },
+                    type = type,
+                    stem = stem,
+                    options = options,
+                    status = status,
+                    userAnswer = userAns.ifEmpty { null },
+                    correctAnswer = correctAnswer,
+                    scoreDelta = scoreDelta
+                )
+            )
         }
 
         val sections = bySection.map { (code, acc) ->
@@ -291,6 +321,7 @@ class PyqPaperService(
             totalUnattempted = totalUnattempted,
             sections = sections,
             sectionAnalysis = sectionAnalysis,
+            questionReviews = questionReviews,
             topicsTagged = topicsTagged
         )
     }

@@ -16,17 +16,30 @@ After ~15 minutes idle, Render spins the API down. The next request can take **~
 
 Mitigations in this repo:
 
-1. **Keep-warm + uptime** — `.github/workflows/prod-ops.yml` curls `/health` every ~5 minutes.
+1. **Keep-warm + uptime** — `.github/workflows/prod-ops.yml` curls `/health` on a 5‑minute schedule.
 2. **Frontend** — production timeout 60s, network retries, health prefetch on load, and an “Starting the API…” banner while waiting.
 3. **Upgrade path** — Render paid / always-on removes spin-down.
 
-Workflow: **Production ops** (scheduled + `workflow_dispatch`). Failures notify via GitHub Actions (watch the repo / email notifications).
+### Reliable keep-warm (required on free tier)
+
+**GitHub Actions schedules are unreliable** on free/public repos — they often run only a few times per day, even when the cron is `*/5 * * * *`. That is why the API still goes idle.
+
+Add a **real** 5‑minute ping with a free external monitor (pick one):
+
+| Service | Setup |
+|---------|--------|
+| [UptimeRobot](https://uptimerobot.com) | New monitor → **HTTP(s)** → URL `https://clearixam-backend.onrender.com/health` → interval **5 minutes** |
+| [cron-job.org](https://cron-job.org) | New cron → URL same as above → every **5 minutes** → enable |
+
+Also keep the GitHub workflow enabled (Actions → Production ops) as a backup. Failures notify via GitHub / your monitor’s alerts.
 
 | Symptom | Likely cause |
 |---------|----------------|
 | Health succeeds after 30–90s | Cold start (keep-warm missed or first wake) |
 | Health fails for minutes | Crash loop — check Render logs (DB URL, pooler, OOM) |
 | Browser CORS error | Origin missing from `SecurityConfig` allowed list |
+
+Workflow: **Production ops** (scheduled + `workflow_dispatch`).
 
 ---
 

@@ -105,6 +105,20 @@ export interface AttemptResult {
   answers: Record<string, string>;
 }
 
+export interface QuestionReview {
+  qNo: number;
+  sectionCode: string;
+  section: string;
+  topic: string | null;
+  type: string;
+  stem: string;
+  options: Record<string, string> | null;
+  status: 'CORRECT' | 'INCORRECT' | 'UNATTEMPTED' | string;
+  userAnswer: string | null;
+  correctAnswer: string;
+  scoreDelta: number;
+}
+
 export interface AttemptAnalysis {
   attemptId: string;
   paperId: string;
@@ -118,6 +132,7 @@ export interface AttemptAnalysis {
   questionCount: number;
   topicsTagged: boolean;
   sections: SectionAnalysis[];
+  questions: QuestionReview[];
 }
 
 /** Jackson/Kotlin sometimes emits qNo as "qno"; normalize for the UI. */
@@ -151,6 +166,14 @@ export const papersApi = {
     apiClient.post<AttemptResult>(`/attempts/${attemptId}/submit`, { answers }),
   getAttempt: (attemptId: string) =>
     apiClient.get<AttemptResult>(`/attempts/${attemptId}`),
-  getAnalysis: (attemptId: string) =>
-    apiClient.get<AttemptAnalysis>(`/attempts/${attemptId}/analysis`),
+  getAnalysis: async (attemptId: string) => {
+    const analysis = await apiClient.get<AttemptAnalysis>(`/attempts/${attemptId}/analysis`);
+    return {
+      ...analysis,
+      questions: (analysis.questions || []).map((q) => ({
+        ...q,
+        qNo: q.qNo ?? (q as QuestionReview & { qno?: number }).qno ?? 0,
+      })),
+    };
+  },
 };

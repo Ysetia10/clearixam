@@ -184,6 +184,7 @@ export const TakeTest = () => {
   const [paletteSection, setPaletteSection] = useState<SectionCode>('VARC');
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
   const [showStimulus, setShowStimulus] = useState(true);
+  const [paused, setPaused] = useState(false);
 
   const autoSubmitted = useRef(false);
   const answersRef = useRef(answers);
@@ -209,6 +210,7 @@ export const TakeTest = () => {
         setMarked(new Set());
         setPaletteSection(started.paper.questions[0]?.sectionCode as SectionCode || 'VARC');
         setTestStarted(false);
+        setPaused(false);
         autoSubmitted.current = false;
       } catch (e) {
         if (cancelled || generation !== startGeneration.current) return;
@@ -242,17 +244,17 @@ export const TakeTest = () => {
   }, [attemptId, navigate, showToast, submitting]);
 
   useEffect(() => {
-    if (!paper || loading || !testStarted || secondsLeft == null) return;
+    if (!paper || loading || !testStarted || paused || secondsLeft == null) return;
     const t = window.setInterval(() => {
       setSecondsLeft((prev) => (prev == null ? prev : Math.max(0, prev - 1)));
     }, 1000);
     return () => window.clearInterval(t);
-  }, [paper, loading, testStarted, secondsLeft == null]);
+  }, [paper, loading, testStarted, paused, secondsLeft == null]);
 
   useEffect(() => {
-    if (!paper || loading || !testStarted || secondsLeft !== 0) return;
+    if (!paper || loading || !testStarted || paused || secondsLeft !== 0) return;
     void submit();
-  }, [secondsLeft, paper, loading, testStarted, submit]);
+  }, [secondsLeft, paper, loading, testStarted, paused, submit]);
 
   const question: PaperQuestion | undefined = paper?.questions[index];
 
@@ -335,7 +337,7 @@ export const TakeTest = () => {
   );
 
   useEffect(() => {
-    if (!paper || !testStarted || !question) return;
+    if (!paper || !testStarted || paused || !question) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
@@ -357,7 +359,7 @@ export const TakeTest = () => {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [paper, testStarted, question, index, goToIndex, saveAndNext, toggleMarkCurrent]);
+  }, [paper, testStarted, paused, question, index, goToIndex, saveAndNext, toggleMarkCurrent]);
 
   if (loading || !paper || !question) {
     return (
@@ -386,6 +388,33 @@ export const TakeTest = () => {
       }}
     >
       {!testStarted && <InstructionsModal paper={paper} onBegin={() => setTestStarted(true)} />}
+      {paused && testStarted && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 90,
+            background: 'rgba(0,0,0,0.72)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 16,
+          }}
+        >
+          <div className="card" style={{ maxWidth: 400, width: '100%', padding: 24, textAlign: 'center' }}>
+            <h2 style={{ margin: '0 0 8px', fontSize: 20 }}>Test paused</h2>
+            <p style={{ margin: '0 0 8px', fontSize: 14, color: 'var(--text3)' }}>
+              Timer is frozen at {formatTime(secondsLeft ?? 0)}.
+            </p>
+            <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--text2)' }}>
+              Answers stay saved. Resume when you are ready.
+            </p>
+            <button type="button" className="btn btn-primary" style={{ width: '100%' }} onClick={() => setPaused(false)}>
+              Resume Test
+            </button>
+          </div>
+        </div>
+      )}
       {showSubmitModal && (
         <SubmitModal
           paper={paper}
@@ -429,17 +458,31 @@ export const TakeTest = () => {
               fontVariantNumeric: 'tabular-nums',
               fontWeight: 800,
               fontSize: 18,
-              color: testStarted && (secondsLeft ?? 0) <= 300 ? '#f43f5e' : 'var(--accent)',
+              color:
+                paused
+                  ? 'var(--amber)'
+                  : testStarted && (secondsLeft ?? 0) <= 300
+                    ? '#f43f5e'
+                    : 'var(--accent)',
               minWidth: 64,
               textAlign: 'right',
             }}
           >
             {testStarted ? formatTime(secondsLeft ?? 0) : formatTime(paper.durationMinutes * 60)}
+            {paused && <span style={{ fontSize: 11, fontWeight: 600, marginLeft: 6 }}>PAUSED</span>}
           </div>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn"
             disabled={!testStarted || submitting}
+            onClick={() => setPaused((p) => !p)}
+          >
+            {paused ? 'Resume' : 'Pause'}
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            disabled={!testStarted || submitting || paused}
             onClick={() => setShowSubmitModal(true)}
           >
             Submit Test

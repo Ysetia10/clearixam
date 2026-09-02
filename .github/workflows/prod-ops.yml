@@ -1,9 +1,13 @@
 # Keep Render free tier awake and smoke-check production health.
+#
+# NOTE: GitHub Actions schedules on free/public repos are often delayed or
+# sparsely run (sometimes hours between runs). For a reliable 5-minute ping,
+# also set an external monitor — see docs/ops.md "Reliable keep-warm".
 name: Production ops
 
 on:
   schedule:
-    # Every 5 minutes — under Render's ~15 min idle window, with margin for GitHub delay
+    # Request every 5 minutes (GitHub may delay; external cron is the backup)
     - cron: '*/5 * * * *'
   workflow_dispatch:
 
@@ -15,16 +19,32 @@ jobs:
   keep-warm-and-uptime:
     name: Keep-warm + uptime
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
-      - name: Health (keep-warm)
+      - name: Health (keep-warm, cold-start tolerant)
         run: |
           set -euo pipefail
           API="${PROD_API_BASE:-https://clearixam-backend.onrender.com}"
-          echo "GET ${API}/health"
-          curl -fsS --retry 2 --retry-delay 5 --max-time 90 \
-            "${API}/health" | tee /tmp/health.json
-          grep -q '"status":"UP"' /tmp/health.json
+          echo "GET ${API}/health (with cold-start retries)"
+          ok=0
+          for i in 1 2 3 4 5 6; do
+            echo "--- attempt ${i} ---"
+            if curl -fsS --retry 1 --retry-delay 3 --max-time 95 \
+              "${API}/health" | tee /tmp/health.json; then
+              if grep -q '"status":"UP"' /tmp/health.json; then
+                ok=1
+                break
+              fi
+            fi
+            sleep 8
+          done
+          if [ "${ok}" != "1" ]; then
+            echo "Health check failed after retries" >&2
+            exit 1
+          fi
+          # Second hit so the instance stays warm after the wake
+          curl -fsS --max-time 30 "${API}/api/health" || true
+          curl -fsS --max-time 30 "${API}/health" >/dev/null
 
       - name: Frontend reachable
         run: |

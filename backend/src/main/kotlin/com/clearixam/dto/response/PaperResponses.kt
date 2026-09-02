@@ -116,6 +116,22 @@ data class AttemptResultResponse(
     val answers: Map<String, String>
 )
 
+data class QuestionReviewResponse(
+    @get:JsonProperty("qNo")
+    @param:JsonProperty("qNo")
+    val qNo: Int,
+    val sectionCode: String,
+    val section: String,
+    val topic: String?,
+    val type: String,
+    val stem: String,
+    val options: Map<String, String>?,
+    val status: String,
+    val userAnswer: String?,
+    val correctAnswer: String,
+    val scoreDelta: Double
+)
+
 data class AttemptAnalysisResponse(
     val attemptId: UUID,
     val paperId: UUID,
@@ -128,5 +144,6 @@ data class AttemptAnalysisResponse(
     val unattemptedCount: Int,
     val questionCount: Int,
     val topicsTagged: Boolean,
-    val sections: List<SectionAnalysisResponse>
+    val sections: List<SectionAnalysisResponse>,
+    val questions: List<QuestionReviewResponse> = emptyList()
 )

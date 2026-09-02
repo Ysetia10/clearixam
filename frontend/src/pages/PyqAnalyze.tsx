@@ -1,14 +1,164 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
-import { AttemptAnalysis, papersApi } from '../api/papers';
+import { AttemptAnalysis, QuestionReview, papersApi } from '../api/papers';
+
+type ReviewFilter = 'ALL' | 'INCORRECT' | 'CORRECT' | 'UNATTEMPTED';
+
+function statusColor(status: string) {
+  if (status === 'CORRECT') return 'var(--green)';
+  if (status === 'INCORRECT') return 'var(--red)';
+  return 'var(--text3)';
+}
+
+function statusLabel(status: string) {
+  if (status === 'CORRECT') return 'Correct';
+  if (status === 'INCORRECT') return 'Incorrect';
+  return 'Unattempted';
+}
+
+function formatAnswer(q: QuestionReview, value: string | null | undefined) {
+  if (!value) return '—';
+  if (q.type === 'MCQ' && q.options?.[value]) {
+    return `(${value}) ${q.options[value]}`;
+  }
+  return value;
+}
+
+function QuestionCard({ q }: { q: QuestionReview }) {
+  const [open, setOpen] = useState(q.status === 'INCORRECT');
+
+  return (
+    <div
+      className="card"
+      style={{
+        padding: 0,
+        overflow: 'hidden',
+        borderLeft: `3px solid ${statusColor(q.status)}`,
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        style={{
+          width: '100%',
+          textAlign: 'left',
+          background: 'transparent',
+          border: 'none',
+          color: 'inherit',
+          cursor: 'pointer',
+          padding: '12px 16px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: 12,
+          alignItems: 'flex-start',
+        }}
+      >
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontWeight: 700, marginBottom: 4 }}>
+            Q{q.qNo} · {q.sectionCode}
+            {q.topic ? ` · ${q.topic}` : ''} · {q.type}
+          </div>
+          <div
+            style={{
+              fontSize: 13,
+              color: 'var(--text2)',
+              lineHeight: 1.45,
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: open ? undefined : 2,
+              WebkitBoxOrient: 'vertical',
+            }}
+          >
+            {q.stem}
+          </div>
+        </div>
+        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+          <div style={{ fontWeight: 700, color: statusColor(q.status), fontSize: 13 }}>
+            {statusLabel(q.status)}
+          </div>
+          <div
+            style={{
+              fontSize: 12,
+              color: q.scoreDelta > 0 ? 'var(--green)' : q.scoreDelta < 0 ? 'var(--red)' : 'var(--text3)',
+              marginTop: 4,
+            }}
+          >
+            {q.scoreDelta > 0 ? '+' : ''}
+            {q.scoreDelta.toFixed(1)}
+          </div>
+        </div>
+      </button>
+
+      {open && (
+        <div style={{ padding: '0 16px 16px', borderTop: '1px solid var(--border)' }}>
+          <div style={{ fontSize: 14, lineHeight: 1.6, whiteSpace: 'pre-wrap', marginTop: 12, marginBottom: 14 }}>
+            {q.stem}
+          </div>
+
+          {q.type === 'MCQ' && q.options && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 14 }}>
+              {(['1', '2', '3', '4'] as const).map((key) => {
+                const text = q.options?.[key];
+                if (!text) return null;
+                const isCorrect = q.correctAnswer === key;
+                const isYours = q.userAnswer === key;
+                return (
+                  <div
+                    key={key}
+                    style={{
+                      padding: '10px 12px',
+                      borderRadius: 8,
+                      border: `1px solid ${
+                        isCorrect ? 'var(--green)' : isYours ? 'var(--red)' : 'var(--border)'
+                      }`,
+                      background: isCorrect
+                        ? 'var(--green-glow)'
+                        : isYours
+                          ? 'var(--red-glow)'
+                          : 'transparent',
+                      fontSize: 13,
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    <strong>({key})</strong> {text}
+                    {isCorrect && (
+                      <span style={{ marginLeft: 8, color: 'var(--green)', fontWeight: 600 }}>Correct</span>
+                    )}
+                    {isYours && !isCorrect && (
+                      <span style={{ marginLeft: 8, color: 'var(--red)', fontWeight: 600 }}>Your answer</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {q.type !== 'MCQ' && (
+            <div style={{ display: 'grid', gap: 8, marginBottom: 8, fontSize: 14 }}>
+              <div>
+                <span style={{ color: 'var(--text3)' }}>Your answer: </span>
+                <strong style={{ color: statusColor(q.status) }}>{formatAnswer(q, q.userAnswer)}</strong>
+              </div>
+              <div>
+                <span style={{ color: 'var(--text3)' }}>Correct answer: </span>
+                <strong style={{ color: 'var(--green)' }}>{formatAnswer(q, q.correctAnswer)}</strong>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export const PyqAnalyze = () => {
   const { attemptId } = useParams<{ attemptId: string }>();
   const navigate = useNavigate();
   const [analysis, setAnalysis] = useState<AttemptAnalysis | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<ReviewFilter>('INCORRECT');
 
   useEffect(() => {
     if (!attemptId) return;
@@ -17,6 +167,13 @@ export const PyqAnalyze = () => {
       .then(setAnalysis)
       .catch((e) => setError((e as Error).message));
   }, [attemptId]);
+
+  const questions = analysis?.questions ?? [];
+
+  const filtered = useMemo(() => {
+    if (filter === 'ALL') return questions;
+    return questions.filter((q) => q.status === filter);
+  }, [questions, filter]);
 
   if (error) {
     return (
@@ -35,6 +192,13 @@ export const PyqAnalyze = () => {
       </Box>
     );
   }
+
+  const filters: { key: ReviewFilter; label: string; count: number }[] = [
+    { key: 'INCORRECT', label: 'Incorrect', count: analysis.incorrectCount },
+    { key: 'CORRECT', label: 'Correct', count: analysis.correctCount },
+    { key: 'UNATTEMPTED', label: 'Unattempted', count: analysis.unattemptedCount },
+    { key: 'ALL', label: 'All', count: analysis.questionCount },
+  ];
 
   return (
     <DashboardLayout>
@@ -93,21 +257,41 @@ export const PyqAnalyze = () => {
         ))}
       </div>
 
-      {!analysis.topicsTagged && (
-        <div
-          className="card"
-          style={{
-            padding: 14,
-            marginBottom: 16,
-            fontSize: 13,
-            color: 'var(--text3)',
-          }}
-        >
-          Topic tags are not on this paper yet — breakdown shows sections, with topics as
-          Uncategorized until we classify questions.
+      <div style={{ marginBottom: 28 }}>
+        <h2 style={{ fontSize: 16, margin: '0 0 12px' }}>Question review</h2>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
+          {filters.map((f) => (
+            <button
+              key={f.key}
+              type="button"
+              className="btn"
+              onClick={() => setFilter(f.key)}
+              style={{
+                borderColor: filter === f.key ? 'var(--accent)' : undefined,
+                background:
+                  filter === f.key ? 'color-mix(in srgb, var(--accent) 15%, transparent)' : undefined,
+                fontWeight: filter === f.key ? 700 : 500,
+              }}
+            >
+              {f.label} ({f.count})
+            </button>
+          ))}
         </div>
-      )}
 
+        {filtered.length === 0 ? (
+          <div className="card" style={{ padding: 16, color: 'var(--text3)', fontSize: 14 }}>
+            No questions in this filter.
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {filtered.map((q) => (
+              <QuestionCard key={q.qNo} q={q} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      <h2 style={{ fontSize: 16, margin: '0 0 12px' }}>Section & topic breakdown</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {analysis.sections.map((section) => (
           <div key={section.sectionCode} className="card" style={{ padding: 0, overflow: 'hidden' }}>
