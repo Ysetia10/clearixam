@@ -1,5 +1,5 @@
 import { Snackbar, Alert, AlertColor } from '@mui/material';
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, ReactNode } from 'react';
 
 interface ToastContextType {
   showToast: (message: string, severity?: AlertColor) => void;
@@ -24,18 +24,22 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState<AlertColor>('info');
 
-  const showToast = (msg: string, sev: AlertColor = 'info') => {
+  const showToast = useCallback((msg: string, sev: AlertColor = 'info') => {
     setMessage(msg);
     setSeverity(sev);
     setOpen(true);
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback((_event?: unknown, reason?: string) => {
+    // Ignore clickaway so closing via X / timeout is intentional only.
+    if (reason === 'clickaway') return;
     setOpen(false);
-  };
+  }, []);
+
+  const value = useMemo(() => ({ showToast }), [showToast]);
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={value}>
       {children}
       <Snackbar
         open={open}

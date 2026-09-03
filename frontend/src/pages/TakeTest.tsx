@@ -207,13 +207,18 @@ export const TakeTest = () => {
   const autoSubmitted = useRef(false);
   const answersRef = useRef(answers);
   const startGeneration = useRef(0);
+  const showToastRef = useRef(showToast);
+  const navigateRef = useRef(navigate);
   const userEmail = getUserEmail();
   answersRef.current = answers;
+  showToastRef.current = showToast;
+  navigateRef.current = navigate;
 
   useEffect(() => {
     if (!paperId) return;
     const generation = ++startGeneration.current;
     let cancelled = false;
+    const email = getUserEmail();
 
     (async () => {
       try {
@@ -222,7 +227,7 @@ export const TakeTest = () => {
         const started = await papersApi.startAttempt(paperId);
         if (cancelled || generation !== startGeneration.current) return;
 
-        const draft = loadPyqDraft(paperId, userEmail);
+        const draft = loadPyqDraft(paperId, email);
         const canResume = draft && isDraftResumable(draft);
 
         setAttemptId(started.attemptId);
@@ -254,10 +259,10 @@ export const TakeTest = () => {
             setEndsAtMs(null);
           }
           if (draft.testStarted) {
-            showToast('Restored your in-progress attempt', 'success');
+            showToastRef.current('Restored your in-progress attempt', 'success');
           }
         } else {
-          clearPyqDraft(paperId, userEmail);
+          clearPyqDraft(paperId, email);
           setSecondsLeft(started.durationMinutes * 60);
           setEndsAtMs(null);
           setIndex(0);
@@ -270,8 +275,8 @@ export const TakeTest = () => {
         }
       } catch (e) {
         if (cancelled || generation !== startGeneration.current) return;
-        showToast((e as Error).message || 'Failed to start test', 'error');
-        navigate('/pyq-tests');
+        showToastRef.current((e as Error).message || 'Failed to start test', 'error');
+        navigateRef.current('/pyq-tests');
       } finally {
         if (!cancelled && generation === startGeneration.current) {
           setLoading(false);
@@ -283,7 +288,8 @@ export const TakeTest = () => {
     return () => {
       cancelled = true;
     };
-  }, [paperId, navigate, showToast, userEmail]);
+    // Only re-start when the paper changes — toast close must not remount the attempt.
+  }, [paperId]);
 
   const beginTest = useCallback(() => {
     if (!paper) return;
