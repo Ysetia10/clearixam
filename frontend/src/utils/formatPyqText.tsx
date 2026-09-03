@@ -1,5 +1,8 @@
 import { Fragment, type CSSProperties, type ReactNode } from 'react';
 
+/** Private-use marker wrapping log bases for React subscript rendering. */
+const LOG_SUB = '\uE000';
+
 const SUPERSCRIPT: Record<string, string> = {
   '0': '⁰',
   '1': '¹',
@@ -16,29 +19,12 @@ const SUPERSCRIPT: Record<string, string> = {
   '−': '⁻',
 };
 
-const SUBSCRIPT: Record<string, string> = {
-  '0': '₀',
-  '1': '₁',
-  '2': '₂',
-  '3': '₃',
-  '4': '₄',
-  '5': '₅',
-  '6': '₆',
-  '7': '₇',
-  '8': '₈',
-  '9': '₉',
-  '+': '₊',
-  '-': '₋',
-  '−': '₋',
-  '/': '⁄',
-};
-
 function toSuper(digits: string): string {
   return [...digits].map((c) => SUPERSCRIPT[c] ?? c).join('');
 }
 
-function toSub(digits: string): string {
-  return [...digits].map((c) => SUBSCRIPT[c] ?? c).join('');
+function logSub(base: string): string {
+  return `${LOG_SUB}${base}${LOG_SUB}`;
 }
 
 /** Strip leading PDF artifacts like "𝟓𝟐." or "52." from stems. */
@@ -52,45 +38,47 @@ export function cleanStemArtifact(text: string): string {
 /**
  * Improve CAT math text extracted from PDFs:
  * - x2 / n2 → x² / n²
- * - log(1 4)(...) → log₁⁄₄(...)
- * - log 64x → log₆₄ x
+ * - log(1 4)(...) → log with subscript 1/4
+ * - log 64x → log with subscript 64
  * - 1/x2 style fractions with spaces → 1/x²
  */
 export function formatMathText(raw: string): string {
   let text = cleanStemArtifact(raw);
 
-  // log(a b)(expr) → log_{a/b}(expr)  e.g. log(1 4)(n2-...)
-  text = text.replace(/log\s*\(\s*(\d+)\s+(\d+)\s*\)/gi, (_m, a, b) => `log${toSub(`${a}/${b}`)}`);
+  // log(1/4)(...) or log(1 4)(...) — fractional base from PDF line breaks
+  text = text.replace(/log\s*\(\s*(\d+)\s*(?:\/|\s+)(\d+)\s*\)/gi, (_m, a, b) => `log${logSub(`${a}/${b}`)}`);
+  // log 512(...) — numeric base before parenthesis
+  text = text.replace(/log\s+(\d+)\s*(?=\()/gi, (_m, base) => `log${logSub(base)}`);
+  // log 64𝑥 — numeric base before variable/expression
+  text = text.replace(/log\s+(\d+)(?=\s*[𝑥x𝑛n𝑦y𝑧z√(])/gi, (_m, base) => `log${logSub(base)}`);
+  // log x − ... — variable base (subscript x)
+  text = text.replace(/log\s+([x𝑥])(?=\s*[−\-=(])/gi, (_m, v) => `log${logSub(v)}`);
 
-  // log x − 3(...)  → keep; log 64𝑥 → log₆₄𝑥
-  text = text.replace(/log\s+(\d+)\s*/gi, (_m, base) => `log${toSub(base)}`);
+  // (√𝑦 𝑧) → (√(𝑦𝑧)) — PDF splits radicand across a space
+  text = text.replace(/\(√([𝑥x𝑦y𝑧z𝑎a𝑏b𝑐c])\s+([𝑥x𝑦y𝑧z𝑎a𝑏b𝑐c])\)/gu, (_m, a, b) => `(√(${a}${b}))`);
+
+  // Broken fraction options like "3+√33 2" → "(3+√33)/2"
+  text = text.replace(/(\d+\+\s*√\d+)\s+(\d+)\b/g, '($1)/$2');
 
   // f (x) = x2 → f(x) = x²  (letter or unicode letter + digit as power)
   text = text.replace(/([A-Za-zα-ωΑ-Ω𝑥𝑛𝑦𝑧𝑎𝑏𝑐𝑝𝑞𝑓𝑔ℎ𝑘])(\d{1,2})(?![0-9])/gu, (_m, letter, digits) => {
-    // Don't treat chord lengths like "PQ" + nothing; only single letter bases
     return `${letter}${toSuper(digits)}`;
   });
 
-  // [ x2] = [x]2 style already handled by letter+digit for x2; fix ]2
   text = text.replace(/\](\d)/g, (_m, d) => `]${toSuper(d)}`);
 
-  // "1 𝑥2" or "1 x2" after + or = → 1/𝑥²
   text = text.replace(/([+\-=(])\s*1\s+([𝑥x𝑛n])(\d)/gu, (_m, op, v, d) => `${op}1/${v}${toSuper(d)}`);
   text = text.replace(/\b1\s+([𝑥x𝑛n])(\d)/gu, (_m, v, d) => `1/${v}${toSuper(d)}`);
 
-  // f (x) → f(x)
   text = text.replace(/\b([fgh])\s*\(\s*x\s*\)/gi, (_m, fn) => `${fn}(x)`);
 
-  // Tighten "∠PQC = 45 °" → "45°"
   text = text.replace(/(\d)\s*°/g, '$1°');
 
-  // PDF: f(x)=x 2x−1 → f(x)=x/(2x−1) ; g(x)=x x−1 → g(x)=x/(x−1)
   text = text.replace(
     /=\s*([𝑥x])\s+(\d*[𝑥x][𝑥x0-9+\u2212\-\u2013]*)/gu,
     (_m, num, den) => `=${num}/(${den})`
   );
 
-  // (𝑥²+1 𝑥²) after superscript pass → (𝑥²+1/𝑥²)
   text = text.replace(
     /\(([^()]*?)\+\s*1\s+([𝑥x𝑛n][⁰¹²³⁴⁵⁶⁷⁸⁹]*)\)/gu,
     '($1+1/$2)'
@@ -99,9 +87,54 @@ export function formatMathText(raw: string): string {
   return text;
 }
 
+const logSubStyle: CSSProperties = {
+  fontSize: '0.68em',
+  lineHeight: 1,
+  verticalAlign: 'sub',
+  marginLeft: 1,
+  letterSpacing: 0,
+  fontWeight: 500,
+};
+
+/** Render formatted math string with readable log subscripts. */
+export function renderMathNodes(text: string): ReactNode {
+  if (!text.includes(LOG_SUB)) return text;
+
+  const parts = text.split(LOG_SUB);
+  const nodes: ReactNode[] = [];
+  for (let i = 0; i < parts.length; i++) {
+    if (i % 2 === 0) {
+      if (parts[i]) nodes.push(parts[i]);
+    } else {
+      nodes.push(
+        <sub key={`log-${i}-${parts[i]}`} style={logSubStyle}>
+          {parts[i]}
+        </sub>
+      );
+    }
+  }
+  return <>{nodes}</>;
+}
+
+export function MathText({
+  text,
+  className,
+  style,
+}: {
+  text: string;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  const formatted = formatMathText(text);
+  return (
+    <span className={className} style={style}>
+      {renderMathNodes(formatted)}
+    </span>
+  );
+}
+
 export function stripOptionNumberPrefix(optionKey: string, text: string): string {
   let t = text.trim();
-  // Redundant "(1) ..." when key is already shown via radio
   t = t.replace(new RegExp(`^\\(\\s*${optionKey}\\s*\\)\\s*`), '');
   t = t.replace(/^\(\s*[1-4]\s*\)\s*/, '');
   return t;
@@ -110,26 +143,20 @@ export function stripOptionNumberPrefix(optionKey: string, text: string): string
 const JUMBLE_HINT =
   /properly sequenced|jumbled sentences|odd sentence out|four sentences \(labelled|five jumbled/i;
 
-/**
- * Split para-jumble / odd-sentence stems so each numbered sentence starts on its own line.
- */
 export function formatJumbleLines(raw: string): string[] {
   const text = cleanStemArtifact(raw);
   if (!JUMBLE_HINT.test(text)) {
     return [formatMathText(text)];
   }
 
-  // Split before "1. " ... "5. " (sentence labels)
   const parts = text.split(/(?=(?:^|\s)[1-5]\.\s+)/);
   const lines: string[] = [];
   for (const part of parts) {
     const trimmed = part.trim();
     if (!trimmed) continue;
-    // Instruction block may include trailing garbage before first sentence
     if (/^[1-5]\.\s/.test(trimmed)) {
       lines.push(formatMathText(trimmed));
     } else {
-      // Drop leaked section headers inside instruction
       const cleaned = trimmed
         .replace(/\s*verbal ability and reading comprehension\s*/gi, ' ')
         .replace(/\s+/g, ' ')
@@ -157,7 +184,7 @@ export function PyqText({
   if (!isJumble) {
     return (
       <span className={className} style={style}>
-        {lines[0]}
+        {renderMathNodes(lines[0])}
       </span>
     );
   }
@@ -169,7 +196,9 @@ export function PyqText({
   return (
     <div className={className} style={style}>
       {instruction && (
-        <div style={{ marginBottom: sentences.length ? 12 : 0, lineHeight: 1.65 }}>{instruction}</div>
+        <div style={{ marginBottom: sentences.length ? 12 : 0, lineHeight: 1.65 }}>
+          {renderMathNodes(instruction)}
+        </div>
       )}
       {sentences.map((line, i) => (
         <div
@@ -181,7 +210,7 @@ export function PyqText({
             whiteSpace: 'pre-wrap',
           }}
         >
-          {line}
+          {renderMathNodes(line)}
         </div>
       ))}
     </div>
@@ -190,5 +219,5 @@ export function PyqText({
 
 export function renderOptionLabel(key: string, raw: string): ReactNode {
   const text = formatMathText(stripOptionNumberPrefix(key, raw));
-  return <Fragment>{text}</Fragment>;
+  return <Fragment>{renderMathNodes(text)}</Fragment>;
 }

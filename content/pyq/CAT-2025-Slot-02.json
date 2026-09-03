@@ -1406,7 +1406,7 @@
       "section": "Quantitative Ability",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "If log 64𝑥2+log 8√𝑦+3log 512(√𝑦 𝑧)=4, where x, y and z are positive real numbers, then the minimum possible value of ( x + y + z) is",
+      "stem": "If log 64𝑥2+log 8√𝑦+3log 512(√(𝑦𝑧))=4, where x, y and z are positive real numbers, then the minimum possible value of ( x + y + z) is",
       "options": {
         "1": "96",
         "2": "36",

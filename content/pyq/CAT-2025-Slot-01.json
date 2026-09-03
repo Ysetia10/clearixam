@@ -1376,7 +1376,7 @@
       "section": "Quantitative Ability",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "The number of distinct integers n for which log(1 4)(𝑛2−7𝑛+11) > 0, is",
+      "stem": "The number of distinct integers n for which log(1/4)(𝑛2−7𝑛+11) > 0, is",
       "options": {
         "1": "2",
         "2": "0",

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { AttemptAnalysis, QuestionReview, papersApi } from '../api/papers';
-import { PyqText, formatMathText, stripOptionNumberPrefix } from '../utils/formatPyqText';
+import { PyqText, MathText, stripOptionNumberPrefix } from '../utils/formatPyqText';
 
 type ReviewFilter = 'ALL' | 'INCORRECT' | 'CORRECT' | 'UNATTEMPTED';
 
@@ -22,9 +22,9 @@ function statusLabel(status: string) {
 function formatAnswer(q: QuestionReview, value: string | null | undefined) {
   if (!value) return '—';
   if (q.type === 'MCQ' && q.options?.[value]) {
-    return formatMathText(stripOptionNumberPrefix(value, q.options[value]));
+    return <MathText text={stripOptionNumberPrefix(value, q.options[value])} />;
   }
-  return formatMathText(value);
+  return <MathText text={value} />;
 }
 
 function QuestionCard({ q }: { q: QuestionReview }) {
@@ -72,7 +72,7 @@ function QuestionCard({ q }: { q: QuestionReview }) {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {formatMathText(q.stem)}
+            <MathText text={q.stem} />
           </div>
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
@@ -123,7 +123,7 @@ function QuestionCard({ q }: { q: QuestionReview }) {
                       lineHeight: 1.45,
                     }}
                   >
-                    {formatMathText(stripOptionNumberPrefix(key, text))}
+                    <MathText text={stripOptionNumberPrefix(key, text)} />
                     {isCorrect && (
                       <span style={{ marginLeft: 8, color: 'var(--green)', fontWeight: 600 }}>Correct</span>
                     )}
