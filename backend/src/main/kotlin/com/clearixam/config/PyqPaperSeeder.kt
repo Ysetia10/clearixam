@@ -22,6 +22,7 @@ class PyqPaperSeeder(
     private val log = LoggerFactory.getLogger(javaClass)
 
     private val papers = listOf(
+        "cat-2024-slot-1" to "pyq/CAT-2024-Slot-01.json",
         "cat-2025-slot-1" to "pyq/CAT-2025-Slot-01.json",
         "cat-2025-slot-2" to "pyq/CAT-2025-Slot-02.json",
         "cat-2025-slot-3" to "pyq/CAT-2025-Slot-03.json",

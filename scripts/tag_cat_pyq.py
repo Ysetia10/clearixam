@@ -9,31 +9,45 @@ import re
 from pathlib import Path
 
 VARC_RULES: list[tuple[str, re.Pattern[str]]] = [
-    ("Para Summary", re.compile(r"followed by four summaries|best captures the essence", re.I)),
+    (
+        "Odd Sentence Out",
+        re.compile(r"odd sentence out|identify the odd sentence|key in the number of that sentence", re.I),
+    ),
     (
         "Para Jumbles",
-        re.compile(r"four sentences.*properly sequenced|when properly sequenced", re.I),
+        re.compile(r"four sentences.*properly sequenced|when properly sequenced|jumbled up sentences.*coherent paragraph", re.I),
     ),
-    ("Odd Sentence Out", re.compile(r"odd sentence out|identify the odd sentence", re.I)),
     (
         "Para Completion",
-        re.compile(r"sentence is missing|missing in the paragraph|best fits among the options", re.I),
+        re.compile(
+            r"sentence is missing|missing in the paragraph|best fits among the options|"
+            r"Sentence:.*Paragraph:|___\(\d\)___",
+            re.I | re.S,
+        ),
+    ),
+    (
+        "Para Summary",
+        re.compile(
+            r"followed by four (?:alternate )?summaries|best captures the essence of the (?:passage|text)",
+            re.I,
+        ),
     ),
 ]
 
 DILR_SET_RULES: list[tuple[str, re.Pattern[str]]] = [
-    ("Charts & Graphs", re.compile(r"chart|plot|radar|bar chart|graph below", re.I)),
+    ("Charts & Graphs", re.compile(r"chart|plot|candlestick|radar|bar chart|graph below|figure below", re.I)),
     ("Tables", re.compile(r"table below|table summarizes|operator.*minutes", re.I)),
     ("Arrangements", re.compile(r"sitting in a circle|chairs|round table|seated", re.I)),
-    ("Logic Games", re.compile(r"game|tapping their feet|puzzle solving competition|visual puzzle", re.I)),
-    ("Puzzles", re.compile(r"promoted|demoted|rating|elite|novice|manager|innovatex", re.I)),
+    ("Logic Games", re.compile(r"game|tournament|tapping their feet|puzzle solving competition|visual puzzle", re.I)),
+    ("Puzzles", re.compile(r"promoted|demoted|rating|elite|novice|manager|innovatex|bloggers|surfers", re.I)),
     ("Scheduling", re.compile(r"training under|guru|consecutive years|timeline", re.I)),
-    ("Sets & Logic", re.compile(r"spherical ball|hoop|ping|venn|subset", re.I)),
+    ("Sets & Logic", re.compile(r"spherical ball|hoop|ping|venn|subset|crafts|guild", re.I)),
     (
         "Data Interpretation",
         re.compile(
             r"train|station|ticket|trade|export|import|currency|exchange|"
-            r"pollution|index|author|paper|travel cost|trade balance|normalized",
+            r"pollution|index|author|paper|travel cost|trade balance|normalized|"
+            r"campaign|election|vote",
             re.I,
         ),
     ),

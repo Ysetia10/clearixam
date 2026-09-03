@@ -1,0 +1,74 @@
+CAT 2024 Slot 1 — Question ↔ Answer verification
+======================================================================
+Parsed: 68/68 | Answer key: 68/68 | MCQ: 48 (mapped text: 48) | TITA: 20 | Explanations: 68
+Chart figures: [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41]
+Needs manual review: none
+
+Q01 [VARC] MCQ  MATCH+EXPL         (D/4) To show a practice that justifies the fears of people who feel streaming services cannot b
+Q02 [VARC] MCQ  MATCH+EXPL         (D/4) Studios and streaming services have committed to giving customers
+Q03 [VARC] MCQ  MATCH+EXPL         (D/4) As art is increasingly created, stored and distributed digitally, access to it is counter 
+Q04 [VARC] MCQ  MATCH+EXPL         (A/1) Today, films are expected to be available for a long time, since they are no longer tied s
+Q05 [VARC] MCQ  MATCH+EXPL         (A/1) Option 3
+Q06 [VARC] MCQ  MATCH+EXPL         (B/2) Today, cartographers also need to look into the usability of maps because of the new techn
+Q07 [VARC] MCQ  MATCH+EXPL         (B/2) regulatory requirements could make it difficult for small crafts outfits to compete.
+Q08 [VARC] MCQ  MATCH+EXPL         (C/3) did not necessarily promote creativity.
+Q09 [VARC] MCQ  MATCH+EXPL         (A/1) support for individual creations as opposed to mass-produced objects.
+Q10 [VARC] MCQ  MATCH+EXPL         (A/1) Creativity in the crafts could be stifled if the market for artisan goods becomes too orga
+Q11 [VARC] MCQ  MATCH+EXPL         (C/3) The similarity in brain structure explains why animals show emotions typically associated 
+Q12 [VARC] MCQ  MATCH+EXPL         (D/4) aided in altering an arid environment.
+Q13 [VARC] MCQ  MATCH+EXPL         (B/2) barring the entry of invasive species.
+Q14 [VARC] MCQ  MATCH+EXPL         (B/2) Smallest black striped marsupial that uses camouflage and dig
+Q15 [VARC] MCQ  MATCH+EXPL         (B/2) A type of bandicoots was nearly wiped out by invasive species but rescuers now pin hopes o
+Q16 [VARC] MCQ  MATCH+EXPL         (C/3) used economics to analyse non-market behaviour, without incorporating perspectives from ot
+Q17 [VARC] MCQ  MATCH+EXPL         (A/1) sarcastic about how economists, who earlier shunned other disciplines, are now beginning t
+Q18 [VARC] MCQ  MATCH+EXPL         (B/2) linking emotions and rational behaviour without considering the mediation of social instit
+Q19 [VARC] MCQ  MATCH+EXPL         (B/2) makes rational decisions based on their own preferences.
+Q20 [VARC] TITA MATCH+EXPL         TITA=1
+Q21 [VARC] MCQ  MATCH+EXPL         (D/4) Language and visual signs are codes. However, some of the codes are so widespread that the
+Q22 [VARC] TITA MATCH+EXPL         TITA=2
+Q23 [VARC] MCQ  MATCH+EXPL         (B/2) Option 1
+Q24 [VARC] MCQ  MATCH+EXPL         (B/2) Option 4
+Q25 [DILR] TITA MATCH+EXPL         TITA=8
+Q26 [DILR] TITA MATCH+EXPL         TITA=4
+Q27 [DILR] MCQ  MATCH+EXPL         (B/2) 5
+Q28 [DILR] TITA MATCH+EXPL         TITA=3
+Q29 [DILR] TITA MATCH+EXPL         TITA=5
+Q30 [DILR] TITA MATCH+CHART+EXPL   TITA=3
+Q31 [DILR] TITA MATCH+CHART+EXPL   TITA=2
+Q32 [DILR] TITA MATCH+CHART+EXPL   TITA=4
+Q33 [DILR] MCQ  MATCH+CHART+EXPL   (C/3) 12
+Q34 [DILR] MCQ  MATCH+CHART+EXPL   (D/4) D
+Q35 [DILR] TITA MATCH+CHART+EXPL   TITA=4
+Q36 [DILR] MCQ  MATCH+CHART+EXPL   (C/3) A
+Q37 [DILR] MCQ  MATCH+CHART+EXPL   (D/4) 80%
+Q38 [DILR] TITA MATCH+CHART+EXPL   TITA=45
+Q39 [DILR] MCQ  MATCH+CHART+EXPL   (C/3) 5
+Q40 [DILR] TITA MATCH+CHART+EXPL   TITA=2
+Q41 [DILR] MCQ  MATCH+CHART+EXPL   (C/3) Only I
+Q42 [DILR] MCQ  MATCH+EXPL         (D/4) 36%
+Q43 [DILR] MCQ  MATCH+EXPL         (C/3) 36%
+Q44 [DILR] MCQ  MATCH+EXPL         (C/3) 48%
+Q45 [DILR] MCQ  MATCH+EXPL         (B/2) 15%
+Q46 [DILR] MCQ  MATCH+EXPL         (B/2) 29%
+Q47 [QA] MCQ  MATCH+EXPL         (C/3) 4
+Q48 [QA] MCQ  MATCH+EXPL         (B/2) 12
+Q49 [QA] TITA MATCH+EXPL         TITA=15
+Q50 [QA] TITA MATCH+EXPL         TITA=31
+Q51 [QA] MCQ  MATCH+EXPL         (A/1) 13.26
+Q52 [QA] MCQ  MATCH+EXPL         (B/2) 6
+Q53 [QA] TITA MATCH+EXPL         TITA=38
+Q54 [QA] TITA MATCH+EXPL         TITA=31
+Q55 [QA] MCQ  MATCH+EXPL         (B/2) 3
+Q56 [QA] MCQ  MATCH+EXPL         (B/2) 2π
+Q57 [QA] MCQ  MATCH+EXPL         (B/2) 1 : 80
+Q58 [QA] MCQ  MATCH+EXPL         (B/2) 540
+Q59 [QA] MCQ  MATCH+EXPL         (A/1) 1125π/2
+Q60 [QA] MCQ  MATCH+EXPL         (D/4) 14
+Q61 [QA] MCQ  MATCH+EXPL         (A/1) 42
+Q62 [QA] MCQ  MATCH+EXPL         (B/2) 18
+Q63 [QA] TITA MATCH+EXPL         TITA=10
+Q64 [QA] TITA MATCH+EXPL         TITA=66
+Q65 [QA] MCQ  MATCH+EXPL         (B/2) −2/3
+Q66 [QA] MCQ  MATCH+EXPL         (B/2) -194
+Q67 [QA] TITA MATCH+EXPL         TITA=6
+Q68 [QA] TITA MATCH+EXPL         TITA=217

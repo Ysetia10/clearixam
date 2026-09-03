@@ -60,6 +60,10 @@ export function formatMathText(raw: string): string {
   // Broken fraction options like "3+√33 2" → "(3+√33)/2"
   text = text.replace(/(\d+\+\s*√\d+)\s+(\d+)\b/g, '($1)/$2');
 
+  // ASCII powers: ^2, ^(1/3), ^k → superscript / keep fraction power readable
+  text = text.replace(/\^(\d+)/g, (_m, d) => toSuper(d));
+  text = text.replace(/\^\(([^)]+)\)/g, '⁽$1⁾');
+
   // f (x) = x2 → f(x) = x²  (letter or unicode letter + digit as power)
   text = text.replace(/([A-Za-zα-ωΑ-Ω𝑥𝑛𝑦𝑧𝑎𝑏𝑐𝑝𝑞𝑓𝑔ℎ𝑘])(\d{1,2})(?![0-9])/gu, (_m, letter, digits) => {
     return `${letter}${toSuper(digits)}`;

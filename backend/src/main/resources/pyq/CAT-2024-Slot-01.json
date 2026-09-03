@@ -1,0 +1,1714 @@
+{
+  "exam": "CAT",
+  "year": 2024,
+  "slot": "1",
+  "title": "CAT 2024 Slot 1",
+  "durationMinutes": 120,
+  "sourceFile": "CAT-2024-Slot-01.pdf",
+  "marking": {
+    "correct": 3,
+    "incorrect": 1,
+    "unattempted": 0
+  },
+  "notes": [
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Parsed from Actual CAT 2024 Slot-I question paper + answer-key/explanations PDF.",
+    "MCQ options originally labelled A–D; stored as 1–4 for the app.",
+    "Explanations retained from the answer-key PDF where available.",
+    "Manual OCR fixes applied for broken QA math (Q53–56, Q59, Q62, Q65–66, Q68).",
+    "Q30–33 chart image(s): assets/CAT-2024-Slot-01-Q30-33-chart.png.",
+    "Q34–37 chart image(s): assets/CAT-2024-Slot-01-Q34-37-chart.png.",
+    "Q38–41 chart image(s): assets/CAT-2024-Slot-01-Q38-41-chart.png."
+  ],
+  "sets": [
+    {
+      "qFrom": 1,
+      "qTo": 4,
+      "labelFrom": 1,
+      "labelTo": 4,
+      "stimulus": "In the summer of 2022, subscribers to the US streaming service HBO MAX were alarmed to discover that dozens of the platform’s offerings — from the Covid-themed heist thriller Locked Down to the recent remake of The Witches — had been quietly removed from the service . . . The news seemed like vindication to those who had long warned that streaming was more about controlling access to the cultural commons than expanding it, as did reports (since denied by the show’s creators) that Netflix had begun editing old episodes of Stranger Things to retroactively improve their visual effects. What's less clear is whether the commonly prescribed cure for these cultural ills — a return to the material pleasures of physical media — is the right one. While the makers of Blu-ray discs claim they have a shelf life of 100 years, such statistics remain largely theoretical until they come to pass, and are dependent on storage conditions, not to mention the continued availability of playback equipment. The humble DVD has already proved far less resilient, with many early releases already beginning to deteriorate in quality Digital movie purchases provide even less security. Any film “bought” on iTunes could disappear if you move to another territory with a different rights agreement and try to redownload it. It’s a bold new frontier in the commodification of art: the birth of the product recall. After a man took to Twitter to bemoan losing access to Cars 2 after moving from Canada to Australia, Apple clarified that users who downloaded films to their devices would retain permanent access to those downloads, even if they relocated to a hemisphere where the [content was] subject to a different set of rights agreements. Thanks to the company’s ironclad digital rights management technology, however, such files cannot be moved or backed up, locking you into watching with your Apple account. Anyone who does manage to acquire Digital Rights Management free (DRM-free) copies of their favourite films must nonetheless grapple with ever-changing file format standards, not to mention data decay — the gradual process by which electronic information slowly but surely corrupts. Only the regular migration of files from hard drive to hard drive can delay the inevitable, in a sisyphean battle against the ravages of digital time. In a sense, none of this is new. Charlie Chaplin burned the negative of his 1926 film A Woman of the Sea as a tax write-off. Many more films have been lost through accident, negligence or plain indifference. During a heat wave in July 1937, a Fox film vault in New Jersey burned down, destroying a majority of the silent films produced by the studio. Back then, at least, cinema was defined by its ephemerality: the sense that a film was as good as gone once it left your local cinema. Today, with film studios keen to stress the breadth of their back catalogues (or to put in Hollywood terms, the value of their IPs), audiences may start to wonder why those same studios seem happy to set the vault alight themselves if it'll help next quarter’s numbers.",
+      "chartDependent": false,
+      "topic": "Data Interpretation"
+    },
+    {
+      "qFrom": 7,
+      "qTo": 10,
+      "labelFrom": 7,
+      "labelTo": 10,
+      "stimulus": "... [T]he idea of craftsmanship is not simply nostalgic. .. . Crafts require distinct skills, an all-round approach to work that involves the whole product, rather than individual parts, and an attitude that necessitates devotion to the job and a focus on the communal interest. The concept of craft emphasises the human touch and individual judgment. Essentially, the crafts concept seems to run against the preponderant ethos of management studies which, as the academics note, have long prioritised efficiency and consistency. . . . Craft skills were portrayed as being primitive and traditionalist. The contrast between artisanship and efficiency first came to the fore in the 19 century when British manufacturers suddenly faced competition from across the Atlantic as firms developed the “American system” using standardised parts. . . . the worldwide success of the Singer sewing machine showed the potential of a mass-produced device. This process created its own reaction, first in the form of the Arts and Crafts movement of the late 19th century, and then again in the “small is beautiful’ movement of the 1970s. A third crafts movement is emerging as people become aware of the environmental impact of conventional industry. There are two potential markets for those who practise crafts. The first stems from the existence of consumers who are willing to pay a premium price for goods that are deemed to be of extra quality... . The second market lies in those consumers who wish to use their purchases to support local workers, or to reduce their environmental impact by taking goods to craftspeople to be mended, or recycled. For workers, the appeal of craftsmanship is that it allows them the autonomy to make creative choices, and thus makes a job far more satisfying. In that sense, it could offer hope for the overall labour market. Let the machines automate dull and repetitive tasks and let workers focus purely on their skills, judgment and imagination. As a current example, the academics cite the “agile” manifesto in the software sector, an industry at the heart of technological change. The pioneers behind the original agile manifesto promised to prioritise “individuals and interactions over processes and tools”. By bringing together experts from different teams, agile working is designed to improve creativity. But the broader question is whether crafts can create a lot more jobs than they do today. Demand for crafted products may rise but will it be easy to retrain workers in sectors that might get automated (such as truck drivers) to take advantage? In a world where products and services often have to pass through regulatory hoops, large companies will usually have the advantage. History also suggests that the link between crafts and creativity is not automatic. Medieval craft guilds were monopolies which resisted new entrants. They were also highly hierarchical with young men required to spend long periods as apprentices and journeymen before they could set up on their own; by that time the innovative spirit may have been knocked out of them. Craft workers can thrive in the modern era, but only if they don’t get too organised.",
+      "chartDependent": false,
+      "topic": "Sets & Logic"
+    },
+    {
+      "qFrom": 12,
+      "qTo": 15,
+      "labelFrom": 12,
+      "labelTo": 15,
+      "stimulus": "Landing in Australia, the British colonists weren't much impressed with the small-bodied, slender-snooted marsupials called bandicoots. “Their muzzle, which is much too long, gives them an air exceedingly stupid,” one naturalist noted in 1805. They nicknamed one type the “zebra rat’ because of its black-striped rump. Silly-looking or not, though, the zebra rat—the smallest bandicoot, more commonly known today as the western barred bandicoot—exhibited a genius for survival in the harsh outback, where its ancestors had persisted for some 26 million years. Its births were triggered by rainfall in the bone-dry desert. It carried its breath-mint-size babies in a backward-facing pouch so mothers could forage for food and dig shallow, camouflaged shelters. Still, these adaptations did not prepare the western barred bandicoot for the colonial-era transformation of its ecosystem, particularly the onslaught of imported British animals, from cattle and rabbits that damaged delicate desert vegetation to ravenous house cats that soon developed a taste for bandicoots. Several of the dozen-odd bandicoot species went extinct, and by the 1940s the western barred bandicoot, whose original range stretched across much of the continent, persisted only on two predator-free islands in Shark Bay, off Australia’s western coast. “Our isolated fauna had simply not been exposed to these predators,” says Reece Pedler, an ecologist with the Wild Deserts conservation program. Now Wild Deserts is using descendants of those few thousand island survivors, called Shark Bay bandicoots, in a new effort to seed a mainland bandicoot revival. They've imported 20 bandicoots to a preserve on the edge of the Strzelecki Desert, in the remote interior of New South Wales. This sanctuary is a challenging place, desolate much of the year, with one of the world’s most mercurial rainfall patterns—relentless droughts followed by sudden drenching floods. The imported bandicoots occupy two fenced “exclosures,” cleared of invasive rabbits (courtesy of Pedler’s sheepdog) and of feral cats (which slunk off once the rabbits disappeared). A third fenced area contains the program’s Wild Training Zone, where two other rare marsupials (bilbies, a larger type of bandicoot, and mulgaras, a somewhat fearsome fuzzball known for sucking the brains out of prey) currently share terrain with controlled numbers of cats, learning to evade them. It's unclear whether the Shark Bay bandicoots, which are perhaps even more predator-naive than their now-extinct mainland bandicoot kin, will be able to make that kind of breakthrough. For now, though, a recent surge of rainfall has led to a bandicoot joey boom, raising the Wild Deserts population to about 100, with other sanctuaries adding to that number. There are also signs of rebirth in the landscape itself. With their constant digging, the bandicoots trap moisture and allow for seed germination so the cattle-damaged desert can restore itself. They have a new nickname—a flattering one, this time. “We call them ecosystem engineers,” Pedler says.",
+      "chartDependent": false,
+      "topic": "Data Interpretation"
+    },
+    {
+      "qFrom": 16,
+      "qTo": 19,
+      "labelFrom": 16,
+      "labelTo": 19,
+      "stimulus": "Oftentimes, when economists cross borders, they are less interested in learning from others than in invading their garden plots. Gary Becker, for instance, pioneered the idea of human capital. To do so, he famously tackled topics like crime and domesticity, applying methods honed in the study of markets to domains of nonmarket life. He projected economics outward into new realms: for example, by revealing the extent to which humans calculate marginal utilities when choosing their spouses or stealing from neighbors. At the same time, he did not let other ways of thinking enter his own economic realm: for example, he did not borrow from anthropology or history or let observations of nonmarket economics inform his homo economic us. Becker was a picture of the imperial economist in the heyday of the discipline’s bravura. Times have changed for the once almighty discipline. Economics has been taken to task, within and beyond its ramparts. Some economists have reached out, imported, borrowed, and collaborated—been less imperial, more open. Consider Thomas Piketty and his outreach to historians. The booming field of behavioral economics—the fusion of economics and social psychology—is another case. Having spawned active subfields, like judgment, decision-making and a turn to experimentation, the field aims to go beyond the caricature of Rational Man to explain how humans make decisions.... It is important to underscore how this flips the way we think about economics. For generations, economists have presumed that people have interests—‘preferences,” in the neoclassical argot—that get revealed in the course of peoples’ choices. Interests come before actions and determine them. If you are hungry, you buy lunch; if you are cold, you get a sweater. If you only have so much money and can't afford to deal with both your growling stomach and your shivering, which need you choose to meet using your scarce savings reveals your preference. Psychologists take one look at this simple formulation and shake their heads. Increasingly, even some mainstream economists have to admit that homo economic us doesn’t always behave like the textbook maximizer; irrational behavior can’t simply be waved away as extra-economic expressions of passions over interests, and thus the domain of other disciplines... .This is one place where the humanist can help the economist. If narrative economics is going to help us understand how rivals duke it out, who wins and who loses, we are going to need much more than lessons from epidemiological studies of viruses or intracranial stimuli. Above all, we need politics and institutions. Shiller [the Nobel prize winning economist] connects perceptions of narratives to changes in behavior and thence to social outcomes. He completes a circle that was key to behavioral economics and brings in storytelling to make sense of how perceptions get framed. This cycle (perception to behavior to society) was once mediated or dominated by institutions: the political parties, lobby groups, and media organizations that played a vital role in legitimating, representing, and excluding interests. Yet institutions have been stripped from Shiller's account, to reveal a bare dynamic of emotions and economics, without the intermediating place of politics.",
+      "chartDependent": false,
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qFrom": 23,
+      "qTo": 24,
+      "labelFrom": 23,
+      "labelTo": 24,
+      "stimulus": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.",
+      "chartDependent": false,
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qFrom": 25,
+      "qTo": 29,
+      "labelFrom": 25,
+      "labelTo": 29,
+      "stimulus": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. The tournament has several rounds, each of which consists of a few games. Every team plays exactly one game in each round. The following additional facts are known about the schedule of games in the tournament. 1. Each team played against a team from the other group in Round 8. 2. In Round 4 and Round 7, the match-ups, that is the pair of teams playing against each other, were identical. In Round 5 and Round 8, the match-ups were identical. 3. Team 4 played Team 6 in both Round 1 and Round 2. 4. Team 1 played Team 5 ONLY once and that was in Round 2. 5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6. 6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+      "chartDependent": false,
+      "topic": "Logic Games"
+    },
+    {
+      "qFrom": 30,
+      "qTo": 33,
+      "labelFrom": 30,
+      "labelTo": 33,
+      "stimulus": "The chart below provides complete information about the number of countries visited by Dheeraj, Samantha and Nitesh, in Asia, Europe and the rest of the world (ROW). The following additional facts are known about the countries visited by them. 1. 32 countries were visited by at least one of them. 2. USA (in ROW) is the only country that was visited by all three of them. 3. China (in Asia) is the only country that was visited by both Dheeraj and Nitesh, but not by Samantha. 4. France (in Europe) is the only country outside Asia, which was visited by both Dheeraj and Samantha, but not by Nitesh. 5. Half of the countries visited by both Samantha and Nitesh are in Europe.",
+      "chartDependent": true,
+      "images": [
+        "assets/CAT-2024-Slot-01-Q30-33-chart.png"
+      ],
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qFrom": 34,
+      "qTo": 37,
+      "labelFrom": 34,
+      "labelTo": 37,
+      "stimulus": "The chart below shows the price data for seven shares– A,B,C,D,E,F, and G as a candlestick plot for a particular day. The vertical axis shows the price of the share in rupees. A share whose closing price (price at the end of the day) is more than its opening price (price at the start of the day) is called a bullish share; otherwise, it is called a bearish share. All bullish and bearish shares are shown in green and red colour respectively.",
+      "chartDependent": true,
+      "images": [
+        "assets/CAT-2024-Slot-01-Q34-37-chart.png"
+      ],
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qFrom": 38,
+      "qTo": 41,
+      "labelFrom": 38,
+      "labelTo": 41,
+      "stimulus": "Six web surfers M, N, O, P, X, and Y each had 30 stars which they distributed among four bloggers A, B, C, and D. The number of stars received by A and B from the six web surfers is shown in the figure below. The following additional facts are known regarding the number of stars received by the bloggers from the surfers. 1. The numbers of stars received by the bloggers from the surfers were all multiples of 5 (including Q). 2. The total numbers of stars received by the bloggers were the same. 3. Each blogger received a different number of stars from M. 4. Two surfers gave all their stars to a single blogger. 5. D received more stars than C from Y.",
+      "chartDependent": true,
+      "images": [
+        "assets/CAT-2024-Slot-01-Q38-41-chart.png"
+      ],
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qFrom": 42,
+      "qTo": 46,
+      "labelFrom": 42,
+      "labelTo": 46,
+      "stimulus": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya’s and Ramya’s campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types, they can either focus on issues, or on attacking the other candidate. If Amiya and Ramya both run campaigns focusing on issues, then  The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if Amiya and Ramya both run vigorous campaigns, then 20 x (2+2)%, that is, 80% of the students will vote in the election.  Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns. For example, if Amiya runs a staid (i.e., level 1) campaign while Ramya runs a vigorous (i.e., level 2) campaign, then Amiya will receive 1/3 of the votes cast, and Ramya will receive the other 2/3. The above-mentioned percentages change as follows if at least one of them runs a campaign attacking their opponent.  If Amiya runs a campaign attacking Ramya and Ramya runs a campaign focusing on issues, then 10% of the students who would have otherwise voted for Amiya will vote for Ramya, and another 10% who would have otherwise voted for Amiya, will not vote at all.  If Ramya runs a campaign attacking Amiya and Amiya runs a campaign focusing on issues, then 20% of the students who would have otherwise voted for Ramya will vote for Amiya, and another 5% who would have otherwise voted for Ramya, will not vote at all.  If both run campaigns attacking each other, then 10% of the students who would have otherwise voted for them had they run campaigns focusing on issues, will not vote at all.",
+      "chartDependent": false,
+      "topic": "Data Interpretation"
+    }
+  ],
+  "questions": [
+    {
+      "qNo": 1,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "“Netflix had begun editing old episodes of Stranger Things to retroactively improve their visual effects.” What is the purpose of this example used in the passage?",
+      "options": {
+        "1": "To show that art in the digital age, specifically film, is no longer sacrosanct, and may be changed to suit changing tastes or technology.",
+        "2": "To show that streaming services are controlling access to the cultural commons rather than expanding it.",
+        "3": "To show how unsubstantiated reports are leading to an increase in the level of distrust towards streaming services.",
+        "4": "To show a practice that justifies the fears of people who feel streaming services cannot be trusted to be custodians of cultural artefacts like film."
+      },
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": "In the summer of 2022, subscribers to the US streaming service HBO MAX were alarmed to discover that dozens of the platform’s offerings — from the Covid-themed heist thriller Locked Down to the recent remake of The Witches — had been quietly removed from the service . . . The news seemed like vindication to those who had long warned that streaming was more about controlling access to the cultural commons than expanding it, as did reports (since denied by the show’s creators) that Netflix had begun editing old episodes of Stranger Things to retroactively improve their visual effects. What's less clear is whether the commonly prescribed cure for these cultural ills — a return to the material pleasures of physical media — is the right one. While the makers of Blu-ray discs claim they have a shelf life of 100 years, such statistics remain largely theoretical until they come to pass, and are dependent on storage conditions, not to mention the continued availability of playback equipment. The humble DVD has already proved far less resilient, with many early releases already beginning to deteriorate in quality Digital movie purchases provide even less security. Any film “bought” on iTunes could disappear if you move to another territory with a different rights agreement and try to redownload it. It’s a bold new frontier in the commodification of art: the birth of the product recall. After a man took to Twitter to bemoan losing access to Cars 2 after moving from Canada to Australia, Apple clarified that users who downloaded films to their devices would retain permanent access to those downloads, even if they relocated to a hemisphere where the [content was] subject to a different set of rights agreements. Thanks to the company’s ironclad digital rights management technology, however, such files cannot be moved or backed up, locking you into watching with your Apple account. Anyone who does manage to acquire Digital Rights Management free (DRM-free) copies of their favourite films must nonetheless grapple with ever-changing file format standards, not to mention data decay — the gradual process by which electronic information slowly but surely corrupts. Only the regular migration of files from hard drive to hard drive can delay the inevitable, in a sisyphean battle against the ravages of digital time. In a sense, none of this is new. Charlie Chaplin burned the negative of his 1926 film A Woman of the Sea as a tax write-off. Many more films have been lost through accident, negligence or plain indifference. During a heat wave in July 1937, a Fox film vault in New Jersey burned down, destroying a majority of the silent films produced by the studio. Back then, at least, cinema was defined by its ephemerality: the sense that a film was as good as gone once it left your local cinema. Today, with film studios keen to stress the breadth of their back catalogues (or to put in Hollywood terms, the value of their IPs), audiences may start to wonder why those same studios seem happy to set the vault alight themselves if it'll help next quarter’s numbers.",
+      "setRange": [
+        1,
+        4
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option A: While it mentions the mutable nature of digital art, the focus is on how such practices undermine trust in streaming services as custodians of cultural artifacts, not just on technological changes. Too broad. Option D: Correctly identifies the example’s purpose: to validate fears about streaming services' reliability in preserving the integrity of cultural works. Best aligns with the context. Option B: Discusses control over the cultural commons, which is a broader theme of the passage but not the direct purpose of this specific example. Less precise. Option C: Suggests unsubstantiated reports lead to distrust, but the example is presented as evidence of real concerns, not baseless speculation. Misinterprets the example.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 2,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "Which one of the following statements, if true, would best invalidate the main argument of the passage?",
+      "options": {
+        "1": "Improved cloud storage services have made it possible for movie collections to now be preserved in perpetuity, without the need to keep migrating the files.",
+        "2": "When moving to a different geographical location, customers can easily use Virtual Private Networks (VPNs) to bypass geo-blocking and regain access to their content on any streaming service.",
+        "3": "Recent research has irrefutably proven that Blu-Ray discs have a shelf life of at least 100years.",
+        "4": "Studios and streaming services have committed to giving customers"
+      },
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": "In the summer of 2022, subscribers to the US streaming service HBO MAX were alarmed to discover that dozens of the platform’s offerings — from the Covid-themed heist thriller Locked Down to the recent remake of The Witches — had been quietly removed from the service . . . The news seemed like vindication to those who had long warned that streaming was more about controlling access to the cultural commons than expanding it, as did reports (since denied by the show’s creators) that Netflix had begun editing old episodes of Stranger Things to retroactively improve their visual effects. What's less clear is whether the commonly prescribed cure for these cultural ills — a return to the material pleasures of physical media — is the right one. While the makers of Blu-ray discs claim they have a shelf life of 100 years, such statistics remain largely theoretical until they come to pass, and are dependent on storage conditions, not to mention the continued availability of playback equipment. The humble DVD has already proved far less resilient, with many early releases already beginning to deteriorate in quality Digital movie purchases provide even less security. Any film “bought” on iTunes could disappear if you move to another territory with a different rights agreement and try to redownload it. It’s a bold new frontier in the commodification of art: the birth of the product recall. After a man took to Twitter to bemoan losing access to Cars 2 after moving from Canada to Australia, Apple clarified that users who downloaded films to their devices would retain permanent access to those downloads, even if they relocated to a hemisphere where the [content was] subject to a different set of rights agreements. Thanks to the company’s ironclad digital rights management technology, however, such files cannot be moved or backed up, locking you into watching with your Apple account. Anyone who does manage to acquire Digital Rights Management free (DRM-free) copies of their favourite films must nonetheless grapple with ever-changing file format standards, not to mention data decay — the gradual process by which electronic information slowly but surely corrupts. Only the regular migration of files from hard drive to hard drive can delay the inevitable, in a sisyphean battle against the ravages of digital time. In a sense, none of this is new. Charlie Chaplin burned the negative of his 1926 film A Woman of the Sea as a tax write-off. Many more films have been lost through accident, negligence or plain indifference. During a heat wave in July 1937, a Fox film vault in New Jersey burned down, destroying a majority of the silent films produced by the studio. Back then, at least, cinema was defined by its ephemerality: the sense that a film was as good as gone once it left your local cinema. Today, with film studios keen to stress the breadth of their back catalogues (or to put in Hollywood terms, the value of their IPs), audiences may start to wonder why those same studios seem happy to set the vault alight themselves if it'll help next quarter’s numbers.",
+      "setRange": [
+        1,
+        4
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option B: VPNs solve geo-blocking but don’t address DRM restrictions or content ownership. Partially weakens, not invalidates. Option C: Blu-ray shelf life strengthens the case for physical media but doesn’t address streaming issues or data decay. Limited impact. Option A: Cloud storage addresses data decay but doesn’t resolve DRM or ownership issues. Partially weakens. Option D: Perpetual, platform-independent access resolves the core issues of ownership and access restrictions, directly invalidating the argument.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 3,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "Which one of the following statements about art best captures the arguments made in the passage?",
+      "options": {
+        "1": "In the age of online subscription services, it is time to change our understanding of classic works of art being primarily immutable and easily available to the public.",
+        "2": "Accepting retroactive changes to works of art is dangerous because it will encourage creators to not put enough effort into the original attempt, given that they can always edit or update their work later.",
+        "3": "Works of art belong to the cultural commons and hence must remain available in perpetuity, irrespective of who pays for access to them.",
+        "4": "As art is increasingly created, stored and distributed digitally, access to it is counter intuitively likely to be made more difficult by the rapid churn in technology and the whims of host platforms."
+      },
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": "In the summer of 2022, subscribers to the US streaming service HBO MAX were alarmed to discover that dozens of the platform’s offerings — from the Covid-themed heist thriller Locked Down to the recent remake of The Witches — had been quietly removed from the service . . . The news seemed like vindication to those who had long warned that streaming was more about controlling access to the cultural commons than expanding it, as did reports (since denied by the show’s creators) that Netflix had begun editing old episodes of Stranger Things to retroactively improve their visual effects. What's less clear is whether the commonly prescribed cure for these cultural ills — a return to the material pleasures of physical media — is the right one. While the makers of Blu-ray discs claim they have a shelf life of 100 years, such statistics remain largely theoretical until they come to pass, and are dependent on storage conditions, not to mention the continued availability of playback equipment. The humble DVD has already proved far less resilient, with many early releases already beginning to deteriorate in quality Digital movie purchases provide even less security. Any film “bought” on iTunes could disappear if you move to another territory with a different rights agreement and try to redownload it. It’s a bold new frontier in the commodification of art: the birth of the product recall. After a man took to Twitter to bemoan losing access to Cars 2 after moving from Canada to Australia, Apple clarified that users who downloaded films to their devices would retain permanent access to those downloads, even if they relocated to a hemisphere where the [content was] subject to a different set of rights agreements. Thanks to the company’s ironclad digital rights management technology, however, such files cannot be moved or backed up, locking you into watching with your Apple account. Anyone who does manage to acquire Digital Rights Management free (DRM-free) copies of their favourite films must nonetheless grapple with ever-changing file format standards, not to mention data decay — the gradual process by which electronic information slowly but surely corrupts. Only the regular migration of files from hard drive to hard drive can delay the inevitable, in a sisyphean battle against the ravages of digital time. In a sense, none of this is new. Charlie Chaplin burned the negative of his 1926 film A Woman of the Sea as a tax write-off. Many more films have been lost through accident, negligence or plain indifference. During a heat wave in July 1937, a Fox film vault in New Jersey burned down, destroying a majority of the silent films produced by the studio. Back then, at least, cinema was defined by its ephemerality: the sense that a film was as good as gone once it left your local cinema. Today, with film studios keen to stress the breadth of their back catalogues (or to put in Hollywood terms, the value of their IPs), audiences may start to wonder why those same studios seem happy to set the vault alight themselves if it'll help next quarter’s numbers.",
+      "setRange": [
+        1,
+        4
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option D: Accurately reflects the main argument, highlighting that digital art is paradoxically less accessible because of technology’s rapid evolution and platform constraints. Best captures the passage’s argument. Option B: Mentions retroactive changes to art, a minor point in the passage, but does not align with its overall focus on access and impermanence. Too narrow. Option C: While idealistic, the passage does not argue that art should universally belong to the cultural commons. The focus is on the limitations imposed by platforms, not ownership philosophies. Misaligned. Option A: Suggests rethinking art's immutability and accessibility, which is tangential to the passage’s core argument about technological and platform constraints. Misses the main point.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 4,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "Which of the following statements is suggested by the sentence “Back then, at least, cinema was defined by its ephemerality: the sense that a film was as good as gone once it left your local cinema”?",
+      "options": {
+        "1": "Today, films are expected to be available for a long time, since they are no longer tied solely to their stay at the local cinema.",
+        "2": "Cinema is now no longer as ephemeral as it used to be earlier, because the technology used for creating and preserving films has improved manifold.",
+        "3": "Presently, there is no reason why film studios should remove access to films once they have left the local cinema.",
+        "4": "Around a century ago, people were more accepting of not having access to films once they left the local cinema."
+      },
+      "correctAnswer": "1",
+      "correctOption": "1",
+      "stimulus": "In the summer of 2022, subscribers to the US streaming service HBO MAX were alarmed to discover that dozens of the platform’s offerings — from the Covid-themed heist thriller Locked Down to the recent remake of The Witches — had been quietly removed from the service . . . The news seemed like vindication to those who had long warned that streaming was more about controlling access to the cultural commons than expanding it, as did reports (since denied by the show’s creators) that Netflix had begun editing old episodes of Stranger Things to retroactively improve their visual effects. What's less clear is whether the commonly prescribed cure for these cultural ills — a return to the material pleasures of physical media — is the right one. While the makers of Blu-ray discs claim they have a shelf life of 100 years, such statistics remain largely theoretical until they come to pass, and are dependent on storage conditions, not to mention the continued availability of playback equipment. The humble DVD has already proved far less resilient, with many early releases already beginning to deteriorate in quality Digital movie purchases provide even less security. Any film “bought” on iTunes could disappear if you move to another territory with a different rights agreement and try to redownload it. It’s a bold new frontier in the commodification of art: the birth of the product recall. After a man took to Twitter to bemoan losing access to Cars 2 after moving from Canada to Australia, Apple clarified that users who downloaded films to their devices would retain permanent access to those downloads, even if they relocated to a hemisphere where the [content was] subject to a different set of rights agreements. Thanks to the company’s ironclad digital rights management technology, however, such files cannot be moved or backed up, locking you into watching with your Apple account. Anyone who does manage to acquire Digital Rights Management free (DRM-free) copies of their favourite films must nonetheless grapple with ever-changing file format standards, not to mention data decay — the gradual process by which electronic information slowly but surely corrupts. Only the regular migration of files from hard drive to hard drive can delay the inevitable, in a sisyphean battle against the ravages of digital time. In a sense, none of this is new. Charlie Chaplin burned the negative of his 1926 film A Woman of the Sea as a tax write-off. Many more films have been lost through accident, negligence or plain indifference. During a heat wave in July 1937, a Fox film vault in New Jersey burned down, destroying a majority of the silent films produced by the studio. Back then, at least, cinema was defined by its ephemerality: the sense that a film was as good as gone once it left your local cinema. Today, with film studios keen to stress the breadth of their back catalogues (or to put in Hollywood terms, the value of their IPs), audiences may start to wonder why those same studios seem happy to set the vault alight themselves if it'll help next quarter’s numbers.",
+      "setRange": [
+        1,
+        4
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option D: True historically but not the central point being made in the sentence. It doesn’t contrast past and present expectations. Incomplete. Option C: Focuses on criticizing studios for removing access but isn’t suggested by the given sentence, which highlights the shift in expectations, not current practices. Irrelevant. Option A: Captures the core idea: the shift from cinema’s earlier ephemerality to today’s expectation of long- term availability. Best aligns with the sentence. Option B: While technology has improved, the sentence does not directly reference technical advancements. It focuses on changing perceptions of film availability. Misinterprets the sentence.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 5,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit. Sentence: Comprehending a wide range of emotions, Renaissance music nevertheless portrayed all emotions in a balanced and moderate fashion. Paragraph: A volume of translated Italian madrigals were published in London during the year of 1588. This sudden public interest facilitated a surge of English Madrigal writing as well as a spurt of other secular music writing and publication. __(1)___. This music boom lasted for thirty years and was as much a golden age of music as British literature was with Shakespeare and Queen Elizabeth __(2)__. The rebirth in both literature and music originated in Italy and migrated to England; the English madrigal became more humorous and lighter in England as compared to Italy. Renaissance music was mostly polyphonic in texture. ___(3)___. Extreme use of and contrasts in dynamics, rhythm, and tone colour do not occur. __(4)__. The rhythms in Renaissance music tend to have a smooth, soft flow instead of a sharp, well-defined pulse of accents.",
+      "options": {
+        "1": "Option 3",
+        "2": "Option 4",
+        "3": "Option 1",
+        "4": "Option 2"
+      },
+      "correctAnswer": "1",
+      "correctOption": "1",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "blank 1: This sentence follows a discussion of the madrigal boom and the golden age of music. Inserting the missing sentence here disrupts the flow, as it doesn’t connect with the historical context being described. Not suitable. blank 2: The sentence following this point discusses how the rebirth of literature and music originated in Italy. Adding the missing sentence here would also feel out of place because it shifts focus to emotional balance in Renaissance music, which does not connect with the cultural migration theme. Not suitable. blank 3: This position follows the discussion of polyphonic texture in Renaissance music. The missing sentence, which focuses on the portrayal of emotions, ties well with this idea of Renaissance music's structural and expressive qualities. It transitions smoothly into the subsequent discussion about the lack of extreme dynamics, rhythm, or tone color contrasts. Best fit. blank 4: This position follows a detailed description of Renaissance rhythms, emphasizing smooth and soft flows. Adding the missing sentence here would interrupt the logical progression of ideas about rhythm and dynamics. Not suitable.",
+      "topic": "Para Completion"
+    },
+    {
+      "qNo": 6,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "The passage given below is followed by four alternate summaries. Choose the option that best captures the essence of the passage. Cartographers design and create maps to communicate information about phenomena located somewhere on our planet. In the past, cartographers did not worry too much about who was going to read their maps. Although some simple “usability” research was done—like comparing whether circle or bar symbols worked best—cartographers knew how to make maps. This has changed now, however, due to all kinds of societal and technological developments. Today, map readers are more demanding—mostly because of the tools they use to read maps. Cartographers, who are also influenced by these trends, are now more interested in seeing if their products are efficient, effective, and appreciated.",
+      "options": {
+        "1": "Maps are being used for a variety of reasons and therefore map readers have become more demanding.",
+        "2": "Today, cartographers also need to look into the usability of maps because of the new technological developments.",
+        "3": "New technological developments have prompted cartographers to experiment with their maps by applying these new innovations.",
+        "4": "Modern mapmakers evaluate a map’s effectiveness efficiency and satisfaction of the user through a series of experiments."
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "This summary directly captures the essence of the passage, emphasizing that technological developments have made it necessary for cartographers to consider the usability of maps—something that was less of a concern in the past. Option D: \"Modern mapmakers evaluate a map’s effectiveness, efficiency, and satisfaction of the user through a series of experiments.\" This option is somewhat true, but it focuses too heavily on experiments, which is not the main emphasis of the passage. The passage talks more about the shift in focus due to societal and technological changes, rather than detailing experiments. Option C: \"New technological developments have prompted cartographers to experiment with their maps by applying these new innovations.\" ===== PAGE 3 ===== Actual CAT 2024 Slot - I 20 This is not the core message of the passage. While the passage acknowledges that technological developments are influencing cartographers, it does not focus on experimentation. The key shift mentioned is in cartographers' need to consider usability rather than just the tools or innovations themselves. Option A: \"Maps are being used for a variety of reasons and therefore map readers have become more demanding.\" While this is true to some extent, this summary is too vague and does not adequately capture the full essence of the passage. The passage emphasizes how technological advancements have made cartographers more concerned with usability, not just the variety of reasons maps are used.",
+      "topic": "Para Summary"
+    },
+    {
+      "qNo": 7,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "The author questions the ability of crafts to create substantial employment opportunities presently because",
+      "options": {
+        "1": "crafts guilds tend to resist new entrants and are unlikely to accept large numbers of trainees.",
+        "2": "regulatory requirements could make it difficult for small crafts outfits to compete.",
+        "3": "workers made redundant by automation are unlikely to opt for crafts-related work.",
+        "4": "the low scale of crafts production will not be able to absorb the mass of redundant labour."
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "... [T]he idea of craftsmanship is not simply nostalgic. .. . Crafts require distinct skills, an all-round approach to work that involves the whole product, rather than individual parts, and an attitude that necessitates devotion to the job and a focus on the communal interest. The concept of craft emphasises the human touch and individual judgment. Essentially, the crafts concept seems to run against the preponderant ethos of management studies which, as the academics note, have long prioritised efficiency and consistency. . . . Craft skills were portrayed as being primitive and traditionalist. The contrast between artisanship and efficiency first came to the fore in the 19 century when British manufacturers suddenly faced competition from across the Atlantic as firms developed the “American system” using standardised parts. . . . the worldwide success of the Singer sewing machine showed the potential of a mass-produced device. This process created its own reaction, first in the form of the Arts and Crafts movement of the late 19th century, and then again in the “small is beautiful’ movement of the 1970s. A third crafts movement is emerging as people become aware of the environmental impact of conventional industry. There are two potential markets for those who practise crafts. The first stems from the existence of consumers who are willing to pay a premium price for goods that are deemed to be of extra quality... . The second market lies in those consumers who wish to use their purchases to support local workers, or to reduce their environmental impact by taking goods to craftspeople to be mended, or recycled. For workers, the appeal of craftsmanship is that it allows them the autonomy to make creative choices, and thus makes a job far more satisfying. In that sense, it could offer hope for the overall labour market. Let the machines automate dull and repetitive tasks and let workers focus purely on their skills, judgment and imagination. As a current example, the academics cite the “agile” manifesto in the software sector, an industry at the heart of technological change. The pioneers behind the original agile manifesto promised to prioritise “individuals and interactions over processes and tools”. By bringing together experts from different teams, agile working is designed to improve creativity. But the broader question is whether crafts can create a lot more jobs than they do today. Demand for crafted products may rise but will it be easy to retrain workers in sectors that might get automated (such as truck drivers) to take advantage? In a world where products and services often have to pass through regulatory hoops, large companies will usually have the advantage. History also suggests that the link between crafts and creativity is not automatic. Medieval craft guilds were monopolies which resisted new entrants. They were also highly hierarchical with young men required to spend long periods as apprentices and journeymen before they could set up on their own; by that time the innovative spirit may have been knocked out of them. Craft workers can thrive in the modern era, but only if they don’t get too organised.",
+      "setRange": [
+        7,
+        10
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option C: \"Workers made redundant by automation are unlikely to opt for crafts-related work.\" – The passage doesn't imply that workers would be unwilling to switch to crafts-related work. The primary concern is about whether the craft industry, as a whole, can accommodate such workers, not whether they would choose it. Option D: \"The low scale of crafts production will not be able to absorb the mass of redundant labour.\" – While the passage acknowledges that the scale of craft production may be low, the primary issue raised regarding employment is regulatory challenges, which affect the viability of small businesses, rather than the scale of production itself. Option A: \"Crafts guilds tend to resist new entrants and are unlikely to accept large numbers of trainees.\" – This refers more to historical issues with guilds and does not directly address current challenges to creating employment in the craft industry today. Therefore, Option B is the best fit as it reflects the challenge that regulatory requirements pose to small craft businesses, hindering their ability to compete and create substantial employment opportunities.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 8,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "We can infer from the passage that medieval crafts guilds resembled mass production in that both",
+      "options": {
+        "1": "focused excessively on product quality.",
+        "2": "discouraged innovation by restricting entry through strict rules.",
+        "3": "did not necessarily promote creativity.",
+        "4": "did not always employ egalitarian production processes."
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": "... [T]he idea of craftsmanship is not simply nostalgic. .. . Crafts require distinct skills, an all-round approach to work that involves the whole product, rather than individual parts, and an attitude that necessitates devotion to the job and a focus on the communal interest. The concept of craft emphasises the human touch and individual judgment. Essentially, the crafts concept seems to run against the preponderant ethos of management studies which, as the academics note, have long prioritised efficiency and consistency. . . . Craft skills were portrayed as being primitive and traditionalist. The contrast between artisanship and efficiency first came to the fore in the 19 century when British manufacturers suddenly faced competition from across the Atlantic as firms developed the “American system” using standardised parts. . . . the worldwide success of the Singer sewing machine showed the potential of a mass-produced device. This process created its own reaction, first in the form of the Arts and Crafts movement of the late 19th century, and then again in the “small is beautiful’ movement of the 1970s. A third crafts movement is emerging as people become aware of the environmental impact of conventional industry. There are two potential markets for those who practise crafts. The first stems from the existence of consumers who are willing to pay a premium price for goods that are deemed to be of extra quality... . The second market lies in those consumers who wish to use their purchases to support local workers, or to reduce their environmental impact by taking goods to craftspeople to be mended, or recycled. For workers, the appeal of craftsmanship is that it allows them the autonomy to make creative choices, and thus makes a job far more satisfying. In that sense, it could offer hope for the overall labour market. Let the machines automate dull and repetitive tasks and let workers focus purely on their skills, judgment and imagination. As a current example, the academics cite the “agile” manifesto in the software sector, an industry at the heart of technological change. The pioneers behind the original agile manifesto promised to prioritise “individuals and interactions over processes and tools”. By bringing together experts from different teams, agile working is designed to improve creativity. But the broader question is whether crafts can create a lot more jobs than they do today. Demand for crafted products may rise but will it be easy to retrain workers in sectors that might get automated (such as truck drivers) to take advantage? In a world where products and services often have to pass through regulatory hoops, large companies will usually have the advantage. History also suggests that the link between crafts and creativity is not automatic. Medieval craft guilds were monopolies which resisted new entrants. They were also highly hierarchical with young men required to spend long periods as apprentices and journeymen before they could set up on their own; by that time the innovative spirit may have been knocked out of them. Craft workers can thrive in the modern era, but only if they don’t get too organised.",
+      "setRange": [
+        7,
+        10
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option A: Craft guilds may have focused on quality, but mass production emphasizes standardization, not necessarily quality. Inaccurate. Option D: Both systems were hierarchical, but the focus of the comparison is on creativity, not egalitarian processes. Partially relevant but not the main idea. Option C: Correctly identifies the similarity between both systems: their failure to promote creativity. Best choice. Option B: Restricting entry is true for craft guilds, but mass production systems do not inherently discourage entry or innovation through strict rules. Inaccurate.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 9,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "The most recent revival in interest in the crafts is a result of the emergence of all of the following EXCEPT:",
+      "options": {
+        "1": "support for individual creations as opposed to mass-produced objects.",
+        "2": "a niche market for discerning buyers of quality products.",
+        "3": "a greater interest in buying locally produced goods.",
+        "4": "concerns about the environmental impact of mass production."
+      },
+      "correctAnswer": "1",
+      "correctOption": "1",
+      "stimulus": "... [T]he idea of craftsmanship is not simply nostalgic. .. . Crafts require distinct skills, an all-round approach to work that involves the whole product, rather than individual parts, and an attitude that necessitates devotion to the job and a focus on the communal interest. The concept of craft emphasises the human touch and individual judgment. Essentially, the crafts concept seems to run against the preponderant ethos of management studies which, as the academics note, have long prioritised efficiency and consistency. . . . Craft skills were portrayed as being primitive and traditionalist. The contrast between artisanship and efficiency first came to the fore in the 19 century when British manufacturers suddenly faced competition from across the Atlantic as firms developed the “American system” using standardised parts. . . . the worldwide success of the Singer sewing machine showed the potential of a mass-produced device. This process created its own reaction, first in the form of the Arts and Crafts movement of the late 19th century, and then again in the “small is beautiful’ movement of the 1970s. A third crafts movement is emerging as people become aware of the environmental impact of conventional industry. There are two potential markets for those who practise crafts. The first stems from the existence of consumers who are willing to pay a premium price for goods that are deemed to be of extra quality... . The second market lies in those consumers who wish to use their purchases to support local workers, or to reduce their environmental impact by taking goods to craftspeople to be mended, or recycled. For workers, the appeal of craftsmanship is that it allows them the autonomy to make creative choices, and thus makes a job far more satisfying. In that sense, it could offer hope for the overall labour market. Let the machines automate dull and repetitive tasks and let workers focus purely on their skills, judgment and imagination. As a current example, the academics cite the “agile” manifesto in the software sector, an industry at the heart of technological change. The pioneers behind the original agile manifesto promised to prioritise “individuals and interactions over processes and tools”. By bringing together experts from different teams, agile working is designed to improve creativity. But the broader question is whether crafts can create a lot more jobs than they do today. Demand for crafted products may rise but will it be easy to retrain workers in sectors that might get automated (such as truck drivers) to take advantage? In a world where products and services often have to pass through regulatory hoops, large companies will usually have the advantage. History also suggests that the link between crafts and creativity is not automatic. Medieval craft guilds were monopolies which resisted new entrants. They were also highly hierarchical with young men required to spend long periods as apprentices and journeymen before they could set up on their own; by that time the innovative spirit may have been knocked out of them. Craft workers can thrive in the modern era, but only if they don’t get too organised.",
+      "setRange": [
+        7,
+        10
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option D: Correctly reflects the passage’s discussion about environmental concerns being a motivator for the renewed interest in crafts. Relevant. Option C: Matches the passage, which mentions consumers wanting to support local workers or reduce their environmental impact. Relevant. Option B: Accurately reflects the niche market described for premium-quality craft goods. Relevant. Option A: While the passage emphasizes the human touch in crafts, it does not explicitly state that the revival is due to support for individual creations over mass production. Not explicitly mentioned.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 10,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "Which one of the following statements is NOT inconsistent with the views stated in the passage?",
+      "options": {
+        "1": "Creativity in the crafts could be stifled if the market for artisan goods becomes too organised.",
+        "2": "The Arts and Crafts movement was initially inspired by the “American system” of production.",
+        "3": "We need to support the crafts; only then can we retain the creativity intrinsic to their production.",
+        "4": "The agile movement in software is a throwback to the tenets of the medieval crafts guilds."
+      },
+      "correctAnswer": "1",
+      "correctOption": "1",
+      "stimulus": "... [T]he idea of craftsmanship is not simply nostalgic. .. . Crafts require distinct skills, an all-round approach to work that involves the whole product, rather than individual parts, and an attitude that necessitates devotion to the job and a focus on the communal interest. The concept of craft emphasises the human touch and individual judgment. Essentially, the crafts concept seems to run against the preponderant ethos of management studies which, as the academics note, have long prioritised efficiency and consistency. . . . Craft skills were portrayed as being primitive and traditionalist. The contrast between artisanship and efficiency first came to the fore in the 19 century when British manufacturers suddenly faced competition from across the Atlantic as firms developed the “American system” using standardised parts. . . . the worldwide success of the Singer sewing machine showed the potential of a mass-produced device. This process created its own reaction, first in the form of the Arts and Crafts movement of the late 19th century, and then again in the “small is beautiful’ movement of the 1970s. A third crafts movement is emerging as people become aware of the environmental impact of conventional industry. There are two potential markets for those who practise crafts. The first stems from the existence of consumers who are willing to pay a premium price for goods that are deemed to be of extra quality... . The second market lies in those consumers who wish to use their purchases to support local workers, or to reduce their environmental impact by taking goods to craftspeople to be mended, or recycled. For workers, the appeal of craftsmanship is that it allows them the autonomy to make creative choices, and thus makes a job far more satisfying. In that sense, it could offer hope for the overall labour market. Let the machines automate dull and repetitive tasks and let workers focus purely on their skills, judgment and imagination. As a current example, the academics cite the “agile” manifesto in the software sector, an industry at the heart of technological change. The pioneers behind the original agile manifesto promised to prioritise “individuals and interactions over processes and tools”. By bringing together experts from different teams, agile working is designed to improve creativity. But the broader question is whether crafts can create a lot more jobs than they do today. Demand for crafted products may rise but will it be easy to retrain workers in sectors that might get automated (such as truck drivers) to take advantage? In a world where products and services often have to pass through regulatory hoops, large companies will usually have the advantage. History also suggests that the link between crafts and creativity is not automatic. Medieval craft guilds were monopolies which resisted new entrants. They were also highly hierarchical with young men required to spend long periods as apprentices and journeymen before they could set up on their own; by that time the innovative spirit may have been knocked out of them. Craft workers can thrive in the modern era, but only if they don’t get too organised.",
+      "setRange": [
+        7,
+        10
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option D: The agile movement in software is linked to modern craftsmanship and creativity, not the restrictive and hierarchical tenets of medieval craft guilds. Inconsistent. Option C: The passage emphasizes the importance of retaining creativity but does not explicitly state that support for crafts is the only way to preserve it. Inconsistent. Option A: Matches the passage’s argument that over-organization could stifle creativity, as seen in historical examples like craft guilds. Consistent. Option B: The passage states that the Arts and Crafts movement was a reaction to the \"American system\" of production, not inspired by it. Inconsistent.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 11,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "The passage given below is followed by four alternate summaries. Choose the option that best captures the essence of the passage. Scientific research shows that many animals are very intelligent and have sensory and motor abilities that dwarf ours. Dogs are able to detect diseases such as cancer and diabetes and warn humans of impending heart attacks and strokes. Elephants, whales, hippopotamuses, giraffes, and alligators use low-frequency sounds to communicate over long distances, often miles. Many animals also display wide-ranging emotions, including joy, happiness, empathy, compassion, grief, and even resentment and embarrassment. It’s not surprising that animals share many emotions with us because we also share brain structures, located in the limbic system, that are the seat of our emotions.",
+      "options": {
+        "1": "Animals are more intelligent than us in sensing danger and detecting diseases.",
+        "2": "The advanced sensory and motor abilities of animals is the reason why they can display wide- ranging emotions.",
+        "3": "The similarity in brain structure explains why animals show emotions typically associated with humans.",
+        "4": "Animals can show emotions which are typically associated with humans."
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option D: Focuses on animals' intelligence in sensing danger and diseases, which is a minor point in the passage. Too narrow. Option C: Accurately links the similarity in brain structure to the emotional capabilities shared by animals and humans. Best choice. Option D: Mentions animals showing emotions, but it doesn’t explain the underlying reason (shared brain structures). Incomplete. Option B: Misattributes animals’ emotional abilities to their advanced sensory and motor skills, which the passage does not state. Incorrect.",
+      "topic": "Para Summary"
+    },
+    {
+      "qNo": 12,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "According to the text, the western barred bandicoots now have a flattering name because they have",
+      "options": {
+        "1": "led a revival in preserving the species.",
+        "2": "led to a surge and increase of rainfall.",
+        "3": "grown fivefold in terms of population.",
+        "4": "aided in altering an arid environment."
+      },
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": "Landing in Australia, the British colonists weren't much impressed with the small-bodied, slender-snooted marsupials called bandicoots. “Their muzzle, which is much too long, gives them an air exceedingly stupid,” one naturalist noted in 1805. They nicknamed one type the “zebra rat’ because of its black-striped rump. Silly-looking or not, though, the zebra rat—the smallest bandicoot, more commonly known today as the western barred bandicoot—exhibited a genius for survival in the harsh outback, where its ancestors had persisted for some 26 million years. Its births were triggered by rainfall in the bone-dry desert. It carried its breath-mint-size babies in a backward-facing pouch so mothers could forage for food and dig shallow, camouflaged shelters. Still, these adaptations did not prepare the western barred bandicoot for the colonial-era transformation of its ecosystem, particularly the onslaught of imported British animals, from cattle and rabbits that damaged delicate desert vegetation to ravenous house cats that soon developed a taste for bandicoots. Several of the dozen-odd bandicoot species went extinct, and by the 1940s the western barred bandicoot, whose original range stretched across much of the continent, persisted only on two predator-free islands in Shark Bay, off Australia’s western coast. “Our isolated fauna had simply not been exposed to these predators,” says Reece Pedler, an ecologist with the Wild Deserts conservation program. Now Wild Deserts is using descendants of those few thousand island survivors, called Shark Bay bandicoots, in a new effort to seed a mainland bandicoot revival. They've imported 20 bandicoots to a preserve on the edge of the Strzelecki Desert, in the remote interior of New South Wales. This sanctuary is a challenging place, desolate much of the year, with one of the world’s most mercurial rainfall patterns—relentless droughts followed by sudden drenching floods. The imported bandicoots occupy two fenced “exclosures,” cleared of invasive rabbits (courtesy of Pedler’s sheepdog) and of feral cats (which slunk off once the rabbits disappeared). A third fenced area contains the program’s Wild Training Zone, where two other rare marsupials (bilbies, a larger type of bandicoot, and mulgaras, a somewhat fearsome fuzzball known for sucking the brains out of prey) currently share terrain with controlled numbers of cats, learning to evade them. It's unclear whether the Shark Bay bandicoots, which are perhaps even more predator-naive than their now-extinct mainland bandicoot kin, will be able to make that kind of breakthrough. For now, though, a recent surge of rainfall has led to a bandicoot joey boom, raising the Wild Deserts population to about 100, with other sanctuaries adding to that number. There are also signs of rebirth in the landscape itself. With their constant digging, the bandicoots trap moisture and allow for seed germination so the cattle-damaged desert can restore itself. They have a new nickname—a flattering one, this time. “We call them ecosystem engineers,” Pedler says.",
+      "setRange": [
+        12,
+        15
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option A: While the bandicoots are part of a revival effort, the flattering name is specifically linked to their environmental impact, not the species preservation. Option D: Correctly reflects that the nickname recognizes their role in altering and improving the desert environment. Option B: The passage attributes the recent rainfall surge to natural patterns, not the bandicoots. Option C: The bandicoot population has increased, but this is not linked to their nickname.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 13,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "The text uses the word ‘exclosures’ because Wild Deserts has adopted a measure of",
+      "options": {
+        "1": "ridding the main desert of feral cats and large bilbies.",
+        "2": "barring the entry of invasive species.",
+        "3": "excluding animals to make the islands predator-free.",
+        "4": "restoring cattle damaged deserts to green landscapes."
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "Landing in Australia, the British colonists weren't much impressed with the small-bodied, slender-snooted marsupials called bandicoots. “Their muzzle, which is much too long, gives them an air exceedingly stupid,” one naturalist noted in 1805. They nicknamed one type the “zebra rat’ because of its black-striped rump. Silly-looking or not, though, the zebra rat—the smallest bandicoot, more commonly known today as the western barred bandicoot—exhibited a genius for survival in the harsh outback, where its ancestors had persisted for some 26 million years. Its births were triggered by rainfall in the bone-dry desert. It carried its breath-mint-size babies in a backward-facing pouch so mothers could forage for food and dig shallow, camouflaged shelters. Still, these adaptations did not prepare the western barred bandicoot for the colonial-era transformation of its ecosystem, particularly the onslaught of imported British animals, from cattle and rabbits that damaged delicate desert vegetation to ravenous house cats that soon developed a taste for bandicoots. Several of the dozen-odd bandicoot species went extinct, and by the 1940s the western barred bandicoot, whose original range stretched across much of the continent, persisted only on two predator-free islands in Shark Bay, off Australia’s western coast. “Our isolated fauna had simply not been exposed to these predators,” says Reece Pedler, an ecologist with the Wild Deserts conservation program. Now Wild Deserts is using descendants of those few thousand island survivors, called Shark Bay bandicoots, in a new effort to seed a mainland bandicoot revival. They've imported 20 bandicoots to a preserve on the edge of the Strzelecki Desert, in the remote interior of New South Wales. This sanctuary is a challenging place, desolate much of the year, with one of the world’s most mercurial rainfall patterns—relentless droughts followed by sudden drenching floods. The imported bandicoots occupy two fenced “exclosures,” cleared of invasive rabbits (courtesy of Pedler’s sheepdog) and of feral cats (which slunk off once the rabbits disappeared). A third fenced area contains the program’s Wild Training Zone, where two other rare marsupials (bilbies, a larger type of bandicoot, and mulgaras, a somewhat fearsome fuzzball known for sucking the brains out of prey) currently share terrain with controlled numbers of cats, learning to evade them. It's unclear whether the Shark Bay bandicoots, which are perhaps even more predator-naive than their now-extinct mainland bandicoot kin, will be able to make that kind of breakthrough. For now, though, a recent surge of rainfall has led to a bandicoot joey boom, raising the Wild Deserts population to about 100, with other sanctuaries adding to that number. There are also signs of rebirth in the landscape itself. With their constant digging, the bandicoots trap moisture and allow for seed germination so the cattle-damaged desert can restore itself. They have a new nickname—a flattering one, this time. “We call them ecosystem engineers,” Pedler says.",
+      "setRange": [
+        12,
+        15
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option C: Refers to making islands predator-free, but the exclosures are on the mainland desert, not islands. ===== PAGE 4 ===== 21 Actual CAT 2024 Slot - I Incorrect. Option B: Accurately describes the purpose of exclosures as fencing areas to bar invasive species like rabbits and feral cats. Correct. Option A: While feral cats were excluded, large bilbies are part of the Wild Training Zone and not barred by exclosures. Partially accurate but incorrect focus. Option D: The exclosures contribute to environmental restoration, but their primary purpose is to exclude invasive species, not directly restore the landscape. Misleading.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 14,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "Which one of the following options does NOT represent the characteristics of the western barred bandicoot?",
+      "options": {
+        "1": "Shallow diggers having an elongated muzzle",
+        "2": "Smallest black striped marsupial that uses camouflage and dig",
+        "3": "Look of a rat but with a baby pouch and a slender snout",
+        "4": "Long thin nose, black striped back, pouch for joeys"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "Landing in Australia, the British colonists weren't much impressed with the small-bodied, slender-snooted marsupials called bandicoots. “Their muzzle, which is much too long, gives them an air exceedingly stupid,” one naturalist noted in 1805. They nicknamed one type the “zebra rat’ because of its black-striped rump. Silly-looking or not, though, the zebra rat—the smallest bandicoot, more commonly known today as the western barred bandicoot—exhibited a genius for survival in the harsh outback, where its ancestors had persisted for some 26 million years. Its births were triggered by rainfall in the bone-dry desert. It carried its breath-mint-size babies in a backward-facing pouch so mothers could forage for food and dig shallow, camouflaged shelters. Still, these adaptations did not prepare the western barred bandicoot for the colonial-era transformation of its ecosystem, particularly the onslaught of imported British animals, from cattle and rabbits that damaged delicate desert vegetation to ravenous house cats that soon developed a taste for bandicoots. Several of the dozen-odd bandicoot species went extinct, and by the 1940s the western barred bandicoot, whose original range stretched across much of the continent, persisted only on two predator-free islands in Shark Bay, off Australia’s western coast. “Our isolated fauna had simply not been exposed to these predators,” says Reece Pedler, an ecologist with the Wild Deserts conservation program. Now Wild Deserts is using descendants of those few thousand island survivors, called Shark Bay bandicoots, in a new effort to seed a mainland bandicoot revival. They've imported 20 bandicoots to a preserve on the edge of the Strzelecki Desert, in the remote interior of New South Wales. This sanctuary is a challenging place, desolate much of the year, with one of the world’s most mercurial rainfall patterns—relentless droughts followed by sudden drenching floods. The imported bandicoots occupy two fenced “exclosures,” cleared of invasive rabbits (courtesy of Pedler’s sheepdog) and of feral cats (which slunk off once the rabbits disappeared). A third fenced area contains the program’s Wild Training Zone, where two other rare marsupials (bilbies, a larger type of bandicoot, and mulgaras, a somewhat fearsome fuzzball known for sucking the brains out of prey) currently share terrain with controlled numbers of cats, learning to evade them. It's unclear whether the Shark Bay bandicoots, which are perhaps even more predator-naive than their now-extinct mainland bandicoot kin, will be able to make that kind of breakthrough. For now, though, a recent surge of rainfall has led to a bandicoot joey boom, raising the Wild Deserts population to about 100, with other sanctuaries adding to that number. There are also signs of rebirth in the landscape itself. With their constant digging, the bandicoots trap moisture and allow for seed germination so the cattle-damaged desert can restore itself. They have a new nickname—a flattering one, this time. “We call them ecosystem engineers,” Pedler says.",
+      "setRange": [
+        12,
+        15
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option C: \"Look of a rat but with a baby pouch and a slender snout\" – This is consistent with the description in the passage, where the bandicoot was nicknamed the \"zebra rat\" due to its striped back and long, slender snout. Option A: \"Shallow diggers having an elongated muzzle\" – This is also correct, as the passage mentions that the western barred bandicoot has a long snout (elongated muzzle) and digs shallow, camouflaged shelters. Option D: \"Long, thin nose, black striped back, pouch for joey\" – This is an accurate description. The passage describes the bandicoot's long, thin nose (snout) and mentions its striped rump, as well as its pouch for carrying its babies. Option B: \"Smallest black striped marsupial that uses camouflage and digs\" – This is incorrect because the description in the passage doesn't call the western barred bandicoot the \"smallest black striped marsupial.\" While it is the smallest bandicoot, the \"black striped\" characteristic is specifically about its back, not a defining trait of the entire species, and it doesn’t mention being the \"smallest black-striped marsupial.\" The use of \"smallest\" could apply to its size as a bandicoot, but the specific combination of \"black striped marsupial\" and \"camouflage\" in this option is misleading compared to how the bandicoot is described in the passage.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 15,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "Which one of the following statements provides a gist of this passage?",
+      "options": {
+        "1": "The negligent attitude of the British colonists towards these bandicoots evidenced by the names given to them led to their annihilation.",
+        "2": "A type of bandicoots was nearly wiped out by invasive species but rescuers now pin hopes on a remnant island population.",
+        "3": "Marsupials are going extinct due to the colonial era transformation of the ecosystem which also destroyed natural vegetation.",
+        "4": "The onslaught of animals, such as cattle, rabbits and housecats, brought in by the British led to the extinction of the western barred bandicoot."
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "Landing in Australia, the British colonists weren't much impressed with the small-bodied, slender-snooted marsupials called bandicoots. “Their muzzle, which is much too long, gives them an air exceedingly stupid,” one naturalist noted in 1805. They nicknamed one type the “zebra rat’ because of its black-striped rump. Silly-looking or not, though, the zebra rat—the smallest bandicoot, more commonly known today as the western barred bandicoot—exhibited a genius for survival in the harsh outback, where its ancestors had persisted for some 26 million years. Its births were triggered by rainfall in the bone-dry desert. It carried its breath-mint-size babies in a backward-facing pouch so mothers could forage for food and dig shallow, camouflaged shelters. Still, these adaptations did not prepare the western barred bandicoot for the colonial-era transformation of its ecosystem, particularly the onslaught of imported British animals, from cattle and rabbits that damaged delicate desert vegetation to ravenous house cats that soon developed a taste for bandicoots. Several of the dozen-odd bandicoot species went extinct, and by the 1940s the western barred bandicoot, whose original range stretched across much of the continent, persisted only on two predator-free islands in Shark Bay, off Australia’s western coast. “Our isolated fauna had simply not been exposed to these predators,” says Reece Pedler, an ecologist with the Wild Deserts conservation program. Now Wild Deserts is using descendants of those few thousand island survivors, called Shark Bay bandicoots, in a new effort to seed a mainland bandicoot revival. They've imported 20 bandicoots to a preserve on the edge of the Strzelecki Desert, in the remote interior of New South Wales. This sanctuary is a challenging place, desolate much of the year, with one of the world’s most mercurial rainfall patterns—relentless droughts followed by sudden drenching floods. The imported bandicoots occupy two fenced “exclosures,” cleared of invasive rabbits (courtesy of Pedler’s sheepdog) and of feral cats (which slunk off once the rabbits disappeared). A third fenced area contains the program’s Wild Training Zone, where two other rare marsupials (bilbies, a larger type of bandicoot, and mulgaras, a somewhat fearsome fuzzball known for sucking the brains out of prey) currently share terrain with controlled numbers of cats, learning to evade them. It's unclear whether the Shark Bay bandicoots, which are perhaps even more predator-naive than their now-extinct mainland bandicoot kin, will be able to make that kind of breakthrough. For now, though, a recent surge of rainfall has led to a bandicoot joey boom, raising the Wild Deserts population to about 100, with other sanctuaries adding to that number. There are also signs of rebirth in the landscape itself. With their constant digging, the bandicoots trap moisture and allow for seed germination so the cattle-damaged desert can restore itself. They have a new nickname—a flattering one, this time. “We call them ecosystem engineers,” Pedler says.",
+      "setRange": [
+        12,
+        15
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option B: Accurately summarizes the bandicoot's near extinction due to invasive species and the hope placed on the island population for conservation. Best choice. Option D: Overstates the extinction claim. The bandicoot wasn’t entirely wiped out, as Shark Bay populations survived. Partially accurate but not the gist. Option A: Suggests that colonists' attitudes and naming caused the bandicoot's decline, which is inaccurate; invasive species caused the damage. Incorrect. Option C: Generalizes the issue to all marsupials and vegetation destruction, missing the specific focus on the bandicoot. Too broad and misleading.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 16,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "In the first paragraph the author is making the point that economists like Becker",
+      "options": {
+        "1": "had begun to borrow concepts from other disciplines but were averse to the latter applying economic principles.",
+        "2": "benefitted from the application of their principles and concepts to non-economic phenomena.",
+        "3": "used economics to analyse non-market behaviour, without incorporating perspectives from other areas of inquiry.",
+        "4": "tended to guard their discipline from poaching by academics from other subject areas."
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": "Oftentimes, when economists cross borders, they are less interested in learning from others than in invading their garden plots. Gary Becker, for instance, pioneered the idea of human capital. To do so, he famously tackled topics like crime and domesticity, applying methods honed in the study of markets to domains of nonmarket life. He projected economics outward into new realms: for example, by revealing the extent to which humans calculate marginal utilities when choosing their spouses or stealing from neighbors. At the same time, he did not let other ways of thinking enter his own economic realm: for example, he did not borrow from anthropology or history or let observations of nonmarket economics inform his homo economic us. Becker was a picture of the imperial economist in the heyday of the discipline’s bravura. Times have changed for the once almighty discipline. Economics has been taken to task, within and beyond its ramparts. Some economists have reached out, imported, borrowed, and collaborated—been less imperial, more open. Consider Thomas Piketty and his outreach to historians. The booming field of behavioral economics—the fusion of economics and social psychology—is another case. Having spawned active subfields, like judgment, decision-making and a turn to experimentation, the field aims to go beyond the caricature of Rational Man to explain how humans make decisions.... It is important to underscore how this flips the way we think about economics. For generations, economists have presumed that people have interests—‘preferences,” in the neoclassical argot—that get revealed in the course of peoples’ choices. Interests come before actions and determine them. If you are hungry, you buy lunch; if you are cold, you get a sweater. If you only have so much money and can't afford to deal with both your growling stomach and your shivering, which need you choose to meet using your scarce savings reveals your preference. Psychologists take one look at this simple formulation and shake their heads. Increasingly, even some mainstream economists have to admit that homo economic us doesn’t always behave like the textbook maximizer; irrational behavior can’t simply be waved away as extra-economic expressions of passions over interests, and thus the domain of other disciplines... .This is one place where the humanist can help the economist. If narrative economics is going to help us understand how rivals duke it out, who wins and who loses, we are going to need much more than lessons from epidemiological studies of viruses or intracranial stimuli. Above all, we need politics and institutions. Shiller [the Nobel prize winning economist] connects perceptions of narratives to changes in behavior and thence to social outcomes. He completes a circle that was key to behavioral economics and brings in storytelling to make sense of how perceptions get framed. This cycle (perception to behavior to society) was once mediated or dominated by institutions: the political parties, lobby groups, and media organizations that played a vital role in legitimating, representing, and excluding interests. Yet institutions have been stripped from Shiller's account, to reveal a bare dynamic of emotions and economics, without the intermediating place of politics.",
+      "setRange": [
+        16,
+        19
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option D: Suggests economists guarded their discipline from others, but the critique is about their refusal to integrate other perspectives into their analyses, not \"poaching.\" Too broad. Option C: Accurately describes Becker's approach—applying economic tools to non-market behaviors while ignoring insights from other disciplines. Best choice. Option B: Suggests a benefit from applying economics to non-economic phenomena, but the passage focuses on the limitations of this one-sided approach. Misleading. Option A: Suggests borrowing concepts from other disciplines, which the passage explicitly states Becker did not do. Incorrect.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 17,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "“Times have changed for the once almighty discipline.” We can infer from this statement and the associated paragraph that the author is being",
+      "options": {
+        "1": "sarcastic about how economists, who earlier shunned other disciplines, are now beginning to incorporate them in their analyses.",
+        "2": "critical of economists’ openly borrowing and collaborating across disciplines to explain how humans make decisions.",
+        "3": "judgemental about the ability of economic tools to accurately manage crises leading to the downfall of this lofty science.",
+        "4": "disparaging of economists’ inability to precisely predict market behaviour, and are now borrowing from other disciplines to remedy this."
+      },
+      "correctAnswer": "1",
+      "correctOption": "1",
+      "stimulus": "Oftentimes, when economists cross borders, they are less interested in learning from others than in invading their garden plots. Gary Becker, for instance, pioneered the idea of human capital. To do so, he famously tackled topics like crime and domesticity, applying methods honed in the study of markets to domains of nonmarket life. He projected economics outward into new realms: for example, by revealing the extent to which humans calculate marginal utilities when choosing their spouses or stealing from neighbors. At the same time, he did not let other ways of thinking enter his own economic realm: for example, he did not borrow from anthropology or history or let observations of nonmarket economics inform his homo economic us. Becker was a picture of the imperial economist in the heyday of the discipline’s bravura. Times have changed for the once almighty discipline. Economics has been taken to task, within and beyond its ramparts. Some economists have reached out, imported, borrowed, and collaborated—been less imperial, more open. Consider Thomas Piketty and his outreach to historians. The booming field of behavioral economics—the fusion of economics and social psychology—is another case. Having spawned active subfields, like judgment, decision-making and a turn to experimentation, the field aims to go beyond the caricature of Rational Man to explain how humans make decisions.... It is important to underscore how this flips the way we think about economics. For generations, economists have presumed that people have interests—‘preferences,” in the neoclassical argot—that get revealed in the course of peoples’ choices. Interests come before actions and determine them. If you are hungry, you buy lunch; if you are cold, you get a sweater. If you only have so much money and can't afford to deal with both your growling stomach and your shivering, which need you choose to meet using your scarce savings reveals your preference. Psychologists take one look at this simple formulation and shake their heads. Increasingly, even some mainstream economists have to admit that homo economic us doesn’t always behave like the textbook maximizer; irrational behavior can’t simply be waved away as extra-economic expressions of passions over interests, and thus the domain of other disciplines... .This is one place where the humanist can help the economist. If narrative economics is going to help us understand how rivals duke it out, who wins and who loses, we are going to need much more than lessons from epidemiological studies of viruses or intracranial stimuli. Above all, we need politics and institutions. Shiller [the Nobel prize winning economist] connects perceptions of narratives to changes in behavior and thence to social outcomes. He completes a circle that was key to behavioral economics and brings in storytelling to make sense of how perceptions get framed. This cycle (perception to behavior to society) was once mediated or dominated by institutions: the political parties, lobby groups, and media organizations that played a vital role in legitimating, representing, and excluding interests. Yet institutions have been stripped from Shiller's account, to reveal a bare dynamic of emotions and economics, without the intermediating place of politics.",
+      "setRange": [
+        16,
+        19
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option C: Implies that the author is judgmental about economics failing to manage crises. However, the focus is on how economists' approaches have changed, not their ability to handle crises. Too narrow. Option D: Suggests the author is disparaging economists' predictive failures. While prediction failures may be implied, the tone is more sarcastic about their newfound openness to other disciplines. Not the main focus. Option A: Correctly captures the sarcasm about economists' earlier reluctance to engage with other fields and their current embrace of interdisciplinary approaches. Best choice. Option B: Suggests criticism of interdisciplinary borrowing, but the author does not criticize this shift. Instead, the tone is ironic and observational. Incorrect.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 18,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "The author critiques Schiller’s approach to behavioural economics for",
+      "options": {
+        "1": "denigrating the role of institutions while creating a link between behavioural economics and perceptions.",
+        "2": "linking emotions and rational behaviour without considering the mediation of social institutions.",
+        "3": "ignoring the marginal role that media and politics play in influencing people’s behaviour.",
+        "4": "relying excessively on storytelling as the main influence on the formation of perceptions."
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "Oftentimes, when economists cross borders, they are less interested in learning from others than in invading their garden plots. Gary Becker, for instance, pioneered the idea of human capital. To do so, he famously tackled topics like crime and domesticity, applying methods honed in the study of markets to domains of nonmarket life. He projected economics outward into new realms: for example, by revealing the extent to which humans calculate marginal utilities when choosing their spouses or stealing from neighbors. At the same time, he did not let other ways of thinking enter his own economic realm: for example, he did not borrow from anthropology or history or let observations of nonmarket economics inform his homo economic us. Becker was a picture of the imperial economist in the heyday of the discipline’s bravura. Times have changed for the once almighty discipline. Economics has been taken to task, within and beyond its ramparts. Some economists have reached out, imported, borrowed, and collaborated—been less imperial, more open. Consider Thomas Piketty and his outreach to historians. The booming field of behavioral economics—the fusion of economics and social psychology—is another case. Having spawned active subfields, like judgment, decision-making and a turn to experimentation, the field aims to go beyond the caricature of Rational Man to explain how humans make decisions.... It is important to underscore how this flips the way we think about economics. For generations, economists have presumed that people have interests—‘preferences,” in the neoclassical argot—that get revealed in the course of peoples’ choices. Interests come before actions and determine them. If you are hungry, you buy lunch; if you are cold, you get a sweater. If you only have so much money and can't afford to deal with both your growling stomach and your shivering, which need you choose to meet using your scarce savings reveals your preference. Psychologists take one look at this simple formulation and shake their heads. Increasingly, even some mainstream economists have to admit that homo economic us doesn’t always behave like the textbook maximizer; irrational behavior can’t simply be waved away as extra-economic expressions of passions over interests, and thus the domain of other disciplines... .This is one place where the humanist can help the economist. If narrative economics is going to help us understand how rivals duke it out, who wins and who loses, we are going to need much more than lessons from epidemiological studies of viruses or intracranial stimuli. Above all, we need politics and institutions. Shiller [the Nobel prize winning economist] connects perceptions of narratives to changes in behavior and thence to social outcomes. He completes a circle that was key to behavioral economics and brings in storytelling to make sense of how perceptions get framed. This cycle (perception to behavior to society) was once mediated or dominated by institutions: the political parties, lobby groups, and media organizations that played a vital role in legitimating, representing, and excluding interests. Yet institutions have been stripped from Shiller's account, to reveal a bare dynamic of emotions and economics, without the intermediating place of politics.",
+      "setRange": [
+        16,
+        19
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option A: Suggests Shiller denigrates institutions, but the critique is about their omission, not deliberate denigration. Inaccurate. Option D: Focuses on storytelling, but the author doesn’t criticize Shiller for overusing storytelling—rather, for ignoring the mediating role of institutions. Misleading. Option B: Correctly identifies the critique: Shiller links emotions and behavior but overlooks how institutions mediate these dynamics. Best choice. Option C: Misrepresents the author’s argument; the author sees media and politics as central, not marginal, to the mediation of perceptions. Incorrect.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 19,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "We can infer from the passage that the term “homo economic us” refers to someone",
+      "options": {
+        "1": "maximises their opportunities based on nonmarket choices.",
+        "2": "makes rational decisions based on their own preferences.",
+        "3": "believes in borrowing and collaborating with other disciplines in their work.",
+        "4": "is not influenced by the preferences and choices of others."
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "Oftentimes, when economists cross borders, they are less interested in learning from others than in invading their garden plots. Gary Becker, for instance, pioneered the idea of human capital. To do so, he famously tackled topics like crime and domesticity, applying methods honed in the study of markets to domains of nonmarket life. He projected economics outward into new realms: for example, by revealing the extent to which humans calculate marginal utilities when choosing their spouses or stealing from neighbors. At the same time, he did not let other ways of thinking enter his own economic realm: for example, he did not borrow from anthropology or history or let observations of nonmarket economics inform his homo economic us. Becker was a picture of the imperial economist in the heyday of the discipline’s bravura. Times have changed for the once almighty discipline. Economics has been taken to task, within and beyond its ramparts. Some economists have reached out, imported, borrowed, and collaborated—been less imperial, more open. Consider Thomas Piketty and his outreach to historians. The booming field of behavioral economics—the fusion of economics and social psychology—is another case. Having spawned active subfields, like judgment, decision-making and a turn to experimentation, the field aims to go beyond the caricature of Rational Man to explain how humans make decisions.... It is important to underscore how this flips the way we think about economics. For generations, economists have presumed that people have interests—‘preferences,” in the neoclassical argot—that get revealed in the course of peoples’ choices. Interests come before actions and determine them. If you are hungry, you buy lunch; if you are cold, you get a sweater. If you only have so much money and can't afford to deal with both your growling stomach and your shivering, which need you choose to meet using your scarce savings reveals your preference. Psychologists take one look at this simple formulation and shake their heads. Increasingly, even some mainstream economists have to admit that homo economic us doesn’t always behave like the textbook maximizer; irrational behavior can’t simply be waved away as extra-economic expressions of passions over interests, and thus the domain of other disciplines... .This is one place where the humanist can help the economist. If narrative economics is going to help us understand how rivals duke it out, who wins and who loses, we are going to need much more than lessons from epidemiological studies of viruses or intracranial stimuli. Above all, we need politics and institutions. Shiller [the Nobel prize winning economist] connects perceptions of narratives to changes in behavior and thence to social outcomes. He completes a circle that was key to behavioral economics and brings in storytelling to make sense of how perceptions get framed. This cycle (perception to behavior to society) was once mediated or dominated by institutions: the political parties, lobby groups, and media organizations that played a vital role in legitimating, representing, and excluding interests. Yet institutions have been stripped from Shiller's account, to reveal a bare dynamic of emotions and economics, without the intermediating place of politics.",
+      "setRange": [
+        16,
+        19
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option D: Suggests independence from others' preferences, but the focus of \"homo economicus\" is on individual rationality, not isolation. Too narrow. Option C: Suggests interdisciplinary collaboration, but \"homo economicus\" refers specifically to rational behavior, not borrowing ideas from other fields. Incorrect. Option A: Refers to nonmarket choices, but \"homo economicus\" typically involves market-like decision- ===== PAGE 5 ===== Actual CAT 2024 Slot - I 22 making based on individual preferences. Misleading. Option B: Correctly describes homo economicus as someone who makes rational decisions based on their preferences, aligning with the passage. Best choice.",
+      "topic": "Reading Comprehension"
+    },
+    {
+      "qNo": 20,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "TITA",
+      "stem": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n1. Animals have an interest in fulfilling their basic needs, but also in avoiding suffering, and thus we\nought to extend moral consideration.\n2. Singer viewed himself as a utilitarian, and presents a direct moral theory concerning animal\nrights, in contrast to indirect positions, such as welfarist views.\n3. He argued for extending moral consideration to animals because, similar to humans, animals have\ncertain significant interests.\n4. The event that publicly announced animal rights as a legitimate issue within contemporary\nphilosophy was Peter Singer’s Animal Liberation text in 1975.\n5. As such, we ought to view their interests alongside and equal to human interests, which results in\nhumans having direct moral duties towards animals.\nDIRECTIONS for the question: The passage given below is followed by four alternate summaries. Choose\nthe option that best captures the essence of the passage.",
+      "options": null,
+      "correctAnswer": "1",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Sentence 2 introduces Peter Singer’s philosophical perspective on animal rights, presenting his utilitarian view and contrasting it with other indirect positions like welfareism. Sentence 3 follows up by explaining why Singer argues for extending moral consideration to animals, focusing on the idea that animals, like humans, have significant interests that deserve attention. Sentence 5 reinforces this point, concluding that humans have direct moral duties towards animals, treating their interests as equal to human interests. Sentence 4 provides historical context, explaining how Singer’s Animal Liberation (1975) text publicly established animal rights as a legitimate issue within contemporary philosophy. However, Sentence 1 is an outlier because it introduces a general statement about animals having basic needs and avoiding suffering. While the idea of moral consideration is central to the passage, Sentence 1 does not directly connect with the specific philosophical argument or the historical context provided by the other sentences. Instead, it is a broad statement that could be more fitting as an introduction to a different argument or a different part of the passage.",
+      "topic": "Odd Sentence Out"
+    },
+    {
+      "qNo": 21,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "The passage given below is followed by four alternate summaries. Choose the option that best captures the essence of the passage. Certain codes may, of course, be so widely distributed in a specific language community or culture, and be learned at so early an age, that they appear not to be constructed — the effect of an articulation between sign and referent — but to be ‘naturally’ given. Simple visual signs appear to have achieved a ‘near-universality’ in this sense: though evidence remains that even apparently ‘natural’ visual codes are culture specific. However, this does not mean that no codes have intervened; rather, that the codes have been profoundly naturalized. The operation of naturalized codes reveals not the transparency and ‘naturalness’ of language but the depth, the habituation and the near-universality of the codes in use. They produce apparently ‘natural’ recognitions. This has the (ideological) effect of concealing the practices of coding which are present.",
+      "options": {
+        "1": "All codes, linguistic and visual, have a natural origin but some are so widespread that they become universal. This is what hides the mechanism of coding behind signs.",
+        "2": "Learning linguistic and visual signs at an early age makes all such codes appear natural. This naturalization of codes is the effect of ideology.",
+        "3": "Not all codes are natural but certain codes are naturalized and made to appear universal. Ideology aims to hide the mechanism of coding behind signs.",
+        "4": "Language and visual signs are codes. However, some of the codes are so widespread that they not only seem naturally given but also hide the mechanism of coding behind the signs."
+      },
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Option D: Correctly states that language and visual signs are codes, some of which seem naturally given due to widespread use and early learning, while also highlighting the concealment of the coding mechanism. Best choice. Option C: Accurately notes the naturalization of codes but misrepresents ideology as a primary aim to hide the coding mechanism, which is not explicitly stated in the passage. Overgeneralized. Option B: Focuses on early-age learning but oversimplifies the broader process of naturalization and its concealment of coding practices. Too narrow. Option A: Incorrectly claims that all codes have a natural origin, which the passage does not imply. It focuses on naturalization, not natural origins. Inaccurate.",
+      "topic": "Para Summary"
+    },
+    {
+      "qNo": 22,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "TITA",
+      "stem": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n1. Urbanites also have more and better options for getting around: Uber is ubiquitous; easy-to-rent\ndockless bicycles are spreading; battery-powered scooters will be next.\n2. When more people use buses or trains the service usually improves because public-transport\nagencies run more buses and trains.\n3. Worsening services on public transport, terrorist attacks in some urban metros and a rise in fares\nhave been blamed for this trend.\n4. It seems more likely that public transport is being squeezed structurally as people’s need to travel\nis diminishing as a result of smartphones, video-conferencing, online shopping and so on.\n5. There has been a puzzling decline in the use of urban public transport in many countries in the\nwest, despite the growth in urban populations and rising employment.",
+      "options": null,
+      "correctAnswer": "2",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Sentence 5 introduces the central idea: the puzzling decline in the use of urban public transport. Sentence 3 explains why this decline is happening, citing issues such as worsening services, terrorist attacks, and rising fares. Sentence 4 builds on this, suggesting that the decline in public transport is part of a structural shift due to changes in people's travel needs (smartphones, videoconferencing, etc.). Sentence 1 then explains that urbanites now have better alternatives (like Uber, dockless bikes, and scooters), which support the idea that public transport is less necessary. Sentence 2, however, is about public transportation improving when more people use it, which doesn't fit the theme of decline in usage or alternatives. It seems out of place in this context.",
+      "topic": "Odd Sentence Out"
+    },
+    {
+      "qNo": 23,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "Sentence: The brain isn’t organized the way you might set up your home office or bathroom medicine cabinet. Paragraph: ___(1)___. You can’t just put things anywhere you want to. The evolved architecture of the brain is haphazard and disjointed, and incorporates multiple systems, each of which has a mind of its own. __(2)__. Evolution doesn’t design things and it doesn’t build systems—it settles on systems that, historically, conveyed a survival benefit. There is no overarching, grand planner engineering the systems so that they work harmoniously together. __(3)__. The brain is more like a big, old house with piecemeal renovations done on every floor, and less like new construction ___4__.",
+      "options": {
+        "1": "Option 3",
+        "2": "Option 1",
+        "3": "Option 2",
+        "4": "Option 4"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.",
+      "setRange": [
+        23,
+        24
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "blank 1: Serves as a fitting introduction, contrasting intuitive organization (like a home office) with the brain's evolutionary complexity. Best choice. blank 2: Placing the sentence here disrupts the flow, as the paragraph already transitions into describing the brain's architecture. Misplaced. blank 3: This position focuses on the lack of harmony in the brain’s systems, which builds on the earlier discussion and doesn’t suit the introductory nature of the sentence. Not suitable. blank 4: The metaphor of the brain as a “big, old house” concludes the paragraph. Adding the sentence here would weaken the strong ending. Unsuitable.",
+      "topic": "Para Completion"
+    },
+    {
+      "qNo": 24,
+      "section": "Verbal Ability and Reading Comprehension",
+      "sectionCode": "VARC",
+      "type": "MCQ",
+      "stem": "Sentence: Understanding central Asia’s role helps developments make more sense not only across Asia but in Europe, the Americas and Africa. Paragraph: The nations of the Silk Roads are sometimes called ‘developing countries’, but they are actually some of the world’s most highly developed countries, the very crossroads of civilization, in advanced states of disrepair.__(1)__. These countries lie at the centre of global affairs: they have since the beginning of history. Running across the spine of Asia, they form a web of connections fanning out in every direction, routes along which pilgrims and warriors, nomads and merchants have travelled, goods and produce have been bought and sold, and ideas exchanged, adapted and refined.__(2)__— . They have carried not only prosperity, but also death and violence, disease and disaster.___(3)__. The Silk Roads are the world’s central nervous system, connecting otherwise far- flung peoples and places....___(4)__. It allows us to see patterns and links, causes and effects that remain invisible if one looks only at Europe, or North America.",
+      "options": {
+        "1": "Option 1",
+        "2": "Option 4",
+        "3": "Option 2",
+        "4": "Option 3"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.",
+      "setRange": [
+        23,
+        24
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Placing the sentence at blank 1 would interrupt the natural flow of thought. The paragraph at this point is introducing the idea that Silk Roads nations, despite being seen as \"developing countries,\" have historically been crucial to global civilization. Adding the provided sentence here would make the transition feel abrupt and disconnected, as it would shift from describing the specific importance of the Silk Roads nations to a broader statement about understanding developments globally. The placement is not ideal because the context here does not yet call for such a global perspective. Blank 2: At this stage, the paragraph is focusing on the specific roles that the Silk Roads have played historically, particularly their function as networks for exchange—of people, goods, and ideas. Inserting the provided sentence here would feel out of place, as it does not directly build on this idea of exchanges along the Silk Roads. Instead, the sentence shifts focus toward the broader implications of understanding Central Asia's historical role in shaping global developments, which makes it mismatched for this location. Blank 3: Here, the paragraph discusses the dual nature of the Silk Roads—bringing both benefits and challenges. Inserting the provided sentence at this juncture would create a thematic mismatch. The sentence about understanding Central Asia’s role does not naturally follow the ideas of destruction or disaster mentioned here. It fails to provide a logical connection or bridge between the existing ideas. Blank 4: This is the most suitable placement for the provided sentence. The paragraph is discussing the Silk Roads as a crucial and unifying global network, describing how they connect various regions and cultures. The provided sentence extends this idea by emphasizing the broader relevance of Central Asia’s role in ===== PAGE 6 ===== 23 Actual CAT 2024 Slot - I global history, helping us see connections not only across Asia but also in other continents. This placement reinforces and expands on the main point, maintaining coherence and adding depth to the argument about the Silk Roads' significance. 25-",
+      "topic": "Para Completion"
+    },
+    {
+      "qNo": 25,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "How many rounds were there in the tournament?",
+      "options": null,
+      "correctAnswer": "8",
+      "correctOption": null,
+      "stimulus": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. The tournament has several rounds, each of which consists of a few games. Every team plays exactly one game in each round. The following additional facts are known about the schedule of games in the tournament. 1. Each team played against a team from the other group in Round 8. 2. In Round 4 and Round 7, the match-ups, that is the pair of teams playing against each other, were identical. In Round 5 and Round 8, the match-ups were identical. 3. Team 4 played Team 6 in both Round 1 and Round 2. 4. Team 1 played Team 5 ONLY once and that was in Round 2. 5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6. 6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+      "setRange": [
+        25,
+        29
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "As shown, there were 8 Rounds in the tournament.",
+      "topic": "Logic Games"
+    },
+    {
+      "qNo": 26,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "What is the number of the team that played Team 1 in Round 5?",
+      "options": null,
+      "correctAnswer": "4",
+      "correctOption": null,
+      "stimulus": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. The tournament has several rounds, each of which consists of a few games. Every team plays exactly one game in each round. The following additional facts are known about the schedule of games in the tournament. 1. Each team played against a team from the other group in Round 8. 2. In Round 4 and Round 7, the match-ups, that is the pair of teams playing against each other, were identical. In Round 5 and Round 8, the match-ups were identical. 3. Team 4 played Team 6 in both Round 1 and Round 2. 4. Team 1 played Team 5 ONLY once and that was in Round 2. 5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6. 6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+      "setRange": [
+        25,
+        29
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "As shown, Team 4 played Team 1 in Round 5.",
+      "topic": "Logic Games"
+    },
+    {
+      "qNo": 27,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "Which team among the teams numbered 2, 3, 4, and 5 was not part of the same group?",
+      "options": {
+        "1": "4",
+        "2": "5",
+        "3": "3",
+        "4": "2"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. The tournament has several rounds, each of which consists of a few games. Every team plays exactly one game in each round. The following additional facts are known about the schedule of games in the tournament. 1. Each team played against a team from the other group in Round 8. 2. In Round 4 and Round 7, the match-ups, that is the pair of teams playing against each other, were identical. In Round 5 and Round 8, the match-ups were identical. 3. Team 4 played Team 6 in both Round 1 and Round 2. 4. Team 1 played Team 5 ONLY once and that was in Round 2. 5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6. 6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+      "setRange": [
+        25,
+        29
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "We can see that Team 5 was not part of the same group as Teams 2,3 and 4. Hence option B.",
+      "topic": "Logic Games"
+    },
+    {
+      "qNo": 28,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "What is the number of the team that played Team 1 in Round 7?",
+      "options": null,
+      "correctAnswer": "3",
+      "correctOption": null,
+      "stimulus": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. The tournament has several rounds, each of which consists of a few games. Every team plays exactly one game in each round. The following additional facts are known about the schedule of games in the tournament. 1. Each team played against a team from the other group in Round 8. 2. In Round 4 and Round 7, the match-ups, that is the pair of teams playing against each other, were identical. In Round 5 and Round 8, the match-ups were identical. 3. Team 4 played Team 6 in both Round 1 and Round 2. 4. Team 1 played Team 5 ONLY once and that was in Round 2. 5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6. 6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+      "setRange": [
+        25,
+        29
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "As shown, Team 3 played Team 1 in Round 7.",
+      "topic": "Logic Games"
+    },
+    {
+      "qNo": 29,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "What is the number of the team that played Team 6 in Round 3?",
+      "options": null,
+      "correctAnswer": "5",
+      "correctOption": null,
+      "stimulus": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. The tournament has several rounds, each of which consists of a few games. Every team plays exactly one game in each round. The following additional facts are known about the schedule of games in the tournament. 1. Each team played against a team from the other group in Round 8. 2. In Round 4 and Round 7, the match-ups, that is the pair of teams playing against each other, were identical. In Round 5 and Round 8, the match-ups were identical. 3. Team 4 played Team 6 in both Round 1 and Round 2. 4. Team 1 played Team 5 ONLY once and that was in Round 2. 5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6. 6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+      "setRange": [
+        25,
+        29
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "It is given that the 6 teams are divided into two groups containing 3 teams each. As each team in the same group plays every other team once and in the other group twice, so there would be 3 matches among teams of same group and 6 matches among teams of different group. Hence we can find the total matches in the tournament as 3 + 3 + 6 + 6 + 6 = 24. Also every team plays exactly one game in one round means each round will have 3 matches involving each team. Hence there will be 8 rounds in the tournament. Now we will further analyse the given information: As we can see that Team 3 played against Team 6 twice, Team 2 played against Team 5 twice and Team 1 played against Team 4 twice, so Teams 3 & 6, 2 & 5 and 1 & 4 are of different groups. Now considering points 3 and 4, we get the information that Teams 4 and 6 are of different groups and Teams 1 and 5 are of same group. Hence we can say that Teams 1, 5 and 6 make a group (say Group I) and correspondingly Teams 2, 3 and 4 (say Group II) make the other group. So we can list down the matches which will be played among teams of Group I and Group II Group I Group II Team 1 Vs Team 6 Team 2 Vs Team 3 Team 1 Vs Team 5 Team 2 Vs Team 4 Team 5 Vs Team 6 Team 3 Vs Team 4 Also we can make a list of matches which were played between teams of different groups:: Team 3 Vs Team 6 Team 2 Vs Team 5 Team 1 Vs Team 4 Team 3 Vs Team 5 Team 1 Vs Team 3 Team 2 Vs Team 6 Team 1 Vs Team 2 Team 4 Vs Team 6 Team 4 Vs Team 5 From point 6, it is given that Team 3 played Team 8 and Team 2 played Team 5. Clubbing this information with the information in point 1 that each team played against a team from the other group in Round 8, we can surely conclude that the 3rd match of Round 8 must have been played between Team 1 and 4. Also as per point 2, match ups of Round 5 and Round 8 were identical. Hence we get the details of matches played in Round 5. Now using information given in points 3, 4, 5 and 6, we will find the details of matches played in various rounds and put the information in a table where alphabet T stands for Team: Round 1 Round 2 Round 3 Round 4 Round 5 Round 6 Round 7 Round 8 T4 Vs T6 T4 Vs T6 T3 Vs T4 T3 Vs T6 T1 Vs T6 T3 Vs T6 T1 Vs T5 T2 Vs T5 T2 Vs T5 T1 Vs T4 T1 Vs T4 As it is given that every team plays exactly one game in each round, so we can see that T6 would be definitely there in Round 4 and Round 7. Considering the list of matches given for different groups, only T2 is left to play against T6. Hence T2 and T6 would play against each other in Round 4 and 7. Also match between T2 and T4 is to be played only once. This will be necessarily played in Round 6 as T4 is already playing in Rounds 1, 2 and 3. ===== PAGE 7 ===== Actual CAT 2024 Slot - I 24 Also match between T1 and T2 is to be played twice. This will be necessarily played in Round 1 and Round",
+      "topic": "Logic Games"
+    },
+    {
+      "qNo": 30,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "How many countries in Asia were visited by at least one of Dheeraj, Samantha and Nitesh?",
+      "options": null,
+      "correctAnswer": "3",
+      "correctOption": null,
+      "stimulus": "The chart below provides complete information about the number of countries visited by Dheeraj, Samantha and Nitesh, in Asia, Europe and the rest of the world (ROW). The following additional facts are known about the countries visited by them. 1. 32 countries were visited by at least one of them. 2. USA (in ROW) is the only country that was visited by all three of them. 3. China (in Asia) is the only country that was visited by both Dheeraj and Nitesh, but not by Samantha. 4. France (in Europe) is the only country outside Asia, which was visited by both Dheeraj and Samantha, but not by Nitesh. 5. Half of the countries visited by both Samantha and Nitesh are in Europe.",
+      "setRange": [
+        30,
+        33
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q30-33-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "As shown in the table above, 3 countries in Asia were visited by at least one of Dheeraj, Samantha and Nitesh.",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 31,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "How many countries in Europe were visited only by Nitesh?",
+      "options": null,
+      "correctAnswer": "2",
+      "correctOption": null,
+      "stimulus": "The chart below provides complete information about the number of countries visited by Dheeraj, Samantha and Nitesh, in Asia, Europe and the rest of the world (ROW). The following additional facts are known about the countries visited by them. 1. 32 countries were visited by at least one of them. 2. USA (in ROW) is the only country that was visited by all three of them. 3. China (in Asia) is the only country that was visited by both Dheeraj and Nitesh, but not by Samantha. 4. France (in Europe) is the only country outside Asia, which was visited by both Dheeraj and Samantha, but not by Nitesh. 5. Half of the countries visited by both Samantha and Nitesh are in Europe.",
+      "setRange": [
+        30,
+        33
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q30-33-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "As shown in the table above, Nitesh visited 2 countries in Europe alone.",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 32,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "How many countries in the ROW were visited by both Nitesh and Samantha?",
+      "options": null,
+      "correctAnswer": "4",
+      "correctOption": null,
+      "stimulus": "The chart below provides complete information about the number of countries visited by Dheeraj, Samantha and Nitesh, in Asia, Europe and the rest of the world (ROW). The following additional facts are known about the countries visited by them. 1. 32 countries were visited by at least one of them. 2. USA (in ROW) is the only country that was visited by all three of them. 3. China (in Asia) is the only country that was visited by both Dheeraj and Nitesh, but not by Samantha. 4. France (in Europe) is the only country outside Asia, which was visited by both Dheeraj and Samantha, but not by Nitesh. 5. Half of the countries visited by both Samantha and Nitesh are in Europe.",
+      "setRange": [
+        30,
+        33
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q30-33-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "As shown in the table above, 3 + 1 = 4 countries in ROW were visited by both Nitesh and Samantha.",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 33,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "How many countries in Europe were visited by exactly one of Dheeraj, Samantha and Nitesh?",
+      "options": {
+        "1": "5",
+        "2": "10",
+        "3": "12",
+        "4": "14"
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": "The chart below provides complete information about the number of countries visited by Dheeraj, Samantha and Nitesh, in Asia, Europe and the rest of the world (ROW). The following additional facts are known about the countries visited by them. 1. 32 countries were visited by at least one of them. 2. USA (in ROW) is the only country that was visited by all three of them. 3. China (in Asia) is the only country that was visited by both Dheeraj and Nitesh, but not by Samantha. 4. France (in Europe) is the only country outside Asia, which was visited by both Dheeraj and Samantha, but not by Nitesh. 5. Half of the countries visited by both Samantha and Nitesh are in Europe.",
+      "setRange": [
+        30,
+        33
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q30-33-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "As per the bar graph given in the question, we can make a table of number of countries visited by the 3 people:: Now we can make Venn Diagram of all the information given and solving the equations to get the values of various variables. As it is given that 32 countries were visited by at least one of them, we get the equations as a + b + c + d + e + f + g = 32……….(1) a + c + g + 2(b + d + f) + 3e = 43….(2) a + b + d + e = 11 b + c + e + f = 13 d + e + f + g = 19 As per point 2, USA is the only country that was visited by all three of them, so values of e = 1 As per point 3, China is the only country that was visited by both Dheeraj and Nitesh, but not by Samantha, so d = 1. As per point 4, France is the only country outside Asia, which was visited by both Dheeraj and Samantha, but not by Nitesh, so b = 1. As a + b + d + e = 11, so a + 1 + 1 + 1 = 11, so a = 8 Also number of people visiting exactly 3 countries = 1 (2) – (1) gives us b +d + f + 2e = 11. Putting e = 1 gives b + d + f = 9 Hence number of people visiting exactly 2 countries = 9 Since total given is 32, so Exactly 1 + Exactly 2 + Exactly 3 = 32 So number of people visiting exactly 1 countries= 32 – 1 – 9 = 22 Dheeraj Samantha Nitesh Asia 3 0 1 Europe 7 9 6 Row 1 4 12 Total 11 13 19 ===== PAGE 8 ===== 25 Actual CAT 2024 Slot - I As exactly 2 = 9, so 1 + 1 + f = 9  f = 7 Also b + c + e + f = 13  1 + c + 1 + 7 = 13  c = 4 As number of people visiting exactly 1 countries is 22, so 8 + c + g = 22  8 + 4 + g = 22  g = 10 So we can make the final Venn Diagram as follows Now we need to make a final table of countries visited by these 3 people in various domains given:: Only D Only S Only N Only D & S Only S & N Only D & N D & S & N Total Asia 2 0 0 0 0 1 (China) 0 3 Europe 6 4 2 1(France) 4 0 0 17 ROW 0 0 8 0 3 0 1(USA) 12 Total 8 4 10 1 7 1 1 32 As per point 5, half of the countries visited by both Samantha and Nitesh are in Europe, so number of countries visited by Samantha and Nitesh alone would be 4 2 )1 7 (   . Now we can answer all the questions:",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 34,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "Daily Share Price Variability (SPV) is defined as (Day’s high price - Day’s low price) /(Average of the opening and closing prices during the day). Which among the shares A, C, D and F had the highest SPV on that day?",
+      "options": {
+        "1": "A",
+        "2": "C",
+        "3": "F",
+        "4": "D"
+      },
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": "The chart below shows the price data for seven shares– A,B,C,D,E,F, and G as a candlestick plot for a particular day. The vertical axis shows the price of the share in rupees. A share whose closing price (price at the end of the day) is more than its opening price (price at the start of the day) is called a bullish share; otherwise, it is called a bearish share. All bullish and bearish shares are shown in green and red colour respectively.",
+      "setRange": [
+        34,
+        37
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q34-37-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "Daily Share Price Variability (SPV) for A = 5 3 2000 1200 2000 1200 2400    Daily Share Price Variability (SPV) for C = 5 3 1000 600 1000 800 1400    Daily Share Price Variability (SPV) for F = 17 8 1700 800 1700 1200 2000    Daily Share Price Variability (SPV) for D = 5 6 750 900 750 300 1200    We can see that value of Daily Share Price Variability (SPV) for D is max as it is the only value which is greater than 1. All other values are less than 1. Hence option D. ===== PAGE 9 ===== Actual CAT 2024 Slot - I 26",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 35,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "Daily Share Price Variability (SPV) is defined as (Day’s high price - Day’s low price) / (Average of the opening and closing prices during the day). How many shares had an SPV greater than 0.5 on that day?",
+      "options": null,
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": "The chart below shows the price data for seven shares– A,B,C,D,E,F, and G as a candlestick plot for a particular day. The vertical axis shows the price of the share in rupees. A share whose closing price (price at the end of the day) is more than its opening price (price at the start of the day) is called a bullish share; otherwise, it is called a bearish share. All bullish and bearish shares are shown in green and red colour respectively.",
+      "setRange": [
+        34,
+        37
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q34-37-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "Daily Share Price Variability (SPV) for A = 6.0 5 3 2000 1200 2000 1200 2400     Daily Share Price Variability (SPV) for C = 6.0 5 3 1000 600 1000 800 1400     Daily Share Price Variability (SPV) for F = 47 .0 17 8 1700 800 1700 1200 2000     Daily Share Price Variability (SPV) for D = 2.1 5 6 750 900 750 300 1200     Daily Share Price Variability (SPV) for B = 32 .0 37 12 1850 600 1850 1400 2000     Daily Share Price Variability (SPV) for E = 25 .0 4 1 1200 300 1200 1100 1400     Daily Share Price Variability (SPV) for G = 62 .0 29 18 1450 900 1450 1000 1900     From the above table, we can see that value of SPV of 4 shares i.e A, C, D and G is greater than 0.5. Hence D is the answer.",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 36,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "Daily loss for a share is defined as (Opening price — Closing price) / (Opening price). Which among the shares A, B, F and G had the highest daily loss on that day?",
+      "options": {
+        "1": "G",
+        "2": "F",
+        "3": "A",
+        "4": "B"
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": "The chart below shows the price data for seven shares– A,B,C,D,E,F, and G as a candlestick plot for a particular day. The vertical axis shows the price of the share in rupees. A share whose closing price (price at the end of the day) is more than its opening price (price at the start of the day) is called a bullish share; otherwise, it is called a bearish share. All bullish and bearish shares are shown in green and red colour respectively.",
+      "setRange": [
+        34,
+        37
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q34-37-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "Daily Loss for A = 18 .0 11 2 22 4 2200 400 2200 1800 2200      Daily Loss for B = 15 .0 20 3 2000 300 2000 1700 2000     Daily Loss for F = 11 .0 9 1 18 2 1800 200 1800 1600 1800      Daily Loss for G = 42 .0 12 5 1200 500 1200 1700 1200        From the above table, we can see that value of Daily Loss for A is maximum. Hence option C.",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 37,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "What would have been the percentage wealth gain for a trader, who bought equal numbers of all bullish shares at opening price and sold them at their day’s high?",
+      "options": {
+        "1": "50%",
+        "2": "100%",
+        "3": "72%",
+        "4": "80%"
+      },
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": "The chart below shows the price data for seven shares– A,B,C,D,E,F, and G as a candlestick plot for a particular day. The vertical axis shows the price of the share in rupees. A share whose closing price (price at the end of the day) is more than its opening price (price at the start of the day) is called a bullish share; otherwise, it is called a bearish share. All bullish and bearish shares are shown in green and red colour respectively.",
+      "setRange": [
+        34,
+        37
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q34-37-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "As seen from the graph, the bullish shares are C, D and G. Let us assume he purchases one share each of C, D and G. CP of one share of C = 800 and SP of one share of C = 1400 CP of one share of D = 500 and SP of one share of D = 1200 CP of one share of G = 1200 and SP of one share of G = 1900 So Total Cost of purchasing one share of each of C, D and G = 800 + 500 + 1200 = 2500 Total Selling Price of one share of each of C, D and G = 1400 + 1200 + 1900 = 4500. Hence Percentage Gain = % 80 100 2500 2000 100 2500 2500 4500      . Hence option D. 38-",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 38,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "What was the total number of stars received by D?",
+      "options": null,
+      "correctAnswer": "45",
+      "correctOption": null,
+      "stimulus": "Six web surfers M, N, O, P, X, and Y each had 30 stars which they distributed among four bloggers A, B, C, and D. The number of stars received by A and B from the six web surfers is shown in the figure below. The following additional facts are known regarding the number of stars received by the bloggers from the surfers. 1. The numbers of stars received by the bloggers from the surfers were all multiples of 5 (including Q). 2. The total numbers of stars received by the bloggers were the same. 3. Each blogger received a different number of stars from M. 4. Two surfers gave all their stars to a single blogger. 5. D received more stars than C from Y.",
+      "setRange": [
+        38,
+        41
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q38-41-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "As it is given in the information that total number of stars received by the bloggers is the same, so each would receive 180/4 = 45 stars. Hence answer is 45.",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 39,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "What was the number of stars received by D from Y?",
+      "options": {
+        "1": "10",
+        "2": "0",
+        "3": "5",
+        "4": "cannot be determined"
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": "Six web surfers M, N, O, P, X, and Y each had 30 stars which they distributed among four bloggers A, B, C, and D. The number of stars received by A and B from the six web surfers is shown in the figure below. The following additional facts are known regarding the number of stars received by the bloggers from the surfers. 1. The numbers of stars received by the bloggers from the surfers were all multiples of 5 (including Q). 2. The total numbers of stars received by the bloggers were the same. 3. Each blogger received a different number of stars from M. 4. Two surfers gave all their stars to a single blogger. 5. D received more stars than C from Y.",
+      "setRange": [
+        38,
+        41
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q38-41-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "As shown in the table, D would receive 5 stars from Y. Hence option C.",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 40,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "TITA",
+      "stem": "How many surfers distributed their stars among exactly 2 bloggers?",
+      "options": null,
+      "correctAnswer": "2",
+      "correctOption": null,
+      "stimulus": "Six web surfers M, N, O, P, X, and Y each had 30 stars which they distributed among four bloggers A, B, C, and D. The number of stars received by A and B from the six web surfers is shown in the figure below. The following additional facts are known regarding the number of stars received by the bloggers from the surfers. 1. The numbers of stars received by the bloggers from the surfers were all multiples of 5 (including Q). 2. The total numbers of stars received by the bloggers were the same. 3. Each blogger received a different number of stars from M. 4. Two surfers gave all their stars to a single blogger. 5. D received more stars than C from Y.",
+      "setRange": [
+        38,
+        41
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q38-41-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "From the table, we can infer that 2 surfers N and P distributed their stars among exactly 2 bloggers. (N distributed his stars to A and D only and P distributed his stars to A and B only.",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 41,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "Which of the following can be determined with certainty? I. The number of stars received by C from M II. The number of stars received by D from O",
+      "options": {
+        "1": "Neither I nor II",
+        "2": "Both I and II",
+        "3": "Only I",
+        "4": "Only II"
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": "Six web surfers M, N, O, P, X, and Y each had 30 stars which they distributed among four bloggers A, B, C, and D. The number of stars received by A and B from the six web surfers is shown in the figure below. The following additional facts are known regarding the number of stars received by the bloggers from the surfers. 1. The numbers of stars received by the bloggers from the surfers were all multiples of 5 (including Q). 2. The total numbers of stars received by the bloggers were the same. 3. Each blogger received a different number of stars from M. 4. Two surfers gave all their stars to a single blogger. 5. D received more stars than C from Y.",
+      "setRange": [
+        38,
+        41
+      ],
+      "images": [
+        "assets/CAT-2024-Slot-01-Q38-41-chart.png"
+      ],
+      "chartDependent": true,
+      "needsManualReview": false,
+      "explanation": "It is given that all the six web surfers each had 30 stars. Hence total number of stars = 30 × 6 = 180. As per the given information and analysing the graph, we can make the initial table:: M N O P X Y Total A 10 25 0 5 0 5 45 B 0 0 0 25 0 20 45 C 0 45 D 0 45 Total 30 30 30 30 30 30 180 As it is given that the numbers of stars received by the bloggers from the surfers were all multiples of 5 (including 0), so possible values of stars given to the all the bloggers were any of the values 0 or5 or10 or 15 or 25 or 30. From the 4th point, we can say that the two surfers who gave all their stars to a single blogger must be O and X. Also that blogger is C and D in any order. As per point 5, D received more stars than C from Y. This tells us that D got 5 stars from Y and C got 0 stars from Y. As per point 3, C and D could receive 5 and 15 stars from M in any order. ===== PAGE 10 ===== 27 Actual CAT 2024 Slot - I Now let us assume that C received 5 stars from M. So D received 15 stars from M. Hence either O or X gave 30 stars to C. Then N has to give 10 stars to C which is not possible as total stars of N will exceed 30 and total stars of D would exceed 45. This case is shown below in the table:: M N O P X Y Total A 10 25 0 5 0 5 45 B 0 0 0 25 0 20 45 C 5 10 30/0 0 0/30 0 45 D 15 0/30 0 30/0 5 45 Total 30 30 30 30 30 30 180 So we will the other case which would be valid in which C received 15 stars from M. So D received 5 stars from M. Hence either O or X gave 30 stars to C and D in any order. So we get the final table as follows M N O P X Y Total A 10 25 0 5 0 5 45 B 0 0 0 25 0 20 45 C 15 0 30/0 0 0/30 0 45 D 5 5 0/30 0 30/0 5 45 Total 30 30 30 30 30 30 180 As this table is satisfying all the conditions, so now all the questions can be answered.",
+      "topic": "Charts & Graphs"
+    },
+    {
+      "qNo": 42,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "If both of them run staid campaigns attacking the other, then what percentage of students will vote in the election?",
+      "options": {
+        "1": "60%",
+        "2": "64%",
+        "3": "40%",
+        "4": "36%"
+      },
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya’s and Ramya’s campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types, they can either focus on issues, or on attacking the other candidate. If Amiya and Ramya both run campaigns focusing on issues, then  The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if Amiya and Ramya both run vigorous campaigns, then 20 x (2+2)%, that is, 80% of the students will vote in the election.  Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns. For example, if Amiya runs a staid (i.e., level 1) campaign while Ramya runs a vigorous (i.e., level 2) campaign, then Amiya will receive 1/3 of the votes cast, and Ramya will receive the other 2/3. The above-mentioned percentages change as follows if at least one of them runs a campaign attacking their opponent.  If Amiya runs a campaign attacking Ramya and Ramya runs a campaign focusing on issues, then 10% of the students who would have otherwise voted for Amiya will vote for Ramya, and another 10% who would have otherwise voted for Amiya, will not vote at all.  If Ramya runs a campaign attacking Amiya and Amiya runs a campaign focusing on issues, then 20% of the students who would have otherwise voted for Ramya will vote for Amiya, and another 5% who would have otherwise voted for Ramya, will not vote at all.  If both run campaigns attacking each other, then 10% of the students who would have otherwise voted for them had they run campaigns focusing on issues, will not vote at all.",
+      "setRange": [
+        42,
+        46
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "If both of them run staid campaigns focussing on issues, then the percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. So the percentage would be 20(1 + 1) % = 40%. But as both of them run staid campaigns attacking the other, then 10% of 40% will not vote at all. Hence answer would be 90% of 40% which is equal to 36%. Hence option D.",
+      "topic": "Data Interpretation"
+    },
+    {
+      "qNo": 43,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "What is the minimum percentage of students who will vote in the election?",
+      "options": {
+        "1": "32%",
+        "2": "40%",
+        "3": "36%",
+        "4": "38%"
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya’s and Ramya’s campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types, they can either focus on issues, or on attacking the other candidate. If Amiya and Ramya both run campaigns focusing on issues, then  The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if Amiya and Ramya both run vigorous campaigns, then 20 x (2+2)%, that is, 80% of the students will vote in the election.  Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns. For example, if Amiya runs a staid (i.e., level 1) campaign while Ramya runs a vigorous (i.e., level 2) campaign, then Amiya will receive 1/3 of the votes cast, and Ramya will receive the other 2/3. The above-mentioned percentages change as follows if at least one of them runs a campaign attacking their opponent.  If Amiya runs a campaign attacking Ramya and Ramya runs a campaign focusing on issues, then 10% of the students who would have otherwise voted for Amiya will vote for Ramya, and another 10% who would have otherwise voted for Amiya, will not vote at all.  If Ramya runs a campaign attacking Amiya and Amiya runs a campaign focusing on issues, then 20% of the students who would have otherwise voted for Ramya will vote for Amiya, and another 5% who would have otherwise voted for Ramya, will not vote at all.  If both run campaigns attacking each other, then 10% of the students who would have otherwise voted for them had they run campaigns focusing on issues, will not vote at all.",
+      "setRange": [
+        42,
+        46
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Minimum percentage of students who will vote will be obtained when they run staid campaign as it of level",
+      "topic": "Data Interpretation"
+    },
+    {
+      "qNo": 44,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "If Amiya runs a campaign focusing on issues, then what is the maximum percentage of votes that she can get?",
+      "options": {
+        "1": "40%",
+        "2": "36%",
+        "3": "48%",
+        "4": "44%"
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya’s and Ramya’s campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types, they can either focus on issues, or on attacking the other candidate. If Amiya and Ramya both run campaigns focusing on issues, then  The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if Amiya and Ramya both run vigorous campaigns, then 20 x (2+2)%, that is, 80% of the students will vote in the election.  Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns. For example, if Amiya runs a staid (i.e., level 1) campaign while Ramya runs a vigorous (i.e., level 2) campaign, then Amiya will receive 1/3 of the votes cast, and Ramya will receive the other 2/3. The above-mentioned percentages change as follows if at least one of them runs a campaign attacking their opponent.  If Amiya runs a campaign attacking Ramya and Ramya runs a campaign focusing on issues, then 10% of the students who would have otherwise voted for Amiya will vote for Ramya, and another 10% who would have otherwise voted for Amiya, will not vote at all.  If Ramya runs a campaign attacking Amiya and Amiya runs a campaign focusing on issues, then 20% of the students who would have otherwise voted for Ramya will vote for Amiya, and another 5% who would have otherwise voted for Ramya, will not vote at all.  If both run campaigns attacking each other, then 10% of the students who would have otherwise voted for them had they run campaigns focusing on issues, will not vote at all.",
+      "setRange": [
+        42,
+        46
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "If both of them run vigorous campaigns focussing on issues, then the percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. So the percentage would be 20(2+2) % = 80%. Hence each of them would get 40% votes. It is given that Amiya runs a campaign focusing on issues. To maximise percentage of votes she gets, will be obtained when Ramya run a campaign attacking their opponent. So the reduction in the percentage of votes obtained by Ramya would be 20% of 40% = 8% which would be added to percentage of votes of Amiya. So Amiya would get 40% + 8% = 48% votes. Also 5% who would have otherwise voted for Ramya, will not vote at all. Hence total reduction in the percentage of votes for Ramya would be 8% + 5% of 40% = 10%. So answer of this question is 48%. Hence option C.",
+      "topic": "Data Interpretation"
+    },
+    {
+      "qNo": 45,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "If Ramya runs a campaign attacking Amiya, then what is the minimum percentage of votes that she is guaranteed to get?",
+      "options": {
+        "1": "30%",
+        "2": "15%",
+        "3": "12%",
+        "4": "18%"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya’s and Ramya’s campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types, they can either focus on issues, or on attacking the other candidate. If Amiya and Ramya both run campaigns focusing on issues, then  The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if Amiya and Ramya both run vigorous campaigns, then 20 x (2+2)%, that is, 80% of the students will vote in the election.  Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns. For example, if Amiya runs a staid (i.e., level 1) campaign while Ramya runs a vigorous (i.e., level 2) campaign, then Amiya will receive 1/3 of the votes cast, and Ramya will receive the other 2/3. The above-mentioned percentages change as follows if at least one of them runs a campaign attacking their opponent.  If Amiya runs a campaign attacking Ramya and Ramya runs a campaign focusing on issues, then 10% of the students who would have otherwise voted for Amiya will vote for Ramya, and another 10% who would have otherwise voted for Amiya, will not vote at all.  If Ramya runs a campaign attacking Amiya and Amiya runs a campaign focusing on issues, then 20% of the students who would have otherwise voted for Ramya will vote for Amiya, and another 5% who would have otherwise voted for Ramya, will not vote at all.  If both run campaigns attacking each other, then 10% of the students who would have otherwise voted for them had they run campaigns focusing on issues, will not vote at all.",
+      "setRange": [
+        42,
+        46
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Minimum percentage of students who will vote will be obtained when they run staid campaign as it of level",
+      "topic": "Data Interpretation"
+    },
+    {
+      "qNo": 46,
+      "section": "Data Interpretation and Logical Reasoning",
+      "sectionCode": "DILR",
+      "type": "MCQ",
+      "stem": "What is the maximum possible voting margin with which one of the candidates can win?",
+      "options": {
+        "1": "20%",
+        "2": "29%",
+        "3": "26%",
+        "4": "28%"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya’s and Ramya’s campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types, they can either focus on issues, or on attacking the other candidate. If Amiya and Ramya both run campaigns focusing on issues, then  The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if Amiya and Ramya both run vigorous campaigns, then 20 x (2+2)%, that is, 80% of the students will vote in the election.  Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns. For example, if Amiya runs a staid (i.e., level 1) campaign while Ramya runs a vigorous (i.e., level 2) campaign, then Amiya will receive 1/3 of the votes cast, and Ramya will receive the other 2/3. The above-mentioned percentages change as follows if at least one of them runs a campaign attacking their opponent.  If Amiya runs a campaign attacking Ramya and Ramya runs a campaign focusing on issues, then 10% of the students who would have otherwise voted for Amiya will vote for Ramya, and another 10% who would have otherwise voted for Amiya, will not vote at all.  If Ramya runs a campaign attacking Amiya and Amiya runs a campaign focusing on issues, then 20% of the students who would have otherwise voted for Ramya will vote for Amiya, and another 5% who would have otherwise voted for Ramya, will not vote at all.  If both run campaigns attacking each other, then 10% of the students who would have otherwise voted for them had they run campaigns focusing on issues, will not vote at all.",
+      "setRange": [
+        42,
+        46
+      ],
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Maximum possible voting margin with which one of the candidates can win will be obtained when one of them runs vigorous campaign and the other runs staid campaign. If Amiya runs vigorous campaign focussing on issues and Ramya runs staid campaigns focussing on issues, then the percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. So the percentage would be 20(2+1) % = 60%. Hence Amiya would get 40% votes and Ramya would get 40% votes. Now if Ramya runs a campaign attacking their opponent. So the reduction in the percentage of votes obtained by Ramya would be 20% of 20% = 4% which would be added to percentage of votes of Amiya. So Amiya would get 40% + 4% = 44% votes. Also 5% who would have otherwise voted for Ramya, will not vote at all. Hence total reduction in the percentage of votes for Ramya would be 4% + 5% of 20% = 4% + 1% = 5%. So minimum percentage of votes that she is guaranteed to get will be 20% – 5% = 15%. Hence maximum voting margin will be 44% – 15% = 29%. Hence option B.",
+      "topic": "Data Interpretation"
+    },
+    {
+      "qNo": 47,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "When 10100 is divided by 7, the remainder is",
+      "options": {
+        "1": "6",
+        "2": "1",
+        "3": "4",
+        "4": "3"
+      },
+      "correctAnswer": "3",
+      "correctOption": "3",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "By Euler theorem, 7 10 1 7 10 ) 10 ( 7 10 4 4 16 6 100     10000/7 remainder is 4.",
+      "topic": "Number Systems"
+    },
+    {
+      "qNo": 48,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "Two places A and B are 45 kms apart and connected by a straight road. Anil goes from A to B while Sunil goes from B to A. Starting at the same time, they cross each other in exactly 1 hour 30 minutes. If Anil reaches B exactly 1 hour 15 minutes after Sunil reaches A, the speed of Anil, in km per hour, is",
+      "options": {
+        "1": "14",
+        "2": "12",
+        "3": "16",
+        "4": "18"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Let’s assume after meeting at point C Anil takes time tA and Sunil takes ts. As we know, t = S A t t  As given t = 2 3 , then ts = x , let tA = x + 4 5 hours as Anil reaches B exactly 1 hour 15 minutes after Sunil reaches A, 2 3 =  x 4 5 x   Taking square on both sides and simplify it we have 4x2 + 5x – 9 = 0  (4x + 9) (x – 1) = 0, so, x = – 4 9 and x = 1 As we cannot take the negative value, so x=1 Now, tA = x + 4 5 = 1 + 4 5 = 4 9 Anil’s total time was 2 3 + 4 9 = h 4 15 Speed of Anil = h / km 12 4 15 45 ",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 49,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "TITA",
+      "stem": "There are four numbers such that average of first two numbers is 1 more than the first number, average of first three numbers is 2 more than average of first two numbers, and average of first four numbers is 3 more than average of first three numbers. Then, the difference between the largest and the smallest numbers, is",
+      "options": null,
+      "correctAnswer": "15",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Let the four numbers be p, q, r, and s. By first condition, 2 q p  = p + 1  q = p + 2 By second condition,    3 r q p 2 q p  +2  r = p + 7 By third condition,     4 s r q p 3 3 r q p     s = p + 15 Thus the numbers are p, p + 2, p + 7 and p + 15. So, the difference between the largest and the smallest number = p + 15 – p = 15.",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 50,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "TITA",
+      "stem": "The sum of all four-digit numbers that can be formed with the distinct non-zero digits a, b, c, and d, with each digit appearing exactly once in every number, is 153310 + n, where n is a single digit natural number. Then, the value of (a + b + c + d + n) is",
+      "options": null,
+      "correctAnswer": "31",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Here to form all 4-digit numbers using the distinct non-zero digits a, b, c, d and each digit appears exactly ===== PAGE 12 ===== 29 Actual CAT 2024 Slot - I once in each position across all permutations. The total number of 4 – digit numbers is 4! = 24 Each digit appears 4 24 = 6 times in each place (thousands, hundreds, tens, and units) For a given digit x, its total contributions are, x × (1000 + 100 + 10 + 1) × 6 = x × 1111 × 6 = 6666x. The sum of all numbers is: 6 × 1111 × (a + b + c + d) = 6666 (a + b + c + d). 6666 (a + b + c + d) = 153310 + n, where n is a single-digit natural number. Divide 153310 by 6666  a + b + c + d = 6666 153310 = 23 (aprox.)  6666 × 23 = 153318  153310 + n = 153318  n = 153318 – 153310 = 8 The value of a + b + c + d + n = 23 + 8 = 31",
+      "topic": "Number Systems"
+    },
+    {
+      "qNo": 51,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "In September, the incomes of Kamal, Amal and Vimal are in the ratio 8 : 6 : 5. They rent a house together, and Kamal pays 15%, Amal pays 12% and Vimal pays 18% of their respective incomes to cover the total house rent in that month. In October, the house rent remains unchanged while their incomes increase by 10%, 12% and 15%, respectively. In October, the percentage of their total income that will be paid as house rent, is nearest to",
+      "options": {
+        "1": "13.26",
+        "2": "14.84",
+        "3": "12.75",
+        "4": "15.18"
+      },
+      "correctAnswer": "1",
+      "correctOption": "1",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Let the incomes of Kamal, Amal and Vimal in September be proportional to 8k, 6k, 5k respectively. The house rent paid by Kamal is 15% of 8k = 1.2k The house rent paid by Amal is 12% of 6k = 0.72k The house rent paid by Vimal is 18% of 5k = 0.9k Their total house rent = 1.2k + 0.72k + 0.9k = 2.82k In October their house rent remains same while their incomes increase by 10%, 12% and 15% respectively. Kamal's increased income = 8k × 1.1 = 8.8k Amal's increased income = 6k × 1.12 = 6.72k Vimal's increased income = 5k × 1.15 = 5.75k Total income in October = 8.8k + 6.72k + 5.75k = 21.27k The house rent remains the same at 2.82k. The percentage of their total income paid as rent in October = 100 k 27 . 21 k 82 .2  = 13.26% (aprox.)",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 52,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "An amount of Rs 10000 is deposited in bank A for a certain number of years at a simple interest of 5% per annum. On maturity, the total amount received is deposited in bank B for another 5 years at a simple interest of 6% per annum. If the interests received from bank A and bank B are in the ratio 10 : 13, then the investment period, in years, in bank A is",
+      "options": {
+        "1": "4",
+        "2": "6",
+        "3": "3",
+        "4": "5"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Since in bank A, P = 10000 rate of interest = 5% and let time be T.  SI = 100 PRT = 100 T 5 10000   = 500 T. Maturity amount = 10000 + 500 T Now for bank B, Sum = 10000 + 500 T, rate of interest = 6% and time = 6 years  SI= 100 5 6 ) T 500 10000 (    = 3000 + 150 T Also, the interests received from bank A and bank B are in the ratio 10 : 13 13 10 B bank of Interest A bank of Interest     T 150 3000 T 500 13 10  13 × 500 T = 10 × (3000 + 150 T)  T = 6 years",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 53,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "TITA",
+      "stem": "If the equations x² + mx + 9 = 0, x² + nx + 17 = 0 and x² + (m + n)x + 35 = 0 have a common negative root, then the value of (2m + 3n) is",
+      "options": null,
+      "correctAnswer": "38",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "If the equations x2 + mx + 9 = 0, x2 + nx + 17 = 0 and x2 + (m + n)x + 35 = 0 have a commom negative root, then the value of (2m + 3n) is Let 𝛼 be the common negative root, then substitute it into each equation we have α2 + mα + 9 = 0…. (i), α2 + nα + 17 = 0…..(ii) and α2 + (m + n)α + 35 = 0….. (iii) Subtracting eq. (i) and (ii) we get α2 + nα + 17 − α2 − mα − 9 = 0  (n − m)α + 8 = 0 α = m n 8   α2 + mα + 9 + α2 + nα + 17 = 0  2α2 + (m + n) α + 26 = 0 Subtract the third equation from the sum of the first and second equations, we get 2α2 + (m + n)α + 26 − α2 − (m + n)α − 35 = 0 α2 − 9 = 0  α2 = 9  α =  3, Since α is negative, α = −3 As α = m n 8   ===== PAGE 13 ===== Actual CAT 2024 Slot - I 30  −3 = m n 8    n − m = 3 8 Substitute, α = −3 into the first equation, we get α2 + mα + 9 = 0  9 − 3m + 9 = 0  m = 6 Substitute m = 6 in n − m = 3 8  n − 6 = 3 8  n = 3 26 Now 2m + 3n = 2 × 6 + 3 × 3 26 = 12 + 26 = 38",
+      "topic": "Algebra"
+    },
+    {
+      "qNo": 54,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "TITA",
+      "stem": "If x is a positive real number such that 4 log₁₀ x + 4 log₁₀₀ x + 8 log₁₀₀₀ x = 13, then the greatest integer not exceeding x, is",
+      "options": null,
+      "correctAnswer": "31",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "4 log10 x + 4 log100 x + 8 log1000 x =13  4log10x + 2 4 log10x + 3 8 log10x =13  4log10x + 2 log10x + 3 8 log10x =13 Let log10x = k  4k + 2k + 3 8 k = 13 or 12k + 6k + 8k =39  k = 2 3 or log10x = 2 3  x = 1000 10 2 3  = 31.62 So, the greatest integer not exceeding 31.62 = 31",
+      "topic": "Algebra"
+    },
+    {
+      "qNo": 55,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "Let x, y, and z be real numbers satisfying 4(x² + y² + z²) = a and 4(x − y − z) = 3 + a. Then a equals",
+      "options": {
+        "1": "3/11",
+        "2": "3",
+        "3": "1",
+        "4": "4"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Since, 4(x2 + y2 + z2) = a and 4(x – y – z) = 3 + a On subtracring both equations we have, 4x2 – 4x + 4y2 + 4y + 4z2 + 4z = –3 Adding 1 to make it perfect square, we get, (4x2 – 4x + 1) + (4y2 + 4y + 1) + (4z2 + 4z + 1) = 0 (2x –1)2 + (2y + 1)2 + (2z + 1)2 = 0  x = 2 1 , y = – 2 1 , z = – 2 1 Now, 4(x2 + y2 + z2) = a a 4 1 4 1 4 1 4            a = 3",
+      "topic": "Algebra"
+    },
+    {
+      "qNo": 56,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "In the XY-plane, the area, in sq. units, of the region defined by the inequalities y ≥ x + 4 and −4 ≤ x² + y² + 5(x − y) ≤ 0 is",
+      "options": {
+        "1": "3π",
+        "2": "2π",
+        "3": "π",
+        "4": "4π"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Clearly we have equation of circle x2 + y2 + 2gx + 2fy + c = 0 x2 + y2 + 4x – 4y + 4 ≥ 0 x2 + y2 + 2 × 2x + 2 × (–2)y + 4 ≥ 0 Centre = (–g, –f) = (–2, 2) Radius = c f g 2 2   4 2 ) 2 ( 2 2    = √4 = 2 units Now, we have equation of line y ≥ x + 4 x – y ≤ – 4 x 0 – 4 y 4 0 ===== PAGE 14 ===== 31 Actual CAT 2024 Slot - I Area of shaded region   2 r2    = 2 π",
+      "topic": "Geometry"
+    },
+    {
+      "qNo": 57,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "A glass is filled with milk. Two-thirds of its content is poured out and replaced with water. If this process of pouring out two-thirds the content and replacing with water is repeated three more times, then the final ratio of milk to water in the glass, is",
+      "options": {
+        "1": "1 : 26",
+        "2": "1 : 80",
+        "3": "1 : 27",
+        "4": "1 : 81"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "By dilution method, Milk left after nth operation / Total mixture = n x y 1       The process repeatedly replaces 3 2 of the glass's contents with water.  Milk left after nth operation / Total mixture = 4 3 2 1       = 81 1 3 1 4      Initially, the milk fraction is 1 (all milk). After four repetitions, the milk fraction becomes 81 1  the fraction of water = 1– 81 1 = 81 80 The final ratio of milk to water is 81 1 : 81 80 = 1 : 80",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 58,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "Consider two sets A = {2, 3, 5, 7, 11, 13} and B = {1, 8, 27}. Let f be a function from A to B such that for every element D in B, there is at least one element a in A such that f(a) = b. Then, the total number of such functions f is",
+      "options": {
+        "1": "667",
+        "2": "540",
+        "3": "537",
+        "4": "665"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Basically we are looking for onto function from A to B. Let n(A) = m, n(B) = n So, number of onto functions = nm – nC1(n – 1)m + nC2(n – 2)m – nC3(n – 3)m = 36 – 3C1(2)6 + 3C2(1)6 – 3C3(0) = 540",
+      "topic": "Algebra"
+    },
+    {
+      "qNo": 59,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "The surface area of a closed rectangular box, which is inscribed in a sphere, is 846 sq cm, and the sum of the lengths of all its edges is 144 cm. The volume, in cubic cm, of the sphere is",
+      "options": {
+        "1": "1125π/2",
+        "2": "750π/2",
+        "3": "1125π",
+        "4": "750π"
+      },
+      "correctAnswer": "1",
+      "correctOption": "1",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Total surface area of cuboid = 2(lb + bh + hl)  2(lb + bh + hl) = 846 cm2 The sum of lengths of all the edges = 4(l + b + h) =144  l + b + h = 36cm Now,(l + b + h)2 = l2 + b2 + h2 + 2(lb + bh + hl)  l2 + b2 + h2 = (l + b + h)2 – 2(lb + bh + hl)  l2 + b2 + h2 = 362 – 846 = 1296 – 846 = 450 Diametre of the sphere = body diagonal of the cuboid= h + b + l 2 2 2 = √450 cm And the radius is 2 450 cm Volume of sphere = 3 R 3 4  = 3 2 450 3 4        = 1125π√2 cm3",
+      "topic": "Geometry"
+    },
+    {
+      "qNo": 60,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "The selling price of a product is fixed to ensure 40% profit. If the product had cost 40% less and had been sold for 5 rupees less, then the resulting profit would have been 50%. The original selling price, in rupees, of the product is",
+      "options": {
+        "1": "10",
+        "2": "15",
+        "3": "20",
+        "4": "14"
+      },
+      "correctAnswer": "4",
+      "correctOption": "4",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Let the Initial CP = 100, Initial SP = Initial CP × 140% = 140. New CP = 60% of 100 = 60, New SP = 150% of 60 = 90. Difference between the Initial and New selling price is 140 – 90 = 50 Now we need to compare it with actual information as per the question, our 50 is representing 5 Rs as per question. 10 is representing 1Rs, 140 will represent 14 Rs.",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 61,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "A shop wants to sell a certain quantity (in kg) of grains. It sells half the quantity and an additional 3 kg of these grains to the first customer. Then, it sells half of the remaining quantity and an additional 3 kg of these grains to the second customer. Finally, when the shop sells half of the remaining quantity and an additional 3 kg of these grains to the third customer, there are no grains left. The initial quantity, in kg, of grains is",
+      "options": {
+        "1": "42",
+        "2": "18",
+        "3": "36",
+        "4": "50"
+      },
+      "correctAnswer": "1",
+      "correctOption": "1",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "The best way to solve such questions is to move backwards. In the end he is left with nothing. Just see that to the last person he has given 2 1 of the grains and then 0 grains. ===== PAGE 15 ===== Actual CAT 2024 Slot - I 32 In general person sells 2 1 of the grains and 3 kg more, so the person left with 2 1 of the grains and 3 kg less. 2 x – 3 = 0 x = 6 (before giving to third person) 2 x – 3 = 6 X = 18 (before giving to second person) 2 x – 3 = 18 x = 42 (before giving to first person) So the person initially have 42 kg of grains",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 62,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "If (a + b√n) is the positive square root of (29 − 12√5), where a and b are integers, and n is a natural number, then the maximum possible value of (a + b + n) is",
+      "options": {
+        "1": "4",
+        "2": "18",
+        "3": "6",
+        "4": "22"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "(29 - 12√5) = (a + b√n)2 (29 – 12√5) must be a square of (x – y)2 (x – y)2 = x2 + y2 + 2xy 2xy = 12√5 xy = 6√5 If we take x = 6 and y = √5 (6 – √5)2 = 36 + 5 – 12√5 = 41 – 12√5 ( not possible) If we take x = 3 and y = 2√5 (3 – 2√5)2 = 9 + 20 – 12√5 = 29 – 12√5 (possible) If we take x = 2√5 and y = 3 (2√5 – 3)2 = 20 + 9 – 12√5 = 29 – 12√5 (possible) If we take x = √20 and y = 3 (√20 – 3)2 = 20 + 9 – 12√5 = 29 – 12√5 (possible) If we take x = √20 and y = 3 (3 – √20)2 = 20 + 9 – 12√5 = 29 – 12√5 (possible) Positive root: (a + b√n)2 = (3 – 2√5)2 = a + b + n = 3 – 2 + 5 = 6 Negative root: (a + b√n)2 = (2√5 – 3)2 = a + b + n = 2 + 5 – 3 = 4 Positive root: (a + b√n)2 = (–3 + √20)2 = a + b + n = –3 + 1 + 20 = 18 (Answer) Negative root: (a + b√n)2 = (3 – √20)2 = a + b + n = 3 – 1 + 20 = 22 As the question asked maximum possible value of positive root so answer is 18.",
+      "topic": "Geometry"
+    },
+    {
+      "qNo": 63,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "TITA",
+      "stem": "ABCD is a rectangle with sides AB = 56 cm and BC = 45 cm, and E is the midpoint of side CD. Then, the length, in cm, of radius of in circle of ADE is",
+      "options": null,
+      "correctAnswer": "10",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "ABCD is a rectangle, E is a mid-point of D and C. ADE is a right angle triangle by applying Pythagorean theorem, AE = 53. Using the formula to calculate area of triangle = radius of incircle × Semi perimeter.             2 53 28 45 r 45 28 2 1 r = 10",
+      "topic": "Geometry"
+    },
+    {
+      "qNo": 64,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "TITA",
+      "stem": "A fruit seller has a total of 187 fruits consisting of apples, mangoes and oranges. The number of apples and mangoes are in the ratio 5 : 2. After she sells 75 apples, 26 mangoes and half of the oranges, the ratio of number of unsold apples to number of unsold oranges becomes 3: 2. The total number of unsold fruits is",
+      "options": null,
+      "correctAnswer": "66",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Apple Mangos Oranges Number of fruits 5x 2x 187 – 7x Sells 75 26        2 x 7 187 Ratio unsold fruits to unsold oranges = 3 : 2 2 3 2 x 7 187 75 x 5    20x – 300 = 561 – 21x 41x = 861 x = 21 Apple Mangos Oranges ===== PAGE 16 ===== 33 Actual CAT 2024 Slot - I Number of fruits 105 42 40 Sells 75 26 20 Left 30 + 16 + 20 = 66",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 65,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "The sum of all real values of k for which (1/8)^k × (1/32768)^(1/3) = (1/8) × (1/32768)^(1/k), is",
+      "options": {
+        "1": "−4/3",
+        "2": "−2/3",
+        "3": "4/3",
+        "4": "2/3"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "k / 1 3 / 1 k 32768 1 8 1 32768 1 8 1                            k / 1 5 3 / 1 5 k 8 1 8 1 8 1 8 1                            3 / 5 k / 5 5 1 k 8 1 8 1                k – 1 = k 5 – 3 5 3k2 + 2k – 15 = 0 Sum of roots = – 3 2 .",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 66,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "MCQ",
+      "stem": "Suppose x₁, x₂, x₃, …, x₁₀₀ are in arithmetic progression such that x₅ = −4 and 2x₆ + 2x₉ = x₁₁ + x₁₃. Then x₁₀₀ equals",
+      "options": {
+        "1": "204",
+        "2": "-194",
+        "3": "206",
+        "4": "-196"
+      },
+      "correctAnswer": "2",
+      "correctOption": "2",
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "x5 = – 4 a + 4d = – 4….(i) 2x6 + 2x9 = x11 + x13 2(x6 + x9) = x11 + x13 x6 + x9 =   2 x x 13 11  x6 + x9 = x12 a + 5d + a + 8d = a + 11 d a + 2d = 0……. (ii) Solving equation (i) and (ii), a = 4 and d = –2 x100 = a + 99d = 4 + 99 × (–2) = 4 – 198 = –194",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 67,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "TITA",
+      "stem": "Renu would take 15 days working 4 hours per day to complete a certain task whereas Seema would take 8 days working 5 hours per day to complete the same task. They decide to work together to complete this task. Seema agrees to work for double the number of hours per day as Renu, while Renu agrees to work for double the number of days as Seema. If Renu works 2 hours per day, then the number of days Seema will work, is",
+      "options": null,
+      "correctAnswer": "6",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Total number of hours for which Renu worked is 15 × 4 = 60 hrs Total number of hours for which Seema worked is 8 × 5 = 40 hrs Total work is taken as LCM of (60, 40) = 120 units Efficiency of Renu is 60 120 = 2 units/hours Efficiency of Seema is 40 120 = 3 units/hours As per the question Renu works 2 hours per day, So Seema works for 4 hours per day. Total work completed by Renu is 2 × 2 = 4 units/day Total work completed by Seema is 3 × 4 = 12 units/day As per the question number of day taken by Renu is double of Seema. Let number of day taken by Seema is ‘x’ so number of days taken by Renu is ‘2x’. Total work will be completed by 4 × 2x + 12x = 120 x = 6 days.",
+      "topic": "Arithmetic"
+    },
+    {
+      "qNo": 68,
+      "section": "Quantitative Ability",
+      "sectionCode": "QA",
+      "type": "TITA",
+      "stem": "For any natural number n, let aₙ be the largest integer not exceeding √n. Then the value of a₁ + a₂ + … + a₅₀ is",
+      "options": null,
+      "correctAnswer": "217",
+      "correctOption": null,
+      "stimulus": null,
+      "setRange": null,
+      "images": null,
+      "chartDependent": false,
+      "needsManualReview": false,
+      "explanation": "Question is based on GINT, largest integer not exceeding √n. Find the value of a1 + a2 +….+a50. When n = 1, √1= 1 n = 2, √2= 1 n = 3, √3= 1 n = 4, √4= 2 So, we need to count it like this, from 1 to 3 we have 1 three times so total will be 1 × 3 = 3 from 4 to 8 we have 2 five times so total will be 2 × 5 = 10 from 9 to 15 we have 3 seven times so total will be 3 × 7 = 21 from 16 to 24 we have 4 nine times so total will be 4 × 9 = 36 from 25 to 35 we have 5 eleven times so total will be 5 × 11 = 55 from 36 to 48 we have 6 thirteen times so total will be 6 × 13 = 78 from 49 to 50 we have 7 two times so total will be 7 × 2 = 14 Hence, answer will be 3 + 10 + 21 + 36 + 55 + 78 + 14 = 217",
+      "topic": "Algebra"
+    }
+  ],
+  "verification": {
+    "expectedCount": 68,
+    "parsedCount": 68,
+    "answerKeyCount": 68,
+    "allQuestionsHaveAnswers": true,
+    "mcqCount": 48,
+    "titaCount": 20,
+    "mcqWithMappedAnswerText": 48,
+    "titaQuestionNos": [
+      20,
+      22,
+      25,
+      26,
+      28,
+      29,
+      30,
+      31,
+      32,
+      35,
+      38,
+      40,
+      49,
+      50,
+      53,
+      54,
+      63,
+      64,
+      67,
+      68
+    ],
+    "chartDependentQuestionNos": [
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41
+    ],
+    "explanationCount": 68,
+    "needsManualReview": []
+  }
+}
