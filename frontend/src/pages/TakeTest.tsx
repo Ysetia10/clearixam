@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
+import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
+import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import { papersApi, PaperDetail, PaperQuestion } from '../api/papers';
 import { useToast } from '../components/Toast';
 import { ExamCalculator } from '../components/ExamCalculator';
@@ -480,16 +483,22 @@ export const TakeTest = () => {
             onClick={() => setCalcOpen((v) => !v)}
             title="Calculator"
             aria-label="Calculator"
+            aria-pressed={calcOpen}
+            style={{ width: 40, height: 40, padding: 0, display: 'grid', placeItems: 'center' }}
           >
-            Calculator
+            <CalculateOutlinedIcon fontSize="small" />
           </button>
           <button
             type="button"
             className="btn"
             disabled={!testStarted || submitting}
             onClick={() => setPaused((p) => !p)}
+            title={paused ? 'Resume test' : 'Pause test'}
+            aria-label={paused ? 'Resume test' : 'Pause test'}
+            aria-pressed={paused}
+            style={{ width: 40, height: 40, padding: 0, display: 'grid', placeItems: 'center' }}
           >
-            {paused ? 'Resume' : 'Pause'}
+            {paused ? <PlayArrowRoundedIcon fontSize="small" /> : <PauseRoundedIcon fontSize="small" />}
           </button>
           <button
             type="button"
