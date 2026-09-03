@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import { papersApi, PaperDetail, PaperQuestion } from '../api/papers';
 import { useToast } from '../components/Toast';
+import { ExamCalculator } from '../components/ExamCalculator';
+import { PyqText, renderOptionLabel } from '../utils/formatPyqText';
 import {
   SECTION_ORDER,
   SectionCode,
@@ -10,7 +12,6 @@ import {
   getQuestionStatus,
   paletteStyle,
 } from '../utils/pyqTestState';
-
 function formatTime(totalSeconds: number) {
   const s = Math.max(0, totalSeconds);
   const h = Math.floor(s / 3600);
@@ -185,6 +186,7 @@ export const TakeTest = () => {
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
   const [showStimulus, setShowStimulus] = useState(true);
   const [paused, setPaused] = useState(false);
+  const [calcOpen, setCalcOpen] = useState(false);
 
   const autoSubmitted = useRef(false);
   const answersRef = useRef(answers);
@@ -475,6 +477,16 @@ export const TakeTest = () => {
             type="button"
             className="btn"
             disabled={!testStarted || submitting}
+            onClick={() => setCalcOpen((v) => !v)}
+            title="Calculator"
+            aria-label="Calculator"
+          >
+            Calculator
+          </button>
+          <button
+            type="button"
+            className="btn"
+            disabled={!testStarted || submitting}
             onClick={() => setPaused((p) => !p)}
           >
             {paused ? 'Resume' : 'Pause'}
@@ -521,7 +533,9 @@ export const TakeTest = () => {
                   {question.setRange ? ` (Q${question.setRange[0]}–${question.setRange[1]})` : ''}
                 </button>
                 {showStimulus && (
-                  <div style={{ fontSize: 14, lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{question.stimulus}</div>
+                  <div style={{ fontSize: 14, lineHeight: 1.6 }}>
+                    <PyqText text={question.stimulus} />
+                  </div>
                 )}
               </div>
             )}
@@ -564,8 +578,8 @@ export const TakeTest = () => {
                 </label>
               </div>
 
-              <div style={{ fontSize: 15, lineHeight: 1.65, marginBottom: 20, whiteSpace: 'pre-wrap' }}>
-                {question.stem}
+              <div style={{ fontSize: 15, lineHeight: 1.65, marginBottom: 20 }}>
+                <PyqText text={question.stem} jumble />
               </div>
 
               {question.type === 'MCQ' && question.options ? (
@@ -598,7 +612,7 @@ export const TakeTest = () => {
                           style={{ marginTop: 3 }}
                         />
                         <span style={{ fontSize: 14, lineHeight: 1.5 }}>
-                          <strong>({key})</strong> {text}
+                          {renderOptionLabel(key, text)}
                         </span>
                       </label>
                     );
@@ -732,6 +746,8 @@ export const TakeTest = () => {
           )}
         </aside>
       </div>
+
+      <ExamCalculator open={calcOpen && testStarted && !paused} onClose={() => setCalcOpen(false)} />
 
       <style>{`
         @media (max-width: 900px) {
