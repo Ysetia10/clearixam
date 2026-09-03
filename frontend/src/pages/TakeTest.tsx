@@ -4,10 +4,18 @@ import { CircularProgress, Box } from '@mui/material';
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+import { getUserEmail } from '../api/auth';
 import { papersApi, PaperDetail, PaperQuestion } from '../api/papers';
 import { useToast } from '../components/Toast';
 import { ExamCalculator } from '../components/ExamCalculator';
 import { PyqText, renderOptionLabel } from '../utils/formatPyqText';
+import {
+  clearPyqDraft,
+  isDraftResumable,
+  loadPyqDraft,
+  remainingFromDraft,
+  savePyqDraft,
+} from '../utils/pyqAttemptDraft';
 import {
   SECTION_ORDER,
   SectionCode,
@@ -84,6 +92,9 @@ function InstructionsModal({
             current question.
           </li>
           <li>The timer starts when you click Begin Test.</li>
+          <li>
+            Switching tabs keeps the timer running. Refreshing restores your answers and remaining time.
+          </li>
         </ul>
         <button type="button" className="btn btn-primary" style={{ width: '100%' }} onClick={onBegin}>
           Begin Test
@@ -187,13 +198,16 @@ export const TakeTest = () => {
   const [index, setIndex] = useState(0);
   const [paletteSection, setPaletteSection] = useState<SectionCode>('VARC');
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
+  const [endsAtMs, setEndsAtMs] = useState<number | null>(null);
   const [showStimulus, setShowStimulus] = useState(true);
   const [paused, setPaused] = useState(false);
   const [calcOpen, setCalcOpen] = useState(false);
+  const [draftReady, setDraftReady] = useState(false);
 
   const autoSubmitted = useRef(false);
   const answersRef = useRef(answers);
   const startGeneration = useRef(0);
+  const userEmail = getUserEmail();
   answersRef.current = answers;
 
   useEffect(() => {
@@ -204,19 +218,56 @@ export const TakeTest = () => {
     (async () => {
       try {
         setLoading(true);
+        setDraftReady(false);
         const started = await papersApi.startAttempt(paperId);
         if (cancelled || generation !== startGeneration.current) return;
+
+        const draft = loadPyqDraft(paperId, userEmail);
+        const canResume = draft && isDraftResumable(draft);
+
         setAttemptId(started.attemptId);
         setPaper(started.paper);
-        setSecondsLeft(started.durationMinutes * 60);
-        setIndex(0);
-        setAnswers({});
-        setVisited(new Set([started.paper.questions[0]?.qNo].filter(Boolean) as number[]));
-        setMarked(new Set());
-        setPaletteSection(started.paper.questions[0]?.sectionCode as SectionCode || 'VARC');
-        setTestStarted(false);
-        setPaused(false);
         autoSubmitted.current = false;
+
+        if (canResume && draft) {
+          const left = remainingFromDraft(draft) ?? started.durationMinutes * 60;
+          setAnswers(draft.answers || {});
+          setVisited(new Set(draft.visited?.length ? draft.visited : [started.paper.questions[0]?.qNo].filter(Boolean) as number[]));
+          setMarked(new Set(draft.marked || []));
+          setIndex(
+            Math.max(0, Math.min(started.paper.questions.length - 1, draft.index ?? 0))
+          );
+          setPaletteSection(
+            (draft.paletteSection as SectionCode) ||
+              (started.paper.questions[0]?.sectionCode as SectionCode) ||
+              'VARC'
+          );
+          setTestStarted(draft.testStarted);
+          setPaused(Boolean(draft.paused && draft.testStarted));
+          setSecondsLeft(left);
+          if (draft.testStarted && !draft.paused) {
+            // Re-anchor end time from remaining so wall-clock stays accurate after refresh.
+            setEndsAtMs(Date.now() + left * 1000);
+          } else if (draft.testStarted && draft.paused) {
+            setEndsAtMs(null);
+          } else {
+            setEndsAtMs(null);
+          }
+          if (draft.testStarted) {
+            showToast('Restored your in-progress attempt', 'success');
+          }
+        } else {
+          clearPyqDraft(paperId, userEmail);
+          setSecondsLeft(started.durationMinutes * 60);
+          setEndsAtMs(null);
+          setIndex(0);
+          setAnswers({});
+          setVisited(new Set([started.paper.questions[0]?.qNo].filter(Boolean) as number[]));
+          setMarked(new Set());
+          setPaletteSection((started.paper.questions[0]?.sectionCode as SectionCode) || 'VARC');
+          setTestStarted(false);
+          setPaused(false);
+        }
       } catch (e) {
         if (cancelled || generation !== startGeneration.current) return;
         showToast((e as Error).message || 'Failed to start test', 'error');
@@ -224,6 +275,7 @@ export const TakeTest = () => {
       } finally {
         if (!cancelled && generation === startGeneration.current) {
           setLoading(false);
+          setDraftReady(true);
         }
       }
     })();
@@ -231,7 +283,32 @@ export const TakeTest = () => {
     return () => {
       cancelled = true;
     };
-  }, [paperId, navigate, showToast]);
+  }, [paperId, navigate, showToast, userEmail]);
+
+  const beginTest = useCallback(() => {
+    if (!paper) return;
+    const total = paper.durationMinutes * 60;
+    setTestStarted(true);
+    setPaused(false);
+    setSecondsLeft(total);
+    setEndsAtMs(Date.now() + total * 1000);
+  }, [paper]);
+
+  const togglePause = useCallback(() => {
+    if (!paused) {
+      const left =
+        endsAtMs != null
+          ? Math.max(0, Math.ceil((endsAtMs - Date.now()) / 1000))
+          : secondsLeft ?? 0;
+      setSecondsLeft(left);
+      setEndsAtMs(null);
+      setPaused(true);
+      return;
+    }
+    const remaining = secondsLeft ?? 0;
+    setEndsAtMs(Date.now() + remaining * 1000);
+    setPaused(false);
+  }, [paused, endsAtMs, secondsLeft]);
 
   const submit = useCallback(async () => {
     if (!attemptId || submitting || autoSubmitted.current) return;
@@ -239,6 +316,7 @@ export const TakeTest = () => {
     setSubmitting(true);
     try {
       const result = await papersApi.submitAttempt(attemptId, answersRef.current);
+      if (paperId) clearPyqDraft(paperId, userEmail);
       navigate(`/test-result/${result.attemptId}`, { replace: true, state: { result } });
     } catch (e) {
       autoSubmitted.current = false;
@@ -246,20 +324,74 @@ export const TakeTest = () => {
       setSubmitting(false);
       setShowSubmitModal(false);
     }
-  }, [attemptId, navigate, showToast, submitting]);
+  }, [attemptId, navigate, showToast, submitting, paperId, userEmail]);
 
+  // Wall-clock timer: keeps accurate time even when the tab is backgrounded.
   useEffect(() => {
-    if (!paper || loading || !testStarted || paused || secondsLeft == null) return;
-    const t = window.setInterval(() => {
-      setSecondsLeft((prev) => (prev == null ? prev : Math.max(0, prev - 1)));
-    }, 1000);
-    return () => window.clearInterval(t);
-  }, [paper, loading, testStarted, paused, secondsLeft == null]);
+    if (!paper || loading || !testStarted || paused || endsAtMs == null) return;
+
+    const tick = () => {
+      const left = Math.max(0, Math.ceil((endsAtMs - Date.now()) / 1000));
+      setSecondsLeft(left);
+    };
+
+    tick();
+    const t = window.setInterval(tick, 250);
+    const onVisibility = () => {
+      if (document.visibilityState === 'visible') tick();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('focus', onVisibility);
+
+    return () => {
+      window.clearInterval(t);
+      document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('focus', onVisibility);
+    };
+  }, [paper, loading, testStarted, paused, endsAtMs]);
 
   useEffect(() => {
     if (!paper || loading || !testStarted || paused || secondsLeft !== 0) return;
     void submit();
   }, [secondsLeft, paper, loading, testStarted, paused, submit]);
+
+  // Persist draft so refresh / tab reopen restores answers + remaining time.
+  useEffect(() => {
+    if (!draftReady || !paperId || !attemptId || !paper || loading) return;
+    savePyqDraft({
+      version: 1,
+      paperId,
+      attemptId,
+      userEmail,
+      testStarted,
+      answers,
+      visited: [...visited],
+      marked: [...marked],
+      index,
+      paletteSection,
+      endsAtMs: paused ? null : endsAtMs,
+      pausedRemainingSeconds: paused ? secondsLeft : null,
+      paused,
+      durationMinutes: paper.durationMinutes,
+      savedAt: Date.now(),
+    });
+  }, [
+    draftReady,
+    paperId,
+    attemptId,
+    paper,
+    loading,
+    testStarted,
+    answers,
+    visited,
+    marked,
+    index,
+    paletteSection,
+    endsAtMs,
+    paused,
+    secondsLeft,
+    userEmail,
+  ]);
 
   const question: PaperQuestion | undefined = paper?.questions[index];
 
@@ -392,7 +524,7 @@ export const TakeTest = () => {
         flexDirection: 'column',
       }}
     >
-      {!testStarted && <InstructionsModal paper={paper} onBegin={() => setTestStarted(true)} />}
+      {!testStarted && <InstructionsModal paper={paper} onBegin={beginTest} />}
       {paused && testStarted && (
         <div
           style={{
@@ -414,7 +546,7 @@ export const TakeTest = () => {
             <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--text2)' }}>
               Answers stay saved. Resume when you are ready.
             </p>
-            <button type="button" className="btn btn-primary" style={{ width: '100%' }} onClick={() => setPaused(false)}>
+            <button type="button" className="btn btn-primary" style={{ width: '100%' }} onClick={togglePause}>
               Resume Test
             </button>
           </div>
@@ -492,7 +624,7 @@ export const TakeTest = () => {
             type="button"
             className="btn"
             disabled={!testStarted || submitting}
-            onClick={() => setPaused((p) => !p)}
+            onClick={togglePause}
             title={paused ? 'Resume test' : 'Pause test'}
             aria-label={paused ? 'Resume test' : 'Pause test'}
             aria-pressed={paused}
