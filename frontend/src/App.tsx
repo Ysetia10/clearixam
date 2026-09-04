@@ -16,7 +16,6 @@ const AddMock = lazy(() => import('./pages/AddMock').then(module => ({ default: 
 const SubjectAnalytics = lazy(() => import('./pages/SubjectAnalytics').then(module => ({ default: module.SubjectAnalytics })));
 const AccountSettings = lazy(() => import('./pages/AccountSettings').then(module => ({ default: module.AccountSettings })));
 const PerformanceHistory = lazy(() => import('./pages/PerformanceHistory').then(module => ({ default: module.PerformanceHistory })));
-const MCQClassification = lazy(() => import('./pages/MCQClassification'));
 const TopicPerformance = lazy(() => import('./pages/TopicPerformance'));
 const SectionalTests = lazy(() => import('./pages/SectionalTests').then(m => ({ default: m.SectionalTests })));
 const PyqPapers = lazy(() => import('./pages/PyqPapers').then(m => ({ default: m.PyqPapers })));
@@ -122,13 +121,7 @@ function AppContent() {
             />
             <Route
               path="/mcq-classification"
-              element={
-                <ProtectedRoute>
-                  <Suspense fallback={<PageLoader />}>
-                    <MCQClassification />
-                  </Suspense>
-                </ProtectedRoute>
-              }
+              element={<Navigate to="/topic-performance" replace />}
             />
             <Route
               path="/topic-performance"

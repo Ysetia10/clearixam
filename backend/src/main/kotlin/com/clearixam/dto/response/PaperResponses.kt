@@ -147,3 +147,38 @@ data class AttemptAnalysisResponse(
     val sections: List<SectionAnalysisResponse>,
     val questions: List<QuestionReviewResponse> = emptyList()
 )
+
+data class RecentPyqAttemptResponse(
+    val attemptId: UUID,
+    val paperId: UUID,
+    val paperTitle: String,
+    val examId: UUID,
+    val examName: String,
+    val year: Int,
+    val slot: String,
+    val submittedAt: String?,
+    val totalScore: Double,
+    val correctCount: Int,
+    val incorrectCount: Int,
+    val unattemptedCount: Int,
+    val questionCount: Int,
+    val sections: List<SectionScoreResponse>
+)
+
+data class PyqTopicPerformanceItem(
+    val subject: String,
+    val sectionCode: String,
+    val topic: String,
+    val correct: Int,
+    val incorrect: Int,
+    val unattempted: Int,
+    val total: Int,
+    val accuracy: Double,
+    val attemptCount: Int
+)
+
+data class PyqTopicPerformanceResponse(
+    val topicsTagged: Boolean,
+    val attemptCount: Int,
+    val topics: List<PyqTopicPerformanceItem>
+)

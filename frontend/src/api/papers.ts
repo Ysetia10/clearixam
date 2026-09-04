@@ -135,6 +135,41 @@ export interface AttemptAnalysis {
   questions: QuestionReview[];
 }
 
+export interface RecentPyqAttempt {
+  attemptId: string;
+  paperId: string;
+  paperTitle: string;
+  examId: string;
+  examName: string;
+  year: number;
+  slot: string;
+  submittedAt: string | null;
+  totalScore: number;
+  correctCount: number;
+  incorrectCount: number;
+  unattemptedCount: number;
+  questionCount: number;
+  sections: SectionScore[];
+}
+
+export interface PyqTopicPerformanceItem {
+  subject: string;
+  sectionCode: string;
+  topic: string;
+  correct: number;
+  incorrect: number;
+  unattempted: number;
+  total: number;
+  accuracy: number;
+  attemptCount: number;
+}
+
+export interface PyqTopicPerformanceResponse {
+  topicsTagged: boolean;
+  attemptCount: number;
+  topics: PyqTopicPerformanceItem[];
+}
+
 /** Jackson/Kotlin sometimes emits qNo as "qno"; normalize for the UI. */
 function normalizeQuestion(raw: PaperQuestion & { qno?: number }): PaperQuestion {
   return {
@@ -176,4 +211,16 @@ export const papersApi = {
       })),
     };
   },
+  listRecentAttempts: (examId?: string, limit = 10) => {
+    const params = new URLSearchParams();
+    if (examId) params.set('examId', examId);
+    params.set('limit', String(limit));
+    return apiClient.get<RecentPyqAttempt[]>(`/attempts/recent?${params.toString()}`);
+  },
+  getTopicPerformance: (examId?: string) =>
+    apiClient.get<PyqTopicPerformanceResponse>(
+      examId
+        ? `/attempts/topic-performance?examId=${encodeURIComponent(examId)}`
+        : '/attempts/topic-performance'
+    ),
 };

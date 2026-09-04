@@ -16,8 +16,33 @@ import { mocksApi } from '../api/mocks';
 import { examsApi, Exam } from '../api/exams';
 import { reportsApi } from '../api/reports';
 import { goalsApi } from '../api/goals';
+import { papersApi, RecentPyqAttempt } from '../api/papers';
 import { GoalSettingDialog } from '../components/GoalSettingDialog';
 import { MockDetailDialog } from '../components/MockDetailDialog';
+
+type ActivityItem =
+  | {
+      kind: 'MOCK';
+      id: string;
+      date: string;
+      title: string;
+      examName: string;
+      score: number;
+      cutoffScore: number;
+      probabilityScore: number | null;
+    }
+  | {
+      kind: 'PYQ';
+      id: string;
+      date: string;
+      title: string;
+      examName: string;
+      score: number;
+      correctCount: number;
+      incorrectCount: number;
+      unattemptedCount: number;
+      sections: RecentPyqAttempt['sections'];
+    };
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -71,6 +96,48 @@ export const Dashboard = () => {
     queryFn: () => mocksApi.list(0, 10),
     staleTime: 30000,
   });
+
+  const { data: recentPyq = [], isLoading: pyqLoading } = useQuery({
+    queryKey: ['pyq-recent-attempts', selectedExamId],
+    queryFn: () => papersApi.listRecentAttempts(selectedExamId || undefined, 10),
+    staleTime: 30000,
+    enabled: !!selectedExamId,
+  });
+
+  const recentActivity = useMemo<ActivityItem[]>(() => {
+    const mockItems: ActivityItem[] = (mocks?.content || [])
+      .filter((m) => !selectedExamId || m.examId === selectedExamId)
+      .map((m) => ({
+        kind: 'MOCK' as const,
+        id: m.id,
+        date: m.testDate,
+        title: m.testName || 'Mock test',
+        examName: m.examName,
+        score: m.totalScore,
+        cutoffScore: m.cutoffScore,
+        probabilityScore: m.probabilityScore,
+      }));
+
+    const pyqItems: ActivityItem[] = recentPyq.map((a) => ({
+      kind: 'PYQ' as const,
+      id: a.attemptId,
+      date: a.submittedAt || '',
+      title: a.paperTitle,
+      examName: a.examName,
+      score: a.totalScore,
+      correctCount: a.correctCount,
+      incorrectCount: a.incorrectCount,
+      unattemptedCount: a.unattemptedCount,
+      sections: a.sections || [],
+    }));
+
+    return [...mockItems, ...pyqItems]
+      .filter((item) => item.date)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 12);
+  }, [mocks, recentPyq, selectedExamId]);
+
+  const latestPyq = recentPyq[0] ?? null;
 
   const { data: neglectData } = useQuery({
     queryKey: ['subject-neglect', selectedExamId],
@@ -155,7 +222,7 @@ export const Dashboard = () => {
     return list.slice(0, 2);
   }, [overview]);
 
-  const isLoading = overviewLoading || trendLoading || mocksLoading;
+  const isLoading = overviewLoading || trendLoading || mocksLoading || pyqLoading;
 
   if (isLoading && !overview) {
     return (
@@ -188,6 +255,7 @@ export const Dashboard = () => {
               ))}
             </select>
           )}
+          <button className="btn" onClick={() => navigate('/pyq-tests')}>PYQ Tests</button>
           <button className="btn btn-primary" onClick={() => navigate('/add-mock')}>+ Add Mock</button>
         </div>
       </div>
@@ -405,8 +473,17 @@ export const Dashboard = () => {
           <div className="card">
             <h3 className="section-title" style={{ marginBottom: '12px' }}>Quick Actions</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/pyq-tests')}>
+                ⏱️ Practice PYQ
+              </button>
+              <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/topic-performance')}>
+                🎯 Topic Performance
+              </button>
               <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/subject-analytics')}>
                 📊 Subject Analytics
+              </button>
+              <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/add-mock')}>
+                ➕ Log a Mock
               </button>
               <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/performance-history')}>
                 📋 Mock History
@@ -420,42 +497,135 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div style={{ padding: '22px 24px', borderBottom: '1px solid var(--border)' }}>
-          <h3 className="section-title">Recent Mocks</h3>
+      {latestPyq && (
+        <div className="card" style={{ marginBottom: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
+            <div>
+              <h3 className="section-title" style={{ marginBottom: 4 }}>Latest PYQ sections</h3>
+              <p style={{ margin: 0, fontSize: 13, color: 'var(--text3)' }}>
+                {latestPyq.paperTitle} · {latestPyq.submittedAt ? new Date(latestPyq.submittedAt).toLocaleDateString() : '—'}
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <span className="badge badge-amber">PYQ</span>
+              <strong style={{ color: 'var(--accent2)' }}>{latestPyq.totalScore.toFixed(1)}</strong>
+              <button className="btn btn-ghost" style={{ padding: '4px 12px', fontSize: 12 }} onClick={() => navigate(`/pyq-analyze/${latestPyq.attemptId}`)}>
+                Analyze
+              </button>
+            </div>
+          </div>
+          {(latestPyq.sections || []).length === 0 ? (
+            <div style={{ fontSize: 13, color: 'var(--text3)' }}>No section breakdown saved for this attempt.</div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12 }}>
+              {latestPyq.sections.map((s) => (
+                <div
+                  key={s.sectionCode}
+                  style={{
+                    padding: '12px 14px',
+                    borderRadius: 10,
+                    border: '1px solid var(--border)',
+                    background: 'var(--surface2)',
+                  }}
+                >
+                  <div style={{ fontSize: 11, color: 'var(--text3)', fontWeight: 700 }}>{s.sectionCode}</div>
+                  <div style={{ fontSize: 22, fontWeight: 800, marginTop: 4 }}>{s.score.toFixed(1)}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 4 }}>
+                    {s.correct}C / {s.incorrect}I / {s.unattempted}U
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        {(!mocks?.content || mocks.content.length === 0) ? (
+      )}
+
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        <div style={{ padding: '22px 24px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+          <div>
+            <h3 className="section-title" style={{ marginBottom: 4 }}>Recent activity</h3>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--text3)' }}>
+              PYQ attempts and logged mocks · sources kept separate
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="btn btn-ghost" style={{ fontSize: 12 }} onClick={() => navigate('/pyq-tests')}>PYQ Tests</button>
+            <button className="btn btn-ghost" style={{ fontSize: 12 }} onClick={() => navigate('/add-mock')}>Log Mock</button>
+          </div>
+        </div>
+        {recentActivity.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">📝</div>
-            <div className="empty-title">No mock tests yet</div>
-            <div className="empty-sub">Create your first mock test to start tracking</div>
-            <button className="btn btn-primary" style={{ marginTop: '16px' }} onClick={() => navigate('/add-mock')}>+ Add Mock Test</button>
+            <div className="empty-title">No activity yet</div>
+            <div className="empty-sub">Take a PYQ paper or log an external mock to start tracking</div>
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 16, flexWrap: 'wrap' }}>
+              <button className="btn btn-primary" onClick={() => navigate('/pyq-tests')}>Start PYQ</button>
+              <button className="btn" onClick={() => navigate('/add-mock')}>+ Add Mock</button>
+            </div>
           </div>
         ) : (
           <div className="table-scroll">
-            <div className="table-header" style={{ gridTemplateColumns: '1fr 100px 120px 120px 120px 120px' }}>
+            <div className="table-header" style={{ gridTemplateColumns: '90px 1.4fr 100px 100px 1fr 110px' }}>
+              <div className="th">Source</div>
+              <div className="th">Activity</div>
               <div className="th">Date</div>
-              <div className="th">Exam</div>
               <div className="th" style={{ textAlign: 'right' }}>Score</div>
-              <div className="th" style={{ textAlign: 'right' }}>Cutoff</div>
-              <div className="th" style={{ textAlign: 'center' }}>Probability</div>
+              <div className="th">Detail</div>
               <div className="th" style={{ textAlign: 'center' }}>Actions</div>
             </div>
-            {mocks.content.map((mock) => (
-              <div key={mock.id} className="table-row" style={{ gridTemplateColumns: '1fr 100px 120px 120px 120px 120px' }}>
-                <div style={{ fontSize: '13px' }}>{new Date(mock.testDate).toLocaleDateString()}</div>
-                <div style={{ fontSize: '12px', color: 'var(--text2)' }}>{mock.examName}</div>
-                <div style={{ fontSize: '13px', textAlign: 'right', fontWeight: 600, color: 'var(--accent2)' }}>{mock.totalScore.toFixed(2)}</div>
-                <div style={{ fontSize: '13px', textAlign: 'right', color: 'var(--text2)' }}>{mock.cutoffScore.toFixed(2)}</div>
-                <div style={{ textAlign: 'center' }}>
-                  <span className={`badge ${(mock.probabilityScore || 0) >= 75 ? 'badge-green' : (mock.probabilityScore || 0) >= 50 ? 'badge-amber' : 'badge-red'}`}>
-                    {mock.probabilityScore != null ? `${mock.probabilityScore}%` : 'N/A'}
+            {recentActivity.map((item) => (
+              <div key={`${item.kind}-${item.id}`} className="table-row" style={{ gridTemplateColumns: '90px 1.4fr 100px 100px 1fr 110px' }}>
+                <div>
+                  <span className={`badge ${item.kind === 'PYQ' ? 'badge-amber' : 'badge-green'}`}>
+                    {item.kind}
                   </span>
                 </div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {item.title}
+                  </div>
+                  <div style={{ fontSize: 11, color: 'var(--text3)' }}>{item.examName}</div>
+                </div>
+                <div style={{ fontSize: 13 }}>{new Date(item.date).toLocaleDateString()}</div>
+                <div style={{ fontSize: 13, textAlign: 'right', fontWeight: 600, color: 'var(--accent2)' }}>
+                  {item.score.toFixed(2)}
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--text2)' }}>
+                  {item.kind === 'PYQ' ? (
+                    <>
+                      {item.correctCount}C / {item.incorrectCount}I / {item.unattemptedCount}U
+                      {item.sections?.length > 0 && (
+                        <span style={{ color: 'var(--text3)' }}>
+                          {' · '}
+                          {item.sections.map((s) => `${s.sectionCode} ${s.score.toFixed(0)}`).join(' · ')}
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      Cutoff {item.cutoffScore.toFixed(1)}
+                      {item.probabilityScore != null ? ` · Prob ${item.probabilityScore}%` : ''}
+                    </>
+                  )}
+                </div>
                 <div style={{ textAlign: 'center' }}>
-                  <button className="btn btn-ghost" style={{ padding: '4px 12px', fontSize: '12px' }} onClick={() => handleViewMockDetail(mock.id)}>
-                    👁 View
-                  </button>
+                  {item.kind === 'PYQ' ? (
+                    <button
+                      className="btn btn-ghost"
+                      style={{ padding: '4px 12px', fontSize: 12 }}
+                      onClick={() => navigate(`/pyq-analyze/${item.id}`)}
+                    >
+                      Analyze
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-ghost"
+                      style={{ padding: '4px 12px', fontSize: 12 }}
+                      onClick={() => handleViewMockDetail(item.id)}
+                    >
+                      View
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

@@ -172,6 +172,128 @@ class PyqPaperService(
         )
     }
 
+    @Transactional(readOnly = true)
+    fun listRecentAttempts(
+        userEmail: String,
+        examId: UUID?,
+        limit: Int = 10
+    ): List<RecentPyqAttemptResponse> {
+        val user = userRepository.findByEmail(userEmail)
+            ?: throw IllegalArgumentException("User not found: $userEmail")
+        val capped = limit.coerceIn(1, 50)
+        return attemptRepository.findByUserOrderByStartedAtDesc(user)
+            .asSequence()
+            .filter { it.status == "SUBMITTED" }
+            .filter { examId == null || it.paper.exam.id == examId }
+            .sortedByDescending { it.submittedAt ?: it.startedAt }
+            .take(capped)
+            .map { attempt ->
+                val sections: List<SectionScoreResponse> =
+                    if (!attempt.sectionScoresJson.isNullOrBlank()) {
+                        objectMapper.readValue(attempt.sectionScoresJson)
+                    } else emptyList()
+                RecentPyqAttemptResponse(
+                    attemptId = attempt.id!!,
+                    paperId = attempt.paper.id!!,
+                    paperTitle = attempt.paper.title,
+                    examId = attempt.paper.exam.id!!,
+                    examName = attempt.paper.exam.name,
+                    year = attempt.paper.year,
+                    slot = attempt.paper.slot,
+                    submittedAt = attempt.submittedAt?.format(iso),
+                    totalScore = attempt.totalScore ?: 0.0,
+                    correctCount = attempt.correctCount ?: 0,
+                    incorrectCount = attempt.incorrectCount ?: 0,
+                    unattemptedCount = attempt.unattemptedCount ?: 0,
+                    questionCount = attempt.paper.questionCount,
+                    sections = sections
+                )
+            }
+            .toList()
+    }
+
+    @Transactional(readOnly = true)
+    fun getTopicPerformance(userEmail: String, examId: UUID?): PyqTopicPerformanceResponse {
+        val user = userRepository.findByEmail(userEmail)
+            ?: throw IllegalArgumentException("User not found: $userEmail")
+
+        data class TopicAcc(
+            var correct: Int = 0,
+            var incorrect: Int = 0,
+            var unattempted: Int = 0,
+            var total: Int = 0,
+            var section: String = "",
+            var sectionCode: String = "",
+            val paperIds: MutableSet<UUID> = mutableSetOf()
+        )
+
+        val buckets = linkedMapOf<String, TopicAcc>()
+        var topicsTagged = false
+        var attemptCount = 0
+
+        val attempts = attemptRepository.findByUserOrderByStartedAtDesc(user)
+            .filter { it.status == "SUBMITTED" }
+            .filter { examId == null || it.paper.exam.id == examId }
+
+        for (attempt in attempts) {
+            attemptCount += 1
+            val paper = attempt.paper
+            val root = objectMapper.readTree(paper.contentJson)
+            val questions = root.path("questions")
+            val answers: Map<String, String> =
+                if (!attempt.answersJson.isNullOrBlank()) objectMapper.readValue(attempt.answersJson)
+                else emptyMap()
+            val scored = scoreQuestions(
+                questions,
+                answers,
+                paper.exam.correctMarks,
+                paper.exam.negativeMarks
+            )
+            if (scored.topicsTagged) topicsTagged = true
+
+            for (section in scored.sectionAnalysis) {
+                for (topic in section.topics) {
+                    val key = "${section.sectionCode}||${topic.topic}"
+                    val acc = buckets.getOrPut(key) {
+                        TopicAcc(section = section.section, sectionCode = section.sectionCode)
+                    }
+                    acc.correct += topic.correct
+                    acc.incorrect += topic.incorrect
+                    acc.unattempted += topic.unattempted
+                    acc.total += topic.total
+                    paper.id?.let { acc.paperIds.add(it) }
+                }
+            }
+        }
+
+        val topics = buckets.map { (key, acc) ->
+            val topicName = key.substringAfter("||")
+            val attempted = acc.correct + acc.incorrect
+            PyqTopicPerformanceItem(
+                subject = acc.section.ifBlank { acc.sectionCode },
+                sectionCode = acc.sectionCode,
+                topic = topicName,
+                correct = acc.correct,
+                incorrect = acc.incorrect,
+                unattempted = acc.unattempted,
+                total = acc.total,
+                accuracy = if (attempted > 0) (acc.correct.toDouble() / attempted) * 100.0 else 0.0,
+                attemptCount = acc.paperIds.size
+            )
+        }.sortedWith(
+            compareBy<PyqTopicPerformanceItem> { it.accuracy }
+                .thenByDescending { it.total }
+                .thenBy { it.subject }
+                .thenBy { it.topic }
+        )
+
+        return PyqTopicPerformanceResponse(
+            topicsTagged = topicsTagged,
+            attemptCount = attemptCount,
+            topics = topics
+        )
+    }
+
     private data class Acc(
         var total: Int = 0,
         var attempted: Int = 0,

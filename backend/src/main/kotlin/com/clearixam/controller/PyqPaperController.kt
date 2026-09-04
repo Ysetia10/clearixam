@@ -5,6 +5,8 @@ import com.clearixam.dto.response.AttemptAnalysisResponse
 import com.clearixam.dto.response.AttemptResultResponse
 import com.clearixam.dto.response.PaperDetailResponse
 import com.clearixam.dto.response.PaperSummaryResponse
+import com.clearixam.dto.response.PyqTopicPerformanceResponse
+import com.clearixam.dto.response.RecentPyqAttemptResponse
 import com.clearixam.dto.response.StartAttemptResponse
 import com.clearixam.service.PyqPaperService
 import jakarta.validation.Valid
@@ -39,6 +41,21 @@ class PyqPaperController(
         authentication: Authentication
     ): ResponseEntity<StartAttemptResponse> =
         ResponseEntity.ok(pyqPaperService.startAttempt(authentication.name, id))
+
+    @GetMapping("/attempts/recent")
+    fun listRecentAttempts(
+        @RequestParam(required = false) examId: UUID?,
+        @RequestParam(defaultValue = "10") limit: Int,
+        authentication: Authentication
+    ): ResponseEntity<List<RecentPyqAttemptResponse>> =
+        ResponseEntity.ok(pyqPaperService.listRecentAttempts(authentication.name, examId, limit))
+
+    @GetMapping("/attempts/topic-performance")
+    fun topicPerformance(
+        @RequestParam(required = false) examId: UUID?,
+        authentication: Authentication
+    ): ResponseEntity<PyqTopicPerformanceResponse> =
+        ResponseEntity.ok(pyqPaperService.getTopicPerformance(authentication.name, examId))
 
     @PostMapping("/attempts/{id}/submit")
     fun submitAttempt(

@@ -30,7 +30,6 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
   const menuItems = [
     { text: 'Dashboard', path: '/dashboard', icon: '📊' },
     { text: 'Subject Analytics', path: '/subject-analytics', icon: '📈' },
-    { text: 'MCQ Classification', path: '/mcq-classification', icon: '🤖' },
     { text: 'Topic Performance', path: '/topic-performance', icon: '🎯' },
     { text: 'PYQ Tests', path: '/pyq-tests', icon: '⏱️' },
     { text: 'Sectional Tests', path: '/sectional-tests', icon: '📝' },
