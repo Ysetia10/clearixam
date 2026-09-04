@@ -47,7 +47,7 @@ export const PyqPapers = () => {
             PYQ Tests
           </h1>
           <p style={{ color: 'var(--text3)', fontSize: 14, margin: 0 }}>
-            Timed full papers. Latest attempt is kept for analysis.
+            Timed full papers and sectional PYQs. Latest attempt is kept for analysis.
           </p>
         </div>
         {exams.length > 0 && (
@@ -102,10 +102,14 @@ export const PyqPapers = () => {
                 <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{paper.title}</div>
                 <div style={{ fontSize: 13, color: 'var(--text3)' }}>
                   {paper.examName} · {paper.questionCount} questions · {paper.durationMinutes} min
+                  {paper.examName === 'SSC' ? ' · 4×15 min sections' : ''}
                 </div>
                 {selectedExam && (
                   <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>
-                    Marking +{selectedExam.correctMarks} / −{selectedExam.negativeMarks} · single timer
+                    Marking +{selectedExam.correctMarks} / −{selectedExam.negativeMarks}
+                    {selectedExam.name === 'SSC'
+                      ? ' · sectional timer · no calculator'
+                      : ' · single timer'}
                   </div>
                 )}
                 {latest && (

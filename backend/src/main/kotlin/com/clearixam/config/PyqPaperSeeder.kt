@@ -26,6 +26,9 @@ class PyqPaperSeeder(
         "cat-2025-slot-1" to "pyq/CAT-2025-Slot-01.json",
         "cat-2025-slot-2" to "pyq/CAT-2025-Slot-02.json",
         "cat-2025-slot-3" to "pyq/CAT-2025-Slot-03.json",
+        "ssc-cgl-2025-slot-1" to "pyq/SSC-CGL-2025-Slot-01.json",
+        "ssc-cgl-2025-slot-2" to "pyq/SSC-CGL-2025-Slot-02.json",
+        "ssc-cgl-2025-slot-3" to "pyq/SSC-CGL-2025-Slot-03.json",
     )
 
     @Transactional
@@ -36,12 +39,6 @@ class PyqPaperSeeder(
     }
 
     private fun seedPaper(slug: String, resourcePath: String) {
-        val exam = examRepository.findByName("CAT")
-        if (exam == null) {
-            log.warn("CAT exam not found; skip PYQ paper seed for {}", slug)
-            return
-        }
-
         val resource = ClassPathResource(resourcePath)
         if (!resource.exists()) {
             log.warn("Classpath {} missing; skip PYQ seed", resourcePath)
@@ -50,18 +47,39 @@ class PyqPaperSeeder(
 
         val json = resource.inputStream.bufferedReader().use { it.readText() }
         val root = objectMapper.readTree(json)
+        val examName = root.path("exam").asText("CAT")
+        val exam = examRepository.findByName(examName)
+        if (exam == null) {
+            log.warn("{} exam not found; skip PYQ paper seed for {}", examName, slug)
+            return
+        }
+
         val questionCount = root.path("questions").size()
         val slot = root.path("slot").asText(slug.substringAfterLast("-"))
-        val title = root.path("title").asText("CAT 2025 Slot $slot")
+        val defaultTitle = "$examName ${root.path("year").asInt(2025)} Slot $slot"
+        val title = root.path("title").asText(defaultTitle)
+        val durationMinutes = root.path("durationMinutes").asInt(
+            if (examName.equals("SSC", ignoreCase = true)) 60 else 120
+        )
+        val year = root.path("year").asInt(2025)
 
         val existing = paperRepository.findBySlug(slug)
         if (existing != null) {
-            if (existing.contentJson == json && existing.questionCount == questionCount) {
+            if (
+                existing.contentJson == json &&
+                existing.questionCount == questionCount &&
+                existing.durationMinutes == durationMinutes &&
+                existing.title == title
+            ) {
                 return
             }
             paperRepository.save(
                 existing.copy(
+                    exam = exam,
                     title = title,
+                    year = year,
+                    slot = slot,
+                    durationMinutes = durationMinutes,
                     questionCount = questionCount,
                     contentJson = json
                 )
@@ -75,9 +93,9 @@ class PyqPaperSeeder(
                 exam = exam,
                 slug = slug,
                 title = title,
-                year = root.path("year").asInt(2025),
+                year = year,
                 slot = slot,
-                durationMinutes = root.path("durationMinutes").asInt(120),
+                durationMinutes = durationMinutes,
                 questionCount = questionCount,
                 contentJson = json
             )

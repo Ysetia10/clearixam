@@ -1,0 +1,48 @@
+{
+  "exam": "SSC",
+  "sections": {
+    "REASONING": [
+      "Analogy",
+      "Classification / Odd One Out",
+      "Series",
+      "Coding-Decoding",
+      "Blood Relation",
+      "Direction Sense",
+      "Seating / Arrangement",
+      "Syllogism / Venn",
+      "Mathematical Operations",
+      "Non-Verbal / Figures",
+      "Miscellaneous Reasoning"
+    ],
+    "GA": [
+      "History",
+      "Geography",
+      "Polity",
+      "Economy",
+      "Science & Tech",
+      "Static GK",
+      "Current Affairs",
+      "Miscellaneous GA"
+    ],
+    "QA": [
+      "Arithmetic",
+      "Algebra",
+      "Geometry / Mensuration",
+      "Number System",
+      "Data Interpretation",
+      "Trigonometry",
+      "Miscellaneous Quant"
+    ],
+    "ENG": [
+      "Error Spotting",
+      "Fillers / Cloze",
+      "Synonyms / Antonyms",
+      "Idioms / Phrases",
+      "One Word Substitution",
+      "Sentence Improvement",
+      "Active-Passive / Narration",
+      "Reading Comprehension",
+      "Miscellaneous English"
+    ]
+  }
+}

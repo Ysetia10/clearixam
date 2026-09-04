@@ -7,8 +7,44 @@ export type QuestionStatus =
   | 'marked'
   | 'answered-marked';
 
-export const SECTION_ORDER = ['VARC', 'DILR', 'QA'] as const;
-export type SectionCode = (typeof SECTION_ORDER)[number];
+/** Legacy CAT default; prefer sections derived from the paper. */
+export const CAT_SECTION_ORDER = ['VARC', 'DILR', 'QA'] as const;
+export const SECTION_ORDER = CAT_SECTION_ORDER;
+export type SectionCode = string;
+
+export type PaperSectionMeta = {
+  code: string;
+  name: string;
+  qFrom: number;
+  qTo: number;
+  durationMinutes: number;
+};
+
+export function sectionsFromPaper(paper: {
+  sections?: PaperSectionMeta[];
+  questions: { sectionCode: string; section: string; qNo: number }[];
+  sectionDurationMinutes?: number | null;
+}): PaperSectionMeta[] {
+  if (paper.sections && paper.sections.length > 0) {
+    return paper.sections;
+  }
+  const duration = paper.sectionDurationMinutes ?? 15;
+  const order: PaperSectionMeta[] = [];
+  const seen = new Set<string>();
+  for (const q of paper.questions) {
+    if (seen.has(q.sectionCode)) continue;
+    seen.add(q.sectionCode);
+    const nos = paper.questions.filter((x) => x.sectionCode === q.sectionCode).map((x) => x.qNo);
+    order.push({
+      code: q.sectionCode,
+      name: q.section,
+      qFrom: Math.min(...nos),
+      qTo: Math.max(...nos),
+      durationMinutes: duration,
+    });
+  }
+  return order;
+}
 
 export function getQuestionStatus(
   qNo: number,

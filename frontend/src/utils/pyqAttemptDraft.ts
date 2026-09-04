@@ -20,6 +20,11 @@ export type PyqAttemptDraft = {
   paused: boolean;
   durationMinutes: number;
   savedAt: number;
+  /** Sectional timing extras (optional for CAT full-paper drafts). */
+  timingMode?: 'full' | 'sectional';
+  activeSectionIndex?: number;
+  completedSections?: string[];
+  sectionDurationMinutes?: number;
 };
 
 function storageKey(paperId: string, userEmail: string | null): string {
@@ -57,11 +62,15 @@ export function clearPyqDraft(paperId: string, userEmail: string | null): void {
 
 /** Remaining seconds implied by a draft at "now". */
 export function remainingFromDraft(draft: PyqAttemptDraft, now = Date.now()): number | null {
-  if (!draft.testStarted) return draft.durationMinutes * 60;
+  const fallbackMinutes =
+    draft.timingMode === 'sectional'
+      ? draft.sectionDurationMinutes ?? 15
+      : draft.durationMinutes;
+  if (!draft.testStarted) return fallbackMinutes * 60;
   if (draft.paused) {
     return Math.max(0, draft.pausedRemainingSeconds ?? 0);
   }
-  if (draft.endsAtMs == null) return draft.durationMinutes * 60;
+  if (draft.endsAtMs == null) return fallbackMinutes * 60;
   return Math.max(0, Math.ceil((draft.endsAtMs - now) / 1000));
 }
 
@@ -70,9 +79,8 @@ export function isDraftResumable(draft: PyqAttemptDraft, now = Date.now()): bool
   if (!draft.testStarted) return true;
   const left = remainingFromDraft(draft, now);
   if (left == null) return false;
-  // Allow resume with 0 so we can auto-submit with saved answers.
+  // Allow resume with 0 so we can auto-submit / auto-advance with saved answers.
   if (draft.paused) return true;
-  // If timer already expired more than 2 minutes ago and no answers, skip.
   if (left === 0 && Object.keys(draft.answers).length === 0) return false;
   return true;
 }

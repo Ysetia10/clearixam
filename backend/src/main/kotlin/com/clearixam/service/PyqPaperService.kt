@@ -503,6 +503,31 @@ class PyqPaperService(
             )
         }
 
+        val sectionsNode = root.path("sections")
+        val sections = if (sectionsNode.isArray) {
+            sectionsNode.map { s ->
+                PaperSectionMetaResponse(
+                    code = s.path("code").asText(),
+                    name = s.path("name").asText(),
+                    qFrom = s.path("qFrom").asInt(),
+                    qTo = s.path("qTo").asInt(),
+                    durationMinutes = s.path("durationMinutes").asInt(
+                        root.path("sectionDurationMinutes").asInt(15)
+                    )
+                )
+            }
+        } else emptyList()
+
+        val timingMode = root.path("timingMode").asText("full")
+        val sectionDuration = root.path("sectionDurationMinutes").takeIf { !it.isMissingNode && !it.isNull }
+            ?.asInt()
+            ?: sections.firstOrNull()?.durationMinutes
+        val calculator = when {
+            root.path("calculator").isBoolean -> root.path("calculator").asBoolean()
+            paper.exam.name.equals("SSC", ignoreCase = true) -> false
+            else -> true
+        }
+
         return PaperDetailResponse(
             id = paper.id!!,
             slug = paper.slug,
@@ -517,7 +542,11 @@ class PyqPaperService(
                 incorrect = markingNode.path("incorrect").asDouble(paper.exam.negativeMarks),
                 unattempted = markingNode.path("unattempted").asDouble(0.0)
             ),
-            questions = questions
+            questions = questions,
+            timingMode = timingMode,
+            sectionDurationMinutes = sectionDuration,
+            calculator = calculator,
+            sections = sections
         )
     }
 

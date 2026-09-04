@@ -41,6 +41,14 @@ data class PaperQuestionResponse(
     val topic: String? = null
 )
 
+data class PaperSectionMetaResponse(
+    val code: String,
+    val name: String,
+    val qFrom: Int,
+    val qTo: Int,
+    val durationMinutes: Int
+)
+
 data class PaperDetailResponse(
     val id: UUID,
     val slug: String,
@@ -51,7 +59,12 @@ data class PaperDetailResponse(
     val durationMinutes: Int,
     val questionCount: Int,
     val marking: MarkingResponse,
-    val questions: List<PaperQuestionResponse>
+    val questions: List<PaperQuestionResponse>,
+    /** "full" = single paper timer; "sectional" = per-section timer with sequential lock. */
+    val timingMode: String = "full",
+    val sectionDurationMinutes: Int? = null,
+    val calculator: Boolean = true,
+    val sections: List<PaperSectionMetaResponse> = emptyList()
 )
 
 data class MarkingResponse(

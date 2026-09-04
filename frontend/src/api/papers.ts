@@ -36,6 +36,14 @@ export interface PaperQuestion {
   topic?: string | null;
 }
 
+export interface PaperSectionMeta {
+  code: string;
+  name: string;
+  qFrom: number;
+  qTo: number;
+  durationMinutes: number;
+}
+
 export interface PaperDetail {
   id: string;
   slug: string;
@@ -47,6 +55,10 @@ export interface PaperDetail {
   questionCount: number;
   marking: { correct: number; incorrect: number; unattempted: number };
   questions: PaperQuestion[];
+  timingMode?: 'full' | 'sectional' | string;
+  sectionDurationMinutes?: number | null;
+  calculator?: boolean;
+  sections?: PaperSectionMeta[];
 }
 
 export interface StartAttemptResponse {
