@@ -268,7 +268,10 @@ class PyqPaperService(
 
         val topics = buckets.map { (key, acc) ->
             val topicName = key.substringAfter("||")
-            val attempted = acc.correct + acc.incorrect
+            val missed = acc.incorrect + acc.unattempted
+            // Include skips in the denominator so unattempted hurts accuracy like a miss.
+            val accuracy =
+                if (acc.total > 0) (acc.correct.toDouble() / acc.total) * 100.0 else 0.0
             PyqTopicPerformanceItem(
                 subject = acc.section.ifBlank { acc.sectionCode },
                 sectionCode = acc.sectionCode,
@@ -277,11 +280,13 @@ class PyqPaperService(
                 incorrect = acc.incorrect,
                 unattempted = acc.unattempted,
                 total = acc.total,
-                accuracy = if (attempted > 0) (acc.correct.toDouble() / attempted) * 100.0 else 0.0,
-                attemptCount = acc.paperIds.size
+                accuracy = accuracy,
+                attemptCount = acc.paperIds.size,
+                missed = missed
             )
         }.sortedWith(
             compareBy<PyqTopicPerformanceItem> { it.accuracy }
+                .thenByDescending { it.missed }
                 .thenByDescending { it.total }
                 .thenBy { it.subject }
                 .thenBy { it.topic }
@@ -291,6 +296,77 @@ class PyqPaperService(
             topicsTagged = topicsTagged,
             attemptCount = attemptCount,
             topics = topics
+        )
+    }
+
+    @Transactional(readOnly = true)
+    fun getTopicQuestions(
+        userEmail: String,
+        examId: UUID?,
+        sectionCode: String,
+        topic: String
+    ): TopicQuestionsResponse {
+        val user = userRepository.findByEmail(userEmail)
+            ?: throw IllegalArgumentException("User not found: $userEmail")
+
+        val wantedTopic = topic.ifBlank { "Uncategorized" }
+        val wantedSection = sectionCode.trim()
+        val out = mutableListOf<TopicQuestionReviewResponse>()
+
+        val attempts = attemptRepository.findByUserOrderByStartedAtDesc(user)
+            .filter { it.status == "SUBMITTED" }
+            .filter { examId == null || it.paper.exam.id == examId }
+
+        for (attempt in attempts) {
+            val paper = attempt.paper
+            val root = objectMapper.readTree(paper.contentJson)
+            val questions = root.path("questions")
+            val answers: Map<String, String> =
+                if (!attempt.answersJson.isNullOrBlank()) objectMapper.readValue(attempt.answersJson)
+                else emptyMap()
+            val scored = scoreQuestions(
+                questions,
+                answers,
+                paper.exam.correctMarks,
+                paper.exam.negativeMarks
+            )
+            for (review in scored.questionReviews) {
+                val reviewTopic = review.topic?.takeIf { it.isNotBlank() } ?: "Uncategorized"
+                if (review.sectionCode != wantedSection) continue
+                if (reviewTopic != wantedTopic) continue
+                out.add(
+                    TopicQuestionReviewResponse(
+                        attemptId = attempt.id!!,
+                        paperId = paper.id!!,
+                        paperTitle = paper.title,
+                        qNo = review.qNo,
+                        sectionCode = review.sectionCode,
+                        section = review.section,
+                        topic = review.topic,
+                        type = review.type,
+                        stem = review.stem,
+                        options = review.options,
+                        status = review.status,
+                        userAnswer = review.userAnswer,
+                        correctAnswer = review.correctAnswer,
+                        scoreDelta = review.scoreDelta,
+                        submittedAt = attempt.submittedAt?.format(iso)
+                    )
+                )
+            }
+        }
+
+        out.sortWith(
+            compareBy<TopicQuestionReviewResponse> { it.status != "INCORRECT" }
+                .thenBy { it.status != "UNATTEMPTED" }
+                .thenByDescending { it.submittedAt ?: "" }
+                .thenBy { it.qNo }
+        )
+
+        return TopicQuestionsResponse(
+            sectionCode = wantedSection,
+            topic = wantedTopic,
+            questions = out
         )
     }
 

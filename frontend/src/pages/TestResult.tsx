@@ -65,8 +65,8 @@ export const TestResult = () => {
         ))}
       </div>
 
-      <div className="card" style={{ padding: 0, overflow: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
+      <div className="card tt-result-sections" style={{ padding: 0, overflow: 'auto' }}>
+        <table className="tt-result-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
           <thead>
             <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
               {['Section', 'Attempted', 'Correct', 'Incorrect', 'Unattempted', 'Score'].map((h) => (
@@ -91,6 +91,21 @@ export const TestResult = () => {
         </table>
       </div>
 
+      <div className="tt-result-cards">
+        {result.sections.map((s) => (
+          <div key={s.sectionCode} className="card" style={{ padding: 14 }}>
+            <div style={{ fontWeight: 700, marginBottom: 8 }}>{s.section || s.sectionCode}</div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 13 }}>
+              <div>Attempted <strong>{s.attempted}/{s.total}</strong></div>
+              <div>Score <strong>{s.score.toFixed(1)}</strong></div>
+              <div style={{ color: 'var(--green)' }}>Correct {s.correct}</div>
+              <div style={{ color: 'var(--red)' }}>Incorrect {s.incorrect}</div>
+              <div style={{ color: 'var(--text3)' }}>Unattempted {s.unattempted}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div style={{ display: 'flex', gap: 12, marginTop: 24, flexWrap: 'wrap' }}>
         <button className="btn btn-primary" onClick={() => navigate(`/pyq-analyze/${result.attemptId}`)}>
           Analyze
@@ -102,6 +117,13 @@ export const TestResult = () => {
           Back to PYQ tests
         </button>
       </div>
+      <style>{`
+        .tt-result-cards { display: none; gap: 10px; margin-top: 0; }
+        @media (max-width: 700px) {
+          .tt-result-sections { display: none; }
+          .tt-result-cards { display: grid; }
+        }
+      `}</style>
     </DashboardLayout>
   );
 };

@@ -82,7 +82,7 @@ export const PyqPapers = () => {
         style={{
           display: 'grid',
           gap: 16,
-          gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
         }}
       >
         {papers?.map((paper) => {

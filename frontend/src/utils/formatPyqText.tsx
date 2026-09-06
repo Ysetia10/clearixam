@@ -139,9 +139,137 @@ export function MathText({
 
 export function stripOptionNumberPrefix(optionKey: string, text: string): string {
   let t = text.trim();
+  // Keep bare labels like "(1)" / "(a)" — stripping them leaves empty radios.
+  if (/^\(\s*[1-4a-d]\s*\)$/i.test(t)) {
+    return t;
+  }
   t = t.replace(new RegExp(`^\\(\\s*${optionKey}\\s*\\)\\s*`), '');
   t = t.replace(/^\(\s*[1-4]\s*\)\s*/, '');
   return t;
+}
+
+/** Private-use marker wrapping SSC “highlighted” words/phrases for UI emphasis. */
+const HIGHLIGHT = '\uE001';
+
+const HIGHLIGHT_STOP = new Set([
+  'THE',
+  'AND',
+  'FOR',
+  'SELECT',
+  'MOST',
+  'APPROPRIATE',
+  'ANTONYM',
+  'SYNONYM',
+  'GIVEN',
+  'WORD',
+  'FROM',
+  'WITH',
+  'THAT',
+  'THIS',
+  'READ',
+  'FOLLOWING',
+  'PASSAGE',
+  'CHOOSE',
+  'FIND',
+  'PART',
+  'SENTENCE',
+  'CONTAINS',
+  'ERROR',
+  'OPTIONS',
+  'OPTION',
+  'BELOW',
+  'ABOVE',
+  'WHICH',
+  'WHAT',
+  'WHEN',
+  'WHERE',
+  'WHOSE',
+  'AMONG',
+  'BASED',
+]);
+
+/**
+ * Mark emphasized targets in SSC English stems (ALL-CAPS words, “highlighted part”, etc.).
+ */
+export function markEmphasizedPyqText(raw: string, options?: Record<string, string> | null): string {
+  let text = raw;
+  if (text.includes(HIGHLIGHT)) return text;
+
+  // Antonym/synonym of the given word → WORD
+  text = text.replace(
+    /((?:most appropriate )?(?:antonym|synonym)(?: of the given word)?[.:\s]+)([A-Z][A-Z0-9\-']{2,})\b/,
+    (_m, pre: string, word: string) => `${pre}${HIGHLIGHT}${word}${HIGHLIGHT}`
+  );
+
+  // “replace the highlighted part of the sentence: …” → emphasize the sentence
+  if (!text.includes(HIGHLIGHT)) {
+    text = text.replace(
+      /(highlighted part of the sentence:\s*)(.+)$/i,
+      (_m, pre: string, sentence: string) => `${pre}${HIGHLIGHT}${sentence.trim()}${HIGHLIGHT}`
+    );
+  }
+
+  // Remaining ALL-CAPS tokens (length ≥ 3) when the stem refers to a highlighted/given word
+  if (
+    !text.includes(HIGHLIGHT) &&
+    /highlighted\s+word|given\s+word|homonym|antonym|synonym/i.test(text)
+  ) {
+    text = text.replace(/\b([A-Z][A-Z0-9\-']{2,})\b/g, (word) => {
+      if (HIGHLIGHT_STOP.has(word)) return word;
+      return `${HIGHLIGHT}${word}${HIGHLIGHT}`;
+    });
+  }
+
+  // Homonym / highlighted word without caps: emphasize a content word shared with options
+  if (!text.includes(HIGHLIGHT) && /highlighted\s+word|homonym of the highlighted/i.test(text) && options) {
+    const after = text.split(/highlighted\s+word[:.\s]*/i)[1] || text;
+    const stemWords = (after.toLowerCase().match(/[a-z][a-z'-]{2,}/g) || []).filter(
+      (w) => !['the', 'and', 'began', 'with', 'from', 'that', 'this', 'select', 'sentence', 'containing'].includes(w)
+    );
+    const optText = Object.values(options).join(' ').toLowerCase();
+    const shared = stemWords.find((w) => optText.split(w).length >= 3);
+    if (shared) {
+      const re = new RegExp(`\\b(${shared})\\b`, 'i');
+      text = text.replace(re, `${HIGHLIGHT}$1${HIGHLIGHT}`);
+    }
+  }
+
+  return text;
+}
+
+const highlightStyle: CSSProperties = {
+  background: 'color-mix(in srgb, var(--amber) 28%, transparent)',
+  color: 'inherit',
+  fontWeight: 700,
+  padding: '0 3px',
+  borderRadius: 3,
+  boxDecorationBreak: 'clone',
+  WebkitBoxDecorationBreak: 'clone',
+};
+
+function renderHighlightedMath(text: string): ReactNode {
+  if (!text.includes(HIGHLIGHT) && !text.includes(LOG_SUB)) {
+    return text;
+  }
+  if (!text.includes(HIGHLIGHT)) {
+    return renderMathNodes(text);
+  }
+
+  const parts = text.split(HIGHLIGHT);
+  const nodes: ReactNode[] = [];
+  for (let i = 0; i < parts.length; i++) {
+    if (!parts[i]) continue;
+    if (i % 2 === 1) {
+      nodes.push(
+        <mark key={`hl-${i}`} style={highlightStyle}>
+          {renderMathNodes(parts[i])}
+        </mark>
+      );
+    } else {
+      nodes.push(<Fragment key={`tx-${i}`}>{renderMathNodes(parts[i])}</Fragment>);
+    }
+  }
+  return <>{nodes}</>;
 }
 
 const JUMBLE_HINT =
@@ -176,19 +304,25 @@ export function PyqText({
   jumble = false,
   className,
   style,
+  options,
+  emphasize = true,
 }: {
   text: string;
   jumble?: boolean;
   className?: string;
   style?: CSSProperties;
+  options?: Record<string, string> | null;
+  /** Apply SSC-style highlight for “highlighted word/part” stems. */
+  emphasize?: boolean;
 }) {
-  const isJumble = jumble || JUMBLE_HINT.test(text);
-  const lines = isJumble ? formatJumbleLines(text) : [formatMathText(text)];
+  const emphasized = emphasize ? markEmphasizedPyqText(text, options) : text;
+  const isJumble = jumble || JUMBLE_HINT.test(emphasized);
+  const lines = isJumble ? formatJumbleLines(emphasized) : [formatMathText(emphasized)];
 
   if (!isJumble) {
     return (
       <span className={className} style={style}>
-        {renderMathNodes(lines[0])}
+        {renderHighlightedMath(lines[0])}
       </span>
     );
   }
@@ -201,7 +335,7 @@ export function PyqText({
     <div className={className} style={style}>
       {instruction && (
         <div style={{ marginBottom: sentences.length ? 12 : 0, lineHeight: 1.65 }}>
-          {renderMathNodes(instruction)}
+          {renderHighlightedMath(instruction)}
         </div>
       )}
       {sentences.map((line, i) => (
@@ -214,7 +348,7 @@ export function PyqText({
             whiteSpace: 'pre-wrap',
           }}
         >
-          {renderMathNodes(line)}
+          {renderHighlightedMath(line)}
         </div>
       ))}
     </div>
@@ -222,6 +356,8 @@ export function PyqText({
 }
 
 export function renderOptionLabel(key: string, raw: string): ReactNode {
-  const text = formatMathText(stripOptionNumberPrefix(key, raw));
+  const stripped = stripOptionNumberPrefix(key, raw).trim();
+  const display = stripped || `(${key})`;
+  const text = formatMathText(display);
   return <Fragment>{renderMathNodes(text)}</Fragment>;
 }

@@ -1,10 +1,28 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { examsApi, Exam } from '../api/exams';
-import { papersApi, PyqTopicPerformanceItem } from '../api/papers';
+import {
+  papersApi,
+  PyqTopicPerformanceItem,
+  TopicQuestionReview,
+} from '../api/papers';
+import { MathText, PyqText, renderOptionLabel } from '../utils/formatPyqText';
 
 type TopicRow = PyqTopicPerformanceItem;
+
+function statusColor(status: string) {
+  if (status === 'CORRECT') return 'var(--green)';
+  if (status === 'INCORRECT') return 'var(--red)';
+  return 'var(--text3)';
+}
+
+function statusLabel(status: string) {
+  if (status === 'CORRECT') return 'Correct';
+  if (status === 'INCORRECT') return 'Incorrect';
+  return 'Skipped';
+}
 
 const TopicPerformancePage: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +34,10 @@ const TopicPerformancePage: React.FC = () => {
   const [exams, setExams] = useState<Exam[]>([]);
   const [selectedExamId, setSelectedExamId] = useState('');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+  const [drillTopic, setDrillTopic] = useState<TopicRow | null>(null);
+  const [drillQuestions, setDrillQuestions] = useState<TopicQuestionReview[]>([]);
+  const [drillLoading, setDrillLoading] = useState(false);
+  const [drillError, setDrillError] = useState<string | null>(null);
 
   useEffect(() => {
     examsApi
@@ -46,6 +68,25 @@ const TopicPerformancePage: React.FC = () => {
     if (!selectedExamId) return;
     void loadTopicPerformance(selectedExamId);
   }, [selectedExamId]);
+
+  const openTopicDrill = async (item: TopicRow) => {
+    setDrillTopic(item);
+    setDrillQuestions([]);
+    setDrillError(null);
+    setDrillLoading(true);
+    try {
+      const data = await papersApi.getTopicQuestions(
+        item.sectionCode,
+        item.topic,
+        selectedExamId || undefined
+      );
+      setDrillQuestions(data.questions || []);
+    } catch (err: unknown) {
+      setDrillError((err as Error).message || 'Failed to load topic questions');
+    } finally {
+      setDrillLoading(false);
+    }
+  };
 
   const toggleCollapse = (subject: string) => {
     setCollapsed((prev) => ({ ...prev, [subject]: !prev[subject] }));
@@ -113,10 +154,16 @@ const TopicPerformancePage: React.FC = () => {
 
     Object.keys(subjectData).forEach((s) => {
       const d = subjectData[s];
-      const total = d.totalCorrect + d.totalIncorrect;
+      const total = d.totalCorrect + d.totalIncorrect + d.totalUnattempted;
+      // Skips count in the denominator — same weight as wrong for weakness ranking.
       d.overallAccuracy = total > 0 ? (d.totalCorrect / total) * 100 : 0;
       d.weakTopics = d.topics.filter((t) => t.accuracy < 60).length;
-      d.topics.sort((a, b) => a.accuracy - b.accuracy);
+      d.topics.sort((a, b) => {
+        if (a.accuracy !== b.accuracy) return a.accuracy - b.accuracy;
+        const aMiss = a.missed ?? a.incorrect + a.unattempted;
+        const bMiss = b.missed ?? b.incorrect + b.unattempted;
+        return bMiss - aMiss;
+      });
     });
 
     const sorted = Object.keys(subjectData).sort(
@@ -198,7 +245,6 @@ const TopicPerformancePage: React.FC = () => {
             )}
           </div>
           <div className="card" style={{ textAlign: 'center', padding: '60px 40px' }}>
-            <div style={{ fontSize: 40, marginBottom: 16 }}>🎯</div>
             <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
               No PYQ topic data yet. Take a timed PYQ paper and submit it — topics from the paper will
               show up here.
@@ -213,6 +259,7 @@ const TopicPerformancePage: React.FC = () => {
   }
 
   const totalQuestions = performance.reduce((s, i) => s + i.correct + i.incorrect + i.unattempted, 0);
+  const totalSkipped = performance.reduce((s, i) => s + i.unattempted, 0);
   const weakSubjects = sorted.filter((s) => subjectData[s].overallAccuracy < 60).length;
   const strongSubjects = sorted.filter((s) => subjectData[s].overallAccuracy >= 80).length;
 
@@ -234,6 +281,7 @@ const TopicPerformancePage: React.FC = () => {
             <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--text3)' }}>
               From {attemptCount} PYQ attempt{attemptCount === 1 ? '' : 's'}
               {topicsTagged ? '' : ' · some questions may be uncategorized'}
+              {' · '}skips count as misses
             </p>
           </div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -265,127 +313,54 @@ const TopicPerformancePage: React.FC = () => {
             marginBottom: 20,
           }}
         >
-          <div
-            className="card"
-            style={{
-              background: 'rgba(33,150,243,0.08)',
-              border: '1px solid rgba(33,150,243,0.25)',
-              padding: '20px 18px',
-            }}
-          >
-            <div style={{ fontSize: 32, fontWeight: 700, color: 'var(--blue)', lineHeight: 1 }}>
-              {totalQuestions}
-            </div>
+          {[
+            { label: 'QUESTIONS', value: totalQuestions, color: 'var(--blue)', bg: 'rgba(33,150,243,0.08)', border: 'rgba(33,150,243,0.25)' },
+            { label: 'SKIPPED', value: totalSkipped, color: 'var(--amber)', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
+            { label: 'WEAK', value: weakSubjects, color: weakSubjects > 0 ? 'var(--red)' : 'var(--green)', bg: weakSubjects > 0 ? 'var(--red-glow)' : 'var(--green-glow)', border: weakSubjects > 0 ? 'rgba(244,63,94,0.3)' : 'rgba(34,211,160,0.3)' },
+            { label: 'STRONG', value: strongSubjects, color: 'var(--green)', bg: 'var(--green-glow)', border: 'rgba(34,211,160,0.3)' },
+          ].map((card) => (
             <div
+              key={card.label}
+              className="card"
               style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '1px',
-                textTransform: 'uppercase',
-                color: 'var(--blue)',
-                marginTop: 6,
+                background: card.bg,
+                border: `1px solid ${card.border}`,
+                padding: '20px 18px',
               }}
             >
-              QUESTIONS
+              <div style={{ fontSize: 32, fontWeight: 700, color: card.color, lineHeight: 1 }}>
+                {card.value}
+              </div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  color: card.color,
+                  marginTop: 6,
+                }}
+              >
+                {card.label}
+              </div>
             </div>
-          </div>
-          <div
-            className="card"
-            style={{
-              background: weakSubjects > 0 ? 'var(--red-glow)' : 'var(--green-glow)',
-              border: `1px solid ${weakSubjects > 0 ? 'rgba(244,63,94,0.3)' : 'rgba(34,211,160,0.3)'}`,
-              padding: '20px 18px',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 32,
-                fontWeight: 700,
-                color: weakSubjects > 0 ? 'var(--red)' : 'var(--green)',
-                lineHeight: 1,
-              }}
-            >
-              {weakSubjects}
-            </div>
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '1px',
-                textTransform: 'uppercase',
-                color: weakSubjects > 0 ? 'var(--red)' : 'var(--green)',
-                marginTop: 6,
-              }}
-            >
-              WEAK
-            </div>
-          </div>
-          <div
-            className="card"
-            style={{
-              background: 'var(--green-glow)',
-              border: '1px solid rgba(34,211,160,0.3)',
-              padding: '20px 18px',
-            }}
-          >
-            <div style={{ fontSize: 32, fontWeight: 700, color: 'var(--green)', lineHeight: 1 }}>
-              {strongSubjects}
-            </div>
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '1px',
-                textTransform: 'uppercase',
-                color: 'var(--green)',
-                marginTop: 6,
-              }}
-            >
-              STRONG
-            </div>
-          </div>
-          <div
-            className="card"
-            style={{
-              background: 'rgba(245,158,11,0.08)',
-              border: '1px solid rgba(245,158,11,0.25)',
-              padding: '20px 18px',
-            }}
-          >
-            <div style={{ fontSize: 32, fontWeight: 700, color: 'var(--amber)', lineHeight: 1 }}>
-              {sorted.length}
-            </div>
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '1px',
-                textTransform: 'uppercase',
-                color: 'var(--amber)',
-                marginTop: 6,
-              }}
-            >
-              SECTIONS
-            </div>
-          </div>
+          ))}
         </div>
 
-        {weakSubjects > 0 && (
-          <div
-            style={{
-              padding: '12px 18px',
-              background: 'rgba(245,158,11,0.07)',
-              border: '1px solid rgba(245,158,11,0.2)',
-              borderRadius: 10,
-              marginBottom: 28,
-              fontSize: 13,
-              color: 'var(--text2)',
-            }}
-          >
-            Weak sections/topics are ordered lowest first — based on PYQ attempts only (not logged
-            mocks).
-          </div>
-        )}
+        <div
+          style={{
+            padding: '12px 18px',
+            background: 'rgba(245,158,11,0.07)',
+            border: '1px solid rgba(245,158,11,0.2)',
+            borderRadius: 10,
+            marginBottom: 28,
+            fontSize: 13,
+            color: 'var(--text2)',
+          }}
+        >
+          Accuracy = correct ÷ all questions (wrong <strong>and</strong> skipped). Click a topic to
+          review every contributing question.
+        </div>
 
         {sorted.map((subject) => {
           const d = subjectData[subject];
@@ -443,6 +418,7 @@ const TopicPerformancePage: React.FC = () => {
                   alignItems: 'center',
                   fontSize: 13,
                   color: 'var(--text3)',
+                  flexWrap: 'wrap',
                 }}
               >
                 <span>
@@ -456,6 +432,12 @@ const TopicPerformancePage: React.FC = () => {
                 <span style={{ color: d.totalCorrect > 0 ? 'var(--green)' : 'var(--red)' }}>
                   {correctRatio} correct
                 </span>
+                {d.totalUnattempted > 0 && (
+                  <>
+                    <span>·</span>
+                    <span style={{ color: 'var(--amber)' }}>{d.totalUnattempted} skipped</span>
+                  </>
+                )}
               </div>
 
               {!isCollapsed && (
@@ -470,20 +452,29 @@ const TopicPerformancePage: React.FC = () => {
                       color: 'var(--text3)',
                     }}
                   >
-                    Topics
+                    Topics · tap to open questions
                   </div>
 
                   {d.topics.map((item, idx) => {
                     const total = item.correct + item.incorrect + item.unattempted;
                     const tp = getPerf(item.accuracy);
-                    const highSkip = item.unattempted > total * 0.4;
+                    const missed = item.missed ?? item.incorrect + item.unattempted;
+                    const highSkip = item.unattempted > 0 && item.unattempted >= item.incorrect;
 
                     return (
-                      <div
+                      <button
                         key={`${item.topic}-${idx}`}
+                        type="button"
+                        onClick={() => void openTopicDrill(item)}
                         style={{
+                          width: '100%',
+                          textAlign: 'left',
                           padding: '14px 22px',
+                          border: 'none',
                           borderTop: idx > 0 ? '1px solid var(--border)' : 'none',
+                          background: 'transparent',
+                          color: 'inherit',
+                          cursor: 'pointer',
                         }}
                       >
                         <div
@@ -492,24 +483,25 @@ const TopicPerformancePage: React.FC = () => {
                             justifyContent: 'space-between',
                             alignItems: 'center',
                             marginBottom: 8,
+                            gap: 12,
                           }}
                         >
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', minWidth: 0 }}>
                             <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)' }}>
                               {item.topic}
                             </span>
                             {highSkip && (
                               <span style={{ fontSize: 11, color: 'var(--amber)', fontWeight: 500 }}>
-                                · high skip rate
+                                · skips ≥ wrongs
                               </span>
                             )}
                           </div>
-                          <span style={{ fontSize: 16, fontWeight: 700, color: tp.color, marginLeft: 12 }}>
+                          <span style={{ fontSize: 16, fontWeight: 700, color: tp.color, flexShrink: 0 }}>
                             {item.accuracy.toFixed(1)}%
                           </span>
                         </div>
 
-                        <div style={{ display: 'flex', gap: 16, fontSize: 13, color: 'var(--text3)' }}>
+                        <div style={{ display: 'flex', gap: 16, fontSize: 13, color: 'var(--text3)', flexWrap: 'wrap' }}>
                           <span>
                             <span
                               style={{
@@ -522,7 +514,7 @@ const TopicPerformancePage: React.FC = () => {
                                 verticalAlign: 'middle',
                               }}
                             />
-                            {item.correct}
+                            {item.correct} correct
                           </span>
                           <span>
                             <span
@@ -536,7 +528,7 @@ const TopicPerformancePage: React.FC = () => {
                                 verticalAlign: 'middle',
                               }}
                             />
-                            {item.incorrect}
+                            {item.incorrect} wrong
                           </span>
                           <span>
                             <span
@@ -545,15 +537,18 @@ const TopicPerformancePage: React.FC = () => {
                                 width: 7,
                                 height: 7,
                                 borderRadius: '50%',
-                                background: 'var(--text3)',
+                                background: 'var(--amber)',
                                 marginRight: 5,
                                 verticalAlign: 'middle',
                               }}
                             />
-                            {item.unattempted}
+                            {item.unattempted} skipped
+                          </span>
+                          <span style={{ color: 'var(--text2)' }}>
+                            {missed}/{total} missed
                           </span>
                         </div>
-                      </div>
+                      </button>
                     );
                   })}
                 </>
@@ -562,6 +557,156 @@ const TopicPerformancePage: React.FC = () => {
           );
         })}
       </div>
+
+      {drillTopic && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            background: 'rgba(0,0,0,0.65)',
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+            padding: 0,
+          }}
+          onClick={() => setDrillTopic(null)}
+        >
+          <div
+            className="card"
+            style={{
+              width: '100%',
+              maxWidth: 720,
+              maxHeight: 'min(88vh, 820px)',
+              overflow: 'auto',
+              margin: 0,
+              borderRadius: '16px 16px 0 0',
+              padding: 0,
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div
+              style={{
+                position: 'sticky',
+                top: 0,
+                background: 'var(--surface)',
+                borderBottom: '1px solid var(--border)',
+                padding: '16px 18px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: 12,
+                alignItems: 'flex-start',
+                zIndex: 1,
+              }}
+            >
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontWeight: 700, fontSize: 16 }}>{drillTopic.topic}</div>
+                <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>
+                  {drillTopic.subject} · {drillTopic.correct}C / {drillTopic.incorrect}W /{' '}
+                  {drillTopic.unattempted}S · {drillTopic.accuracy.toFixed(1)}%
+                </div>
+              </div>
+              <button type="button" className="btn" onClick={() => setDrillTopic(null)}>
+                Close
+              </button>
+            </div>
+
+            <div style={{ padding: 16 }}>
+              {drillLoading && (
+                <div style={{ display: 'flex', justifyContent: 'center', padding: 32 }}>
+                  <CircularProgress size={28} />
+                </div>
+              )}
+              {drillError && (
+                <div style={{ color: 'var(--red)', fontSize: 14, padding: 12 }}>{drillError}</div>
+              )}
+              {!drillLoading && !drillError && drillQuestions.length === 0 && (
+                <div style={{ color: 'var(--text3)', fontSize: 14, padding: 12 }}>
+                  No questions found for this topic.
+                </div>
+              )}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {drillQuestions.map((q) => (
+                  <div
+                    key={`${q.attemptId}-${q.qNo}`}
+                    className="card"
+                    style={{
+                      padding: 14,
+                      borderLeft: `3px solid ${statusColor(q.status)}`,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        gap: 10,
+                        marginBottom: 8,
+                        flexWrap: 'wrap',
+                        fontSize: 12,
+                        color: 'var(--text3)',
+                      }}
+                    >
+                      <span>
+                        Q{q.qNo} · {q.paperTitle}
+                      </span>
+                      <span style={{ color: statusColor(q.status), fontWeight: 700 }}>
+                        {statusLabel(q.status)} · {q.scoreDelta > 0 ? '+' : ''}
+                        {q.scoreDelta.toFixed(1)}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 14, lineHeight: 1.55, marginBottom: 10 }}>
+                      <PyqText text={q.stem} jumble options={q.options} />
+                    </div>
+                    {q.type === 'MCQ' && q.options && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 8 }}>
+                        {(['1', '2', '3', '4'] as const).map((key) => {
+                          const text = q.options?.[key];
+                          if (text == null) return null;
+                          const isCorrect = q.correctAnswer === key;
+                          const isYours = q.userAnswer === key;
+                          return (
+                            <div
+                              key={key}
+                              style={{
+                                fontSize: 13,
+                                padding: '8px 10px',
+                                borderRadius: 8,
+                                border: `1px solid ${
+                                  isCorrect ? 'var(--green)' : isYours ? 'var(--red)' : 'var(--border)'
+                                }`,
+                                background: isCorrect
+                                  ? 'var(--green-glow)'
+                                  : isYours
+                                    ? 'var(--red-glow)'
+                                    : 'transparent',
+                              }}
+                            >
+                              {renderOptionLabel(key, text)}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {q.type !== 'MCQ' && (
+                      <div style={{ fontSize: 13, color: 'var(--text2)' }}>
+                        Your answer:{' '}
+                        <strong>
+                          <MathText text={q.userAnswer || '—'} />
+                        </strong>
+                        {' · '}
+                        Correct:{' '}
+                        <strong>
+                          <MathText text={q.correctAnswer} />
+                        </strong>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 };

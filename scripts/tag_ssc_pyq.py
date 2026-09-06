@@ -21,14 +21,107 @@ REASONING_RULES: list[tuple[str, re.Pattern[str]]] = [
     ("Non-Verbal / Figures", re.compile(r"figure|diagram|mirror|water image|paper folded|embedded", re.I)),
 ]
 
-GA_RULES: list[tuple[str, re.Pattern[str]]] = [
-    ("Polity", re.compile(r"article|constitution|amendment|parliament|lok sabha|rajya sabha|schedule|president|supreme court|fundamental", re.I)),
-    ("History", re.compile(r"empire|dynasty|mughal|battle|independence|freedom|gandhi|nehru|ancient|medieval|revolt", re.I)),
-    ("Geography", re.compile(r"river|mountain|ocean|climate|soil|plateau|tropic|latitude|longitude|capital of|state of", re.I)),
-    ("Economy", re.compile(r"GDP|RBI|inflation|budget|tax|GST|fiscal|bank|SEBI|NITI", re.I)),
-    ("Science & Tech", re.compile(r"physics|chemistry|biology|virus|atom|planet|ISRO|NASA|vitamin|disease|cell|element", re.I)),
-    ("Current Affairs", re.compile(r"202[0-9]|recently|awarded|championship|olympic|world cup", re.I)),
-    ("Static GK", re.compile(r"national|emblem|book|author|award|festival|dance|temple|UNESCO", re.I)),
+GA_RULES: list[tuple[str, re.Pattern[str], int]] = [
+    (
+        "Polity & Governance",
+        re.compile(
+            r"article|constitution|amendment|parliament|lok sabha|rajya sabha|schedule|"
+            r"president|supreme court|fundamental|assembly|nomination|viceroy|"
+            r"regulating act|pitt.?s india|bharatiya nyaya|bns\b|bnss\b|sanhita|sedition|"
+            r"police custody|nagarik suraksha",
+            re.I,
+        ),
+        3,
+    ),
+    (
+        "History",
+        re.compile(
+            r"empire|dynasty|mughal|battle|independence|freedom|gandhi|nehru|ancient|"
+            r"medieval|revolt|harappan|viceroys?|east india company|curzon",
+            re.I,
+        ),
+        3,
+    ),
+    (
+        "Geography",
+        re.compile(
+            r"river|mountain|ocean|climate|soil|plateau|tropic|latitude|longitude|"
+            r"capital of|state of|landslide|coastal|sea[- ]level|weather parameter|"
+            r"atmosphere|ozone|demographic|population densit|population explosion|gravitational",
+            re.I,
+        ),
+        3,
+    ),
+    (
+        "Economy & Industry",
+        re.compile(
+            r"GDP|RBI|inflation|budget|tax|GST|fiscal|bank|SEBI|NITI|industry|"
+            r"light industr|heavy industr|iron and steel|mineral|aerospace|"
+            r"generative design|originating train",
+            re.I,
+        ),
+        3,
+    ),
+    (
+        "Science & Tech",
+        re.compile(
+            r"physics|chemistry|biology|virus|atom|planet|ISRO|NASA|vitamin|disease|"
+            r"cell|element|quantum|gland|nitrification|volcanic|atmospheric pressure|"
+            r"acceleration due to gravity|instrument is used|master gland",
+            re.I,
+        ),
+        3,
+    ),
+    (
+        "Environment",
+        re.compile(
+            r"ramsar|wetland|conservation|climate|COP\d*|biodiversity|butterfly|"
+            r"endemic species|environment",
+            re.I,
+        ),
+        3,
+    ),
+    (
+        "Schemes & Policies",
+        re.compile(
+            r"scheme|yojana|pm-|pranam|udan|khelo india|pmky|pm-kmy|kisan|"
+            r"postmen to deliver|financial services|viability",
+            re.I,
+        ),
+        3,
+    ),
+    (
+        "Sports",
+        re.compile(r"long jump|khelo|sports|athlet|runway|takeoff|kendriya vidyalaya", re.I),
+        3,
+    ),
+    (
+        "Art & Culture",
+        re.compile(
+            r"classical music|hindustani|teen taal|khali|matra|dance|festival|"
+            r"temple|music tradition",
+            re.I,
+        ),
+        3,
+    ),
+    (
+        "Current Affairs",
+        re.compile(
+            r"202[0-9]|201[89]|recently|awarded|championship|olympic|world cup|"
+            r"unveiled|meeting on|brics|foreign ministers",
+            re.I,
+        ),
+        2,
+    ),
+    (
+        "Static GK",
+        re.compile(
+            r"national|emblem|book|author|award|unesco|boundary between|"
+            r"first viceroy|convention is related",
+            re.I,
+        ),
+        2,
+    ),
 ]
 
 QA_RULES: list[tuple[str, re.Pattern[str], int]] = [
@@ -60,10 +153,13 @@ def tag_reasoning(stem: str) -> str:
 
 
 def tag_ga(stem: str) -> str:
-    for topic, pat in GA_RULES:
+    scores: dict[str, int] = {}
+    for topic, pat, w in GA_RULES:
         if pat.search(stem):
-            return topic
-    return "Miscellaneous GA"
+            scores[topic] = scores.get(topic, 0) + w
+    if not scores:
+        return "Miscellaneous GA"
+    return max(scores.items(), key=lambda x: x[1])[0]
 
 
 def tag_qa(stem: str) -> str:

@@ -178,6 +178,7 @@ export function ExamCalculator({ open, onClose }: { open: boolean; onClose: () =
   return (
     <div
       ref={panelRef}
+      className="exam-calc"
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -186,6 +187,7 @@ export function ExamCalculator({ open, onClose }: { open: boolean; onClose: () =
         right: Math.max(8, pos.right),
         bottom: Math.max(8, pos.bottom),
         width: 272,
+        maxWidth: 'calc(100vw - 16px)',
         zIndex: 80,
         background: 'var(--surface)',
         border: '1px solid var(--border)',
@@ -259,6 +261,17 @@ export function ExamCalculator({ open, onClose }: { open: boolean; onClose: () =
           </button>
         ))}
       </div>
+      <style>{`
+        @media (max-width: 480px) {
+          .exam-calc {
+            left: 8px !important;
+            right: 8px !important;
+            bottom: max(8px, env(safe-area-inset-bottom)) !important;
+            width: auto !important;
+            max-width: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

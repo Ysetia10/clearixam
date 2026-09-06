@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CircularProgress, Box } from '@mui/material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { AttemptAnalysis, QuestionReview, papersApi } from '../api/papers';
-import { PyqText, MathText, stripOptionNumberPrefix } from '../utils/formatPyqText';
+import { PyqText, MathText, renderOptionLabel, stripOptionNumberPrefix } from '../utils/formatPyqText';
 
 type ReviewFilter = 'ALL' | 'INCORRECT' | 'CORRECT' | 'UNATTEMPTED';
 
@@ -95,7 +95,7 @@ function QuestionCard({ q }: { q: QuestionReview }) {
       {open && (
         <div style={{ padding: '0 16px 16px', borderTop: '1px solid var(--border)' }}>
           <div style={{ fontSize: 14, lineHeight: 1.6, marginTop: 12, marginBottom: 14 }}>
-            <PyqText text={q.stem} jumble />
+            <PyqText text={q.stem} jumble options={q.options} />
           </div>
 
           {q.type === 'MCQ' && q.options && (
@@ -123,7 +123,7 @@ function QuestionCard({ q }: { q: QuestionReview }) {
                       lineHeight: 1.45,
                     }}
                   >
-                    <MathText text={stripOptionNumberPrefix(key, text)} />
+                    {renderOptionLabel(key, text)}
                     {isCorrect && (
                       <span style={{ marginLeft: 8, color: 'var(--green)', fontWeight: 600 }}>Correct</span>
                     )}

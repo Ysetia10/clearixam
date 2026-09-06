@@ -172,14 +172,40 @@ export interface PyqTopicPerformanceItem {
   incorrect: number;
   unattempted: number;
   total: number;
+  /** Correct / total including skips. */
   accuracy: number;
   attemptCount: number;
+  missed?: number;
 }
 
 export interface PyqTopicPerformanceResponse {
   topicsTagged: boolean;
   attemptCount: number;
   topics: PyqTopicPerformanceItem[];
+}
+
+export interface TopicQuestionReview {
+  attemptId: string;
+  paperId: string;
+  paperTitle: string;
+  qNo: number;
+  sectionCode: string;
+  section: string;
+  topic: string | null;
+  type: string;
+  stem: string;
+  options: Record<string, string> | null;
+  status: 'CORRECT' | 'INCORRECT' | 'UNATTEMPTED' | string;
+  userAnswer: string | null;
+  correctAnswer: string;
+  scoreDelta: number;
+  submittedAt: string | null;
+}
+
+export interface TopicQuestionsResponse {
+  sectionCode: string;
+  topic: string;
+  questions: TopicQuestionReview[];
 }
 
 /** Jackson/Kotlin sometimes emits qNo as "qno"; normalize for the UI. */
@@ -235,4 +261,13 @@ export const papersApi = {
         ? `/attempts/topic-performance?examId=${encodeURIComponent(examId)}`
         : '/attempts/topic-performance'
     ),
+  getTopicQuestions: (sectionCode: string, topic: string, examId?: string) => {
+    const params = new URLSearchParams();
+    params.set('sectionCode', sectionCode);
+    params.set('topic', topic);
+    if (examId) params.set('examId', examId);
+    return apiClient.get<TopicQuestionsResponse>(
+      `/attempts/topic-performance/questions?${params.toString()}`
+    );
+  },
 };

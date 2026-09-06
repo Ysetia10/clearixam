@@ -186,12 +186,41 @@ data class PyqTopicPerformanceItem(
     val incorrect: Int,
     val unattempted: Int,
     val total: Int,
+    /** Correct / total including skips — skips count as misses for weakness ranking. */
     val accuracy: Double,
-    val attemptCount: Int
+    val attemptCount: Int,
+    /** incorrect + unattempted (marks/opportunity lost signals). */
+    val missed: Int = incorrect + unattempted
 )
 
 data class PyqTopicPerformanceResponse(
     val topicsTagged: Boolean,
     val attemptCount: Int,
     val topics: List<PyqTopicPerformanceItem>
+)
+
+data class TopicQuestionReviewResponse(
+    val attemptId: UUID,
+    val paperId: UUID,
+    val paperTitle: String,
+    @get:JsonProperty("qNo")
+    @param:JsonProperty("qNo")
+    val qNo: Int,
+    val sectionCode: String,
+    val section: String,
+    val topic: String?,
+    val type: String,
+    val stem: String,
+    val options: Map<String, String>?,
+    val status: String,
+    val userAnswer: String?,
+    val correctAnswer: String,
+    val scoreDelta: Double,
+    val submittedAt: String?
+)
+
+data class TopicQuestionsResponse(
+    val sectionCode: String,
+    val topic: String,
+    val questions: List<TopicQuestionReviewResponse>
 )
