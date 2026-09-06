@@ -27,10 +27,11 @@ function logSub(base: string): string {
   return `${LOG_SUB}${base}${LOG_SUB}`;
 }
 
-/** Strip leading PDF artifacts like "𝟓𝟐." or "52." from stems. */
+/** Strip leading PDF artifacts like "𝟓𝟐. " or "52. " from stems — not decimals like "3.2". */
 export function cleanStemArtifact(text: string): string {
   return text
-    .replace(/^[\s]*[𝟎-𝟗0-9]{1,2}\.\s*/u, '')
+    // Require whitespace after "N." so option values such as 3.2 / 4.3 are kept intact.
+    .replace(/^[\s]*[𝟎-𝟗0-9]{1,2}\.\s+/u, '')
     .replace(/^verbal ability and reading comprehension\s*/i, '')
     .trim();
 }
