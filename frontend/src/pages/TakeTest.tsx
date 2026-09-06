@@ -235,6 +235,7 @@ export const TakeTest = () => {
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [paper, setPaper] = useState<PaperDetail | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [secondsSpent, setSecondsSpent] = useState<Record<string, number>>({});
   const [visited, setVisited] = useState<Set<number>>(() => new Set());
   const [marked, setMarked] = useState<Set<number>>(() => new Set());
   const [index, setIndex] = useState(0);
@@ -252,11 +253,14 @@ export const TakeTest = () => {
   const autoSubmitted = useRef(false);
   const sectionAdvanceLock = useRef(false);
   const answersRef = useRef(answers);
+  const secondsSpentRef = useRef(secondsSpent);
+  const activeSegmentRef = useRef<{ qNo: number; startedAt: number } | null>(null);
   const startGeneration = useRef(0);
   const showToastRef = useRef(showToast);
   const navigateRef = useRef(navigate);
   const userEmail = getUserEmail();
   answersRef.current = answers;
+  secondsSpentRef.current = secondsSpent;
   showToastRef.current = showToast;
   navigateRef.current = navigate;
 
@@ -308,6 +312,7 @@ export const TakeTest = () => {
             Math.min(sections.length - 1, draft.activeSectionIndex ?? 0)
           );
           setAnswers(draft.answers || {});
+          setSecondsSpent(draft.secondsSpent || {});
           setVisited(
             new Set(
               draft.visited?.length
@@ -356,6 +361,7 @@ export const TakeTest = () => {
           setEndsAtMs(null);
           setIndex(0);
           setAnswers({});
+          setSecondsSpent({});
           setVisited(new Set([started.paper.questions[0]?.qNo].filter(Boolean) as number[]));
           setMarked(new Set());
           setPaletteSection(firstCode);
@@ -381,6 +387,21 @@ export const TakeTest = () => {
     };
   }, [paperId]);
 
+  const flushActiveSegment = useCallback(() => {
+    const seg = activeSegmentRef.current;
+    if (!seg) return;
+    const elapsed = Math.max(0, Math.floor((Date.now() - seg.startedAt) / 1000));
+    activeSegmentRef.current = null;
+    if (elapsed <= 0) return;
+    const key = String(seg.qNo);
+    const next = {
+      ...secondsSpentRef.current,
+      [key]: (secondsSpentRef.current[key] || 0) + elapsed,
+    };
+    secondsSpentRef.current = next;
+    setSecondsSpent(next);
+  }, []);
+
   const beginTest = useCallback(() => {
     if (!paper) return;
     const total =
@@ -395,6 +416,7 @@ export const TakeTest = () => {
 
   const togglePause = useCallback(() => {
     if (!paused) {
+      flushActiveSegment();
       const left =
         endsAtMs != null
           ? Math.max(0, Math.ceil((endsAtMs - Date.now()) / 1000))
@@ -407,14 +429,18 @@ export const TakeTest = () => {
     const remaining = secondsLeft ?? 0;
     setEndsAtMs(Date.now() + remaining * 1000);
     setPaused(false);
-  }, [paused, endsAtMs, secondsLeft]);
+  }, [paused, endsAtMs, secondsLeft, flushActiveSegment]);
 
   const submit = useCallback(async () => {
     if (!attemptId || submitting || autoSubmitted.current) return;
     autoSubmitted.current = true;
+    flushActiveSegment();
     setSubmitting(true);
     try {
-      const result = await papersApi.submitAttempt(attemptId, answersRef.current);
+      const result = await papersApi.submitAttempt(attemptId, {
+        answers: answersRef.current,
+        secondsSpent: secondsSpentRef.current,
+      });
       if (paperId) clearPyqDraft(paperId, userEmail);
       navigate(`/test-result/${result.attemptId}`, { replace: true, state: { result } });
     } catch (e) {
@@ -423,7 +449,7 @@ export const TakeTest = () => {
       setSubmitting(false);
       setShowSubmitModal(false);
     }
-  }, [attemptId, navigate, showToast, submitting, paperId, userEmail]);
+  }, [attemptId, navigate, showToast, submitting, paperId, userEmail, flushActiveSegment]);
 
   const advanceSection = useCallback(() => {
     if (!paper || sectionAdvanceLock.current) return;
@@ -437,6 +463,7 @@ export const TakeTest = () => {
     }
 
     sectionAdvanceLock.current = true;
+    flushActiveSegment();
     const nextIdx = activeSectionIndex + 1;
     const next = sections[nextIdx];
     const nextQIndex = paper.questions.findIndex((q) => q.sectionCode === next.code);
@@ -457,7 +484,19 @@ export const TakeTest = () => {
     window.setTimeout(() => {
       sectionAdvanceLock.current = false;
     }, 400);
-  }, [paper, activeSectionIndex, submit, showToast]);
+  }, [paper, activeSectionIndex, submit, showToast, flushActiveSegment]);
+
+  // Accumulate time on the active question (hidden from the test UI).
+  useEffect(() => {
+    flushActiveSegment();
+    if (!paper || !testStarted || paused) return;
+    const q = paper.questions[index];
+    if (!q) return;
+    activeSegmentRef.current = { qNo: q.qNo, startedAt: Date.now() };
+    return () => {
+      flushActiveSegment();
+    };
+  }, [paper, testStarted, paused, index, flushActiveSegment]);
 
   // Wall-clock timer
   useEffect(() => {
@@ -501,6 +540,7 @@ export const TakeTest = () => {
       userEmail,
       testStarted,
       answers,
+      secondsSpent,
       visited: [...visited],
       marked: [...marked],
       index,
@@ -523,6 +563,7 @@ export const TakeTest = () => {
     loading,
     testStarted,
     answers,
+    secondsSpent,
     visited,
     marked,
     index,

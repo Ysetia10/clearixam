@@ -98,7 +98,9 @@ data class TopicScoreResponse(
     val correct: Int,
     val incorrect: Int,
     val unattempted: Int,
-    val score: Double
+    val score: Double,
+    /** Average seconds spent on questions in this topic (null if no timing data). */
+    val avgSecondsSpent: Double? = null
 )
 
 data class SectionAnalysisResponse(
@@ -110,7 +112,8 @@ data class SectionAnalysisResponse(
     val incorrect: Int,
     val unattempted: Int,
     val score: Double,
-    val topics: List<TopicScoreResponse>
+    val topics: List<TopicScoreResponse>,
+    val avgSecondsSpent: Double? = null
 )
 
 data class AttemptResultResponse(
@@ -142,7 +145,9 @@ data class QuestionReviewResponse(
     val status: String,
     val userAnswer: String?,
     val correctAnswer: String,
-    val scoreDelta: Double
+    val scoreDelta: Double,
+    /** Seconds spent on this question during the attempt (null if unavailable). */
+    val secondsSpent: Int? = null
 )
 
 data class AttemptAnalysisResponse(
@@ -158,7 +163,9 @@ data class AttemptAnalysisResponse(
     val questionCount: Int,
     val topicsTagged: Boolean,
     val sections: List<SectionAnalysisResponse>,
-    val questions: List<QuestionReviewResponse> = emptyList()
+    val questions: List<QuestionReviewResponse> = emptyList(),
+    val totalSecondsSpent: Int? = null,
+    val avgSecondsPerQuestion: Double? = null
 )
 
 data class RecentPyqAttemptResponse(
@@ -190,7 +197,17 @@ data class PyqTopicPerformanceItem(
     val accuracy: Double,
     val attemptCount: Int,
     /** incorrect + unattempted (marks/opportunity lost signals). */
-    val missed: Int = incorrect + unattempted
+    val missed: Int = incorrect + unattempted,
+    /** Average seconds spent per question with timing data. */
+    val avgSecondsSpent: Double? = null,
+    /** Expected pace (seconds/question) based on paper timers. */
+    val expectedSeconds: Double? = null,
+    /** avgSecondsSpent / expectedSeconds (null if missing data). */
+    val paceRatio: Double? = null,
+    /** SLOW | OK | FAST | null when insufficient timing data. */
+    val speedLabel: String? = null,
+    /** Short coaching note combining accuracy + pace. */
+    val insight: String? = null
 )
 
 data class PyqTopicPerformanceResponse(
@@ -216,7 +233,8 @@ data class TopicQuestionReviewResponse(
     val userAnswer: String?,
     val correctAnswer: String,
     val scoreDelta: Double,
-    val submittedAt: String?
+    val submittedAt: String?,
+    val secondsSpent: Int? = null
 )
 
 data class TopicQuestionsResponse(

@@ -9,6 +9,8 @@ export type PyqAttemptDraft = {
   userEmail: string | null;
   testStarted: boolean;
   answers: Record<string, string>;
+  /** Seconds spent per question (qNo → seconds). Not shown during the test. */
+  secondsSpent?: Record<string, number>;
   visited: number[];
   marked: number[];
   index: number;

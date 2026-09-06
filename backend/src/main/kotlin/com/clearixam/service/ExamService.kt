@@ -38,14 +38,18 @@ class ExamService(
             val user = userRepository.findByEmail(userEmail) ?: return getAllExams()
 
             val exams = examRepository.findAll()
-            val examMockCounts = exams.map { exam ->
-                val mockCount = mockTestRepository.findByUserIdAndExamIdOrderByTestDateDesc(user.id!!, exam.id!!).size
-                exam to mockCount
-            }
+            val mockCounts = mockTestRepository.countByUserIdGroupedByExamId(user.id!!)
+                .associate { row ->
+                    val examId = row[0] as UUID
+                    val count = (row[1] as Number).toInt()
+                    examId to count
+                }
 
-            examMockCounts
-                .sortedWith(compareByDescending<Pair<Exam, Int>> { it.second }.thenBy { it.first.name })
-                .map { it.first }
+            exams
+                .sortedWith(
+                    compareByDescending<Exam> { mockCounts[it.id] ?: 0 }
+                        .thenBy { it.name }
+                )
                 .map { exam ->
                     ExamResponse(
                         id = exam.id!!,

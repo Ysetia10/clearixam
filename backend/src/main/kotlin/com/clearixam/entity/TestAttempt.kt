@@ -33,6 +33,10 @@ data class TestAttempt(
     @Column(columnDefinition = "TEXT")
     val sectionScoresJson: String? = null,
 
+    /** Map of qNo → seconds spent on that question, JSON object. */
+    @Column(columnDefinition = "TEXT")
+    val secondsSpentJson: String? = null,
+
     @Column
     val totalScore: Double? = null,
 

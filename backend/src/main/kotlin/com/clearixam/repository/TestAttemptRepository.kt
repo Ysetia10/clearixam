@@ -17,6 +17,7 @@ interface TestAttemptRepository : JpaRepository<TestAttempt, UUID> {
         paper: QuestionPaper,
         status: String
     ): List<TestAttempt>
+    fun findByUserAndStatusOrderBySubmittedAtDesc(user: User, status: String): List<TestAttempt>
     fun findByUserAndPaperOrderByStartedAtDesc(user: User, paper: QuestionPaper): List<TestAttempt>
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)

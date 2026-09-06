@@ -12,7 +12,12 @@ class ExamController(
     private val examService: ExamService
 ) {
     @GetMapping("/ordered")
-    fun getAllExamsOrderedByMockCount(authentication: Authentication): ResponseEntity<List<ExamResponse>> {
-        return ResponseEntity.ok(examService.getAllExamsOrderedByMockCount(authentication.name))
+    fun getAllExamsOrderedByMockCount(authentication: Authentication?): ResponseEntity<List<ExamResponse>> {
+        val email = authentication?.name
+        return if (email.isNullOrBlank()) {
+            ResponseEntity.ok(examService.getAllExams())
+        } else {
+            ResponseEntity.ok(examService.getAllExamsOrderedByMockCount(email))
+        }
     }
 }

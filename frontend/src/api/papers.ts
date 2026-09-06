@@ -87,6 +87,7 @@ export interface TopicScore {
   incorrect: number;
   unattempted: number;
   score: number;
+  avgSecondsSpent?: number | null;
 }
 
 export interface SectionAnalysis {
@@ -99,6 +100,7 @@ export interface SectionAnalysis {
   unattempted: number;
   score: number;
   topics: TopicScore[];
+  avgSecondsSpent?: number | null;
 }
 
 export interface AttemptResult {
@@ -129,6 +131,7 @@ export interface QuestionReview {
   userAnswer: string | null;
   correctAnswer: string;
   scoreDelta: number;
+  secondsSpent?: number | null;
 }
 
 export interface AttemptAnalysis {
@@ -145,6 +148,8 @@ export interface AttemptAnalysis {
   topicsTagged: boolean;
   sections: SectionAnalysis[];
   questions: QuestionReview[];
+  totalSecondsSpent?: number | null;
+  avgSecondsPerQuestion?: number | null;
 }
 
 export interface RecentPyqAttempt {
@@ -176,6 +181,11 @@ export interface PyqTopicPerformanceItem {
   accuracy: number;
   attemptCount: number;
   missed?: number;
+  avgSecondsSpent?: number | null;
+  expectedSeconds?: number | null;
+  paceRatio?: number | null;
+  speedLabel?: 'SLOW' | 'OK' | 'FAST' | string | null;
+  insight?: string | null;
 }
 
 export interface PyqTopicPerformanceResponse {
@@ -200,6 +210,7 @@ export interface TopicQuestionReview {
   correctAnswer: string;
   scoreDelta: number;
   submittedAt: string | null;
+  secondsSpent?: number | null;
 }
 
 export interface TopicQuestionsResponse {
@@ -235,8 +246,14 @@ export const papersApi = {
     const started = await apiClient.post<StartAttemptResponse>(`/papers/${id}/attempts`, {});
     return { ...started, paper: normalizePaper(started.paper) };
   },
-  submitAttempt: (attemptId: string, answers: Record<string, string>) =>
-    apiClient.post<AttemptResult>(`/attempts/${attemptId}/submit`, { answers }),
+  submitAttempt: (
+    attemptId: string,
+    payload: { answers: Record<string, string>; secondsSpent?: Record<string, number> }
+  ) =>
+    apiClient.post<AttemptResult>(`/attempts/${attemptId}/submit`, {
+      answers: payload.answers,
+      secondsSpent: payload.secondsSpent ?? {},
+    }),
   getAttempt: (attemptId: string) =>
     apiClient.get<AttemptResult>(`/attempts/${attemptId}`),
   getAnalysis: async (attemptId: string) => {

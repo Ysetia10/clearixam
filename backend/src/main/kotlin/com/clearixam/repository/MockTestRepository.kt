@@ -5,6 +5,8 @@ import com.clearixam.entity.User
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
 import java.util.UUID
@@ -20,4 +22,14 @@ interface MockTestRepository : JpaRepository<MockTest, UUID> {
     fun findByUserAndTestDate(user: User, testDate: LocalDate): MockTest?
     fun findByUserIdAndExamIdOrderByTestDateDesc(userId: UUID, examId: UUID): List<MockTest>
     fun findByUserIdAndExamIdOrderByTestDateAsc(userId: UUID, examId: UUID): List<MockTest>
+
+    @Query(
+        """
+        select m.exam.id, count(m)
+        from MockTest m
+        where m.user.id = :userId
+        group by m.exam.id
+        """
+    )
+    fun countByUserIdGroupedByExamId(@Param("userId") userId: UUID): List<Array<Any>>
 }

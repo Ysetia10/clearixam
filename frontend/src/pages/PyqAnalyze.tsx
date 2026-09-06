@@ -19,6 +19,15 @@ function statusLabel(status: string) {
   return 'Unattempted';
 }
 
+function formatDuration(totalSeconds: number | null | undefined) {
+  if (totalSeconds == null || Number.isNaN(totalSeconds)) return null;
+  const s = Math.max(0, Math.round(totalSeconds));
+  const m = Math.floor(s / 60);
+  const rem = s % 60;
+  if (m <= 0) return `${rem}s`;
+  return `${m}m ${rem.toString().padStart(2, '0')}s`;
+}
+
 function formatAnswer(q: QuestionReview, value: string | null | undefined) {
   if (!value) return '—';
   if (q.type === 'MCQ' && q.options?.[value]) {
@@ -29,6 +38,7 @@ function formatAnswer(q: QuestionReview, value: string | null | undefined) {
 
 function QuestionCard({ q }: { q: QuestionReview }) {
   const [open, setOpen] = useState(q.status === 'INCORRECT');
+  const timeLabel = formatDuration(q.secondsSpent);
 
   return (
     <div
@@ -89,6 +99,9 @@ function QuestionCard({ q }: { q: QuestionReview }) {
             {q.scoreDelta > 0 ? '+' : ''}
             {q.scoreDelta.toFixed(1)}
           </div>
+          {timeLabel && (
+            <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 4 }}>{timeLabel}</div>
+          )}
         </div>
       </button>
 
@@ -146,6 +159,12 @@ function QuestionCard({ q }: { q: QuestionReview }) {
                 <span style={{ color: 'var(--text3)' }}>Correct answer: </span>
                 <strong style={{ color: 'var(--green)' }}>{formatAnswer(q, q.correctAnswer)}</strong>
               </div>
+            </div>
+          )}
+
+          {timeLabel && (
+            <div style={{ fontSize: 13, color: 'var(--text2)', marginTop: 4 }}>
+              Time on this question: <strong>{timeLabel}</strong>
             </div>
           )}
         </div>
@@ -250,6 +269,14 @@ export const PyqAnalyze = () => {
           { label: 'Correct', value: String(analysis.correctCount) },
           { label: 'Incorrect', value: String(analysis.incorrectCount) },
           { label: 'Unattempted', value: String(analysis.unattemptedCount) },
+          ...(analysis.avgSecondsPerQuestion != null
+            ? [
+                {
+                  label: 'Avg time / Q',
+                  value: formatDuration(analysis.avgSecondsPerQuestion) || '—',
+                },
+              ]
+            : []),
         ].map((card) => (
           <div key={card.label} className="card" style={{ padding: 16 }}>
             <div style={{ fontSize: 12, color: 'var(--text3)' }}>{card.label}</div>
@@ -314,6 +341,12 @@ export const PyqAnalyze = () => {
               <div style={{ fontSize: 13, color: 'var(--text2)' }}>
                 {section.correct}C / {section.incorrect}I / {section.unattempted}U ·{' '}
                 <strong style={{ color: 'var(--accent)' }}>{section.score.toFixed(1)}</strong>
+                {section.avgSecondsSpent != null && (
+                  <>
+                    {' '}
+                    · avg {formatDuration(section.avgSecondsSpent)}/Q
+                  </>
+                )}
               </div>
             </div>
 
@@ -321,7 +354,7 @@ export const PyqAnalyze = () => {
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
                 <thead>
                   <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
-                    {['Topic', 'Attempted', 'Correct', 'Incorrect', 'Unattempted', 'Score'].map(
+                    {['Topic', 'Attempted', 'Correct', 'Incorrect', 'Unattempted', 'Avg time', 'Score'].map(
                       (h) => (
                         <th
                           key={h}
@@ -347,6 +380,9 @@ export const PyqAnalyze = () => {
                       <td style={{ padding: '10px 16px' }}>{topic.correct}</td>
                       <td style={{ padding: '10px 16px' }}>{topic.incorrect}</td>
                       <td style={{ padding: '10px 16px' }}>{topic.unattempted}</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--text2)' }}>
+                        {formatDuration(topic.avgSecondsSpent) ?? '—'}
+                      </td>
                       <td style={{ padding: '10px 16px', fontWeight: 700 }}>
                         {topic.score.toFixed(1)}
                       </td>

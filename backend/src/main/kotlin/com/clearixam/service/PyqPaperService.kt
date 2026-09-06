@@ -4,6 +4,7 @@ import com.clearixam.dto.request.SubmitAttemptRequest
 import com.clearixam.dto.response.*
 import com.clearixam.entity.QuestionPaper
 import com.clearixam.entity.TestAttempt
+import com.clearixam.repository.PaperListRow
 import com.clearixam.repository.QuestionPaperRepository
 import com.clearixam.repository.TestAttemptRepository
 import com.clearixam.repository.UserRepository
@@ -30,15 +31,18 @@ class PyqPaperService(
         val user = userRepository.findByEmail(userEmail)
             ?: throw IllegalArgumentException("User not found: $userEmail")
         val papers = if (examId != null) {
-            paperRepository.findByExamIdOrderByYearDescTitleAsc(examId)
+            paperRepository.findListRowsByExamId(examId)
         } else {
-            paperRepository.findAllByOrderByYearDescTitleAsc()
+            paperRepository.findAllListRows()
         }
+        // One query for all submitted attempts; keep latest per paper.
+        val latestByPaperId = attemptRepository
+            .findByUserAndStatusOrderBySubmittedAtDesc(user, "SUBMITTED")
+            .groupBy { it.paper.id!! }
+            .mapValues { (_, attempts) -> attempts.first() }
+
         return papers.map { paper ->
-            val latest = attemptRepository
-                .findByUserAndPaperAndStatusOrderBySubmittedAtDesc(user, paper, "SUBMITTED")
-                .firstOrNull()
-            toSummary(paper, latest)
+            toSummary(paper, latestByPaperId[paper.id])
         }
     }
 
@@ -100,12 +104,18 @@ class PyqPaperService(
             .mapValues { it.value.trim() }
             .filterValues { it.isNotEmpty() }
 
-        val scored = scoreQuestions(questions, answers, correctMarks, negativeMarks)
+        val secondsSpent = request.secondsSpent
+            .mapKeys { it.key.trim() }
+            .mapValues { (_, v) -> v.coerceAtLeast(0) }
+            .filterKeys { it.isNotEmpty() }
+
+        val scored = scoreQuestions(questions, answers, correctMarks, negativeMarks, secondsSpent)
 
         val updated = attempt.copy(
             submittedAt = LocalDateTime.now(),
             answersJson = objectMapper.writeValueAsString(answers),
             sectionScoresJson = objectMapper.writeValueAsString(scored.sections),
+            secondsSpentJson = objectMapper.writeValueAsString(secondsSpent),
             totalScore = scored.totalScore,
             correctCount = scored.totalCorrect,
             incorrectCount = scored.totalIncorrect,
@@ -147,13 +157,20 @@ class PyqPaperService(
         val answers: Map<String, String> =
             if (!attempt.answersJson.isNullOrBlank()) objectMapper.readValue(attempt.answersJson)
             else emptyMap()
+        val secondsSpent = parseSecondsSpent(attempt.secondsSpentJson)
 
         val scored = scoreQuestions(
             questions,
             answers,
             paper.exam.correctMarks,
-            paper.exam.negativeMarks
+            paper.exam.negativeMarks,
+            secondsSpent
         )
+
+        val timedSeconds = scored.questionReviews.mapNotNull { it.secondsSpent }
+        val totalSeconds = timedSeconds.sum().takeIf { timedSeconds.isNotEmpty() }
+        val avgSeconds =
+            if (timedSeconds.isNotEmpty()) timedSeconds.average() else null
 
         return AttemptAnalysisResponse(
             attemptId = attempt.id!!,
@@ -168,7 +185,9 @@ class PyqPaperService(
             questionCount = paper.questionCount,
             topicsTagged = scored.topicsTagged,
             sections = scored.sectionAnalysis,
-            questions = scored.questionReviews
+            questions = scored.questionReviews,
+            totalSecondsSpent = totalSeconds,
+            avgSecondsPerQuestion = avgSeconds
         )
     }
 
@@ -224,7 +243,10 @@ class PyqPaperService(
             var total: Int = 0,
             var section: String = "",
             var sectionCode: String = "",
-            val paperIds: MutableSet<UUID> = mutableSetOf()
+            val paperIds: MutableSet<UUID> = mutableSetOf(),
+            var timedSeconds: Long = 0,
+            var timedCount: Int = 0,
+            var expectedSecondsSum: Double = 0.0
         )
 
         val buckets = linkedMapOf<String, TopicAcc>()
@@ -243,25 +265,38 @@ class PyqPaperService(
             val answers: Map<String, String> =
                 if (!attempt.answersJson.isNullOrBlank()) objectMapper.readValue(attempt.answersJson)
                 else emptyMap()
+            val secondsSpent = parseSecondsSpent(attempt.secondsSpentJson)
             val scored = scoreQuestions(
                 questions,
                 answers,
                 paper.exam.correctMarks,
-                paper.exam.negativeMarks
+                paper.exam.negativeMarks,
+                secondsSpent
             )
             if (scored.topicsTagged) topicsTagged = true
+            val expectedBySection = expectedSecondsBySection(paper, root)
 
-            for (section in scored.sectionAnalysis) {
-                for (topic in section.topics) {
-                    val key = "${section.sectionCode}||${topic.topic}"
-                    val acc = buckets.getOrPut(key) {
-                        TopicAcc(section = section.section, sectionCode = section.sectionCode)
-                    }
-                    acc.correct += topic.correct
-                    acc.incorrect += topic.incorrect
-                    acc.unattempted += topic.unattempted
-                    acc.total += topic.total
-                    paper.id?.let { acc.paperIds.add(it) }
+            for (review in scored.questionReviews) {
+                val topicName = review.topic?.takeIf { it.isNotBlank() } ?: "Uncategorized"
+                val key = "${review.sectionCode}||$topicName"
+                val acc = buckets.getOrPut(key) {
+                    TopicAcc(section = review.section, sectionCode = review.sectionCode)
+                }
+                when (review.status) {
+                    "CORRECT" -> acc.correct += 1
+                    "INCORRECT" -> acc.incorrect += 1
+                    else -> acc.unattempted += 1
+                }
+                acc.total += 1
+                paper.id?.let { acc.paperIds.add(it) }
+                val secs = review.secondsSpent
+                if (secs != null && secs >= 0) {
+                    acc.timedSeconds += secs
+                    acc.timedCount += 1
+                    val expected = expectedBySection[review.sectionCode]
+                        ?: expectedBySection.values.firstOrNull()
+                        ?: 90.0
+                    acc.expectedSecondsSum += expected
                 }
             }
         }
@@ -269,9 +304,16 @@ class PyqPaperService(
         val topics = buckets.map { (key, acc) ->
             val topicName = key.substringAfter("||")
             val missed = acc.incorrect + acc.unattempted
-            // Include skips in the denominator so unattempted hurts accuracy like a miss.
             val accuracy =
                 if (acc.total > 0) (acc.correct.toDouble() / acc.total) * 100.0 else 0.0
+            val avgSeconds =
+                if (acc.timedCount > 0) acc.timedSeconds.toDouble() / acc.timedCount else null
+            val expected =
+                if (acc.timedCount > 0) acc.expectedSecondsSum / acc.timedCount else null
+            val paceRatio =
+                if (avgSeconds != null && expected != null && expected > 0) avgSeconds / expected
+                else null
+            val speedLabel = speedLabelFor(paceRatio, acc.timedCount)
             PyqTopicPerformanceItem(
                 subject = acc.section.ifBlank { acc.sectionCode },
                 sectionCode = acc.sectionCode,
@@ -282,7 +324,12 @@ class PyqPaperService(
                 total = acc.total,
                 accuracy = accuracy,
                 attemptCount = acc.paperIds.size,
-                missed = missed
+                missed = missed,
+                avgSecondsSpent = avgSeconds,
+                expectedSeconds = expected,
+                paceRatio = paceRatio,
+                speedLabel = speedLabel,
+                insight = topicInsight(accuracy, speedLabel)
             )
         }.sortedWith(
             compareBy<PyqTopicPerformanceItem> { it.accuracy }
@@ -324,11 +371,13 @@ class PyqPaperService(
             val answers: Map<String, String> =
                 if (!attempt.answersJson.isNullOrBlank()) objectMapper.readValue(attempt.answersJson)
                 else emptyMap()
+            val secondsSpent = parseSecondsSpent(attempt.secondsSpentJson)
             val scored = scoreQuestions(
                 questions,
                 answers,
                 paper.exam.correctMarks,
-                paper.exam.negativeMarks
+                paper.exam.negativeMarks,
+                secondsSpent
             )
             for (review in scored.questionReviews) {
                 val reviewTopic = review.topic?.takeIf { it.isNotBlank() } ?: "Uncategorized"
@@ -350,7 +399,8 @@ class PyqPaperService(
                         userAnswer = review.userAnswer,
                         correctAnswer = review.correctAnswer,
                         scoreDelta = review.scoreDelta,
-                        submittedAt = attempt.submittedAt?.format(iso)
+                        submittedAt = attempt.submittedAt?.format(iso),
+                        secondsSpent = review.secondsSpent
                     )
                 )
             }
@@ -377,7 +427,9 @@ class PyqPaperService(
         var incorrect: Int = 0,
         var unattempted: Int = 0,
         var score: Double = 0.0,
-        var section: String = ""
+        var section: String = "",
+        var timeSeconds: Long = 0,
+        var timedCount: Int = 0
     )
 
     private data class ScoredPaper(
@@ -391,11 +443,95 @@ class PyqPaperService(
         val topicsTagged: Boolean
     )
 
+    private fun parseSecondsSpent(json: String?): Map<String, Int> {
+        if (json.isNullOrBlank()) return emptyMap()
+        return try {
+            objectMapper.readValue<Map<String, Int>>(json)
+                .mapKeys { it.key.trim() }
+                .mapValues { (_, v) -> v.coerceAtLeast(0) }
+        } catch (_: Exception) {
+            emptyMap()
+        }
+    }
+
+    /** Expected seconds/question by section from paper timer settings. */
+    private fun expectedSecondsBySection(paper: QuestionPaper, root: JsonNode): Map<String, Double> {
+        val timingMode = root.path("timingMode").asText("full")
+        val questions = root.path("questions")
+        val counts = linkedMapOf<String, Int>()
+        questions.forEach { q ->
+            val code = q.path("sectionCode").asText("UNK")
+            counts[code] = (counts[code] ?: 0) + 1
+        }
+        if (counts.isEmpty()) {
+            val fallback = paper.durationMinutes * 60.0 / paper.questionCount.coerceAtLeast(1)
+            return mapOf("UNK" to fallback)
+        }
+
+        if (timingMode == "sectional") {
+            val sectionMinsDefault = root.path("sectionDurationMinutes").asInt(15)
+            val sectionsNode = root.path("sections")
+            val durationByCode = linkedMapOf<String, Int>()
+            if (sectionsNode.isArray) {
+                sectionsNode.forEach { s ->
+                    val code = s.path("code").asText("")
+                    if (code.isNotBlank()) {
+                        durationByCode[code] = s.path("durationMinutes").asInt(sectionMinsDefault)
+                    }
+                }
+            }
+            return counts.mapValues { (code, count) ->
+                val mins = durationByCode[code] ?: sectionMinsDefault
+                mins * 60.0 / count.coerceAtLeast(1)
+            }
+        }
+
+        val perQ = paper.durationMinutes * 60.0 / paper.questionCount.coerceAtLeast(1)
+        return counts.mapValues { perQ }
+    }
+
+    private fun speedLabelFor(paceRatio: Double?, timedCount: Int): String? {
+        if (paceRatio == null || timedCount < 2) return null
+        return when {
+            paceRatio >= 1.25 -> "SLOW"
+            paceRatio <= 0.7 -> "FAST"
+            else -> "OK"
+        }
+    }
+
+    private fun topicInsight(accuracy: Double, speedLabel: String?): String? {
+        val weak = accuracy < 60.0
+        val strong = accuracy >= 80.0
+        return when {
+            weak && speedLabel == "SLOW" ->
+                "Weak and slow — strengthen concepts, then work on pace"
+            strong && speedLabel == "SLOW" ->
+                "Strong but slow — practice timed sets to increase speed"
+            weak && speedLabel == "FAST" ->
+                "Weak and rushed — slow down and avoid careless errors"
+            strong && speedLabel == "FAST" ->
+                "Strong and fast — keep this pace"
+            weak && speedLabel == "OK" ->
+                "Weak — needs more practice"
+            strong && speedLabel == "OK" ->
+                "Strong — solid accuracy at a healthy pace"
+            speedLabel == "SLOW" ->
+                "Takes longer than the exam pace — try to speed up"
+            speedLabel == "FAST" ->
+                "Faster than the exam pace — watch accuracy"
+            else -> null
+        }
+    }
+
+    private fun avgSecondsOrNull(acc: Acc): Double? =
+        if (acc.timedCount > 0) acc.timeSeconds.toDouble() / acc.timedCount else null
+
     private fun scoreQuestions(
         questions: JsonNode,
         answers: Map<String, String>,
         correctMarks: Double,
-        negativeMarks: Double
+        negativeMarks: Double,
+        secondsSpent: Map<String, Int> = emptyMap()
     ): ScoredPaper {
         val bySection = linkedMapOf<String, Acc>()
         val bySectionTopic = linkedMapOf<String, LinkedHashMap<String, Acc>>()
@@ -419,12 +555,19 @@ class PyqPaperService(
             val options = if (q.path("options").isObject) {
                 q.path("options").fields().asSequence().associate { it.key to it.value.asText() }
             } else null
+            val qSeconds = secondsSpent[qNo.toString()]
 
             val secAcc = bySection.getOrPut(code) { Acc(section = sectionName) }
             val topicMap = bySectionTopic.getOrPut(code) { linkedMapOf() }
             val topicAcc = topicMap.getOrPut(topic) { Acc(section = sectionName) }
             secAcc.total += 1
             topicAcc.total += 1
+            if (qSeconds != null) {
+                secAcc.timeSeconds += qSeconds
+                secAcc.timedCount += 1
+                topicAcc.timeSeconds += qSeconds
+                topicAcc.timedCount += 1
+            }
 
             val status: String
             val scoreDelta: Double
@@ -469,7 +612,8 @@ class PyqPaperService(
                     status = status,
                     userAnswer = userAns.ifEmpty { null },
                     correctAnswer = correctAnswer,
-                    scoreDelta = scoreDelta
+                    scoreDelta = scoreDelta,
+                    secondsSpent = qSeconds
                 )
             )
         }
@@ -496,7 +640,8 @@ class PyqPaperService(
                     correct = tAcc.correct,
                     incorrect = tAcc.incorrect,
                     unattempted = tAcc.unattempted,
-                    score = tAcc.score
+                    score = tAcc.score,
+                    avgSecondsSpent = avgSecondsOrNull(tAcc)
                 )
             }
             SectionAnalysisResponse(
@@ -508,7 +653,8 @@ class PyqPaperService(
                 incorrect = acc.incorrect,
                 unattempted = acc.unattempted,
                 score = acc.score,
-                topics = topics
+                topics = topics,
+                avgSecondsSpent = avgSecondsOrNull(acc)
             )
         }
 
@@ -534,12 +680,12 @@ class PyqPaperService(
         return userAns.trim() == correctAnswer.trim()
     }
 
-    private fun toSummary(paper: QuestionPaper, latest: TestAttempt?) = PaperSummaryResponse(
-        id = paper.id!!,
+    private fun toSummary(paper: PaperListRow, latest: TestAttempt?) = PaperSummaryResponse(
+        id = paper.id,
         slug = paper.slug,
         title = paper.title,
-        examId = paper.exam.id!!,
-        examName = paper.exam.name,
+        examId = paper.examId,
+        examName = paper.examName,
         year = paper.year,
         slot = paper.slot,
         durationMinutes = paper.durationMinutes,

@@ -24,6 +24,26 @@ function statusLabel(status: string) {
   return 'Skipped';
 }
 
+function formatDuration(totalSeconds: number | null | undefined) {
+  if (totalSeconds == null || Number.isNaN(totalSeconds)) return null;
+  const s = Math.max(0, Math.round(totalSeconds));
+  const m = Math.floor(s / 60);
+  const rem = s % 60;
+  if (m <= 0) return `${rem}s`;
+  return `${m}m ${rem.toString().padStart(2, '0')}s`;
+}
+
+function speedBadge(label: string | null | undefined) {
+  if (!label || label === 'OK') return null;
+  if (label === 'SLOW') {
+    return { text: 'Slow', color: 'var(--amber)', bg: 'rgba(245,158,11,0.12)' };
+  }
+  if (label === 'FAST') {
+    return { text: 'Fast', color: 'var(--blue)', bg: 'rgba(33,150,243,0.12)' };
+  }
+  return null;
+}
+
 const TopicPerformancePage: React.FC = () => {
   const navigate = useNavigate();
   const [performance, setPerformance] = useState<TopicRow[]>([]);
@@ -376,8 +396,9 @@ const TopicPerformancePage: React.FC = () => {
             color: 'var(--text2)',
           }}
         >
-          Accuracy = correct ÷ all questions (wrong <strong>and</strong> skipped). Click a topic to
-          review every contributing question.
+          Accuracy = correct ÷ all questions (wrong <strong>and</strong> skipped). Pace compares your
+          average time per question to the exam timer. Click a topic to review every contributing
+          question.
         </div>
 
         {sorted.map((subject) => {
@@ -478,6 +499,8 @@ const TopicPerformancePage: React.FC = () => {
                     const tp = getPerf(item.accuracy);
                     const missed = item.missed ?? item.incorrect + item.unattempted;
                     const highSkip = item.unattempted > 0 && item.unattempted >= item.incorrect;
+                    const speed = speedBadge(item.speedLabel);
+                    const avgTime = formatDuration(item.avgSecondsSpent);
 
                     return (
                       <button
@@ -511,6 +534,20 @@ const TopicPerformancePage: React.FC = () => {
                             {highSkip && (
                               <span style={{ fontSize: 11, color: 'var(--amber)', fontWeight: 500 }}>
                                 · skips ≥ wrongs
+                              </span>
+                            )}
+                            {speed && (
+                              <span
+                                style={{
+                                  fontSize: 11,
+                                  fontWeight: 600,
+                                  color: speed.color,
+                                  background: speed.bg,
+                                  padding: '2px 7px',
+                                  borderRadius: 999,
+                                }}
+                              >
+                                {speed.text}
                               </span>
                             )}
                           </div>
@@ -565,7 +602,20 @@ const TopicPerformancePage: React.FC = () => {
                           <span style={{ color: 'var(--text2)' }}>
                             {missed}/{total} missed
                           </span>
+                          {avgTime && <span>avg {avgTime}/Q</span>}
                         </div>
+                        {item.insight && (
+                          <div
+                            style={{
+                              marginTop: 8,
+                              fontSize: 12,
+                              color: 'var(--text2)',
+                              lineHeight: 1.4,
+                            }}
+                          >
+                            {item.insight}
+                          </div>
+                        )}
                       </button>
                     );
                   })}
@@ -622,7 +672,14 @@ const TopicPerformancePage: React.FC = () => {
                 <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>
                   {drillTopic.subject} · {drillTopic.correct}C / {drillTopic.incorrect}W /{' '}
                   {drillTopic.unattempted}S · {drillTopic.accuracy.toFixed(1)}%
+                  {drillTopic.avgSecondsSpent != null &&
+                    ` · avg ${formatDuration(drillTopic.avgSecondsSpent)}/Q`}
                 </div>
+                {drillTopic.insight && (
+                  <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 6 }}>
+                    {drillTopic.insight}
+                  </div>
+                )}
               </div>
               <button type="button" className="btn" onClick={() => setDrillTopic(null)}>
                 Close
@@ -706,6 +763,7 @@ const TopicPerformancePage: React.FC = () => {
                       <span style={{ color: statusColor(q.status), fontWeight: 700 }}>
                         {statusLabel(q.status)} · {q.scoreDelta > 0 ? '+' : ''}
                         {q.scoreDelta.toFixed(1)}
+                        {q.secondsSpent != null ? ` · ${formatDuration(q.secondsSpent)}` : ''}
                       </span>
                     </div>
                     <div style={{ fontSize: 14, lineHeight: 1.55, marginBottom: 10 }}>
