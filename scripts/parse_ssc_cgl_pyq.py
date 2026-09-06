@@ -70,6 +70,10 @@ def repair_stacked_fractions(text: str) -> str:
     - mixed numbers: 8\\n1\\n3 → 8 1/3
     - simple fractions: 7\\n9 → 7/9
     - π fractions: 3𝜋\\n2 → 3𝜋/2
+    - reciprocals: 1\\n√16−√15 → 1/(√16−√15), 1\\n5+√3 → 1/(5+√3)
+    - glued numeric denom: 10\\n25−3 → 10/(25−3)
+    - radical stack under √: √5+2√6\\n5−2√6 → √((5+2√6)/(5−2√6))
+    - variable reciprocals: 1\\n𝑚 → 1/𝑚
     - continued fractions: 3 +\\n1\\n2+ 1\\n5+1\\n3 → 3 + 1/(2 + 1/(5 + 1/3))
     """
     t = text.replace("\r\n", "\n").replace("\r", "\n")
@@ -82,6 +86,42 @@ def repair_stacked_fractions(text: str) -> str:
         flags=re.I,
     )
 
+    # Reciprocal over radical difference: 1\n√16−√15
+    t = re.sub(
+        r"(?<![\d./])(\d+)\n(√\d+[ \t]*[−\-][ \t]*√\d+)",
+        r"\1/(\2)",
+        t,
+    )
+
+    # Reciprocal over binomial with radical: 1\n5+√3 or 1\n5−√3
+    t = re.sub(
+        r"(?<![\d./])(\d+)\n(\d+[ \t]*[+\-−][ \t]*√\d+)",
+        r"\1/(\2)",
+        t,
+    )
+
+    # Glued numeric denom only (no spaces/newlines): 10\n25−3 — not 5\n6 −\n1\n6
+    t = re.sub(
+        r"(?<![\d./])(\d+)\n(\d+[−\-]\d+)(?![.\d√])",
+        r"\1/(\2)",
+        t,
+    )
+
+    # Outer-root fraction dump: √5+2√6\n5−2√6 → √((5+2√6)/(5−2√6))
+    # (PDF puts the radical before the numerator of a stacked fraction)
+    t = re.sub(
+        r"√(\d+[ \t]*[+\-−][ \t]*\d*√\d+)\n(\d+[ \t]*[−\-][ \t]*\d*√\d+)",
+        r"√((\1)/(\2))",
+        t,
+    )
+
+    # Variable reciprocal: 1\n𝑚 / 1\nm / 1\nm2 / 1\n𝑚2
+    t = re.sub(
+        r"(?<![\d./])1\n([𝑚m𝑥xy](?:\d|²)?)",
+        r"1/\1",
+        t,
+    )
+
     # Mixed number on its own stack: whole\nnum\nden
     t = re.sub(r"(?<![\d./])(\d+)\n(\d+)\n(\d+)(?!\d)", r"\1 \2/\3", t)
 
@@ -91,6 +131,25 @@ def repair_stacked_fractions(text: str) -> str:
     # Simple fraction stack: num\nden (avoid years / multi-digit glue later)
     t = re.sub(r"(?<![\d./])(\d{1,3})\n(\d{1,3})(?!\d)", r"\1/\2", t)
 
+    return t
+
+
+def repair_inline_reciprocals(text: str) -> str:
+    """Fix reciprocals that survived as spaced tokens after line-join."""
+    t = text
+    # (1 √16 − √15) → (1/(√16 − √15))
+    t = re.sub(
+        r"\(\s*1\s+(√\d+\s*[−\-]\s*√\d+)\s*\)",
+        r"(1/(\1))",
+        t,
+    )
+    # m + 1 𝑚 → m + 1/𝑚 ; m² + 1 𝑚2 → m² + 1/𝑚²
+    t = re.sub(r"\+\s*1\s+([𝑚m])(?=\s*=)", r"+ 1/\1", t)
+    t = re.sub(r"\+\s*1\s+([𝑚m])2\b", r"+ 1/\1²", t)
+    t = re.sub(r"\+\s*1\s+([𝑚m])²", r"+ 1/\1²", t)
+    t = re.sub(r"\b1\s+([𝑚m])(?=\s*=)", r"1/\1", t)
+    # 1/𝑚2 → 1/𝑚² (PDF often dumps squared denom as digit 2)
+    t = re.sub(r"1/([𝑚m])2\b", r"1/\1²", t)
     return t
 
 
@@ -212,6 +271,7 @@ def finalize_stem(stem: str) -> str:
     text = re.sub(r"\s+\]", "]", text)
     text = re.sub(r"%\s*of\s*", "% of ", text, flags=re.I)
     text = re.sub(r"(\d)\s*(km|m|cm|kg)\b", r"\1 \2", text, flags=re.I)
+    text = repair_inline_reciprocals(text)
     return text
 
 

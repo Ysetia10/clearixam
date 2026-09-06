@@ -1567,7 +1567,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "If 𝑥 = √5 + 2√6/5 − 2√6, then determine the value of x² + 3x - 15?",
+      "stem": "If 𝑥 = √((5 + 2√6)/(5 − 2√6)), then determine the value of x² + 3x - 15?",
       "options": {
         "1": "50 + 12√6",
         "2": "40 + 23√6",

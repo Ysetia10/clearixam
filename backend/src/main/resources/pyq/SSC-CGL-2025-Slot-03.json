@@ -1441,7 +1441,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "Simplify: (1/5 + √3) + (1/5 − √3) − (10/25 − 3)",
+      "stem": "Simplify: (1/(5 + √3)) + (1/(5 − √3)) − (10/(25 − 3))",
       "options": {
         "1": "0",
         "2": "1",
