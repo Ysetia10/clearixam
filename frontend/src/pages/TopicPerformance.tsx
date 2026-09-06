@@ -38,6 +38,7 @@ const TopicPerformancePage: React.FC = () => {
   const [drillQuestions, setDrillQuestions] = useState<TopicQuestionReview[]>([]);
   const [drillLoading, setDrillLoading] = useState(false);
   const [drillError, setDrillError] = useState<string | null>(null);
+  const [drillFilter, setDrillFilter] = useState<'ALL' | 'CORRECT' | 'INCORRECT' | 'UNATTEMPTED'>('ALL');
 
   useEffect(() => {
     examsApi
@@ -73,6 +74,7 @@ const TopicPerformancePage: React.FC = () => {
     setDrillTopic(item);
     setDrillQuestions([]);
     setDrillError(null);
+    setDrillFilter('ALL');
     setDrillLoading(true);
     try {
       const data = await papersApi.getTopicQuestions(
@@ -87,6 +89,22 @@ const TopicPerformancePage: React.FC = () => {
       setDrillLoading(false);
     }
   };
+
+  const filteredDrillQuestions = useMemo(() => {
+    if (drillFilter === 'ALL') return drillQuestions;
+    return drillQuestions.filter((q) => q.status === drillFilter);
+  }, [drillQuestions, drillFilter]);
+
+  const drillCounts = useMemo(() => {
+    const counts = { ALL: 0, CORRECT: 0, INCORRECT: 0, UNATTEMPTED: 0 };
+    for (const q of drillQuestions) {
+      counts.ALL += 1;
+      if (q.status === 'CORRECT') counts.CORRECT += 1;
+      else if (q.status === 'INCORRECT') counts.INCORRECT += 1;
+      else if (q.status === 'UNATTEMPTED') counts.UNATTEMPTED += 1;
+    }
+    return counts;
+  }, [drillQuestions]);
 
   const toggleCollapse = (subject: string) => {
     setCollapsed((prev) => ({ ...prev, [subject]: !prev[subject] }));
@@ -612,6 +630,37 @@ const TopicPerformancePage: React.FC = () => {
             </div>
 
             <div style={{ padding: 16 }}>
+              {!drillLoading && !drillError && drillQuestions.length > 0 && (
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
+                  {(
+                    [
+                      { key: 'ALL', label: 'All' },
+                      { key: 'INCORRECT', label: 'Incorrect' },
+                      { key: 'UNATTEMPTED', label: 'Skipped' },
+                      { key: 'CORRECT', label: 'Correct' },
+                    ] as const
+                  ).map((f) => (
+                    <button
+                      key={f.key}
+                      type="button"
+                      className="btn"
+                      onClick={() => setDrillFilter(f.key)}
+                      style={{
+                        borderColor: drillFilter === f.key ? 'var(--accent)' : undefined,
+                        background:
+                          drillFilter === f.key
+                            ? 'color-mix(in srgb, var(--accent) 15%, transparent)'
+                            : undefined,
+                        fontWeight: drillFilter === f.key ? 700 : 500,
+                        fontSize: 13,
+                        minHeight: 36,
+                      }}
+                    >
+                      {f.label} ({drillCounts[f.key]})
+                    </button>
+                  ))}
+                </div>
+              )}
               {drillLoading && (
                 <div style={{ display: 'flex', justifyContent: 'center', padding: 32 }}>
                   <CircularProgress size={28} />
@@ -625,8 +674,13 @@ const TopicPerformancePage: React.FC = () => {
                   No questions found for this topic.
                 </div>
               )}
+              {!drillLoading && !drillError && drillQuestions.length > 0 && filteredDrillQuestions.length === 0 && (
+                <div style={{ color: 'var(--text3)', fontSize: 14, padding: 12 }}>
+                  No questions in this filter.
+                </div>
+              )}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {drillQuestions.map((q) => (
+                {filteredDrillQuestions.map((q) => (
                   <div
                     key={`${q.attemptId}-${q.qNo}`}
                     className="card"
