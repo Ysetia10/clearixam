@@ -2,7 +2,7 @@
   "exam": "SSC",
   "year": 2025,
   "slot": "3",
-  "title": "SSC CGL 2025 Tier-I Slot 3",
+  "title": "SSC CGL 2025 Tier-I Slot 3 (12 Sep)",
   "durationMinutes": 60,
   "timingMode": "sectional",
   "sectionDurationMinutes": 15,
@@ -97,7 +97,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Select the letter-cluster that will replace (?): B, F, J, N, R, V, Z, ?",
+      "stem": "Select the letter - cluster that will replace (?): B, F, J, N, R, V, Z, ?",
       "options": {
         "1": "A",
         "2": "C",
@@ -110,7 +110,7 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "topic": "Coding-Decoding",
+      "topic": "Miscellaneous Reasoning",
       "needsManualReview": false
     },
     {
@@ -181,7 +181,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Apply the same pattern used in the following group and find the correct option. METAL : LATEM :: FIBER : ?",
+      "stem": "Apply the same pattern used in the following group and find the correct option.\nMETAL : LATEM :: FIBER : ?",
       "options": {
         "1": "ERFIB",
         "2": "BIFER",
@@ -202,7 +202,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "If '+' = '-' and '-' = '×', find the value of: 12 + 4 - 3 = ?",
+      "stem": "If ' + ' = ' - ' and ' - ' = ' × ', find the value of: 12 + 4 - 3 = ?",
       "options": {
         "1": "5",
         "2": "0",
@@ -265,7 +265,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Find the missing term in the series. ACE, EGI, IKM, MOQ, ?",
+      "stem": "Find the missing term in the series.\nACE, EGI, IKM, MOQ, ?",
       "options": {
         "1": "QSU",
         "2": "PQS",
@@ -475,7 +475,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Statement: Online education is expanding rapidly; hence quality standards must be maintained. Assumptions: I. Online education affects learning outcomes. II. Quality control is necessary in education.",
+      "stem": "Statement:\nOnline education is expanding rapidly; hence quality standards must be maintained.\nAssumptions:\nI. Online education affects learning outcomes.\nII. Quality control is necessary in education.",
       "options": {
         "1": "Only I",
         "2": "Only II",
@@ -517,7 +517,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "If + means × and - means ÷, which is incorrect?",
+      "stem": "If + means × and - means ÷ , which is incorrect?",
       "options": {
         "1": "8 - 2 + 3 = 12",
         "2": "6 + 3 - 2 = 9",
@@ -538,7 +538,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Apply the same pattern used in the following group and find the correct option. COUNTRY : FRXQWUB :: SCHOOL : ?",
+      "stem": "Apply the same pattern used in the following group and find the correct option.\nCOUNTRY : FRXQWUB :: SCHOOL : ?",
       "options": {
         "1": "VFIPPM",
         "2": "VFKRRO",
@@ -601,7 +601,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Anglo-Indian nomination in State Assemblies was terminated by:",
+      "stem": "Anglo - Indian nomination in State Assemblies was terminated by:",
       "options": {
         "1": "Governor's ongoing nomination power",
         "2": "42nd Amendment",
@@ -706,7 +706,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Order these classical dance forms by their earliest documented mentions (earliest first): 1. Bharatanatyam 2. Kathak 3. Mohiniyattam 4. Manipuri",
+      "stem": "Order these classical dance forms by their earliest documented mentions (earliest first):\n1. Bharatanatyam\n2. Kathak\n3. Mohiniyattam\n4. Manipuri",
       "options": {
         "1": "1–3–2–4",
         "2": "1–2–4–3",
@@ -769,7 +769,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Assertion (A): Iron and steel qualifies as a heavy industry. Reason (R): It uses lightweight inputs such as cotton and rubber .",
+      "stem": "Assertion (A): Iron and steel qualifies as a heavy industry.\nReason (R): It uses lightweight inputs such as cotton and rubber .",
       "options": {
         "1": "Both true, R explains A",
         "2": "Both true, R does not explain A",
@@ -790,7 +790,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Regarding the 61st National Chess Championship: 1. GM Karthik Venkataraman triumphed in Gurgaon, earning ₹6 lakh. 2. IM Neelash Saha took silver but was edged out in a tiebreak against Ganguly.",
+      "stem": "Regarding the 61st National Chess Championship:\n1. GM Karthik Venkataraman triumphed in Gurgaon, earning ₹6 lakh.\n2. IM Neelash Saha took silver but was edged out in a tiebreak against Ganguly.",
       "options": {
         "1": "Only 1",
         "2": "Only 2",
@@ -811,7 +811,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Assertion (A): PSLV is ISRO's reliable mainstay launch vehicle. Reason (R): PSLV's flexibility allows multi-payload launches to multiple orbits with excellent reliability.",
+      "stem": "Assertion (A): PSLV is ISRO's reliable mainstay launch vehicle.\nReason (R): PSLV's flexibility allows multi-payload launches to multiple orbits with excellent reliability.",
       "options": {
         "1": "Both true, R explains A",
         "2": "Both true, R does not explain A",
@@ -874,7 +874,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "On MISHTI Scheme: 1. Targets mangrove afforestation via scientific techniques. 2. Introduced in Budget 2023–24. 3. Permits commercial mangrove leasing.",
+      "stem": "On MISHTI Scheme:\n1. Targets mangrove afforestation via scientific techniques.\n2. Introduced in Budget 2023–24.\n3. Permits commercial mangrove leasing.",
       "options": {
         "1": "1 and 2 only",
         "2": "2 and 3 only",
@@ -916,7 +916,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Assertion (A): Chotanagpur Plateau forms the eastern continuation of Central Highlands. Reason (R): It is chiefly drained by Chambal and Betwa rivers.",
+      "stem": "Assertion (A): Chotanagpur Plateau forms the eastern continuation of Central Highlands.\nReason (R): It is chiefly drained by Chambal and Betwa rivers.",
       "options": {
         "1": "Both A and R true, R explains A",
         "2": "Both true, R does not explain A",
@@ -1063,7 +1063,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Non-metallic minerals in India are best described as:",
+      "stem": "Non - metallic minerals in India are best described as:",
       "options": {
         "1": "Scarce for industrial applications",
         "2": "Mainly gemstones with little industry role",
@@ -1189,7 +1189,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "Evaluate: 15 1/3% of 480 km + 58 1/3% of 300 km",
+      "stem": "Evaluate: 15 1/3 % of 480 km + 58 1/3 % of 300 km",
       "options": {
         "1": "266.6 km",
         "2": "285.5 km",
@@ -1441,7 +1441,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "Simplify: ( 1 5+√3) + ( 1 5−√3) − ( 10 25−3)",
+      "stem": "Simplify: (1/5 + √3) + (1/5 − √3) − (10/25 − 3)",
       "options": {
         "1": "0",
         "2": "1",
@@ -1693,7 +1693,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Rearrange the following sentences in correct order to make a logical passage: 1. The team examined the feedback results. 2. The findings were applied to enhance the customer journey. 3. A focused promotional campaign was designed. 4. The information was gathered through multiple sources.",
+      "stem": "Rearrange the following sentences in correct order to make a logical passage:\n1. The team examined the feedback results.\n2. The findings were applied to enhance the customer journey.\n3. A focused promotional campaign was designed.\n4. The information was gathered through multiple sources.",
       "options": {
         "1": "1-4-3-2",
         "2": "3-1-2-4",
@@ -1756,7 +1756,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "What is the main point of groupthink as presented in the passage? Read the passage and answer the following questions. A common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, w eakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because a lgorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and more resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the b ravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
+      "stem": "What is the main point of groupthink as presented in the passage?\nRead the passage and answer the following questions.\nA common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, w eakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because a lgorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and more resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the b ravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
       "options": {
         "1": "Generating ideas through teamwork",
         "2": "Prioritizing agreement over evaluation",
@@ -1777,7 +1777,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "As per the passage, which evolutionary tendency fuels social conformity? Read the passage and answer the following questions. A common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, w eakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because algorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and mo re resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the bravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
+      "stem": "As per the passage, which evolutionary tendency fuels social conformity?\nRead the passage and answer the following questions.\nA common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, w eakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because algorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and mo re resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the bravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
       "options": {
         "1": "Craving for control",
         "2": "Urge for quick success",
@@ -1798,7 +1798,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Which incident is mentioned as a real-life outcome linked to groupthink? Read the passage and answer the following questions. A common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, w eakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because a lgorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and more resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the b ravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
+      "stem": "Which incident is mentioned as a real-life outcome linked to groupthink?\nRead the passage and answer the following questions.\nA common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, w eakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because a lgorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and more resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the b ravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
       "options": {
         "1": "A major peace treaty of the Cold War",
         "2": "Challenger space shuttle disaster",
@@ -1819,7 +1819,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "How does the passage say digital platforms strengthen conformity? Read the passage and answer the following questions. A common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, weakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because algorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and more resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the bravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
+      "stem": "How does the passage say digital platforms strengthen conformity?\nRead the passage and answer the following questions.\nA common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, weakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because algorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and more resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the bravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
       "options": {
         "1": "By banning sensitive debates",
         "2": "By summarizing facts through visuals",
@@ -1840,7 +1840,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": ". What remedy does the passage recommend for groupthink and conformity? Read the passage and answer the following questions. A common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, w eakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because a lgorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and more resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the b ravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
+      "stem": ". What remedy does the passage recommend for groupthink and conformity?\nRead the passage and answer the following questions.\nA common pattern in group decision -making—widely known as groupthink —occurs when a team’s hunger for complete agreement becomes stronger than its willingness to examine other viewpoints with a critical lens. As a result, choices often turn defective because disagreement is either quietly silenced from within or discouraged through social consequences. Closely linked to this is social conformity, the tendency to adjust one’s opinions or actions to match the majority—often unconsciously—to gain acceptance or prevent friction. In closely bonded circles such as boardrooms, policy groups, or academic committees, individuals may hold back opposing ideas due to fear of exclusion or damage to reputation. With time, this shared uniformity creates mental stagnation, w eakens creativity, and increases the chance of strategic misjudgments. The Bay of Pigs episode and the Challenger space shuttle tragedy are commonly highlighted as classic cases where groupthink distorted judgment. From a psychological angle, conformity is tied to our evolutionary pull toward tribal belonging, where standing apart once carried survival threats. Today, that same impulse shows up through peer pressure, workplace norms, and online echo chambers. Digital platforms intensify conformity because a lgorithms construct personalized “bubbles” that confirm existing beliefs while screening out conflicting perspectives. The antidote to this narrowed thinking is to build dissent into the system. When teams welcome principled disagreement, it becomes a mental safety-check against tunnel vision. Encouraging an environment where counterviews are valued—not punished—supports stronger, more balanced, and more resilient decisions. In a time shaped by viral fads, polarized debate, and performative agreement, the b ravery to question the crowd is both uncommon and necessary. Real progress grows not from automatic loyalty to majority norms, but from critical probing and the nerve to challenge what feels comfortable.",
       "options": {
         "1": "Appointing more experienced seniors",
         "2": "Enforcing strict compliance",
@@ -1945,7 +1945,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Rearrange the following sentences to form a coherent paragraph: 1. These influences include how much sunlight is received, the make -up of the atmosphere, and the Earth’s orbital path. 2. Long-term shifts in Earth’s climate are shaped by an intricate mix of natural and human-driven influences. 3. The most prominent human-driven influence is the release of greenhouse gases from industrial processes. 4. Together, these components control the planet’s overall energy balance and, as a result, its average temperature.",
+      "stem": "Rearrange the following sentences to form a coherent paragraph:\n1. These influences include how much sunlight is received, the make -up of the atmosphere, and the Earth’s orbital\npath.\n2. Long-term shifts in Earth’s climate are shaped by an intricate mix of natural and human-driven influences.\n3. The most prominent human-driven influence is the release of greenhouse gases from industrial processes.\n4. Together, these components control the planet’s overall energy balance and, as a result, its average temperature.",
       "options": {
         "1": "2, 1, 3, 4",
         "2": "1, 2, 3, 4",
@@ -1987,7 +1987,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Find the part of the sentence that contains an error: The report’s focus on tech-utopianism, though praiseworthy, (1)/ ignore the deep-rooted inequities (2)/ that continue in data availability and digital competence (3)/ across demographic and regional gaps. (4)",
+      "stem": "Find the part of the sentence that contains an error: The report’s focus on tech - utopianism, though praiseworthy, (1)/ ignore the deep - rooted inequities (2)/ that continue in data availability and digital competence (3)/ across demographic and regional gaps. (4)",
       "options": {
         "1": "(1)",
         "2": "(2)",
@@ -2113,7 +2113,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Identify the correct one-word substitute for: “A condition of disuse or inactivity.”",
+      "stem": "Identify the correct one - word substitute for: “A condition of disuse or inactivity.”",
       "options": {
         "1": "Interregnum",
         "2": "Destitute",

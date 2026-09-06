@@ -94,6 +94,127 @@ def repair_stacked_fractions(text: str) -> str:
     return t
 
 
+def _is_structural_line(ln: str) -> bool:
+    if re.match(r"^\d+\.\s+\S", ln):
+        return True
+    if re.match(
+        r"^(Statement|Conclusions?|Assumptions?|Assertion|Reason|Category|Proficient|"
+        r"Total Sample Size|Read the following passage|Read the passage)\b",
+        ln,
+        re.I,
+    ):
+        return True
+    if re.search(r"\b\d{6}\s*$", ln):
+        return True
+    if re.match(r"^[A-Z]{2,}(?:,\s*[A-Z0-9]+)+\s*,?\s*\??$", ln):
+        return True
+    if "::" in ln and re.search(r":\s*\?", ln):
+        return True
+    if re.match(r"^[IVX]+\.\s", ln):  # I. II. conclusions
+        return True
+    return False
+
+
+def should_preserve_multiline(lines: list[str]) -> bool:
+    if len(lines) < 2:
+        return False
+    if sum(1 for ln in lines if re.search(r"\b\d{6}\s*$", ln)) >= 2:
+        return True
+    if sum(1 for ln in lines if re.match(r"^\d+\.\s+\S", ln)) >= 2:
+        return True
+    if any(
+        re.match(
+            r"^(Statement|Conclusions?|Assumptions?|Assertion|Reason|Category|Proficient|"
+            r"Read the following passage|Read the passage)\b",
+            ln,
+            re.I,
+        )
+        for ln in lines
+    ):
+        return True
+    if any(re.match(r"^[A-Z]{2,}(?:,\s*[A-Z0-9]+)+\s*,?\s*\??$", ln) for ln in lines):
+        return True
+    if any("::" in ln and re.search(r":\s*\?", ln) for ln in lines):
+        return True
+    return False
+
+
+def merge_soft_wraps(lines: list[str]) -> list[str]:
+    """Join prose wraps; keep addresses / numbered items / series on their own lines."""
+    out: list[str] = []
+    buf = ""
+
+    def flush() -> None:
+        nonlocal buf
+        if buf:
+            out.append(buf.strip())
+            buf = ""
+
+    for ln in lines:
+        if _is_structural_line(ln):
+            flush()
+            out.append(ln)
+            continue
+        if not buf:
+            buf = ln
+        elif re.search(r"[.?:]$", buf):
+            flush()
+            buf = ln
+        else:
+            buf = f"{buf} {ln}"
+    flush()
+    return out
+
+
+def number_address_block(lines: list[str]) -> list[str]:
+    """Prefix 1. 2. 3. … on consecutive address/pincode lines when missing."""
+    pincode_idxs = [i for i, ln in enumerate(lines) if re.search(r"\b\d{6}\s*$", ln)]
+    if len(pincode_idxs) < 2:
+        return lines
+    # Only number if they form a contiguous block and aren't already numbered
+    if any(re.match(r"^\d+\.\s", lines[i]) for i in pincode_idxs):
+        return lines
+    first, last = pincode_idxs[0], pincode_idxs[-1]
+    if pincode_idxs != list(range(first, last + 1)):
+        return lines
+    out = lines[:]
+    for n, i in enumerate(pincode_idxs, start=1):
+        out[i] = f"{n}. {out[i]}"
+    return out
+
+
+def finalize_stem(stem: str) -> str:
+    stem = repair_stacked_fractions(stem)
+    lines = [ln.strip() for ln in stem.splitlines() if ln.strip()]
+    if not lines:
+        return ""
+
+    if should_preserve_multiline(lines):
+        merged = number_address_block(merge_soft_wraps(lines))
+        # Light cleanup per line (don't collapse across newlines)
+        cleaned = []
+        for ln in merged:
+            t = re.sub(r"[ \t]+", " ", ln).strip()
+            t = re.sub(r"%\s*of\s*", "% of ", t, flags=re.I)
+            t = re.sub(r"(\d)\s*(km|m|cm|kg)\b", r"\1 \2", t, flags=re.I)
+            cleaned.append(t)
+        return "\n".join(cleaned)
+
+    text = " ".join(lines)
+    text = re.sub(r"\s+", " ", text).strip()
+    text = re.sub(r"\s*([−\-÷×+])\s*", r" \1 ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    text = re.sub(r"\(\s+", "(", text)
+    text = re.sub(r"\s+\)", ")", text)
+    text = re.sub(r"\{\s+", "{", text)
+    text = re.sub(r"\s+\}", "}", text)
+    text = re.sub(r"\[\s+", "[", text)
+    text = re.sub(r"\s+\]", "]", text)
+    text = re.sub(r"%\s*of\s*", "% of ", text, flags=re.I)
+    text = re.sub(r"(\d)\s*(km|m|cm|kg)\b", r"\1 \2", text, flags=re.I)
+    return text
+
+
 def parse_body(body: str) -> tuple[str, dict[str, str], str | None]:
     ans_m = ANS_RE.search(body)
     correct_letter = ans_m.group(1).lower() if ans_m else None
@@ -121,19 +242,7 @@ def parse_body(body: str) -> tuple[str, dict[str, str], str | None]:
         # Last resort: keep stem only
         options = {}
 
-    stem = repair_stacked_fractions(stem)
-    stem = re.sub(r"\s+", " ", stem).strip()
-    # Tighten common spacing around operators after fraction repair
-    stem = re.sub(r"\s*([−\-÷×+])\s*", r" \1 ", stem)
-    stem = re.sub(r"\s+", " ", stem).strip()
-    stem = re.sub(r"\(\s+", "(", stem)
-    stem = re.sub(r"\s+\)", ")", stem)
-    stem = re.sub(r"\{\s+", "{", stem)
-    stem = re.sub(r"\s+\}", "}", stem)
-    stem = re.sub(r"\[\s+", "[", stem)
-    stem = re.sub(r"\s+\]", "]", stem)
-    stem = re.sub(r"%\s*of\s*", "% of ", stem, flags=re.I)
-    stem = re.sub(r"(\d)\s*(km|m|cm|kg)\b", r"\1 \2", stem, flags=re.I)
+    stem = finalize_stem(stem)
     for k, v in list(options.items()):
         options[k] = re.sub(r"\s+", " ", repair_stacked_fractions(v)).strip()
 
@@ -147,9 +256,18 @@ def parse_slot_from_name(path: Path) -> str:
     return m.group(1) if m else "1"
 
 
+def parse_exam_day(path: Path) -> str:
+    """Return day label like '12 Sep' from filename."""
+    m = re.search(r"(?:Held[-_ ]on[-_ ]?)?(\d{1,2})[-_ ]Sep(?:tember)?[-_ ]?2025", path.name, re.I)
+    if m:
+        return f"{int(m.group(1))} Sep"
+    return "12 Sep"
+
+
 def build_paper(raw_path: Path, year: int = 2025) -> dict:
     raw = clean_text(raw_path.read_text(encoding="utf-8", errors="replace"))
     slot = parse_slot_from_name(raw_path)
+    day_label = parse_exam_day(raw_path)
     chunks = split_questions(raw)
     questions = []
     notes: list[str] = []
@@ -203,7 +321,7 @@ def build_paper(raw_path: Path, year: int = 2025) -> dict:
         "exam": "SSC",
         "year": year,
         "slot": slot,
-        "title": f"SSC CGL 2025 Tier-I Slot {slot} (12 Sep)",
+        "title": f"SSC CGL 2025 Tier-I Slot {slot} ({day_label})",
         "durationMinutes": 60,
         "timingMode": "sectional",
         "sectionDurationMinutes": 15,

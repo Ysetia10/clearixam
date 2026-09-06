@@ -2,7 +2,7 @@
   "exam": "SSC",
   "year": 2025,
   "slot": "2",
-  "title": "SSC CGL 2025 Tier-I Slot 2",
+  "title": "SSC CGL 2025 Tier-I Slot 2 (12 Sep)",
   "durationMinutes": 60,
   "timingMode": "sectional",
   "sectionDurationMinutes": 15,
@@ -139,7 +139,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Apply the same pattern used in the following group and find the correct option. NUMBER : ERBMUN :: SCHOOL : ?",
+      "stem": "Apply the same pattern used in the following group and find the correct option.\nNUMBER : ERBMUN :: SCHOOL : ?",
       "options": {
         "1": "LHCOSO",
         "2": "OLOHCS",
@@ -202,7 +202,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Statement: Most students in the class passed the exam. Conclusions: I. Some students failed the exam. II. All students appeared for the exam.",
+      "stem": "Statement:\nMost students in the class passed the exam.\nConclusions:\nI. Some students failed the exam.\nII. All students appeared for the exam.",
       "options": {
         "1": "Only I follows",
         "2": "Only II follows",
@@ -223,7 +223,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Which of the following addresses are exactly identical? Amit Verma, 12A, Green Park, Delhi, 110016 Amit Verma, 12A Green Park, Delhi, 110016 Amit Verma, 12A, Green Park, Delhi, 110018 Amit Verma, 12A, Green Park, Delhi, 110016",
+      "stem": "Which of the following addresses are exactly identical?\n1. Amit Verma, 12A, Green Park, Delhi, 110016\n2. Amit Verma, 12A Green Park, Delhi, 110016\n3. Amit Verma, 12A, Green Park, Delhi, 110018\n4. Amit Verma, 12A, Green Park, Delhi, 110016",
       "options": {
         "1": "1 and 2",
         "2": "1 and 4",
@@ -244,7 +244,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "In the following question, select the related word from the given alternatives. Freedom : Independence :: Poverty : ?",
+      "stem": "In the following question, select the related word from the given alternatives.\nFreedom : Independence :: Poverty : ?",
       "options": {
         "1": "Hunger",
         "2": "Wealth",
@@ -265,7 +265,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Statement: Online education requires reliable internet access. Assumptions: I. Students have access to the internet. II. Traditional education is outdated.",
+      "stem": "Statement:\nOnline education requires reliable internet access.\nAssumptions:\nI. Students have access to the internet.\nII. Traditional education is outdated.",
       "options": {
         "1": "Only I is implicit",
         "2": "Only II is implicit",
@@ -286,7 +286,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Apply the same pattern used in the following group and find the correct option. KLM : NOP :: STU : ?",
+      "stem": "Apply the same pattern used in the following group and find the correct option.\nKLM : NOP :: STU : ?",
       "options": {
         "1": "XYZ",
         "2": "VYZ",
@@ -328,7 +328,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series. EHF, JKM, ONT, ?",
+      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series.\nEHF, JKM, ONT, ?",
       "options": {
         "1": "TUV",
         "2": "STU",
@@ -412,7 +412,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "In the following question, select the related word from the given alternatives. Cell : Tissue :: Tissue : ?",
+      "stem": "In the following question, select the related word from the given alternatives.\nCell : Tissue :: Tissue : ?",
       "options": {
         "1": "Nucleus",
         "2": "Molecule",
@@ -454,7 +454,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "How many meaningful 4 -letter English words can be formed using 2nd, 3rd, 4th and 5th letters of the word TEACHER, without repetition?",
+      "stem": "How many meaningful 4 - letter English words can be formed using 2nd, 3rd, 4th and 5th letters of the word TEACHER, without repetition?",
       "options": {
         "1": "Two",
         "2": "Four",
@@ -496,7 +496,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series. BDH, EJM, IPR, ?",
+      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series.\nBDH, EJM, IPR, ?",
       "options": {
         "1": "NVW",
         "2": "MUX",
@@ -580,7 +580,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Examine the statements about long jump technique phases: 1. The run-up on the runway builds peak momentum prior to takeoff. 2. Takeoff involves pushing from the weaker leg to ensure stability. Which statements are accurate?",
+      "stem": "Examine the statements about long jump technique phases:\n1. The run-up on the runway builds peak momentum prior to takeoff.\n2. Takeoff involves pushing from the weaker leg to ensure stability.\nWhich statements are accurate?",
       "options": {
         "1": "Only 1",
         "2": "Only 2",
@@ -643,7 +643,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Which statements about Article 270 are accurate? 1. It regulates tax distribution between the Union and States, covering GST proceeds. 2. Post-101st Amendment, it incorporates Union taxes and GST revenue sharing. 3. GST Compensation Cess distribution falls under Article 270.",
+      "stem": "Which statements about Article 270 are accurate?\n1. It regulates tax distribution between the Union and States, covering GST proceeds.\n2. Post-101st Amendment, it incorporates Union taxes and GST revenue sharing.\n3. GST Compensation Cess distribution falls under Article 270.",
       "options": {
         "1": "1 and 3 only",
         "2": "1 only",
@@ -727,7 +727,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Evaluate these statements on India’s water-sharing agreements with neighbors: 1. The 1996 Mahakali Treaty with Nepal covers joint Mahakali River development and the Pancheshwar Project. 2. The 1996 Ganga Water Treaty with Bangladesh enables year-round Ganga water allocation at Farakka. Which is/are correct?",
+      "stem": "Evaluate these statements on India’s water-sharing agreements with neighbors:\n1. The 1996 Mahakali Treaty with Nepal covers joint Mahakali River development and the Pancheshwar Project.\n2. The 1996 Ganga Water Treaty with Bangladesh enables year-round Ganga water allocation at Farakka.\nWhich is/are correct?",
       "options": {
         "1": "Only 1",
         "2": "Only 2",
@@ -748,7 +748,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Constructing sea walls and raising structures in a coastal area against sea-level rise mainly exemplifies:",
+      "stem": "Constructing sea walls and raising structures in a coastal area against sea - level rise mainly exemplifies:",
       "options": {
         "1": "Climate Change Mitigation",
         "2": "Carbon Sequestration",
@@ -769,7 +769,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Which Indian leader spoke at a 2025 special session titled “Environment, COP-30, and Global Health”?",
+      "stem": "Which Indian leader spoke at a 2025 special session titled “Environment, COP - 30, and Global Health”?",
       "options": {
         "1": "Piyush Goyal",
         "2": "Hardeep Puri",
@@ -811,7 +811,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Assertion (A) and Reason (R) provided. Choose correctly: Assertion (A): UDAN Scheme boosts regional air links. Reason (R): It offers viability gap funding to airlines.",
+      "stem": "Assertion (A) and Reason (R) provided. Choose correctly:\nAssertion (A): UDAN Scheme boosts regional air links.\nReason (R): It offers viability gap funding to airlines.",
       "options": {
         "1": "Both true, R explains A",
         "2": "Both true, R does not explain A",
@@ -874,7 +874,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Assertion (A) and Reason (R) follow. Select the right choice: Assertion (A): Population explosion happens when death rates drop sharply while birth rates stay elevated. Reason (R): Changes in societal reproductive patterns occur immediately with healthcare advancements.",
+      "stem": "Assertion (A) and Reason (R) follow. Select the right choice:\nAssertion (A): Population explosion happens when death rates drop sharply while birth rates stay elevated.\nReason (R): Changes in societal reproductive patterns occur immediately with healthcare advancements.",
       "options": {
         "1": "Both A and R true, R explains A",
         "2": "Both true, R does not explain A",
@@ -895,7 +895,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Read the statements below labeled as Assertion (A) and Reason (R). Select the appropriate option: Assertion (A): Humayun’s Tomb marked the first significant Mughal garden tomb and served as a direct model for the Taj Mahal's architecture. Reason (R): It pioneered the charbagh garden design and double -domed structure typical of subsequent Mughal tombs.",
+      "stem": "Read the statements below labeled as Assertion (A) and Reason (R). Select the appropriate option:\nAssertion (A): Humayun’s Tomb marked the first significant Mughal garden tomb and served as a direct model for the\nTaj Mahal's architecture.\nReason (R): It pioneered the charbagh garden design and double -domed structure typical of subsequent Mughal\ntombs.",
       "options": {
         "1": "Both A and R are true, and R correctly explains A",
         "2": "Both A and R are true, but R does not explain A",
@@ -1042,7 +1042,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Which description fits The Adventures of Kakababu, Volume 1 by Sunil Gangopadhyaya? 1. A groundbreaking Bengali adventure series starring detective Kakababu, blending mystery and cultural motifs. 2. A satirical critique of governance in independent India. 3. An autobiographical account of the author’s involvement in Bengal’s freedom struggle.",
+      "stem": "Which description fits The Adventures of Kakababu, Volume 1 by Sunil Gangopadhyaya?\n1. A groundbreaking Bengali adventure series starring detective Kakababu, blending mystery and cultural motifs.\n2. A satirical critique of governance in independent India.\n3. An autobiographical account of the author’s involvement in Bengal’s freedom struggle.",
       "options": {
         "1": "Only 1",
         "2": "Only 2",
@@ -1084,7 +1084,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Pradhan Mantri Kisan Maandhan Yojana (PM-KMY) enrollment is open to farmers aged:",
+      "stem": "Pradhan Mantri Kisan Maandhan Yojana (PM - KMY) enrollment is open to farmers aged:",
       "options": {
         "1": "18–30 years",
         "2": "18–40 years",
@@ -1294,7 +1294,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "An 80-litre mixture contains milk and water in the ratio 7:1. Some quantity of this mixture is removed and replaced with pure milk. If the final ratio of milk to water becomes 15:1, how many litres of the mixture were replaced?",
+      "stem": "An 80 - litre mixture contains milk and water in the ratio 7:1. Some quantity of this mixture is removed and replaced with pure milk. If the final ratio of milk to water becomes 15:1, how many litres of the mixture were replaced?",
       "options": {
         "1": "40 litres",
         "2": "18 litres",
@@ -1359,9 +1359,9 @@
       "type": "MCQ",
       "stem": "X, Y , and Z can complete a project in 20, 40, and 60 days respectively. X works every day, while Y and Z join X every third day. How long will it take to finish the project?",
       "options": {
-        "1": "12 7 2 days",
-        "2": "15 5 6 days",
-        "3": "16 5 6 days",
+        "1": "12 7/2 days",
+        "2": "15 5/6 days",
+        "3": "16 5/6 days",
         "4": "18 days"
       },
       "correctAnswer": "2",
@@ -1422,10 +1422,10 @@
       "type": "MCQ",
       "stem": "If x = √11, determine the value of x + 1/x.",
       "options": {
-        "1": "12√11 11",
-        "2": "11√11 12",
-        "3": "13√11 11",
-        "4": "14√11 11"
+        "1": "12√11/11",
+        "2": "11√11/12",
+        "3": "13√11/11",
+        "4": "14√11/11"
       },
       "correctAnswer": "1",
       "correctOption": "1",
@@ -1567,7 +1567,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "If 𝑥 = √5+2√6 5−2√6, then determine the value of x² + 3x - 15?",
+      "stem": "If 𝑥 = √5 + 2√6/5 − 2√6, then determine the value of x² + 3x - 15?",
       "options": {
         "1": "50 + 12√6",
         "2": "40 + 23√6",
@@ -1630,7 +1630,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Choose the correct one-word substitute for: ‘A person who avoids pleasures and lives with strict self-discipline’.",
+      "stem": "Choose the correct one - word substitute for: ‘A person who avoids pleasures and lives with strict self - discipline’.",
       "options": {
         "1": "Skeptic",
         "2": "Ascetic",
@@ -1693,7 +1693,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "What key democratic role of social media is highlighted in the passage? Read the following passage and answer the questions based on the passage: The rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglec ted concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, ele ctoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Further, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion int o a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social media is not automatically beneficial or harmful —it reflects collective choices. Whether it strengthens democratic stability or fuels disto rtion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
+      "stem": "What key democratic role of social media is highlighted in the passage?\nRead the following passage and answer the questions based on the passage:\nThe rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglec ted concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, ele ctoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Further, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion int o a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social media is not automatically beneficial or harmful —it reflects collective choices. Whether it strengthens democratic stability or fuels disto rtion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
       "options": {
         "1": "Increasing entertainment content",
         "2": "Eliminating printed newspapers",
@@ -1714,7 +1714,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Why does the author describe social media as a “double-edged” force in democracy? Read the following passage and answer the questions based on the passage: The rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglec ted concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, electoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Fur ther, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion into a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social medi a is not automatically beneficial or harmful —it reflects collective choices. Whether it strengthens democratic stability or fuels distortion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
+      "stem": "Why does the author describe social media as a “double-edged” force in democracy?\nRead the following passage and answer the questions based on the passage:\nThe rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglec ted concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, electoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Fur ther, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion into a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social medi a is not automatically beneficial or harmful —it reflects collective choices. Whether it strengthens democratic stability or fuels distortion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
       "options": {
         "1": "It is inexpensive to use",
         "2": "It focuses mostly on images and videos",
@@ -1735,7 +1735,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "According to the passage, what helps previously unheard groups gain attention on social media? Read the following passage and answer the questions based on the passage: The rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglec ted concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, ele ctoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Further, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion int o a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social media is not automatically beneficial or harmful —it reflects collective choices. Whether it strengthens democratic stability or fuels disto rtion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
+      "stem": "According to the passage, what helps previously unheard groups gain attention on social media?\nRead the following passage and answer the questions based on the passage:\nThe rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglec ted concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, ele ctoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Further, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion int o a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social media is not automatically beneficial or harmful —it reflects collective choices. Whether it strengthens democratic stability or fuels disto rtion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
       "options": {
         "1": "Newspaper editors and boards",
         "2": "Strict journalistic gatekeeping",
@@ -1756,7 +1756,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "What remedy does the author emphasize to reduce misuse of social media in democratic systems? Read the following passage and answer the questions based on the passage: The rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglected concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, electoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Further, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion into a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social media is not automatically beneficial or harmful —it reflects collective choices. Whether it stre ngthens democratic stability or fuels distortion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
+      "stem": "What remedy does the author emphasize to reduce misuse of social media in democratic systems?\nRead the following passage and answer the questions based on the passage:\nThe rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglected concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, electoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Further, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion into a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social media is not automatically beneficial or harmful —it reflects collective choices. Whether it stre ngthens democratic stability or fuels distortion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
       "options": {
         "1": "Promoting meme-based communication",
         "2": "Allowing unrestricted posting of all content",
@@ -1777,7 +1777,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": ". What factor decides whether social media strengthens or weakens democracy, as per the passage? Read the following passage and answer the questions based on the passage: The rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglec ted concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, ele ctoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Further, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion int o a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social media is not automatically beneficial or harmful —it reflects collective choices. Whether it strengthens democratic stability or fuels disto rtion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
+      "stem": ". What factor decides whether social media strengthens or weakens democracy, as per the passage?\nRead the following passage and answer the questions based on the passage:\nThe rapid expansion of social media has reshaped democratic life in profound ways, functioning at once as a driver of public participation and a channel for strategic deception. Platforms such as Twitter, Facebook, and Instagram, once viewed mainly as spac es for personal sharing, have evolved into major arenas of political conversation. They allow citizens to voice opinions, rally around causes, and hold those in power accountable almost instantly. Since democracy depends on the circulation of ideas and information, social media appears to broaden access by weakening the control once exercised by traditional gatekeepers. Political figures can address voters directly without editorial mediation, and citizen-led movements can use viral momentum to bring neglec ted concerns into public focus. In moments of high political intensity —elections, mass protests, policy disputes —these platforms operate like a modern digital marketplace of ideas, enabling wider involvement than was previously possible through newspapers or public meetings. Yet this openness carries serious risks. The same networks that spread accurate information can also accelerate falsehoods, deepen polarization, and strengthen echo chambers through algorithmic reinforcement. In several democracies, ele ctoral processes have been challenged by fake profiles, coordinated harassment, and organized disinformation efforts. Further, content designed to trigger emotion and maximize engagement often overshadows careful reasoning, turning political discussion int o a noisy stream of anger and extremes. Hence, the influence of social media on democracy depends not only on technology, but also on the ethical rules that shape its use. Strong oversight, public media awareness, and transparency in how algorithms rank and recommend content are crucial if societies wish to gain the benefits while limiting the damage. Ultimately, social media is not automatically beneficial or harmful —it reflects collective choices. Whether it strengthens democratic stability or fuels disto rtion depends on how responsibly it is used by citizens, institutions, and the platforms themselves.",
       "options": {
         "1": "The amount of political advertising",
         "2": "The revenue model of platforms",
@@ -1903,7 +1903,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Spot the correct spelling of a drug-effect psychology field.",
+      "stem": "Spot the correct spelling of a drug - effect psychology field.",
       "options": {
         "1": "Psychopharmacolgy",
         "2": "Psychopharmacology",
@@ -1987,7 +1987,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Rearrange the following sentences to form a coherent paragraph: 1. Consequently, effective communication depends on more than merely the words we speak. 2. Non-verbal signals, such as tone, facial expressions, and gestures, may communicate more than the spoken message itself. 3. Communication is a multifaceted process that involves sharing information, ideas, and emotions between people. 4. Often, it is these subtle cues that reveal how a message is truly meant or received.",
+      "stem": "Rearrange the following sentences to form a coherent paragraph:\n1. Consequently, effective communication depends on more than merely the words we speak.\n2. Non-verbal signals, such as tone, facial expressions, and gestures, may communicate more than the spoken message\nitself.\n3. Communication is a multifaceted process that involves sharing information, ideas, and emotions between people.\n4. Often, it is these subtle cues that reveal how a message is truly meant or received.",
       "options": {
         "1": "3, 2, 1, 4",
         "2": "2, 4, 1, 3",
@@ -2134,7 +2134,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Rearrange the following sentences to form a coherent paragraph: 1. One effective approach is to broaden energy options by moving away from fossil fuels towards renewables such as solar, wind, and geothermal energy. 2. To reduce the severe impacts of climate change, nations must sharply cut dependence on high -carbon energy generation. 3. This transition not only lowers greenhouse gas output but also improves air quality and opens up new economic possibilities. 4. In addition, measures that encourage energy efficiency in buildings and transport can further reduce total energy use.",
+      "stem": "Rearrange the following sentences to form a coherent paragraph:\n1. One effective approach is to broaden energy options by moving away from fossil fuels towards renewables such as\nsolar, wind, and geothermal energy.\n2. To reduce the severe impacts of climate change, nations must sharply cut dependence on high -carbon energy\ngeneration.\n3. This transition not only lowers greenhouse gas output but also improves air quality and opens up new economic\npossibilities.\n4. In addition, measures that encourage energy efficiency in buildings and transport can further reduce total energy\nuse.",
       "options": {
         "1": "2, 1, 3, 4",
         "2": "1, 2, 4, 3",

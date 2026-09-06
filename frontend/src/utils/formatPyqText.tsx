@@ -317,13 +317,36 @@ export function PyqText({
 }) {
   const emphasized = emphasize ? markEmphasizedPyqText(text, options) : text;
   const isJumble = jumble || JUMBLE_HINT.test(emphasized);
-  const lines = isJumble ? formatJumbleLines(emphasized) : [formatMathText(emphasized)];
+  const hasExplicitBreaks = !isJumble && emphasized.includes('\n');
+  const lines = isJumble
+    ? formatJumbleLines(emphasized)
+    : hasExplicitBreaks
+      ? emphasized.split('\n').map((line) => formatMathText(line))
+      : [formatMathText(emphasized)];
 
-  if (!isJumble) {
+  if (!isJumble && !hasExplicitBreaks) {
     return (
       <span className={className} style={style}>
         {renderHighlightedMath(lines[0])}
       </span>
+    );
+  }
+
+  if (hasExplicitBreaks) {
+    return (
+      <div className={className} style={{ ...style, lineHeight: 1.65 }}>
+        {lines.map((line, i) => (
+          <div
+            key={`${i}-${line.slice(0, 24)}`}
+            style={{
+              marginTop: i === 0 ? 0 : line.trim() ? 6 : 10,
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            {line.trim() ? renderHighlightedMath(line) : '\u00A0'}
+          </div>
+        ))}
+      </div>
     );
   }
 

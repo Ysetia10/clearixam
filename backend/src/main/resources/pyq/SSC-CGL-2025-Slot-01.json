@@ -2,7 +2,7 @@
   "exam": "SSC",
   "year": 2025,
   "slot": "1",
-  "title": "SSC CGL 2025 Tier-I Slot 1",
+  "title": "SSC CGL 2025 Tier-I Slot 1 (12 Sep)",
   "durationMinutes": 60,
   "timingMode": "sectional",
   "sectionDurationMinutes": 15,
@@ -76,7 +76,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "In the following question, the second word is related to the first word by a specific pattern of letter transformation. Identify the same pattern and apply it to the third word to find the correct option that completes the analogy. COLD : FRPE :: WARM : ?",
+      "stem": "In the following question, the second word is related to the first word by a specific pattern of letter transformation. Identify the same pattern and apply it to the third word to find the correct option that completes the analogy.\nCOLD : FRPE :: WARM : ?",
       "options": {
         "1": "ZDUN",
         "2": "ZDVP",
@@ -97,7 +97,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series. XZYX, XYXX, XXWX, XWVX, ?",
+      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series.\nXZYX, XYXX, XXWX, XWVX, ?",
       "options": {
         "1": "XVUX",
         "2": "XTVX",
@@ -139,7 +139,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Which of the following addresses are identical to each other: Which of the following addresses are identical? Rohit Sharma, Flat 203, Green Park, Delhi, 110016 Rohit Sharma, Flat-203, Green Park, Delhi, 110016 Rohit S., Flat 203, Green Park, Delhi, 110016 Rohit Sharma, Flat 203, Green Park, Delhi, 110015",
+      "stem": "Which of the following addresses are identical to each other:\nWhich of the following addresses are identical?\n1. Rohit Sharma, Flat 203, Green Park, Delhi, 110016\n2. Rohit Sharma, Flat-203, Green Park, Delhi, 110016\n3. Rohit S., Flat 203, Green Park, Delhi, 110016\n4. Rohit Sharma, Flat 203, Green Park, Delhi, 110015",
       "options": {
         "1": "1 & 2",
         "2": "1 & 3",
@@ -181,7 +181,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "In each of the following questions, a specific pattern such as reversal or rearrangement has been applied to the first word to get the second. Apply the same pattern to the third word and find the correct answer from the given options. ETAGIROV : VORIGATE :: GNITSET : ?",
+      "stem": "In each of the following questions, a specific pattern such as reversal or rearrangement has been applied to the first word to get the second. Apply the same pattern to the third word and find the correct answer from the given options.\nETAGIROV : VORIGATE :: GNITSET : ?",
       "options": {
         "1": "TESTING",
         "2": "SETTING",
@@ -202,7 +202,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Which option is identical to: Neha Verma 56, Rose Villa, Sector-9, Jaipur, 302017",
+      "stem": "Which option is identical to: Neha Verma 56, Rose Villa, Sector - 9, Jaipur, 302017",
       "options": {
         "1": "Neha Verma 56, Rose Villa, Sector-9, Jaipur, 302017",
         "2": "Neha Verma 56, Rose Villas, Sector-9, Jaipur, 302017",
@@ -244,7 +244,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "In the following question, select the related word from the given alternatives. Joule : Energy :: Newton : ?",
+      "stem": "In the following question, select the related word from the given alternatives.\nJoule : Energy :: Newton : ?",
       "options": {
         "1": "Force",
         "2": "Pressure",
@@ -265,7 +265,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "If @ = ×, # = -, $ = ÷ and % = +, then evaluate: 8 @ 3 # 4 % 6 $ 2",
+      "stem": "If @ = × , # = - , $ = ÷ and % = + , then evaluate: 8 @ 3 # 4 % 6 $ 2",
       "options": {
         "1": "26",
         "2": "23",
@@ -349,7 +349,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Find the option that best completes the analogy. BF : KL :: DK : ?",
+      "stem": "Find the option that best completes the analogy.\nBF : KL :: DK : ?",
       "options": {
         "1": "NO",
         "2": "NP",
@@ -370,7 +370,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series. ACE, DFH, GIK, JLN, ?",
+      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series.\nACE, DFH, GIK, JLN, ?",
       "options": {
         "1": "NOM",
         "2": "LMN",
@@ -391,7 +391,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "In each of the following questions, the first word is coded to form the second word using a specific rearrangement and/or substitution rule. Apply the same rule to the third word to determine the correct corresponding word from the given alternatives. QWERTY : YTREWQ:: ASDFGH : ?",
+      "stem": "In each of the following questions, the first word is coded to form the second word using a specific rearrangement and/or substitution rule. Apply the same rule to the third word to determine the correct corresponding word from the given alternatives.\nQWERTY : YTREWQ:: ASDFGH : ?",
       "options": {
         "1": "HGFDAS",
         "2": "GHFDAS",
@@ -433,7 +433,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series. BDHJ, CEIK, DFJL, EGKM, ?",
+      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series.\nBDHJ, CEIK, DFJL, EGKM, ?",
       "options": {
         "1": "FHLN",
         "2": "GJMN",
@@ -454,7 +454,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series. DHL, HLP , LPT , PTX, ?",
+      "stem": "Select the letter - cluster from among the given options that can replace the question mark (?) in the following series. DHL, HLP , LPT , PTX, ?",
       "options": {
         "1": "TXB",
         "2": "TXZ",
@@ -467,7 +467,7 @@
       "setRange": null,
       "images": null,
       "chartDependent": false,
-      "topic": "Coding-Decoding",
+      "topic": "Series",
       "needsManualReview": false
     },
     {
@@ -475,7 +475,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series. CFI, HJL, MNO, RRR, ?",
+      "stem": "Select the letter-cluster from among the given options that can replace the question mark (?) in the following series.\nCFI, HJL, MNO, RRR, ?",
       "options": {
         "1": "WVU",
         "2": "WUY",
@@ -517,7 +517,7 @@
       "section": "General Intelligence and Reasoning",
       "sectionCode": "REASONING",
       "type": "MCQ",
-      "stem": "In the following question, select the related word from the given alternatives. Nile : Africa :: Danube : ?",
+      "stem": "In the following question, select the related word from the given alternatives.\nNile : Africa :: Danube : ?",
       "options": {
         "1": "Asia",
         "2": "Europe",
@@ -664,7 +664,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Which of the following Harappan sites is known for a unique water harnessing system and storm -water drainage?",
+      "stem": "Which of the following Harappan sites is known for a unique water harnessing system and storm - water drainage?",
       "options": {
         "1": "Lothal",
         "2": "Dholavira",
@@ -685,7 +685,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "The PM-PRANAM scheme aims to:",
+      "stem": "The PM - PRANAM scheme aims to:",
       "options": {
         "1": "Promote religious tourism",
         "2": "Reduce the use of chemical fertilizers by promoting alternatives",
@@ -790,7 +790,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Armenia has unveiled a butterfly-based logo for COP17 featuring which endemic species?",
+      "stem": "Armenia has unveiled a butterfly - based logo for COP17 featuring which endemic species?",
       "options": {
         "1": "Monarch Butterfly",
         "2": "Apollo Butterfly",
@@ -958,7 +958,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Which type of volcanic eruption is characterized by the most explosive activity and high-viscosity lava?",
+      "stem": "Which type of volcanic eruption is characterized by the most explosive activity and high - viscosity lava?",
       "options": {
         "1": "Hawaiian",
         "2": "Strombolian",
@@ -1000,7 +1000,7 @@
       "section": "General Awareness",
       "sectionCode": "GA",
       "type": "MCQ",
-      "stem": "Assertion (A): In the Demographic Transition Model, India is currently in the late third stage. Reason (R): Birth rates are falling significantly while death rates have already stabilized at a low level.**",
+      "stem": "Assertion (A): In the Demographic Transition Model, India is currently in the late third stage.\nReason (R): Birth rates are falling significantly while death rates have already stabilized at a low level.**",
       "options": {
         "1": "Both A and R are true, and R is the correct explanation of A.",
         "2": "Both A and R are true, but R is not the correct explanation of A.",
@@ -1210,7 +1210,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "From a sample of 250 data scientists, determine the ratio of those proficient in Python to those proficient in R. Category Number of Data Scientists Proficient in Python and R 50 Proficient in Python only 80 Proficient in R only 70 Proficient in neither language 50 Total Sample Size 250",
+      "stem": "From a sample of 250 data scientists, determine the ratio of those proficient in Python to those proficient in R.\nCategory Number of Data Scientists\nProficient in Python and R 50\nProficient in Python only 80\nProficient in R only 70\nProficient in neither language 50\nTotal Sample Size 250",
       "options": {
         "1": "13:12",
         "2": "12:13",
@@ -1336,7 +1336,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "A 50-litre mixture contains juice and water in the ratio 3:2. How much water (in litres) must be added to this mixture to change the ratio of juice to water to 3:4?",
+      "stem": "A 50 - litre mixture contains juice and water in the ratio 3:2. How much water (in litres) must be added to this mixture to change the ratio of juice to water to 3:4?",
       "options": {
         "1": "12 litres",
         "2": "15 litres",
@@ -1714,7 +1714,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Rearrange the following sentences in correct order to make a logical passage: 1. A communication strategy was developed using outreach insights. 2. Demographic data was monitored through campaign dashboards. 3. User engagement was gathered from multiple platforms. 4. Analysts classified users according to age and behaviour.",
+      "stem": "Rearrange the following sentences in correct order to make a logical passage:\n1. A communication strategy was developed using outreach insights.\n2. Demographic data was monitored through campaign dashboards.\n3. User engagement was gathered from multiple platforms.\n4. Analysts classified users according to age and behaviour.",
       "options": {
         "1": "3-2-4-1",
         "2": "2-3-1-4",
@@ -1735,7 +1735,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Rearrange the following sentences to form a coherent paragraph: 1. It is a process that involves systematic and objective examination of a subject to uncover new facts or verify existing ones. 2. Research serves as a fundamental pillar of academic and scientific advancement. 3. This may be either theoretical, intended to broaden knowledge, or applied, designed to address a practical problem. 4. The results of this investigation are then recorded and peer-reviewed to ensure validity and credibility .",
+      "stem": "Rearrange the following sentences to form a coherent paragraph:\n1. It is a process that involves systematic and objective examination of a subject to uncover new facts or verify\nexisting ones.\n2. Research serves as a fundamental pillar of academic and scientific advancement.\n3. This may be either theoretical, intended to broaden knowledge, or applied, designed to address a practical\nproblem.\n4. The results of this investigation are then recorded and peer-reviewed to ensure validity and credibility .",
       "options": {
         "1": "2, 1, 3, 4",
         "2": "1, 2, 4, 3",
@@ -1798,7 +1798,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Choose the correct one-word substitute for: ' A person who speaks two languages fluently’ .",
+      "stem": "Choose the correct one - word substitute for: ' A person who speaks two languages fluently’ .",
       "options": {
         "1": "Accusation",
         "2": "Denunciation",
@@ -1861,7 +1861,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "Spot the correct spelling of a CSF-shunt procedure.",
+      "stem": "Spot the correct spelling of a CSF - shunt procedure.",
       "options": {
         "1": "Ventriculoatrial",
         "2": "Ventriculoartial",
@@ -1945,7 +1945,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "As per the passage, wisdom is mainly developed through: Read the following passage and answer the questions based on the passage: Education and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence. Wisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight. While education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rot e learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of maki ng balanced decisions that require empathy, patience, and foresight. Unlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace. Ultimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
+      "stem": "As per the passage, wisdom is mainly developed through:\nRead the following passage and answer the questions based on the passage:\nEducation and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence.\nWisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight.\nWhile education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rot e learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of maki ng balanced decisions that require empathy, patience, and foresight.\nUnlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace.\nUltimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
       "options": {
         "1": "textbooks",
         "2": "emotional detachment",
@@ -1966,7 +1966,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "What is implied by the statement “wisdom enriches the soul”? Read the following passage and answer the questions based on the passage: Education and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence. Wisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight. While education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rot e learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of maki ng balanced decisions that require empathy, patience, and foresight. Unlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace. Ultimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
+      "stem": "What is implied by the statement “wisdom enriches the soul”?\nRead the following passage and answer the questions based on the passage:\nEducation and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence.\nWisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight.\nWhile education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rot e learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of maki ng balanced decisions that require empathy, patience, and foresight.\nUnlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace.\nUltimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
       "options": {
         "1": "It leads to academic achievement",
         "2": "It nurtures profound moral understanding",
@@ -1987,7 +1987,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "According to the author, which individuals may possess wisdom even without formal education? Read the following passage and answer the questions based on the passage: Education and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence. Wisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight. While education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rot e learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of maki ng balanced decisions that require empathy, patience, and foresight. Unlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace. Ultimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
+      "stem": "According to the author, which individuals may possess wisdom even without formal education?\nRead the following passage and answer the questions based on the passage:\nEducation and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence.\nWisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight.\nWhile education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rot e learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of maki ng balanced decisions that require empathy, patience, and foresight.\nUnlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace.\nUltimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
       "options": {
         "1": "Corporate executives",
         "2": "Academicians",
@@ -2008,7 +2008,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": "What key distinction does the passage primarily highlight? Read the following passage and answer the questions based on the passage: Education and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence. Wisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight. While education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rote learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of making balanced decisions that require empathy, patience, and foresight. Unlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace. Ultimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
+      "stem": "What key distinction does the passage primarily highlight?\nRead the following passage and answer the questions based on the passage:\nEducation and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence.\nWisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight.\nWhile education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rote learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of making balanced decisions that require empathy, patience, and foresight.\nUnlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace.\nUltimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
       "options": {
         "1": "Education and career growth",
         "2": "Intelligence and memory",
@@ -2029,7 +2029,7 @@
       "section": "English Comprehension",
       "sectionCode": "ENG",
       "type": "MCQ",
-      "stem": ". As per the author, what has contributed to the growing divide between education and wisdom in modern times? Read the following passage and answer the questions based on the passage: Education and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence. Wisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight. While education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rot e learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of maki ng balanced decisions that require empathy, patience, and foresight. Unlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace. Ultimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
+      "stem": ". As per the author, what has contributed to the growing divide between education and wisdom in modern times?\nRead the following passage and answer the questions based on the passage:\nEducation and wisdom are frequently treated as interchangeable in everyday discourse, yet a perceptive observer recognises a clear and essential distinction between them. Education refers to the structured acquisition of knowledge, typically validated through degrees, academic achievements, and mastery of formal disciplines. It is imparted via organized curricula, institutional evaluation systems, and theoretical models that emphasize intellectual competence.\nWisdom, however, extends beyond formal learning. It represents the thoughtful and ethical application of knowledge in real -world situations, shaped by experience, self -reflection, emotional intelligence, and moral awareness. A person may be highly educated and still lack wisdom if they are unable to translate learning into sound judgement or responsible action. In contrast, many individuals —such as farmers, craftsmen, or elders — may possess limited formal education, yet demonstrate remarkable wisdom through prudent choices informed by lived experience and practical insight.\nWhile education sharpens the intellect, wisdom deepens understanding. In the modern age of information overload and algorithm -driven thinking, the gap between education and wisdom has become increasingly pronounced. Educational systems often prioritise rot e learning, examination performance, and standardized outcomes, sometimes at the expense of critical thinking, ethical reasoning, and emotional maturity. As a result, society produces individuals adept at solving technical problems but less capable of maki ng balanced decisions that require empathy, patience, and foresight.\nUnlike education, wisdom cannot be downloaded, accelerated, or certified. It develops gradually through trial and error, failure, reflection, and a nuanced comprehension of human behaviour. Moreover, education is often temporally limited, concluding with academic milestones or formal qualifications, whereas wisdom is a lifelong pursuit. It reveals itself not through certificates, but through humility, consistency in ethical conduct, and the capacity to navigate uncertainty with clarity and grace.\nUltimately, the highest form of intelligence lies not merely in knowing what is right, but in consistently choosing to act upon it—even when doing so is difficult or inconvenient.",
       "options": {
         "1": "Excessive reliance on social media",
         "2": "Decline in the value placed on wisdom",
