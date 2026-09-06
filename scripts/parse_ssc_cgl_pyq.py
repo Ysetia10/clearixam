@@ -63,6 +63,37 @@ def split_questions(text: str) -> list[tuple[int, str]]:
     return out
 
 
+def repair_stacked_fractions(text: str) -> str:
+    """Rebuild fractions that PDF text dumps as stacked lines.
+
+    Handles:
+    - mixed numbers: 8\\n1\\n3 → 8 1/3
+    - simple fractions: 7\\n9 → 7/9
+    - π fractions: 3𝜋\\n2 → 3𝜋/2
+    - continued fractions: 3 +\\n1\\n2+ 1\\n5+1\\n3 → 3 + 1/(2 + 1/(5 + 1/3))
+    """
+    t = text.replace("\r\n", "\n").replace("\r", "\n")
+
+    # Continued fraction: x = a +\n1\nb+ 1\nc+1\nd  (common SSC dump shape)
+    t = re.sub(
+        r"([𝑥x]\s*=\s*)(\d+)\s*\+\s*\n\s*1\s*\n\s*(\d+)\s*\+\s*1\s*\n\s*(\d+)\s*\+\s*1\s*\n\s*(\d+)",
+        r"\1\2 + 1/(\3 + 1/(\4 + 1/\5))",
+        t,
+        flags=re.I,
+    )
+
+    # Mixed number on its own stack: whole\nnum\nden
+    t = re.sub(r"(?<![\d./])(\d+)\n(\d+)\n(\d+)(?!\d)", r"\1 \2/\3", t)
+
+    # π / n stacked
+    t = re.sub(r"(\d*[𝜋π])\n(\d+)(?!\d)", r"\1/\2", t)
+
+    # Simple fraction stack: num\nden (avoid years / multi-digit glue later)
+    t = re.sub(r"(?<![\d./])(\d{1,3})\n(\d{1,3})(?!\d)", r"\1/\2", t)
+
+    return t
+
+
 def parse_body(body: str) -> tuple[str, dict[str, str], str | None]:
     ans_m = ANS_RE.search(body)
     correct_letter = ans_m.group(1).lower() if ans_m else None
@@ -90,9 +121,21 @@ def parse_body(body: str) -> tuple[str, dict[str, str], str | None]:
         # Last resort: keep stem only
         options = {}
 
+    stem = repair_stacked_fractions(stem)
     stem = re.sub(r"\s+", " ", stem).strip()
+    # Tighten common spacing around operators after fraction repair
+    stem = re.sub(r"\s*([−\-÷×+])\s*", r" \1 ", stem)
+    stem = re.sub(r"\s+", " ", stem).strip()
+    stem = re.sub(r"\(\s+", "(", stem)
+    stem = re.sub(r"\s+\)", ")", stem)
+    stem = re.sub(r"\{\s+", "{", stem)
+    stem = re.sub(r"\s+\}", "}", stem)
+    stem = re.sub(r"\[\s+", "[", stem)
+    stem = re.sub(r"\s+\]", "]", stem)
+    stem = re.sub(r"%\s*of\s*", "% of ", stem, flags=re.I)
+    stem = re.sub(r"(\d)\s*(km|m|cm|kg)\b", r"\1 \2", stem, flags=re.I)
     for k, v in list(options.items()):
-        options[k] = re.sub(r"\s+", " ", v).strip()
+        options[k] = re.sub(r"\s+", " ", repair_stacked_fractions(v)).strip()
 
     correct = LETTER_TO_KEY.get(correct_letter) if correct_letter else None
     return stem, options, correct

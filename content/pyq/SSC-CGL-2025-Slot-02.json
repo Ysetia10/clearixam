@@ -1189,7 +1189,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "What is 3𝜋 2 radians in degrees?",
+      "stem": "What is 3𝜋/2 radians in degrees?",
       "options": {
         "1": "180°",
         "2": "210°",
@@ -1210,7 +1210,7 @@
       "section": "Quantitative Aptitude",
       "sectionCode": "QA",
       "type": "MCQ",
-      "stem": "Evaluate the continued fraction: 𝑥 = 3 + 1 2+ 1 5+1 3",
+      "stem": "Evaluate the continued fraction: 𝑥 = 3 + 1/(2 + 1/(5 + 1/3))",
       "options": {
         "1": "121/35",
         "2": "47/16",
