@@ -71,19 +71,21 @@ function QuestionCard({ q }: { q: QuestionReview }) {
             Q{q.qNo} · {q.sectionCode}
             {q.topic ? ` · ${q.topic}` : ''} · {q.type}
           </div>
-          <div
-            style={{
-              fontSize: 13,
-              color: 'var(--text2)',
-              lineHeight: 1.45,
-              overflow: 'hidden',
-              display: '-webkit-box',
-              WebkitLineClamp: open ? undefined : 2,
-              WebkitBoxOrient: 'vertical',
-            }}
-          >
-            <MathText text={q.stem} />
-          </div>
+          {!open && (
+            <div
+              style={{
+                fontSize: 13,
+                color: 'var(--text2)',
+                lineHeight: 1.45,
+                overflow: 'hidden',
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+              }}
+            >
+              <MathText text={q.stem.replace(/\n+/g, ' ')} />
+            </div>
+          )}
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
           <div style={{ fontWeight: 700, color: statusColor(q.status), fontSize: 13 }}>

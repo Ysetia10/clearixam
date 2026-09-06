@@ -316,8 +316,9 @@ export function PyqText({
   emphasize?: boolean;
 }) {
   const emphasized = emphasize ? markEmphasizedPyqText(text, options) : text;
-  const isJumble = jumble || JUMBLE_HINT.test(emphasized);
-  const hasExplicitBreaks = !isJumble && emphasized.includes('\n');
+  // Explicit newlines (addresses, statements, series) always win over jumble layout.
+  const hasExplicitBreaks = emphasized.includes('\n');
+  const isJumble = !hasExplicitBreaks && (jumble || JUMBLE_HINT.test(emphasized));
   const lines = isJumble
     ? formatJumbleLines(emphasized)
     : hasExplicitBreaks
@@ -339,7 +340,7 @@ export function PyqText({
           <div
             key={`${i}-${line.slice(0, 24)}`}
             style={{
-              marginTop: i === 0 ? 0 : line.trim() ? 6 : 10,
+              marginTop: i === 0 ? 0 : line.trim() ? 8 : 10,
               whiteSpace: 'pre-wrap',
             }}
           >
