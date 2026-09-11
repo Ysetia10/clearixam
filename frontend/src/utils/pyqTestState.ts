@@ -1,4 +1,5 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import { createElement } from 'react';
 
 export type QuestionStatus =
   | 'not-visited'
@@ -64,50 +65,73 @@ export function getQuestionStatus(
   return 'not-answered';
 }
 
+/** CAT-style palette colors (light exam chrome). */
+export const CAT_STATUS_COLORS = {
+  answered: '#4caf50',
+  notAnswered: '#e53935',
+  notVisited: '#9e9e9e',
+  marked: '#673ab7',
+  answeredMarked: '#673ab7',
+  accent: '#1a5fb4',
+  accentSoft: '#2a6ebb',
+} as const;
+
+export function paletteClass(status: QuestionStatus): string {
+  switch (status) {
+    case 'answered':
+      return 'tt-pal tt-pal-answered';
+    case 'not-answered':
+      return 'tt-pal tt-pal-not-answered';
+    case 'not-visited':
+      return 'tt-pal tt-pal-not-visited';
+    case 'marked':
+      return 'tt-pal tt-pal-marked';
+    case 'answered-marked':
+      return 'tt-pal tt-pal-answered-marked';
+  }
+}
+
+/** @deprecated Prefer paletteClass + CSS shapes; kept for callers expecting inline styles. */
 export function paletteStyle(status: QuestionStatus, active: boolean): CSSProperties {
   const base: CSSProperties = {
     height: 32,
-    borderRadius: 8,
     fontSize: 12,
-    fontWeight: active ? 700 : 500,
+    fontWeight: active ? 700 : 600,
     cursor: 'pointer',
-    color: 'var(--text)',
+    color: '#fff',
     boxSizing: 'border-box',
+    border: active ? '2px solid #111' : 'none',
   };
 
   switch (status) {
     case 'not-visited':
-      return {
-        ...base,
-        border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
-        background: 'var(--surface2)',
-      };
+      return { ...base, color: '#333', background: '#e0e0e0', borderRadius: 2 };
     case 'not-answered':
       return {
         ...base,
-        border: `2px solid ${active ? 'var(--accent)' : 'var(--red)'}`,
-        background: 'var(--red-glow)',
+        background: CAT_STATUS_COLORS.notAnswered,
+        clipPath: 'polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%)',
+        borderRadius: 0,
       };
     case 'answered':
       return {
         ...base,
-        border: `2px solid ${active ? 'var(--accent)' : 'var(--green)'}`,
-        background: 'var(--green-glow)',
+        background: CAT_STATUS_COLORS.answered,
+        clipPath: 'polygon(50% 0, 100% 30%, 100% 100%, 0 100%, 0 30%)',
+        borderRadius: 0,
       };
     case 'marked':
-      return {
-        ...base,
-        border: `2px solid ${active ? 'var(--accent)' : '#a855f7'}`,
-        background: 'rgba(168, 85, 247, 0.18)',
-      };
+      return { ...base, background: CAT_STATUS_COLORS.marked, borderRadius: '50%' };
     case 'answered-marked':
-      return {
-        ...base,
-        border: `2px solid ${active ? 'var(--accent)' : '#a855f7'}`,
-        background: 'var(--green-glow)',
-        boxShadow: 'inset 0 0 0 1px #a855f7',
-      };
+      return { ...base, background: CAT_STATUS_COLORS.marked, borderRadius: '50%' };
   }
+}
+
+export function StatusLegendIcon({ status }: { status: QuestionStatus }): ReactNode {
+  return createElement('span', {
+    className: `${paletteClass(status)} tt-pal-legend`,
+    'aria-hidden': true,
+  });
 }
 
 export function countByStatus(

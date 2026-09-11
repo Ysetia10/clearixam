@@ -1582,5 +1582,31 @@
     ],
     "chartImage": "assets/CAT-2025-Slot-01-Q30-33-charts.png",
     "needsManualReview": []
-  }
+  },
+  "timingMode": "sectional",
+  "sectionDurationMinutes": 40,
+  "calculator": true,
+  "sections": [
+    {
+      "code": "VARC",
+      "name": "Verbal Ability and Reading Comprehension",
+      "qFrom": 1,
+      "qTo": 24,
+      "durationMinutes": 40
+    },
+    {
+      "code": "DILR",
+      "name": "Data Interpretation and Logical Reasoning",
+      "qFrom": 25,
+      "qTo": 46,
+      "durationMinutes": 40
+    },
+    {
+      "code": "QA",
+      "name": "Quantitative Ability",
+      "qFrom": 47,
+      "qTo": 68,
+      "durationMinutes": 40
+    }
+  ]
 }

@@ -4,6 +4,9 @@ import { CircularProgress, Box } from '@mui/material';
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { getUserEmail } from '../api/auth';
 import { papersApi, PaperDetail, PaperQuestion } from '../api/papers';
 import { useToast } from '../components/Toast';
@@ -18,9 +21,10 @@ import {
 } from '../utils/pyqAttemptDraft';
 import {
   SectionCode,
+  StatusLegendIcon,
   countByStatus,
   getQuestionStatus,
-  paletteStyle,
+  paletteClass,
   sectionsFromPaper,
 } from '../utils/pyqTestState';
 
@@ -35,29 +39,21 @@ function formatTime(totalSeconds: number) {
   return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 }
 
-function shortSectionLabel(code: string, name: string) {
-  if (code.length <= 6) return code;
-  const words = name.split(/\s+/).filter(Boolean);
-  if (words.length >= 2) return words.map((w) => w[0]).join('').slice(0, 4).toUpperCase();
-  return code.slice(0, 6);
+function displayNameFromEmail(email: string | null) {
+  if (!email) return 'Candidate';
+  const local = email.split('@')[0] || 'Candidate';
+  return local
+    .replace(/[._-]+/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .trim();
 }
 
-function LegendItem({ color, border, label }: { color: string; border?: string; label: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: 'var(--text2)' }}>
-      <span
-        style={{
-          width: 18,
-          height: 18,
-          borderRadius: 5,
-          background: color,
-          border: border || '1px solid var(--border)',
-          flexShrink: 0,
-        }}
-      />
-      {label}
-    </div>
-  );
+function optionKeys(question: PaperQuestion): string[] {
+  const opts = question.options || {};
+  const preferred = ['1', '2', '3', '4', 'a', 'b', 'c', 'd'];
+  const found = preferred.filter((k) => opts[k] != null && String(opts[k]).length > 0);
+  if (found.length) return found;
+  return Object.keys(opts);
 }
 
 function InstructionsModal({
@@ -65,45 +61,29 @@ function InstructionsModal({
   isSectional,
   sectionMinutes,
   onBegin,
+  onClose,
+  viewOnly,
 }: {
   paper: PaperDetail;
   isSectional: boolean;
   sectionMinutes: number;
-  onBegin: () => void;
+  onBegin?: () => void;
+  onClose?: () => void;
+  viewOnly?: boolean;
 }) {
   const m = paper.marking;
   const sections = sectionsFromPaper(paper);
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 100,
-        background: 'rgba(0,0,0,0.65)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 16,
-      }}
-    >
-      <div
-        className="card"
-        style={{
-          maxWidth: 520,
-          width: '100%',
-          padding: 24,
-          maxHeight: 'min(92vh, 720px)',
-          overflow: 'auto',
-        }}
-      >
+    <div className="tt-modal-backdrop" role="dialog" aria-modal="true" aria-label="Instructions">
+      <div className="tt-modal card">
         <h2 style={{ margin: '0 0 8px', fontSize: 20 }}>{paper.title}</h2>
-        <p style={{ margin: '0 0 16px', color: 'var(--text3)', fontSize: 14 }}>
+        <p style={{ margin: '0 0 16px', color: 'var(--tt-muted)', fontSize: 14 }}>
           {paper.questionCount} questions ·{' '}
           {isSectional
             ? `${sections.length} sections × ${sectionMinutes} min (sequential)`
             : `${paper.durationMinutes} minutes · single timer for all sections`}
         </p>
-        <ul style={{ margin: '0 0 20px', paddingLeft: 20, fontSize: 14, lineHeight: 1.7, color: 'var(--text2)' }}>
+        <ul style={{ margin: '0 0 20px', paddingLeft: 20, fontSize: 14, lineHeight: 1.7, color: 'var(--tt-text)' }}>
           <li>
             Marking: <strong>+{m.correct}</strong> correct, <strong>−{m.incorrect}</strong> incorrect,{' '}
             <strong>{m.unattempted}</strong> unattempted
@@ -114,7 +94,7 @@ function InstructionsModal({
                 Each section has its own <strong>{sectionMinutes}-minute</strong> timer. When time ends (or you
                 submit the section), you move to the next section and cannot go back.
               </li>
-              <li>The next section unlocks only after the previous one is submitted or times out.</li>
+              <li>You can interact with only one section at a time — the same as the real exam.</li>
             </>
           ) : (
             <li>Use the question palette to jump between sections freely.</li>
@@ -122,12 +102,67 @@ function InstructionsModal({
           <li>
             <strong>Mark for Review</strong> flags a question to revisit within the current section.
           </li>
-          <li>The timer starts when you click Begin Test. Pause freezes the current timer.</li>
+          <li>Use <strong>Save &amp; Next</strong> after selecting an answer. Clear Response removes your choice.</li>
+          {!viewOnly && <li>The timer starts when you click Begin Test. Pause freezes the current timer.</li>}
           <li>Refreshing restores your answers and remaining time.</li>
         </ul>
-        <button type="button" className="btn btn-primary" style={{ width: '100%' }} onClick={onBegin}>
-          Begin Test
-        </button>
+        {viewOnly ? (
+          <button type="button" className="tt-btn tt-btn-primary" style={{ width: '100%' }} onClick={onClose}>
+            Close
+          </button>
+        ) : (
+          <button type="button" className="tt-btn tt-btn-primary" style={{ width: '100%' }} onClick={onBegin}>
+            Begin Test
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function QuestionPaperModal({
+  paper,
+  questionNos,
+  sectionName,
+  onClose,
+}: {
+  paper: PaperDetail;
+  questionNos: number[];
+  sectionName: string;
+  onClose: () => void;
+}) {
+  const qs = paper.questions.filter((q) => questionNos.includes(q.qNo));
+  return (
+    <div className="tt-modal-backdrop" role="dialog" aria-modal="true" aria-label="Question paper">
+      <div className="tt-modal card" style={{ maxWidth: 720 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
+          <div>
+            <h2 style={{ margin: 0, fontSize: 18 }}>Question Paper</h2>
+            <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--tt-muted)' }}>{sectionName}</p>
+          </div>
+          <button type="button" className="tt-btn" onClick={onClose}>
+            Close
+          </button>
+        </div>
+        <div className="tt-paper-list">
+          {qs.map((q) => (
+            <div key={q.qNo} className="tt-paper-item">
+              <div className="tt-paper-qno">Q{q.qNo}</div>
+              <div style={{ fontSize: 13, lineHeight: 1.55 }}>
+                <PyqText text={q.stem} jumble options={q.options} />
+                {q.options && (
+                  <div style={{ marginTop: 8, display: 'grid', gap: 4 }}>
+                    {optionKeys(q).map((k) => (
+                      <div key={k} style={{ color: 'var(--tt-muted)' }}>
+                        {renderOptionLabel(k, q.options?.[k] || '')}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -154,41 +189,21 @@ function SubmitModal({
 }) {
   const pending = counts.notAnswered + counts.notVisited + counts.marked;
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 100,
-        background: 'rgba(0,0,0,0.65)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 16,
-      }}
-    >
-      <div
-        className="card"
-        style={{
-          maxWidth: 440,
-          width: '100%',
-          padding: 24,
-          maxHeight: 'min(92vh, 640px)',
-          overflow: 'auto',
-        }}
-      >
+    <div className="tt-modal-backdrop" role="dialog" aria-modal="true">
+      <div className="tt-modal card" style={{ maxWidth: 440 }}>
         <h2 style={{ margin: '0 0 12px', fontSize: 18 }}>{title}</h2>
-        <p style={{ margin: '0 0 16px', fontSize: 14, color: 'var(--text3)' }}>
+        <p style={{ margin: '0 0 16px', fontSize: 14, color: 'var(--tt-muted)' }}>
           You cannot change these answers after confirming.
         </p>
         <div style={{ display: 'grid', gap: 8, marginBottom: 16, fontSize: 14 }}>
           {[
-            { label: 'Answered', value: counts.answered + counts.answeredMarked, color: 'var(--green)' },
-            { label: 'Not answered (visited)', value: counts.notAnswered, color: 'var(--red)' },
-            { label: 'Not visited', value: counts.notVisited, color: 'var(--text3)' },
-            { label: 'Marked for review', value: markedCount, color: '#a855f7' },
+            { label: 'Answered', value: counts.answered + counts.answeredMarked, color: '#2e7d32' },
+            { label: 'Not answered (visited)', value: counts.notAnswered, color: '#c62828' },
+            { label: 'Not visited', value: counts.notVisited, color: '#616161' },
+            { label: 'Marked for review', value: markedCount, color: '#5e35b1' },
           ].map((row) => (
             <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text2)' }}>{row.label}</span>
+              <span>{row.label}</span>
               <strong style={{ color: row.color }}>{row.value}</strong>
             </div>
           ))}
@@ -196,25 +211,37 @@ function SubmitModal({
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              borderTop: '1px solid var(--border)',
+              borderTop: '1px solid #ddd',
               paddingTop: 8,
               marginTop: 4,
             }}
           >
             <span>{paperCountLabel}</span>
-            <strong>{counts.answered + counts.answeredMarked + counts.notAnswered + counts.notVisited + counts.marked}</strong>
+            <strong>
+              {counts.answered +
+                counts.answeredMarked +
+                counts.notAnswered +
+                counts.notVisited +
+                counts.marked}
+            </strong>
           </div>
         </div>
         {pending > 0 && (
-          <p style={{ fontSize: 13, color: 'var(--amber)', margin: '0 0 16px' }}>
+          <p style={{ fontSize: 13, color: '#b45309', margin: '0 0 16px' }}>
             {pending} question{pending === 1 ? '' : 's'} still unanswered or only marked for review.
           </p>
         )}
         <div style={{ display: 'flex', gap: 10 }}>
-          <button type="button" className="btn" style={{ flex: 1 }} disabled={submitting} onClick={onCancel}>
+          <button type="button" className="tt-btn" style={{ flex: 1 }} disabled={submitting} onClick={onCancel}>
             Continue
           </button>
-          <button type="button" className="btn btn-primary" style={{ flex: 1 }} disabled={submitting} onClick={onConfirm}>
+          <button
+            type="button"
+            className="tt-btn tt-btn-primary"
+            style={{ flex: 1 }}
+            disabled={submitting}
+            onClick={onConfirm}
+          >
             {submitting ? 'Working…' : confirmLabel}
           </button>
         </div>
@@ -232,6 +259,8 @@ export const TakeTest = () => {
   const [submitting, setSubmitting] = useState(false);
   const [testStarted, setTestStarted] = useState(false);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [showQuestionPaper, setShowQuestionPaper] = useState(false);
   const [attemptId, setAttemptId] = useState<string | null>(null);
   const [paper, setPaper] = useState<PaperDetail | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -242,7 +271,6 @@ export const TakeTest = () => {
   const [paletteSection, setPaletteSection] = useState<SectionCode>('');
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
   const [endsAtMs, setEndsAtMs] = useState<number | null>(null);
-  const [showStimulus, setShowStimulus] = useState(true);
   const [paused, setPaused] = useState(false);
   const [calcOpen, setCalcOpen] = useState(false);
   const [draftReady, setDraftReady] = useState(false);
@@ -266,10 +294,16 @@ export const TakeTest = () => {
 
   const isSectional = paper?.timingMode === 'sectional';
   const sectionMetas = useMemo(() => (paper ? sectionsFromPaper(paper) : []), [paper]);
-  const sectionMinutes = paper?.sectionDurationMinutes ?? sectionMetas[0]?.durationMinutes ?? 15;
+  const sectionMinutes =
+    (isSectional
+      ? sectionMetas[activeSectionIndex]?.durationMinutes ?? paper?.sectionDurationMinutes
+      : paper?.sectionDurationMinutes) ??
+    sectionMetas[0]?.durationMinutes ??
+    15;
   const showCalculator = paper?.calculator !== false;
   const activeSection = sectionMetas[activeSectionIndex] ?? null;
   const isLastSection = !isSectional || activeSectionIndex >= sectionMetas.length - 1;
+  const candidateName = displayNameFromEmail(userEmail);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 900px)');
@@ -307,10 +341,7 @@ export const TakeTest = () => {
 
         if (canResume && draft) {
           const left = remainingFromDraft(draft) ?? (sectional ? secMins : started.durationMinutes) * 60;
-          const secIdx = Math.max(
-            0,
-            Math.min(sections.length - 1, draft.activeSectionIndex ?? 0)
-          );
+          const secIdx = Math.max(0, Math.min(sections.length - 1, draft.activeSectionIndex ?? 0));
           setAnswers(draft.answers || {});
           setSecondsSpent(draft.secondsSpent || {});
           setVisited(
@@ -330,7 +361,9 @@ export const TakeTest = () => {
           );
           if (sectional && resumeSection) {
             const inSection = started.paper.questions.findIndex(
-              (q) => q.qNo === started.paper.questions[resumeIndex]?.qNo && q.sectionCode === resumeSection.code
+              (q) =>
+                q.qNo === started.paper.questions[resumeIndex]?.qNo &&
+                q.sectionCode === resumeSection.code
             );
             if (inSection < 0) {
               resumeIndex = started.paper.questions.findIndex((q) => q.sectionCode === resumeSection.code);
@@ -404,9 +437,10 @@ export const TakeTest = () => {
 
   const beginTest = useCallback(() => {
     if (!paper) return;
+    const sections = sectionsFromPaper(paper);
     const total =
       paper.timingMode === 'sectional'
-        ? (paper.sectionDurationMinutes ?? 15) * 60
+        ? (sections[0]?.durationMinutes ?? paper.sectionDurationMinutes ?? 15) * 60
         : paper.durationMinutes * 60;
     setTestStarted(true);
     setPaused(false);
@@ -418,9 +452,7 @@ export const TakeTest = () => {
     if (!paused) {
       flushActiveSegment();
       const left =
-        endsAtMs != null
-          ? Math.max(0, Math.ceil((endsAtMs - Date.now()) / 1000))
-          : secondsLeft ?? 0;
+        endsAtMs != null ? Math.max(0, Math.ceil((endsAtMs - Date.now()) / 1000)) : secondsLeft ?? 0;
       setSecondsLeft(left);
       setEndsAtMs(null);
       setPaused(true);
@@ -467,7 +499,7 @@ export const TakeTest = () => {
     const nextIdx = activeSectionIndex + 1;
     const next = sections[nextIdx];
     const nextQIndex = paper.questions.findIndex((q) => q.sectionCode === next.code);
-    const secSec = (paper.sectionDurationMinutes ?? next.durationMinutes ?? 15) * 60;
+    const secSec = (next.durationMinutes ?? paper.sectionDurationMinutes ?? 15) * 60;
 
     setCompletedSections((prev) => (prev.includes(current.code) ? prev : [...prev, current.code]));
     setActiveSectionIndex(nextIdx);
@@ -486,7 +518,6 @@ export const TakeTest = () => {
     }, 400);
   }, [paper, activeSectionIndex, submit, showToast, flushActiveSegment]);
 
-  // Accumulate time on the active question (hidden from the test UI).
   useEffect(() => {
     flushActiveSegment();
     if (!paper || !testStarted || paused) return;
@@ -498,7 +529,6 @@ export const TakeTest = () => {
     };
   }, [paper, testStarted, paused, index, flushActiveSegment]);
 
-  // Wall-clock timer
   useEffect(() => {
     if (!paper || loading || !testStarted || paused || endsAtMs == null) return;
 
@@ -595,10 +625,13 @@ export const TakeTest = () => {
 
   const markedCount = counts.marked + counts.answeredMarked;
 
+  // Sectional exams always show the active section palette (real CAT/SSC behaviour).
+  const effectivePaletteSection = isSectional && activeSection ? activeSection.code : paletteSection;
+
   const paletteQuestions = useMemo(() => {
     if (!paper) return [];
-    return paper.questions.filter((q) => q.sectionCode === paletteSection);
-  }, [paper, paletteSection]);
+    return paper.questions.filter((q) => q.sectionCode === effectivePaletteSection);
+  }, [paper, effectivePaletteSection]);
 
   const sectionBounds = useMemo(() => {
     if (!paper || !isSectional || !activeSection) {
@@ -742,50 +775,51 @@ export const TakeTest = () => {
 
   const currentAnswer = answers[String(question.qNo)] ?? '';
   const isMarked = marked.has(question.qNo);
-  const currentStatus = getQuestionStatus(question.qNo, visited, marked, answers);
-  const timerPreviewSeconds = isSectional ? sectionMinutes * 60 : paper.durationMinutes * 60;
-  const submitButtonLabel = isSectional && !isLastSection ? 'Submit Section' : 'Submit Test';
+  const timerPreviewSeconds = isSectional
+    ? (sectionMetas[0]?.durationMinutes ?? sectionMinutes) * 60
+    : paper.durationMinutes * 60;
+  const submitButtonLabel = isSectional && !isLastSection ? 'Submit' : 'Submit';
+  const hasStimulusPane = Boolean(question.stimulus) || Boolean(question.images?.length);
+  const marking = paper.marking;
+  const paletteSectionMeta =
+    sectionMetas.find((s) => s.code === effectivePaletteSection) || activeSection || sectionMetas[0];
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: 'var(--bg)',
-        color: 'var(--text)',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <div className="tt-exam">
       {!testStarted && (
         <InstructionsModal
           paper={paper}
           isSectional={Boolean(isSectional)}
-          sectionMinutes={sectionMinutes}
+          sectionMinutes={sectionMetas[0]?.durationMinutes ?? sectionMinutes}
           onBegin={beginTest}
         />
       )}
+      {testStarted && showInstructions && (
+        <InstructionsModal
+          paper={paper}
+          isSectional={Boolean(isSectional)}
+          sectionMinutes={sectionMinutes}
+          viewOnly
+          onClose={() => setShowInstructions(false)}
+        />
+      )}
+      {showQuestionPaper && (
+        <QuestionPaperModal
+          paper={paper}
+          questionNos={activeQuestionNos}
+          sectionName={activeSection?.name || 'All questions'}
+          onClose={() => setShowQuestionPaper(false)}
+        />
+      )}
       {paused && testStarted && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 90,
-            background: 'rgba(0,0,0,0.72)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 16,
-          }}
-        >
-          <div className="card" style={{ maxWidth: 400, width: '100%', padding: 24, textAlign: 'center' }}>
+        <div className="tt-modal-backdrop" style={{ zIndex: 90 }}>
+          <div className="tt-modal card" style={{ maxWidth: 400, textAlign: 'center' }}>
             <h2 style={{ margin: '0 0 8px', fontSize: 20 }}>Test paused</h2>
-            <p style={{ margin: '0 0 8px', fontSize: 14, color: 'var(--text3)' }}>
+            <p style={{ margin: '0 0 8px', fontSize: 14, color: 'var(--tt-muted)' }}>
               Timer is frozen at {formatTime(secondsLeft ?? 0)}.
             </p>
-            <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--text2)' }}>
-              Answers stay saved. Resume when you are ready.
-            </p>
-            <button type="button" className="btn btn-primary" style={{ width: '100%' }} onClick={togglePause}>
+            <p style={{ margin: '0 0 20px', fontSize: 13 }}>Answers stay saved. Resume when you are ready.</p>
+            <button type="button" className="tt-btn tt-btn-primary" style={{ width: '100%' }} onClick={togglePause}>
               Resume Test
             </button>
           </div>
@@ -804,144 +838,132 @@ export const TakeTest = () => {
         />
       )}
 
-      <header className="tt-header">
-        <div className="tt-header-title">
-          <div className="tt-header-title-text">{paper.title}</div>
-          <div className="tt-header-meta">
-            {question.section} · Q{question.qNo}/{paper.questionCount}
-            {question.topic ? ` · ${question.topic}` : ''}
-            {isSectional && activeSection
-              ? ` · Sec ${activeSectionIndex + 1}/${sectionMetas.length}`
-              : ''}
-          </div>
-        </div>
-        <div className="tt-header-actions">
-          <div className="tt-answered">
-            {counts.answered + counts.answeredMarked}/{activeQuestionNos.length}
-            {markedCount > 0 && (
-              <span className="tt-answered-marked"> · M{markedCount}</span>
-            )}
-          </div>
-          <div
-            className="tt-timer"
-            style={{
-              color:
-                paused
-                  ? 'var(--amber)'
-                  : testStarted && (secondsLeft ?? 0) <= 60
-                    ? '#f43f5e'
-                    : 'var(--accent)',
-            }}
-            title={isSectional ? 'Section timer' : 'Paper timer'}
-          >
-            {testStarted ? formatTime(secondsLeft ?? 0) : formatTime(timerPreviewSeconds)}
-            {paused && <span className="tt-timer-paused">PAUSED</span>}
-            {isSectional && !paused && <div className="tt-timer-label">section</div>}
-          </div>
+      <header className="tt-topbar">
+        <div className="tt-topbar-title">{paper.title}</div>
+        <div className="tt-topbar-actions">
           <button
             type="button"
-            className="btn tt-palette-toggle"
-            disabled={!testStarted || submitting}
-            onClick={() => setPaletteOpen((v) => !v)}
-            aria-expanded={paletteOpen}
-            aria-label="Question palette"
+            className="tt-top-link"
+            disabled={!testStarted}
+            onClick={() => setShowInstructions(true)}
           >
-            Palette
+            <InfoOutlinedIcon sx={{ fontSize: 16 }} />
+            View Instruction
+          </button>
+          <button
+            type="button"
+            className="tt-top-link"
+            disabled={!testStarted}
+            onClick={() => setShowQuestionPaper(true)}
+          >
+            <DescriptionOutlinedIcon sx={{ fontSize: 16 }} />
+            Question Paper
           </button>
           {showCalculator && (
             <button
               type="button"
-              className="btn tt-icon-btn"
+              className="tt-top-icon"
               disabled={!testStarted || submitting}
               onClick={() => setCalcOpen((v) => !v)}
               title="Calculator"
               aria-label="Calculator"
-              aria-pressed={calcOpen}
             >
               <CalculateOutlinedIcon fontSize="small" />
             </button>
           )}
           <button
             type="button"
-            className="btn tt-icon-btn"
+            className="tt-top-icon"
             disabled={!testStarted || submitting}
             onClick={togglePause}
-            title={paused ? 'Resume test' : 'Pause test'}
-            aria-label={paused ? 'Resume test' : 'Pause test'}
-            aria-pressed={paused}
+            title={paused ? 'Resume' : 'Pause'}
+            aria-label={paused ? 'Resume' : 'Pause'}
           >
             {paused ? <PlayArrowRoundedIcon fontSize="small" /> : <PauseRoundedIcon fontSize="small" />}
           </button>
           <button
             type="button"
-            className="btn btn-primary tt-submit-btn"
-            disabled={!testStarted || submitting || paused}
-            onClick={() => setShowSubmitModal(true)}
+            className="tt-btn tt-palette-toggle"
+            disabled={!testStarted || submitting}
+            onClick={() => setPaletteOpen((v) => !v)}
           >
-            <span className="tt-submit-full">{submitButtonLabel}</span>
-            <span className="tt-submit-short">
-              {isSectional && !isLastSection ? 'Submit sec' : 'Submit'}
-            </span>
+            Palette
           </button>
         </div>
       </header>
 
-      <div className="take-test-grid">
-        <div className="tt-main-col">
-          <main className="tt-main">
-            {question.stimulus && (
-              <div className="card" style={{ padding: 16, marginBottom: 16 }}>
-                <button
-                  type="button"
-                  onClick={() => setShowStimulus((v) => !v)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: 'var(--accent)',
-                    cursor: 'pointer',
-                    fontWeight: 600,
-                    padding: 0,
-                    marginBottom: showStimulus ? 12 : 0,
-                  }}
-                >
-                  {showStimulus ? 'Hide passage / set' : 'Show passage / set'}
-                  {question.setRange ? ` (Q${question.setRange[0]}–${question.setRange[1]})` : ''}
-                </button>
-                {showStimulus && (
-                  <div style={{ fontSize: 14, lineHeight: 1.6, overflowWrap: 'anywhere' }}>
+      <nav className="tt-section-bar" aria-label="Sections">
+        {sectionMetas.map((sec) => {
+          const locked = isSectional && completedSections.includes(sec.code);
+          const current = isSectional ? activeSection?.code === sec.code : effectivePaletteSection === sec.code;
+          const accessible = canAccessSection(sec.code);
+          return (
+            <button
+              key={sec.code}
+              type="button"
+              className={`tt-sec-tab${current ? ' tt-sec-tab-active' : ''}${locked ? ' tt-sec-tab-done' : ''}`}
+              disabled={isSectional && !accessible}
+              onClick={() => jumpToSection(sec.code)}
+              title={
+                locked
+                  ? `${sec.name} (completed)`
+                  : accessible
+                    ? sec.name
+                    : `${sec.name} (locked until current section is submitted)`
+              }
+            >
+              <span className="tt-sec-tab-label">{sec.name}</span>
+              <InfoOutlinedIcon className="tt-sec-info" sx={{ fontSize: 14 }} />
+              {current && <span className="tt-sec-caret" aria-hidden />}
+            </button>
+          );
+        })}
+      </nav>
+
+      <div className="tt-timebar">
+        <div className="tt-timebar-section">
+          {activeSection?.name || question.section}
+          {isSectional ? ` · Section ${activeSectionIndex + 1}/${sectionMetas.length}` : ''}
+        </div>
+        <div
+          className="tt-timebar-clock"
+          style={{
+            color: paused ? '#b45309' : testStarted && (secondsLeft ?? 0) <= 60 ? '#c62828' : undefined,
+          }}
+        >
+          Time Left : {testStarted ? formatTime(secondsLeft ?? 0) : formatTime(timerPreviewSeconds)}
+          {paused ? ' (Paused)' : ''}
+        </div>
+      </div>
+
+      <div className="tt-body">
+        <div className="tt-workspace">
+          <main className={`tt-main${hasStimulusPane ? ' tt-main-split' : ''}`}>
+            {hasStimulusPane && (
+              <section className="tt-passage" aria-label="Passage or set">
+                {question.setRange && (
+                  <p className="tt-passage-intro">
+                    The passage / set below is accompanied by questions Q{question.setRange[0]}–
+                    {question.setRange[1]}. Choose the best answer to each question.
+                  </p>
+                )}
+                {question.stimulus && (
+                  <div className="tt-passage-text">
                     <PyqText text={question.stimulus} />
                   </div>
                 )}
-              </div>
+                {question.images?.map((src) => (
+                  <img key={src} src={src} alt="Question figure" className="tt-passage-img" />
+                ))}
+              </section>
             )}
 
-            {question.images?.map((src) => (
-              <div key={src} className="card" style={{ padding: 12, marginBottom: 16 }}>
-                <img
-                  src={src}
-                  alt="Question figure"
-                  style={{ maxWidth: '100%', height: 'auto', display: 'block', borderRadius: 8 }}
-                />
-              </div>
-            ))}
-
-            <div className="card tt-question-card">
-              <div className="tt-question-top">
-                <div style={{ fontSize: 12, color: 'var(--text3)' }}>Question {question.qNo}</div>
-                <label
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 8,
-                    fontSize: 13,
-                    cursor: 'pointer',
-                    color: isMarked ? '#a855f7' : 'var(--text2)',
-                    fontWeight: isMarked ? 600 : 400,
-                  }}
-                >
-                  <input type="checkbox" checked={isMarked} onChange={toggleMarkCurrent} />
-                  Mark for review
-                </label>
+            <section className="tt-question-pane" aria-label="Question">
+              <div className="tt-q-toolbar">
+                <div className="tt-q-title">Question {question.qNo}</div>
+                <div className="tt-q-marks">
+                  Marks for correct answer: {marking.correct} | Negative Marks: {marking.incorrect}
+                </div>
               </div>
 
               <div className="tt-stem">
@@ -950,84 +972,74 @@ export const TakeTest = () => {
 
               {question.type === 'MCQ' && question.options ? (
                 <div className="tt-options">
-                  {(['1', '2', '3', '4'] as const).map((key) => {
+                  {optionKeys(question).map((key) => {
                     const text = question.options?.[key];
-                    if (!text) return null;
+                    if (text == null) return null;
                     const selected = currentAnswer === key;
                     return (
-                      <label
-                        key={key}
-                        className="tt-option"
-                        style={{
-                          border: `1px solid ${selected ? 'var(--accent)' : 'var(--border)'}`,
-                          background: selected
-                            ? 'color-mix(in srgb, var(--accent) 12%, transparent)'
-                            : 'transparent',
-                        }}
-                      >
+                      <label key={key} className={`tt-option${selected ? ' tt-option-selected' : ''}`}>
                         <input
                           type="radio"
                           name={`q-${question.qNo}`}
                           checked={selected}
                           onChange={() => setAnswer(key)}
-                          style={{ marginTop: 3 }}
                         />
-                        <span style={{ fontSize: 14, lineHeight: 1.5, overflowWrap: 'anywhere' }}>
-                          {renderOptionLabel(key, text)}
-                        </span>
+                        <span>{renderOptionLabel(key, text)}</span>
                       </label>
                     );
                   })}
                 </div>
               ) : (
                 <div>
-                  <div style={{ fontSize: 12, color: 'var(--text3)', marginBottom: 8 }}>
-                    Type-in answer (TITA)
-                  </div>
+                  <div className="tt-tita-label">Type-in answer (TITA)</div>
                   <input
-                    className="input"
+                    className="tt-tita-input"
                     value={currentAnswer}
                     onChange={(e) => setAnswer(e.target.value)}
                     placeholder="Enter your answer"
-                    style={{ width: '100%', maxWidth: 360 }}
                   />
                 </div>
               )}
-            </div>
+
+              {isMarked && <div className="tt-marked-flag">Marked for review</div>}
+            </section>
           </main>
 
           <footer className="tt-footer">
-            <button
-              type="button"
-              className="btn"
-              disabled={index <= sectionBounds.minIndex}
-              onClick={() => goToIndex(index - 1)}
-            >
-              <span className="tt-footer-full">← Previous</span>
-              <span className="tt-footer-short">← Prev</span>
-            </button>
-            <button
-              type="button"
-              className="btn"
-              onClick={markAndNext}
-              disabled={index >= sectionBounds.maxIndex}
-            >
-              <span className="tt-footer-full">Mark for Review &amp; Next →</span>
-              <span className="tt-footer-short">Mark &amp; Next</span>
-            </button>
-            <button type="button" className="btn" onClick={clearResponse}>
-              <span className="tt-footer-full">Clear Response</span>
-              <span className="tt-footer-short">Clear</span>
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={saveAndNext}
-              disabled={index >= sectionBounds.maxIndex}
-            >
-              <span className="tt-footer-full">Save &amp; Next →</span>
-              <span className="tt-footer-short">Save &amp; Next</span>
-            </button>
+            <div className="tt-footer-left">
+              <button type="button" className="tt-btn" onClick={markAndNext}>
+                Mark for Review &amp; Next
+              </button>
+              <button type="button" className="tt-btn" onClick={clearResponse}>
+                Clear Response
+              </button>
+            </div>
+            <div className="tt-footer-right">
+              <button
+                type="button"
+                className="tt-btn"
+                disabled={index <= sectionBounds.minIndex}
+                onClick={() => goToIndex(index - 1)}
+              >
+                Previous
+              </button>
+              <button
+                type="button"
+                className="tt-btn tt-btn-primary"
+                onClick={saveAndNext}
+                disabled={index >= sectionBounds.maxIndex}
+              >
+                Save &amp; Next
+              </button>
+              <button
+                type="button"
+                className="tt-btn tt-btn-submit"
+                disabled={!testStarted || submitting || paused}
+                onClick={() => setShowSubmitModal(true)}
+              >
+                {submitButtonLabel}
+              </button>
+            </div>
           </footer>
         </div>
 
@@ -1040,57 +1052,47 @@ export const TakeTest = () => {
           />
         )}
 
-        <aside className={`tt-aside ${paletteOpen ? 'tt-aside-open' : ''}`}>
+        <aside className={`tt-aside${paletteOpen ? ' tt-aside-open' : ''}`}>
           <div className="tt-aside-handle">
-            <strong style={{ fontSize: 13 }}>Question palette</strong>
-            <button
-              type="button"
-              className="btn tt-palette-close"
-              onClick={() => setPaletteOpen(false)}
-            >
+            <strong>Question palette</strong>
+            <button type="button" className="tt-btn" onClick={() => setPaletteOpen(false)}>
               Close
             </button>
           </div>
-          <div className="tt-section-tabs">
-            {sectionMetas.map((sec) => {
-              const locked = isSectional && completedSections.includes(sec.code);
-              const active = paletteSection === sec.code;
-              const accessible = canAccessSection(sec.code);
-              return (
-                <button
-                  key={sec.code}
-                  type="button"
-                  onClick={() => jumpToSection(sec.code)}
-                  title={
-                    locked
-                      ? `${sec.name} (locked)`
-                      : accessible
-                        ? sec.name
-                        : `${sec.name} (locked until previous submitted)`
-                  }
-                  className="tt-section-tab"
-                  style={{
-                    fontWeight: active ? 700 : 500,
-                    border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
-                    background: active
-                      ? 'color-mix(in srgb, var(--accent) 15%, transparent)'
-                      : locked
-                        ? 'var(--surface2)'
-                        : 'transparent',
-                    color: accessible ? 'var(--text)' : 'var(--text3)',
-                    cursor: accessible ? 'pointer' : 'not-allowed',
-                    opacity: accessible ? 1 : 0.55,
-                  }}
-                >
-                  {shortSectionLabel(sec.code, sec.name)}
-                  {locked ? ' ✓' : ''}
-                </button>
-              );
-            })}
+
+          <div className="tt-candidate">
+            <div className="tt-avatar" aria-hidden>
+              <PersonOutlineIcon />
+            </div>
+            <div className="tt-candidate-name">{candidateName}</div>
           </div>
 
-          <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 8, color: 'var(--text3)' }}>
-            {isSectional && activeSection ? activeSection.name : 'Questions'}
+          <div className="tt-legend">
+            <div className="tt-legend-item">
+              <StatusLegendIcon status="answered" />
+              <span>Answered</span>
+            </div>
+            <div className="tt-legend-item">
+              <StatusLegendIcon status="not-answered" />
+              <span>Not Answered</span>
+            </div>
+            <div className="tt-legend-item">
+              <StatusLegendIcon status="not-visited" />
+              <span>Not Visited</span>
+            </div>
+            <div className="tt-legend-item">
+              <StatusLegendIcon status="marked" />
+              <span>Marked for Review</span>
+            </div>
+            <div className="tt-legend-item tt-legend-wide">
+              <StatusLegendIcon status="answered-marked" />
+              <span>Answered &amp; Marked for Review (will be evaluated)</span>
+            </div>
+          </div>
+
+          <div className="tt-palette-heading">
+            {(paletteSectionMeta?.name || 'Questions').slice(0, 28)}
+            {(paletteSectionMeta?.name?.length || 0) > 28 ? '…' : ''}
           </div>
           <div className="tt-palette-grid">
             {paletteQuestions.map((q) => {
@@ -1102,50 +1104,29 @@ export const TakeTest = () => {
                 <button
                   key={q.qNo}
                   type="button"
+                  className={`${paletteClass(status)}${active ? ' tt-pal-active' : ''}`}
                   title={`Q${q.qNo} — ${locked ? 'locked' : status.replace(/-/g, ' ')}`}
                   onClick={() => {
                     if (!locked) goToQuestion(q.qNo);
                   }}
                   disabled={locked}
-                  style={{
-                    ...paletteStyle(status, active),
-                    opacity: locked ? 0.45 : 1,
-                    cursor: locked ? 'not-allowed' : 'pointer',
-                    minHeight: 36,
-                  }}
                 >
                   {q.qNo}
+                  {status === 'answered-marked' && <span className="tt-pal-dot" aria-hidden />}
                 </button>
               );
             })}
           </div>
 
-          <div className="tt-legend">
-            <LegendItem color="var(--surface2)" label="Not visited" />
-            <LegendItem color="var(--red-glow)" border="2px solid var(--red)" label="Not answered" />
-            <LegendItem color="var(--green-glow)" border="2px solid var(--green)" label="Answered" />
-            <LegendItem color="rgba(168,85,247,0.18)" border="2px solid #a855f7" label="Marked for review" />
-            <LegendItem
-              color="var(--green-glow)"
-              border="2px solid #a855f7"
-              label="Answered & marked"
-            />
-          </div>
-
-          <div className="tt-keys-hint" style={{ fontSize: 11, color: 'var(--text3)', lineHeight: 1.5 }}>
+          <div className="tt-keys-hint">
             Keys: ← → navigate · M mark · 1–4 select MCQ
             {isSectional && (
               <>
                 <br />
-                Sections are sequential: finish or time out to unlock the next.
+                Sections are sequential — finish or time out to unlock the next.
               </>
             )}
           </div>
-          {currentStatus !== 'not-visited' && (
-            <div style={{ fontSize: 11, marginTop: 8, color: 'var(--text2)' }}>
-              Current: <strong>{currentStatus.replace(/-/g, ' ')}</strong>
-            </div>
-          )}
         </aside>
       </div>
 
@@ -1154,225 +1135,457 @@ export const TakeTest = () => {
       )}
 
       <style>{`
-        .tt-header {
-          position: sticky;
-          top: 0;
-          z-index: 20;
-          background: var(--surface);
-          border-bottom: 1px solid var(--border);
-          padding: 12px 16px;
-          padding-top: max(12px, env(safe-area-inset-top));
+        .tt-exam {
+          --tt-bg: #eceff1;
+          --tt-panel: #ffffff;
+          --tt-text: #212121;
+          --tt-muted: #616161;
+          --tt-border: #cfd8dc;
+          --tt-blue: #1a5fb4;
+          --tt-blue-soft: #2a6ebb;
+          --tt-header: #37474f;
+          min-height: 100vh;
+          background: var(--tt-bg);
+          color: var(--tt-text);
+          display: flex;
+          flex-direction: column;
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .tt-exam .card {
+          background: var(--tt-panel);
+          border: 1px solid var(--tt-border);
+          border-radius: 4px;
+          color: var(--tt-text);
+        }
+        .tt-modal-backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 100;
+          background: rgba(0,0,0,0.55);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
+        }
+        .tt-modal {
+          max-width: 520px;
+          width: 100%;
+          padding: 24px;
+          max-height: min(92vh, 720px);
+          overflow: auto;
+        }
+        .tt-btn {
+          appearance: none;
+          border: 1px solid #90a4ae;
+          background: #fff;
+          color: #263238;
+          border-radius: 3px;
+          padding: 8px 14px;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          line-height: 1.2;
+        }
+        .tt-btn:disabled {
+          opacity: 0.45;
+          cursor: not-allowed;
+        }
+        .tt-btn-primary {
+          background: var(--tt-blue);
+          border-color: var(--tt-blue);
+          color: #fff;
+        }
+        .tt-btn-submit {
+          background: #4fc3f7;
+          border-color: #29b6f6;
+          color: #0d47a1;
+        }
+        .tt-topbar {
+          background: var(--tt-header);
+          color: #fff;
+          padding: 8px 14px;
           display: flex;
           align-items: center;
           justify-content: space-between;
           gap: 12px;
           flex-wrap: wrap;
         }
-        .tt-header-title {
-          min-width: 0;
-          flex: 1 1 180px;
-        }
-        .tt-header-title-text {
+        .tt-topbar-title {
           font-weight: 700;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+          font-size: 15px;
         }
-        .tt-header-meta {
-          font-size: 12px;
-          color: var(--text3);
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-        .tt-header-actions {
+        .tt-topbar-actions {
           display: flex;
           align-items: center;
           gap: 8px;
           flex-wrap: wrap;
-          margin-left: auto;
         }
-        .tt-answered {
+        .tt-top-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: transparent;
+          border: 1px solid rgba(255,255,255,0.35);
+          color: #fff;
+          border-radius: 3px;
+          padding: 6px 10px;
           font-size: 12px;
-          color: var(--text3);
+          cursor: pointer;
         }
-        .tt-timer {
-          font-variant-numeric: tabular-nums;
-          font-weight: 800;
-          font-size: 18px;
-          min-width: 64px;
-          text-align: right;
+        .tt-top-link:disabled {
+          opacity: 0.45;
+          cursor: not-allowed;
         }
-        .tt-timer-paused {
-          font-size: 11px;
-          font-weight: 600;
-          margin-left: 6px;
-        }
-        .tt-timer-label {
-          font-size: 10px;
-          font-weight: 600;
-          color: var(--text3);
-        }
-        .tt-icon-btn {
-          width: 40px;
-          height: 40px;
-          padding: 0;
+        .tt-top-icon {
+          width: 32px;
+          height: 32px;
           display: grid;
           place-items: center;
+          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.25);
+          color: #fff;
+          border-radius: 3px;
+          cursor: pointer;
         }
-        .tt-palette-toggle {
-          display: none;
-        }
-        .tt-submit-short {
-          display: none;
-        }
-        .take-test-grid {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(200px, 240px);
-          gap: 0;
-          flex: 1;
-          min-height: 0;
-        }
-        .tt-main-col {
+        .tt-palette-toggle { display: none; }
+        .tt-section-bar {
           display: flex;
-          flex-direction: column;
-          min-height: 0;
-          min-width: 0;
+          gap: 0;
+          background: #f5f7fa;
+          border-bottom: 1px solid var(--tt-border);
+          overflow-x: auto;
         }
-        .tt-main {
-          padding: 16px;
-          overflow: auto;
-          flex: 1;
-          max-width: 920px;
-          width: 100%;
-          margin: 0 auto;
-          box-sizing: border-box;
+        .tt-sec-tab {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 16px;
+          border: 1px solid var(--tt-border);
+          border-bottom: none;
+          background: #fff;
+          color: var(--tt-blue);
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          white-space: nowrap;
+          margin-right: 2px;
         }
-        .tt-question-card {
-          padding: 20px;
+        .tt-sec-tab:disabled {
+          cursor: not-allowed;
+          opacity: 0.55;
+          color: #78909c;
         }
-        .tt-question-top {
+        .tt-sec-tab-active {
+          background: var(--tt-blue);
+          border-color: var(--tt-blue);
+          color: #fff;
+          opacity: 1;
+        }
+        .tt-sec-tab-done {
+          background: #e8f5e9;
+          color: #2e7d32;
+        }
+        .tt-sec-caret {
+          position: absolute;
+          left: 50%;
+          bottom: -7px;
+          transform: translateX(-50%);
+          width: 0;
+          height: 0;
+          border-left: 7px solid transparent;
+          border-right: 7px solid transparent;
+          border-top: 7px solid var(--tt-blue);
+        }
+        .tt-sec-info { opacity: 0.75; }
+        .tt-timebar {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 12px;
-          flex-wrap: wrap;
-          gap: 8px;
+          gap: 12px;
+          padding: 8px 14px;
+          background: #e3f2fd;
+          border-bottom: 1px solid #bbdefb;
+          font-size: 13px;
+          font-weight: 600;
         }
-        .tt-stem {
-          font-size: 15px;
-          line-height: 1.65;
-          margin-bottom: 20px;
-          overflow-wrap: anywhere;
+        .tt-timebar-clock {
+          font-variant-numeric: tabular-nums;
+          color: #0d47a1;
         }
-        .tt-options {
+        .tt-body {
+          flex: 1;
+          min-height: 0;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 260px;
+        }
+        .tt-workspace {
+          min-width: 0;
+          min-height: 0;
           display: flex;
           flex-direction: column;
-          gap: 10px;
         }
+        .tt-main {
+          flex: 1;
+          min-height: 0;
+          overflow: auto;
+          background: var(--tt-panel);
+        }
+        .tt-main-split {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          overflow: hidden;
+        }
+        .tt-passage {
+          overflow: auto;
+          padding: 16px 18px;
+          border-right: 1px solid var(--tt-border);
+          background: #fafafa;
+          font-size: 14px;
+          line-height: 1.65;
+        }
+        .tt-passage-intro {
+          margin: 0 0 14px;
+          font-weight: 700;
+          font-size: 13px;
+        }
+        .tt-passage-text { overflow-wrap: anywhere; }
+        .tt-passage-img {
+          max-width: 100%;
+          height: auto;
+          display: block;
+          margin-top: 12px;
+          border: 1px solid var(--tt-border);
+        }
+        .tt-question-pane {
+          overflow: auto;
+          padding: 14px 18px 24px;
+          background: #fff;
+        }
+        .tt-q-toolbar {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+          align-items: baseline;
+          margin-bottom: 12px;
+          flex-wrap: wrap;
+          border-bottom: 1px solid #eee;
+          padding-bottom: 8px;
+        }
+        .tt-q-title { font-weight: 700; font-size: 14px; }
+        .tt-q-marks { font-size: 12px; color: var(--tt-muted); }
+        .tt-stem {
+          font-size: 14px;
+          line-height: 1.6;
+          margin-bottom: 16px;
+          overflow-wrap: anywhere;
+        }
+        .tt-options { display: flex; flex-direction: column; gap: 8px; }
         .tt-option {
           display: flex;
           gap: 10px;
           align-items: flex-start;
-          padding: 12px 14px;
-          border-radius: 10px;
+          padding: 8px 10px;
+          border: 1px solid transparent;
+          border-radius: 2px;
           cursor: pointer;
-          -webkit-tap-highlight-color: transparent;
+          font-size: 14px;
+          line-height: 1.5;
+        }
+        .tt-option-selected {
+          background: #e3f2fd;
+          border-color: #90caf9;
+        }
+        .tt-option input { margin-top: 3px; }
+        .tt-tita-label { font-size: 12px; color: var(--tt-muted); margin-bottom: 6px; }
+        .tt-tita-input {
+          width: 100%;
+          max-width: 320px;
+          padding: 8px 10px;
+          border: 1px solid var(--tt-border);
+          border-radius: 3px;
+          font-size: 14px;
+        }
+        .tt-marked-flag {
+          margin-top: 14px;
+          font-size: 12px;
+          font-weight: 700;
+          color: #5e35b1;
         }
         .tt-footer {
-          position: sticky;
-          bottom: 0;
-          border-top: 1px solid var(--border);
-          background: var(--surface);
-          padding: 12px 16px;
-          padding-bottom: max(12px, env(safe-area-inset-bottom));
+          border-top: 1px solid var(--tt-border);
+          background: #f5f7fa;
+          padding: 10px 14px;
           display: flex;
+          justify-content: space-between;
+          gap: 10px;
           flex-wrap: wrap;
-          gap: 8px;
-          justify-content: center;
         }
-        .tt-footer-short {
-          display: none;
+        .tt-footer-left, .tt-footer-right {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
         }
         .tt-aside {
-          border-left: 1px solid var(--border);
-          background: var(--surface);
+          border-left: 1px solid var(--tt-border);
+          background: #fff;
           padding: 12px;
           overflow: auto;
-          max-height: calc(100vh - 64px);
-          position: sticky;
-          top: 64px;
         }
-        .tt-aside-handle {
-          display: none;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 12px;
-        }
-        .tt-palette-backdrop {
-          display: none;
-        }
-        .tt-section-tabs {
+        .tt-aside-handle { display: none; }
+        .tt-palette-backdrop { display: none; }
+        .tt-candidate {
           display: flex;
-          gap: 4px;
+          align-items: center;
+          gap: 10px;
           margin-bottom: 12px;
-          flex-wrap: wrap;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #eee;
         }
-        .tt-section-tab {
-          flex: 1 1 40%;
-          padding: 8px 4px;
+        .tt-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #eceff1;
+          display: grid;
+          place-items: center;
+          color: #546e7a;
+        }
+        .tt-candidate-name { font-weight: 700; font-size: 13px; }
+        .tt-legend {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 8px 10px;
+          margin-bottom: 14px;
           font-size: 11px;
-          border-radius: 8px;
-          min-height: 36px;
+          color: var(--tt-muted);
+        }
+        .tt-legend-item {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .tt-legend-wide { grid-column: 1 / -1; }
+        .tt-palette-heading {
+          font-size: 12px;
+          font-weight: 700;
+          margin-bottom: 8px;
+          color: #37474f;
         }
         .tt-palette-grid {
           display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
-          gap: 6px;
-          margin-bottom: 14px;
-        }
-        .tt-legend {
-          display: grid;
-          gap: 6px;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 8px;
           margin-bottom: 12px;
         }
+        .tt-pal {
+          position: relative;
+          height: 34px;
+          border: none;
+          color: #fff;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+          display: grid;
+          place-items: center;
+          padding: 0;
+        }
+        .tt-pal:disabled { opacity: 0.4; cursor: not-allowed; }
+        .tt-pal-active { outline: 2px solid #111; outline-offset: 1px; }
+        .tt-pal-answered {
+          background: #4caf50;
+          clip-path: polygon(50% 0, 100% 28%, 100% 100%, 0 100%, 0 28%);
+        }
+        .tt-pal-not-answered {
+          background: #e53935;
+          clip-path: polygon(0 0, 100% 0, 100% 72%, 50% 100%, 0 72%);
+        }
+        .tt-pal-not-visited {
+          background: #bdbdbd;
+          color: #212121;
+          border-radius: 2px;
+        }
+        .tt-pal-marked,
+        .tt-pal-answered-marked {
+          background: #673ab7;
+          border-radius: 50%;
+        }
+        .tt-pal-dot {
+          position: absolute;
+          right: 3px;
+          bottom: 3px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #4caf50;
+          border: 1px solid #fff;
+        }
+        .tt-pal-legend {
+          position: relative;
+          width: 18px;
+          height: 18px;
+          flex-shrink: 0;
+          pointer-events: none;
+        }
+        .tt-pal-legend.tt-pal-answered-marked::after {
+          content: "";
+          position: absolute;
+          right: 1px;
+          bottom: 1px;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #4caf50;
+        }
+        .tt-keys-hint {
+          font-size: 11px;
+          color: var(--tt-muted);
+          line-height: 1.45;
+        }
+        .tt-paper-list {
+          display: grid;
+          gap: 14px;
+        }
+        .tt-paper-item {
+          display: grid;
+          grid-template-columns: 40px 1fr;
+          gap: 10px;
+          padding-bottom: 12px;
+          border-bottom: 1px solid #eee;
+        }
+        .tt-paper-qno { font-weight: 700; font-size: 13px; }
 
         @media (max-width: 1100px) {
-          .take-test-grid {
-            grid-template-columns: minmax(0, 1fr) 210px;
+          .tt-main-split { grid-template-columns: 1fr; }
+          .tt-passage {
+            border-right: none;
+            border-bottom: 1px solid var(--tt-border);
+            max-height: 40vh;
           }
         }
 
         @media (max-width: 900px) {
-          .tt-palette-toggle {
-            display: inline-flex;
-            align-items: center;
-            height: 40px;
-          }
-          .take-test-grid {
-            grid-template-columns: 1fr !important;
-          }
+          .tt-palette-toggle { display: inline-flex; }
+          .tt-body { grid-template-columns: 1fr; }
           .tt-aside {
             display: none;
-            position: fixed !important;
+            position: fixed;
             left: 0;
             right: 0;
             bottom: 0;
-            top: auto;
-            max-height: min(72vh, 560px);
+            max-height: min(75vh, 560px);
             z-index: 70;
-            border-left: none !important;
-            border-top: 1px solid var(--border);
-            border-radius: 16px 16px 0 0;
-            padding-bottom: max(16px, env(safe-area-inset-bottom));
-            box-shadow: 0 -8px 32px rgba(0,0,0,0.28);
+            border-left: none;
+            border-top: 1px solid var(--tt-border);
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 -8px 28px rgba(0,0,0,0.2);
           }
-          .tt-aside-open {
-            display: block;
-          }
+          .tt-aside-open { display: block; }
           .tt-aside-handle {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
           }
           .tt-palette-backdrop {
             display: block;
@@ -1380,80 +1593,16 @@ export const TakeTest = () => {
             inset: 0;
             z-index: 60;
             border: none;
-            background: rgba(0,0,0,0.45);
-            cursor: pointer;
+            background: rgba(0,0,0,0.4);
           }
-          .tt-keys-hint {
-            display: none;
-          }
-          .tt-footer {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-          }
-          .tt-footer .btn {
-            width: 100%;
-            min-height: 44px;
-            font-size: 13px;
-          }
-          .tt-footer-full {
-            display: none;
-          }
-          .tt-footer-short {
-            display: inline;
-          }
-          .tt-palette-grid {
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-          }
-        }
-
-        @media (max-width: 600px) {
-          .tt-header {
-            padding: 10px 12px;
-            gap: 8px;
-          }
-          .tt-header-actions {
-            width: 100%;
-            justify-content: flex-end;
-          }
-          .tt-answered-marked {
-            display: none;
-          }
-          .tt-main {
-            padding: 12px;
-          }
-          .tt-question-card {
-            padding: 14px;
-          }
-          .tt-stem {
-            font-size: 14px;
-          }
-          .tt-submit-full {
-            display: none;
-          }
-          .tt-submit-short {
-            display: inline;
-          }
-          .tt-submit-btn {
-            min-height: 40px;
-            padding-left: 12px;
-            padding-right: 12px;
-          }
-          .tt-palette-grid {
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 8px;
-          }
-          .tt-section-tab {
-            flex: 1 1 calc(50% - 4px);
-            font-size: 12px;
-          }
-        }
-
-        @media (max-width: 380px) {
-          .tt-answered {
-            display: none;
-          }
-          .tt-palette-grid {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
+          .tt-keys-hint { display: none; }
+          .tt-footer { flex-direction: column; }
+          .tt-footer-left, .tt-footer-right { width: 100%; }
+          .tt-footer .tt-btn { flex: 1; min-height: 40px; }
+          .tt-sec-tab-label {
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
       `}</style>

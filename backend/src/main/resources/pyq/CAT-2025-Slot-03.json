@@ -1609,5 +1609,31 @@
     ],
     "chartImage": "assets/CAT-2025-Slot-03-Q35-38-all-puzzles.jpg",
     "needsManualReview": []
-  }
+  },
+  "timingMode": "sectional",
+  "sectionDurationMinutes": 40,
+  "calculator": true,
+  "sections": [
+    {
+      "code": "VARC",
+      "name": "Verbal Ability and Reading Comprehension",
+      "qFrom": 1,
+      "qTo": 24,
+      "durationMinutes": 40
+    },
+    {
+      "code": "DILR",
+      "name": "Data Interpretation and Logical Reasoning",
+      "qFrom": 25,
+      "qTo": 46,
+      "durationMinutes": 40
+    },
+    {
+      "code": "QA",
+      "name": "Quantitative Ability",
+      "qFrom": 47,
+      "qTo": 68,
+      "durationMinutes": 40
+    }
+  ]
 }
