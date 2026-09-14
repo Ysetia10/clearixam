@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getRecentCorrections, RecentCorrection } from '../api/mcq';
+import { QuestionListSkeleton } from './Shimmer';
 
 const RecentCorrections: React.FC = () => {
   const [corrections, setCorrections] = useState<RecentCorrection[]>([]);
@@ -29,11 +30,7 @@ const RecentCorrections: React.FC = () => {
     text.length > max ? text.substring(0, max) + '...' : text;
 
   if (loading) {
-    return (
-      <div className="card" style={{ textAlign: 'center', color: 'var(--text2)', fontSize: '14px' }}>
-        Loading recent corrections...
-      </div>
-    );
+    return <QuestionListSkeleton count={3} />;
   }
 
   if (error) {

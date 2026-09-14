@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CircularProgress } from '@mui/material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { examsApi, Exam } from '../api/exams';
 import {
@@ -9,6 +8,7 @@ import {
   TopicQuestionReview,
 } from '../api/papers';
 import { MathText, PyqText, renderOptionLabel } from '../utils/formatPyqText';
+import { QuestionListSkeleton, TopicPerformanceSkeleton } from '../components/Shimmer';
 
 type TopicRow = PyqTopicPerformanceItem;
 
@@ -213,9 +213,7 @@ const TopicPerformancePage: React.FC = () => {
   if (loading) {
     return (
       <DashboardLayout>
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 0' }}>
-          <p style={{ color: 'var(--text2)', fontSize: 14 }}>Loading PYQ topic performance...</p>
-        </div>
+        <TopicPerformanceSkeleton />
       </DashboardLayout>
     );
   }
@@ -718,11 +716,7 @@ const TopicPerformancePage: React.FC = () => {
                   ))}
                 </div>
               )}
-              {drillLoading && (
-                <div style={{ display: 'flex', justifyContent: 'center', padding: 32 }}>
-                  <CircularProgress size={28} />
-                </div>
-              )}
+              {drillLoading && <QuestionListSkeleton count={3} />}
               {drillError && (
                 <div style={{ color: 'var(--red)', fontSize: 14, padding: 12 }}>{drillError}</div>
               )}

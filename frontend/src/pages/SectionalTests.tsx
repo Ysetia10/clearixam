@@ -11,6 +11,7 @@ import {
   SectionalSubjectSummary,
 } from '../api/sectionalTests';
 import { useToast } from '../components/Toast';
+import { AnalyticsSkeleton } from '../components/Shimmer';
 
 type Tab = 'history' | 'add';
 
@@ -459,7 +460,7 @@ export const SectionalTests = () => {
   if (examsLoading) {
     return (
       <DashboardLayout>
-        <div className="empty-state"><div className="empty-icon">⏳</div><div className="empty-title">Loading…</div></div>
+        <AnalyticsSkeleton />
       </DashboardLayout>
     );
   }
@@ -497,7 +498,7 @@ export const SectionalTests = () => {
       {tab === 'history' && (
         <>
           {analyticsLoading ? (
-            <div className="empty-state"><div className="empty-icon">⏳</div><div className="empty-title">Loading analytics…</div></div>
+            <AnalyticsSkeleton />
           ) : !analytics || analytics.subjects.length === 0 ? (
             <div className="card">
               <div className="empty-state">

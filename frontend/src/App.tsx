@@ -1,12 +1,13 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider, CssBaseline, Box, CircularProgress } from '@mui/material';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { lazy, Suspense, useEffect } from 'react';
 import { getTheme } from './theme';
 import { ThemeModeProvider, useThemeMode } from './context/ThemeContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './components/Toast';
 import { ApiWakeBanner } from './components/ApiWakeBanner';
+import { AppPageLoader } from './components/Shimmer';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -39,18 +40,10 @@ const queryClient = new QueryClient({
   },
 });
 
-const PageLoader = () => (
-  <Box
-    sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '100vh',
-    }}
-  >
-    <CircularProgress size={32} />
-  </Box>
-);
+function PageLoader() {
+  const { pathname } = useLocation();
+  return <AppPageLoader pathname={pathname} />;
+}
 
 function AppContent() {
   const { mode } = useThemeMode();

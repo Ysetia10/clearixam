@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CircularProgress, Box } from '@mui/material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { AttemptAnalysis, QuestionReview, papersApi } from '../api/papers';
 import { PyqText, MathText, renderOptionLabel, stripOptionNumberPrefix } from '../utils/formatPyqText';
+import { AnalyzeSkeleton } from '../components/Shimmer';
 
 type ReviewFilter = 'ALL' | 'INCORRECT' | 'CORRECT' | 'UNATTEMPTED';
 
@@ -208,11 +208,7 @@ export const PyqAnalyze = () => {
   }
 
   if (!analysis) {
-    return (
-      <Box sx={{ minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <CircularProgress size={28} />
-      </Box>
-    );
+    return <AnalyzeSkeleton />;
   }
 
   const filters: { key: ReviewFilter; label: string; count: number }[] = [

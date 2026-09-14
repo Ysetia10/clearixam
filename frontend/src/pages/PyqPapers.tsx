@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { CircularProgress, Box } from '@mui/material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
+import { PapersGridSkeleton } from '../components/Shimmer';
 import { papersApi } from '../api/papers';
 import { examsApi, Exam } from '../api/exams';
 
@@ -66,11 +66,7 @@ export const PyqPapers = () => {
         )}
       </div>
 
-      {isLoading && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-          <CircularProgress size={28} />
-        </Box>
-      )}
+      {isLoading && <PapersGridSkeleton />}
 
       {error && (
         <div className="card" style={{ padding: 20, color: 'var(--red, #f43f5e)' }}>

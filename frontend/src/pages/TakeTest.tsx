@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CircularProgress, Box } from '@mui/material';
 import CalculateOutlinedIcon from '@mui/icons-material/CalculateOutlined';
 import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
@@ -11,6 +10,7 @@ import { getUserEmail } from '../api/auth';
 import { papersApi, PaperDetail, PaperQuestion } from '../api/papers';
 import { useToast } from '../components/Toast';
 import { ExamCalculator } from '../components/ExamCalculator';
+import { TakeTestSkeleton } from '../components/Shimmer';
 import { PyqText, renderOptionLabel } from '../utils/formatPyqText';
 import {
   clearPyqDraft,
@@ -762,11 +762,7 @@ export const TakeTest = () => {
   }, [paper, testStarted, paused, question, index, goToIndex, saveAndNext, toggleMarkCurrent]);
 
   if (loading || !paper || !question) {
-    return (
-      <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <CircularProgress size={32} />
-      </Box>
-    );
+    return <TakeTestSkeleton />;
   }
 
   const setAnswer = (value: string) => {

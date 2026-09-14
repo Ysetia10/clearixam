@@ -19,6 +19,7 @@ import { goalsApi } from '../api/goals';
 import { papersApi, RecentPyqAttempt } from '../api/papers';
 import { GoalSettingDialog } from '../components/GoalSettingDialog';
 import { MockDetailDialog } from '../components/MockDetailDialog';
+import { DashboardSkeleton } from '../components/Shimmer';
 
 type ActivityItem =
   | {
@@ -227,10 +228,7 @@ export const Dashboard = () => {
   if (isLoading && !overview) {
     return (
       <DashboardLayout>
-        <div className="empty-state">
-          <div className="empty-icon">⏳</div>
-          <div className="empty-title">Loading dashboard...</div>
-        </div>
+        <DashboardSkeleton />
       </DashboardLayout>
     );
   }

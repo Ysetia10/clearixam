@@ -5,6 +5,7 @@ import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { mocksApi } from '../api/mocks';
 import { examsApi, Exam, Subject } from '../api/exams';
 import { useToast } from '../components/Toast';
+import { Shimmer } from '../components/Shimmer';
 
 interface SubjectRow {
   id: string;
@@ -189,9 +190,16 @@ export const AddMock = () => {
   if (examsLoading) {
     return (
       <DashboardLayout>
-        <div className="empty-state">
-          <div className="empty-icon">⏳</div>
-          <div className="empty-title">Loading...</div>
+        <div aria-busy="true" style={{ maxWidth: 800, margin: '0 auto' }}>
+          <Shimmer width={180} height={28} style={{ marginBottom: 24 }} />
+          <div className="card" style={{ padding: 24, display: 'grid', gap: 16 }}>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i}>
+                <Shimmer width={100} height={11} style={{ marginBottom: 8 }} />
+                <Shimmer height={40} radius={8} />
+              </div>
+            ))}
+          </div>
         </div>
       </DashboardLayout>
     );
@@ -311,9 +319,17 @@ export const AddMock = () => {
               </div>
 
               {subjectsLoading ? (
-                <div className="empty-state">
-                  <div className="empty-icon">⏳</div>
-                  <div className="empty-title">Loading subjects...</div>
+                <div style={{ display: 'grid', gap: 12 }}>
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className="card" style={{ padding: 14, display: 'grid', gap: 10 }}>
+                      <Shimmer width="40%" height={12} />
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+                        <Shimmer height={36} radius={8} />
+                        <Shimmer height={36} radius={8} />
+                        <Shimmer height={36} radius={8} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : examSubjects.length === 0 ? (
                 <div style={{

@@ -7,6 +7,7 @@ import { mocksApi, MockResponse } from '../api/mocks';
 import { useToast } from '../components/Toast';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import { MockDetailDialog } from '../components/MockDetailDialog';
+import { TableSkeleton } from '../components/Shimmer';
 
 export const PerformanceHistory = () => {
   const navigate = useNavigate();
@@ -68,13 +69,11 @@ export const PerformanceHistory = () => {
         </div>
       </div>
 
+      {isLoading ? (
+        <TableSkeleton rows={8} />
+      ) : (
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        {isLoading ? (
-          <div className="empty-state">
-            <div className="empty-icon">⏳</div>
-            <div className="empty-title">Loading...</div>
-          </div>
-        ) : !mocks?.content?.length ? (
+        {!mocks?.content?.length ? (
           <div className="empty-state">
             <div className="empty-icon">📝</div>
             <div className="empty-title">No mock tests yet</div>
@@ -159,6 +158,7 @@ export const PerformanceHistory = () => {
           </div>
         )}
       </div>
+      )}
 
       <ConfirmDialog
         open={deleteId !== null}

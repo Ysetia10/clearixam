@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { CircularProgress, Box } from '@mui/material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { AttemptResult, papersApi } from '../api/papers';
+import { ResultSkeleton } from '../components/Shimmer';
 
 export const TestResult = () => {
   const { attemptId } = useParams<{ attemptId: string }>();
@@ -30,11 +30,7 @@ export const TestResult = () => {
   }
 
   if (!result) {
-    return (
-      <Box sx={{ minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <CircularProgress size={28} />
-      </Box>
-    );
+    return <ResultSkeleton />;
   }
 
   return (

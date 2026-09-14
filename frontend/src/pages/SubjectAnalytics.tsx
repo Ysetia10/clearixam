@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { analyticsApi, SubjectStatus } from '../api/analytics';
 import { examsApi, Exam } from '../api/exams';
+import { AnalyticsSkeleton } from '../components/Shimmer';
 
 type FilterType = 'all' | 'weak' | 'strong';
 
@@ -52,10 +53,7 @@ export const SubjectAnalytics = () => {
   if (isLoading) {
     return (
       <DashboardLayout>
-        <div className="empty-state">
-          <div className="empty-icon">⏳</div>
-          <div className="empty-title">Loading analytics...</div>
-        </div>
+        <AnalyticsSkeleton />
       </DashboardLayout>
     );
   }
