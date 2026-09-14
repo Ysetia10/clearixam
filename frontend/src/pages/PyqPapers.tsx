@@ -95,19 +95,7 @@ export const PyqPapers = () => {
               }}
             >
               <div>
-                <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{paper.title}</div>
-                <div style={{ fontSize: 13, color: 'var(--text3)' }}>
-                  {paper.examName} · {paper.questionCount} questions · {paper.durationMinutes} min
-                  {paper.examName === 'SSC' ? ' · 4×15 min sections' : ''}
-                </div>
-                {selectedExam && (
-                  <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>
-                    Marking +{selectedExam.correctMarks} / −{selectedExam.negativeMarks}
-                    {selectedExam.name === 'SSC'
-                      ? ' · sectional timer · no calculator'
-                      : ' · single timer'}
-                  </div>
-                )}
+                <div style={{ fontWeight: 700, fontSize: 16 }}>{paper.title}</div>
                 {latest && (
                   <div style={{ fontSize: 13, marginTop: 10, color: 'var(--text2)' }}>
                     Latest score:{' '}
