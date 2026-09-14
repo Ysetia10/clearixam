@@ -6,7 +6,6 @@ import { getTheme } from './theme';
 import { ThemeModeProvider, useThemeMode } from './context/ThemeContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastProvider } from './components/Toast';
-import { ApiWakeBanner } from './components/ApiWakeBanner';
 import { AppPageLoader } from './components/Shimmer';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
@@ -57,7 +56,6 @@ function AppContent() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ToastProvider>
-        <ApiWakeBanner />
         <BrowserRouter>
           <Routes>
             <Route path="/login" element={<Login />} />

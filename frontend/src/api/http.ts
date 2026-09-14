@@ -1,7 +1,4 @@
 import { API_CONFIG } from '../config/apiConfig'
-import { setApiWaking } from './apiWake'
-
-const WAKE_BANNER_AFTER_MS = 2_500
 
 export class ApiRequestError extends Error {
   status: number
@@ -55,7 +52,6 @@ function toRequestError(error: unknown): ApiRequestError {
 }
 
 export async function apiFetch(url: string, options?: RequestInit, retryCount = 0): Promise<Response> {
-  const wakeTimer = window.setTimeout(() => setApiWaking(true), WAKE_BANNER_AFTER_MS)
   const controller = new AbortController()
   const timeout = window.setTimeout(() => controller.abort(), API_CONFIG.timeout)
 
@@ -63,24 +59,18 @@ export async function apiFetch(url: string, options?: RequestInit, retryCount = 
   options?.signal?.addEventListener('abort', onAbort)
 
   try {
-    const response = await fetch(url, {
+    return await fetch(url, {
       ...options,
       signal: controller.signal,
     })
-    window.clearTimeout(wakeTimer)
-    setApiWaking(false)
-    return response
   } catch (error) {
-    window.clearTimeout(wakeTimer)
     const mapped = toRequestError(error)
 
     if (isRetryable(mapped) && retryCount < API_CONFIG.maxNetworkRetries) {
-      setApiWaking(true)
       await sleep(1_000 * 2 ** retryCount)
       return apiFetch(url, options, retryCount + 1)
     }
 
-    setApiWaking(false)
     throw mapped
   } finally {
     window.clearTimeout(timeout)
@@ -96,6 +86,6 @@ export async function prefetchApiHealth(): Promise<void> {
   try {
     await apiFetch(API_CONFIG.healthURL, { method: 'GET' })
   } catch {
-    // Query retries and the wake banner handle a sleeping API.
+    // Query retries handle a sleeping API.
   }
 }
