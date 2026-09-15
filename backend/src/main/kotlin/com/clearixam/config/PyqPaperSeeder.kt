@@ -32,6 +32,9 @@ class PyqPaperSeeder(
         "ssc-cgl-2025-09-13-slot-1" to "pyq/SSC-CGL-2025-13Sep-Slot-01.json",
         "ssc-cgl-2025-09-13-slot-2" to "pyq/SSC-CGL-2025-13Sep-Slot-02.json",
         "ssc-cgl-2025-09-13-slot-3" to "pyq/SSC-CGL-2025-13Sep-Slot-03.json",
+        "ssc-cgl-2025-09-14-slot-1" to "pyq/SSC-CGL-2025-14Sep-Slot-01.json",
+        "ssc-cgl-2025-09-14-slot-2" to "pyq/SSC-CGL-2025-14Sep-Slot-02.json",
+        "ssc-cgl-2025-09-14-slot-3" to "pyq/SSC-CGL-2025-14Sep-Slot-03.json",
     )
 
     @Transactional

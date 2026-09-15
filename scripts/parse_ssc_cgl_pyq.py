@@ -24,7 +24,7 @@ NOISE_RE = re.compile(
 
 Q_START_RE = re.compile(r"(?m)^Q(\d+)\.\s*")
 OPT_RE = re.compile(r"(?m)^\(([a-d])\)\s*")
-ANS_RE = re.compile(r"Ans\.\s*\(([a-d])\)", re.I)
+ANS_RE = re.compile(r"\bAns\.\s*\(([a-d])\)", re.I)
 
 SECTION_CUTS = [
     (1, 25, "General Intelligence and Reasoning", "REASONING"),
@@ -148,17 +148,19 @@ def repair_inline_reciprocals(text: str) -> str:
     t = re.sub(r"\+\s*1\s+([𝑚m])2\b", r"+ 1/\1²", t)
     t = re.sub(r"\+\s*1\s+([𝑚m])²", r"+ 1/\1²", t)
     t = re.sub(r"\b1\s+([𝑚m])(?=\s*=)", r"1/\1", t)
-    # 1/𝑚2 → 1/𝑚² (PDF often dumps squared denom as digit 2)
-    t = re.sub(r"1/([𝑚m])2\b", r"1/\1²", t)
+    # 1/𝑚2 → 1/𝑚² ; 1/𝑥3 → 1/𝑥³ (PDF often dumps powers as trailing digits)
+    t = re.sub(r"1/([𝑚m𝑥xy])2\b", r"1/\1²", t)
+    t = re.sub(r"1/([𝑚m𝑥xy])3\b", r"1/\1³", t)
     return t
 
 
 def _is_structural_line(ln: str) -> bool:
-    if re.match(r"^\d+\.\s+\S", ln):
+    if re.match(r"^\d+\.\s*\S", ln):
         return True
     if re.match(
         r"^(Statement|Conclusions?|Assumptions?|Assertion|Reason|Category|Proficient|"
-        r"Total Sample Size|Read the following passage|Read the passage)\b",
+        r"Total Sample Size|Read the following passage|Read the passage|"
+        r"Read the statements|Consider the following statements|Consider the statements)\b",
         ln,
         re.I,
     ):
@@ -179,12 +181,13 @@ def should_preserve_multiline(lines: list[str]) -> bool:
         return False
     if sum(1 for ln in lines if re.search(r"\b\d{6}\s*$", ln)) >= 2:
         return True
-    if sum(1 for ln in lines if re.match(r"^\d+\.\s+\S", ln)) >= 2:
+    if sum(1 for ln in lines if re.match(r"^\d+\.\s*\S", ln)) >= 2:
         return True
     if any(
         re.match(
             r"^(Statement|Conclusions?|Assumptions?|Assertion|Reason|Category|Proficient|"
-            r"Read the following passage|Read the passage)\b",
+            r"Read the following passage|Read the passage|"
+            r"Read the statements|Consider the following statements|Consider the statements)\b",
             ln,
             re.I,
         )
@@ -256,8 +259,9 @@ def finalize_stem(stem: str) -> str:
             t = re.sub(r"[ \t]+", " ", ln).strip()
             t = re.sub(r"%\s*of\s*", "% of ", t, flags=re.I)
             t = re.sub(r"(\d)\s*(km|m|cm|kg)\b", r"\1 \2", t, flags=re.I)
+            t = re.sub(r"^(\d+)\.([A-Za-z])", r"\1. \2", t)
             cleaned.append(t)
-        return "\n".join(cleaned)
+        return re.sub(r"^\.\s+", "", "\n".join(cleaned))
 
     text = " ".join(lines)
     text = re.sub(r"\s+", " ", text).strip()
@@ -272,6 +276,7 @@ def finalize_stem(stem: str) -> str:
     text = re.sub(r"%\s*of\s*", "% of ", text, flags=re.I)
     text = re.sub(r"(\d)\s*(km|m|cm|kg)\b", r"\1 \2", text, flags=re.I)
     text = repair_inline_reciprocals(text)
+    text = re.sub(r"^\.\s+", "", text)  # stray leading period from PDF dumps
     return text
 
 
