@@ -23,9 +23,13 @@ import { DashboardSkeleton } from '../components/Shimmer';
 import {
   buildPyqAdaptiveStrength,
   buildPyqAttemptInsight,
+  buildPyqFocusTopics,
   buildPyqImprovement,
   buildPyqInsights,
   buildPyqOverview,
+  buildPyqStudyActions,
+  buildPyqSubjectBreakdown,
+  buildPyqTimeSinks,
   buildPyqTrend,
 } from '../utils/pyqDashboardStats';
 
@@ -63,6 +67,7 @@ export const Dashboard = () => {
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [mockDetailOpen, setMockDetailOpen] = useState(false);
   const [editingGoal, setEditingGoal] = useState<any>(null);
+  const [expandedPyqSubject, setExpandedPyqSubject] = useState<string | null>(null);
 
   const { data: exams = [] } = useQuery({
     queryKey: ['exams'],
@@ -236,9 +241,24 @@ export const Dashboard = () => {
   const pyqImprovement = useMemo(() => buildPyqImprovement(recentPyq), [recentPyq]);
   const pyqAttemptInsight = useMemo(() => buildPyqAttemptInsight(recentPyq), [recentPyq]);
   const pyqAdaptive = useMemo(() => buildPyqAdaptiveStrength(topicList), [topicList]);
+  const pyqFocusTopics = useMemo(() => buildPyqFocusTopics(topicList, 8), [topicList]);
+  const pyqTimeSinks = useMemo(() => buildPyqTimeSinks(topicList, 6), [topicList]);
+  const pyqSubjectBreakdown = useMemo(() => buildPyqSubjectBreakdown(topicList), [topicList]);
+  const pyqStudyActions = useMemo(
+    () => buildPyqStudyActions(pyqFocusTopics, pyqTimeSinks),
+    [pyqFocusTopics, pyqTimeSinks]
+  );
   const pyqInsights = useMemo(
-    () => buildPyqInsights(pyqOverview, pyqImprovement),
-    [pyqOverview, pyqImprovement]
+    () =>
+      buildPyqInsights(pyqOverview, pyqImprovement, {
+        focusTopic: pyqFocusTopics[0]
+          ? `${pyqFocusTopics[0].topic} (${pyqFocusTopics[0].accuracy.toFixed(0)}% · ${pyqFocusTopics[0].subject})`
+          : null,
+        timeSink: pyqTimeSinks[0]
+          ? `${pyqTimeSinks[0].topic} avg ${Math.round(pyqTimeSinks[0].avgSecondsSpent)}s/Q`
+          : null,
+      }),
+    [pyqOverview, pyqImprovement, pyqFocusTopics, pyqTimeSinks]
   );
 
   const mockTrendData = useMemo(() => {
@@ -431,6 +451,227 @@ export const Dashboard = () => {
         {displayImprovement && <ImprovementCard improvement={displayImprovement} />}
         {displayAttemptInsight && <AttemptAccuracyCard insight={displayAttemptInsight} />}
       </div>
+
+      {!isMocks && (pyqFocusTopics.length > 0 || pyqTimeSinks.length > 0 || pyqSubjectBreakdown.length > 0) && (
+        <>
+          {pyqStudyActions.length > 0 && (
+            <div className="card" style={{ marginBottom: 16 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, gap: 12, flexWrap: 'wrap' }}>
+                <div className="stat-label" style={{ marginBottom: 0 }}>What to work on next</div>
+                <button className="btn btn-ghost" style={{ padding: '4px 12px', fontSize: 12 }} onClick={() => navigate('/topic-performance')}>
+                  Full topic drill-down
+                </button>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {pyqStudyActions.map((action) => (
+                  <div
+                    key={action}
+                    style={{
+                      padding: '10px 12px',
+                      borderRadius: 8,
+                      background: 'var(--surface2)',
+                      borderLeft: '3px solid var(--accent2)',
+                      fontSize: 13,
+                      color: 'var(--text)',
+                      lineHeight: 1.45,
+                    }}
+                  >
+                    {action}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 24 }}>
+            <div className="card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <div className="stat-label" style={{ marginBottom: 0 }}>Focus topics</div>
+                <span className="badge badge-red">Study these</span>
+              </div>
+              {pyqFocusTopics.length === 0 ? (
+                <div style={{ fontSize: 13, color: 'var(--text3)' }}>Not enough topic data yet — keep attempting PYQs.</div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {pyqFocusTopics.slice(0, 6).map((t) => (
+                    <button
+                      key={`${t.sectionCode}-${t.topic}`}
+                      type="button"
+                      className="btn btn-ghost"
+                      style={{
+                        width: '100%',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        textAlign: 'left',
+                        padding: '10px 12px',
+                        background: 'var(--surface2)',
+                        borderRadius: 8,
+                        height: 'auto',
+                      }}
+                      onClick={() => navigate('/topic-performance')}
+                    >
+                      <div style={{ minWidth: 0, flex: 1 }}>
+                        <div style={{ fontSize: 13, fontWeight: 600 }}>{t.topic}</div>
+                        <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
+                          {t.subject} · {t.missed} missed / {t.total} Qs
+                          {t.speedLabel === 'SLOW' ? ' · Slow' : ''}
+                        </div>
+                        {t.insight && (
+                          <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 4, lineHeight: 1.4 }}>{t.insight}</div>
+                        )}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4, marginLeft: 8 }}>
+                        <span className={`badge ${t.priority === 'CRITICAL' ? 'badge-red' : t.priority === 'HIGH' ? 'badge-amber' : 'badge-purple'}`}>
+                          {t.priority === 'CRITICAL' ? 'Critical' : t.priority === 'HIGH' ? 'High' : 'Medium'}
+                        </span>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: t.accuracy < 60 ? 'var(--red)' : 'var(--amber)' }}>
+                          {t.accuracy.toFixed(0)}%
+                        </span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="card">
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <div className="stat-label" style={{ marginBottom: 0 }}>Time sinks</div>
+                <span className="badge badge-amber">Save minutes</span>
+              </div>
+              {pyqTimeSinks.length === 0 ? (
+                <div style={{ fontSize: 13, color: 'var(--text3)' }}>
+                  No slow topics yet — time tracking unlocks after timed PYQ attempts.
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {pyqTimeSinks.map((t) => (
+                    <div
+                      key={`time-${t.sectionCode}-${t.topic}`}
+                      style={{ padding: '10px 12px', background: 'var(--surface2)', borderRadius: 8 }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'flex-start' }}>
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontSize: 13, fontWeight: 600 }}>{t.topic}</div>
+                          <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
+                            {t.subject}
+                            {/quant/i.test(t.subject) || t.sectionCode === 'QA' ? ' · Quant focus' : ''}
+                          </div>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                          <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--amber)' }}>
+                            {Math.round(t.avgSecondsSpent)}s
+                          </div>
+                          <div style={{ fontSize: 10, color: 'var(--text3)' }}>
+                            {t.expectedSeconds != null ? `pace ${Math.round(t.expectedSeconds)}s` : 'avg / Q'}
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 6, lineHeight: 1.4 }}>
+                        {t.insight}
+                        {t.extraSeconds >= 15 ? ` · reclaim ~${Math.round(t.extraSeconds)}s/Q` : ''}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="card" style={{ marginBottom: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, gap: 12, flexWrap: 'wrap' }}>
+              <div>
+                <h3 className="section-title" style={{ marginBottom: 4 }}>Subject & topic analysis</h3>
+                <p style={{ margin: 0, fontSize: 12, color: 'var(--text3)' }}>
+                  Expand a subject to see which topics to study first
+                </p>
+              </div>
+              <button className="btn btn-ghost" style={{ fontSize: 12 }} onClick={() => navigate('/topic-performance')}>
+                Open Topic Performance
+              </button>
+            </div>
+            {pyqSubjectBreakdown.length === 0 ? (
+              <div style={{ fontSize: 13, color: 'var(--text3)' }}>Topic tags will appear after PYQ attempts.</div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {pyqSubjectBreakdown.map((s) => {
+                  const open = expandedPyqSubject === s.subject;
+                  return (
+                    <div key={s.subject} style={{ border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+                      <button
+                        type="button"
+                        onClick={() => setExpandedPyqSubject(open ? null : s.subject)}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          gap: 12,
+                          padding: '12px 14px',
+                          background: 'var(--surface2)',
+                          border: 'none',
+                          cursor: 'pointer',
+                          color: 'inherit',
+                          textAlign: 'left',
+                        }}
+                      >
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontSize: 14, fontWeight: 600 }}>{s.subject}</div>
+                          <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
+                            {s.correct}C / {s.incorrect}I / {s.unattempted}U · {s.weakTopicCount} weak topic{s.weakTopicCount === 1 ? '' : 's'}
+                            {s.avgSecondsSpent != null ? ` · avg ${Math.round(s.avgSecondsSpent)}s/Q` : ''}
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <span className={`badge ${s.accuracy < 60 ? 'badge-red' : s.accuracy < 80 ? 'badge-amber' : 'badge-green'}`}>
+                            {s.accuracy.toFixed(0)}%
+                          </span>
+                          <span style={{ fontSize: 12, color: 'var(--text3)' }}>{open ? '▾' : '▸'}</span>
+                        </div>
+                      </button>
+                      {open && (
+                        <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                          {s.topics.length === 0 ? (
+                            <div style={{ fontSize: 12, color: 'var(--text3)' }}>No topic breakdown for this subject yet.</div>
+                          ) : (
+                            s.topics.map((t) => (
+                              <div
+                                key={`${s.subject}-${t.topic}`}
+                                style={{
+                                  display: 'flex',
+                                  justifyContent: 'space-between',
+                                  gap: 10,
+                                  alignItems: 'center',
+                                  padding: '8px 10px',
+                                  borderRadius: 8,
+                                  background: 'var(--surface)',
+                                  border: '1px solid var(--border)',
+                                }}
+                              >
+                                <div style={{ minWidth: 0 }}>
+                                  <div style={{ fontSize: 13, fontWeight: 500 }}>{t.topic}</div>
+                                  <div style={{ fontSize: 11, color: 'var(--text3)' }}>
+                                    {t.total} Qs · {t.missed} missed
+                                    {t.avgSecondsSpent != null ? ` · ${Math.round(t.avgSecondsSpent)}s avg` : ''}
+                                    {t.speedLabel === 'SLOW' ? ' · Slow' : t.speedLabel === 'FAST' ? ' · Fast' : ''}
+                                  </div>
+                                </div>
+                                <span className={`badge ${t.accuracy < 60 ? 'badge-red' : t.accuracy < 80 ? 'badge-amber' : 'badge-green'}`}>
+                                  {t.accuracy.toFixed(0)}%
+                                </span>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       {displayInsights && displayInsights.insights.length > 0 && (
         <InsightsCard insights={displayInsights} />

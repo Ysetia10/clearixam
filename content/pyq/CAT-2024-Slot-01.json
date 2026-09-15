@@ -13,6 +13,7 @@
   "notes": [
     "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Parsed from Actual CAT 2024 Slot-I question paper + answer-key/explanations PDF.",
     "MCQ options originally labelled A–D; stored as 1–4 for the app.",
     "Explanations retained from the answer-key PDF where available.",
@@ -1261,7 +1262,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Let’s assume after meeting at point C Anil takes time tA and Sunil takes ts. As we know, t = S A t t  As given t = 2 3 , then ts = x , let tA = x + 4 5 hours as Anil reaches B exactly 1 hour 15 minutes after Sunil reaches A, 2 3 =  x 4 5 x   Taking square on both sides and simplify it we have 4x2 + 5x – 9 = 0  (4x + 9) (x – 1) = 0, so, x = – 4 9 and x = 1 As we cannot take the negative value, so x=1 Now, tA = x + 4 5 = 1 + 4 5 = 4 9 Anil’s total time was 2 3 + 4 9 = h 4 15 Speed of Anil = h / km 12 4 15 45 ",
-      "topic": "Arithmetic"
+      "topic": "Time-Speed-Distance"
     },
     {
       "qNo": 49,
@@ -1278,7 +1279,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Let the four numbers be p, q, r, and s. By first condition, 2 q p  = p + 1  q = p + 2 By second condition,    3 r q p 2 q p  +2  r = p + 7 By third condition,     4 s r q p 3 3 r q p     s = p + 15 Thus the numbers are p, p + 2, p + 7 and p + 15. So, the difference between the largest and the smallest number = p + 15 – p = 15.",
-      "topic": "Arithmetic"
+      "topic": "Averages"
     },
     {
       "qNo": 50,
@@ -1317,7 +1318,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Let the incomes of Kamal, Amal and Vimal in September be proportional to 8k, 6k, 5k respectively. The house rent paid by Kamal is 15% of 8k = 1.2k The house rent paid by Amal is 12% of 6k = 0.72k The house rent paid by Vimal is 18% of 5k = 0.9k Their total house rent = 1.2k + 0.72k + 0.9k = 2.82k In October their house rent remains same while their incomes increase by 10%, 12% and 15% respectively. Kamal's increased income = 8k × 1.1 = 8.8k Amal's increased income = 6k × 1.12 = 6.72k Vimal's increased income = 5k × 1.15 = 5.75k Total income in October = 8.8k + 6.72k + 5.75k = 21.27k The house rent remains the same at 2.82k. The percentage of their total income paid as rent in October = 100 k 27 . 21 k 82 .2  = 13.26% (aprox.)",
-      "topic": "Arithmetic"
+      "topic": "Percentages"
     },
     {
       "qNo": 52,
@@ -1339,7 +1340,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Since in bank A, P = 10000 rate of interest = 5% and let time be T.  SI = 100 PRT = 100 T 5 10000   = 500 T. Maturity amount = 10000 + 500 T Now for bank B, Sum = 10000 + 500 T, rate of interest = 6% and time = 6 years  SI= 100 5 6 ) T 500 10000 (    = 3000 + 150 T Also, the interests received from bank A and bank B are in the ratio 10 : 13 13 10 B bank of Interest A bank of Interest     T 150 3000 T 500 13 10  13 × 500 T = 10 × (3000 + 150 T)  T = 6 years",
-      "topic": "Arithmetic"
+      "topic": "Interest"
     },
     {
       "qNo": 53,
@@ -1356,7 +1357,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "If the equations x2 + mx + 9 = 0, x2 + nx + 17 = 0 and x2 + (m + n)x + 35 = 0 have a commom negative root, then the value of (2m + 3n) is Let 𝛼 be the common negative root, then substitute it into each equation we have α2 + mα + 9 = 0…. (i), α2 + nα + 17 = 0…..(ii) and α2 + (m + n)α + 35 = 0….. (iii) Subtracting eq. (i) and (ii) we get α2 + nα + 17 − α2 − mα − 9 = 0  (n − m)α + 8 = 0 α = m n 8   α2 + mα + 9 + α2 + nα + 17 = 0  2α2 + (m + n) α + 26 = 0 Subtract the third equation from the sum of the first and second equations, we get 2α2 + (m + n)α + 26 − α2 − (m + n)α − 35 = 0 α2 − 9 = 0  α2 = 9  α =  3, Since α is negative, α = −3 As α = m n 8   ===== PAGE 13 ===== Actual CAT 2024 Slot - I 30  −3 = m n 8    n − m = 3 8 Substitute, α = −3 into the first equation, we get α2 + mα + 9 = 0  9 − 3m + 9 = 0  m = 6 Substitute m = 6 in n − m = 3 8  n − 6 = 3 8  n = 3 26 Now 2m + 3n = 2 × 6 + 3 × 3 26 = 12 + 26 = 38",
-      "topic": "Algebra"
+      "topic": "Quadratic Equations"
     },
     {
       "qNo": 54,
@@ -1395,7 +1396,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Since, 4(x2 + y2 + z2) = a and 4(x – y – z) = 3 + a On subtracring both equations we have, 4x2 – 4x + 4y2 + 4y + 4z2 + 4z = –3 Adding 1 to make it perfect square, we get, (4x2 – 4x + 1) + (4y2 + 4y + 1) + (4z2 + 4z + 1) = 0 (2x –1)2 + (2y + 1)2 + (2z + 1)2 = 0  x = 2 1 , y = – 2 1 , z = – 2 1 Now, 4(x2 + y2 + z2) = a a 4 1 4 1 4 1 4            a = 3",
-      "topic": "Algebra"
+      "topic": "Quadratic Equations"
     },
     {
       "qNo": 56,
@@ -1417,7 +1418,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Clearly we have equation of circle x2 + y2 + 2gx + 2fy + c = 0 x2 + y2 + 4x – 4y + 4 ≥ 0 x2 + y2 + 2 × 2x + 2 × (–2)y + 4 ≥ 0 Centre = (–g, –f) = (–2, 2) Radius = c f g 2 2   4 2 ) 2 ( 2 2    = √4 = 2 units Now, we have equation of line y ≥ x + 4 x – y ≤ – 4 x 0 – 4 y 4 0 ===== PAGE 14 ===== 31 Actual CAT 2024 Slot - I Area of shaded region   2 r2    = 2 π",
-      "topic": "Geometry"
+      "topic": "Quadratic Equations"
     },
     {
       "qNo": 57,
@@ -1439,7 +1440,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "By dilution method, Milk left after nth operation / Total mixture = n x y 1       The process repeatedly replaces 3 2 of the glass's contents with water.  Milk left after nth operation / Total mixture = 4 3 2 1       = 81 1 3 1 4      Initially, the milk fraction is 1 (all milk). After four repetitions, the milk fraction becomes 81 1  the fraction of water = 1– 81 1 = 81 80 The final ratio of milk to water is 81 1 : 81 80 = 1 : 80",
-      "topic": "Arithmetic"
+      "topic": "Ratio & Proportion"
     },
     {
       "qNo": 58,
@@ -1461,7 +1462,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Basically we are looking for onto function from A to B. Let n(A) = m, n(B) = n So, number of onto functions = nm – nC1(n – 1)m + nC2(n – 2)m – nC3(n – 3)m = 36 – 3C1(2)6 + 3C2(1)6 – 3C3(0) = 540",
-      "topic": "Algebra"
+      "topic": "Functions & Graphs"
     },
     {
       "qNo": 59,
@@ -1505,7 +1506,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Let the Initial CP = 100, Initial SP = Initial CP × 140% = 140. New CP = 60% of 100 = 60, New SP = 150% of 60 = 90. Difference between the Initial and New selling price is 140 – 90 = 50 Now we need to compare it with actual information as per the question, our 50 is representing 5 Rs as per question. 10 is representing 1Rs, 140 will represent 14 Rs.",
-      "topic": "Arithmetic"
+      "topic": "Profit & Loss"
     },
     {
       "qNo": 61,
@@ -1583,7 +1584,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Apple Mangos Oranges Number of fruits 5x 2x 187 – 7x Sells 75 26        2 x 7 187 Ratio unsold fruits to unsold oranges = 3 : 2 2 3 2 x 7 187 75 x 5    20x – 300 = 561 – 21x 41x = 861 x = 21 Apple Mangos Oranges ===== PAGE 16 ===== 33 Actual CAT 2024 Slot - I Number of fruits 105 42 40 Sells 75 26 20 Left 30 + 16 + 20 = 66",
-      "topic": "Arithmetic"
+      "topic": "Ratio & Proportion"
     },
     {
       "qNo": 65,
@@ -1644,7 +1645,7 @@
       "chartDependent": false,
       "needsManualReview": false,
       "explanation": "Total number of hours for which Renu worked is 15 × 4 = 60 hrs Total number of hours for which Seema worked is 8 × 5 = 40 hrs Total work is taken as LCM of (60, 40) = 120 units Efficiency of Renu is 60 120 = 2 units/hours Efficiency of Seema is 40 120 = 3 units/hours As per the question Renu works 2 hours per day, So Seema works for 4 hours per day. Total work completed by Renu is 2 × 2 = 4 units/day Total work completed by Seema is 3 × 4 = 12 units/day As per the question number of day taken by Renu is double of Seema. Let number of day taken by Seema is ‘x’ so number of days taken by Renu is ‘2x’. Total work will be completed by 4 × 2x + 12x = 120 x = 6 days.",
-      "topic": "Arithmetic"
+      "topic": "Time & Work"
     },
     {
       "qNo": 68,

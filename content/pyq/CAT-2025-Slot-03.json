@@ -13,6 +13,7 @@
   "notes": [
     "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Q35–38 chart image(s): assets/CAT-2025-Slot-03-Q35-38-all-puzzles.jpg, assets/CAT-2025-Slot-03-Q35-38-visual-puzzles.jpg.",
     "Q35–38 chart images: all-puzzles + visual-puzzles.",
     "Q39–42 table image: assets/CAT-2025-Slot-03-Q39-42-table.png.",
@@ -1164,7 +1165,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Profit & Loss"
     },
     {
       "qNo": 48,
@@ -1185,7 +1186,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Time-Speed-Distance"
     },
     {
       "qNo": 49,
@@ -1206,7 +1207,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Number Systems"
+      "topic": "Inequalities"
     },
     {
       "qNo": 50,
@@ -1227,7 +1228,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Algebra"
+      "topic": "Logarithms"
     },
     {
       "qNo": 51,
@@ -1269,7 +1270,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Ratio & Proportion"
     },
     {
       "qNo": 53,
@@ -1306,7 +1307,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Averages"
     },
     {
       "qNo": 55,
@@ -1359,7 +1360,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Time-Speed-Distance"
     },
     {
       "qNo": 58,
@@ -1391,7 +1392,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Ratio & Proportion"
     },
     {
       "qNo": 60,
@@ -1407,7 +1408,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Ratio & Proportion"
     },
     {
       "qNo": 61,
@@ -1428,7 +1429,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Algebra"
+      "topic": "Functions & Graphs"
     },
     {
       "qNo": 62,

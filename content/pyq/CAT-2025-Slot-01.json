@@ -14,6 +14,7 @@
     "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Q45 source PDF labels the last option as '(3)' twice; corrected to '(4)'.",
     "First RC directions say questions 3–5; Q2 is on the same passage.",
     "Q30–33 chart image(s): assets/CAT-2025-Slot-01-Q30-33-charts.png."
@@ -1137,7 +1138,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Geometry"
     },
     {
       "qNo": 48,
@@ -1153,7 +1154,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Profit & Loss"
     },
     {
       "qNo": 49,
@@ -1169,7 +1170,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Modern Math"
+      "topic": "Inequalities"
     },
     {
       "qNo": 50,
@@ -1211,7 +1212,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Inequalities"
     },
     {
       "qNo": 52,
@@ -1232,7 +1233,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Percentages"
     },
     {
       "qNo": 53,
@@ -1290,7 +1291,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Ratio & Proportion"
     },
     {
       "qNo": 56,
@@ -1311,7 +1312,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Time & Work"
     },
     {
       "qNo": 57,
@@ -1332,7 +1333,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Interest"
     },
     {
       "qNo": 58,
@@ -1348,7 +1349,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Profit & Loss"
     },
     {
       "qNo": 59,
@@ -1369,7 +1370,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Inequalities"
     },
     {
       "qNo": 60,
@@ -1390,7 +1391,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Algebra"
+      "topic": "Logarithms"
     },
     {
       "qNo": 61,
@@ -1464,7 +1465,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Algebra"
+      "topic": "Quadratic Equations"
     },
     {
       "qNo": 65,
@@ -1501,7 +1502,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Time-Speed-Distance"
     },
     {
       "qNo": 67,

@@ -13,6 +13,7 @@
   "notes": [
     "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
+    "Topics assigned via scripts/tag_cat_pyq.py (CAT taxonomy).",
     "Q25–28 chart image(s): assets/CAT-2025-Slot-02-Q25-28-chart.jpg.",
     "Q29–32 chart image(s): assets/CAT-2025-Slot-02-Q29-32-charts.png."
   ],
@@ -1167,7 +1168,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Mixtures"
     },
     {
       "qNo": 49,
@@ -1188,7 +1189,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Percentages"
     },
     {
       "qNo": 50,
@@ -1209,7 +1210,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Geometry"
+      "topic": "Ratio & Proportion"
     },
     {
       "qNo": 51,
@@ -1251,7 +1252,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Algebra"
+      "topic": "Functions & Graphs"
     },
     {
       "qNo": 53,
@@ -1272,7 +1273,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Ratio & Proportion"
     },
     {
       "qNo": 54,
@@ -1293,7 +1294,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Percentages"
     },
     {
       "qNo": 55,
@@ -1420,7 +1421,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Algebra"
+      "topic": "Logarithms"
     },
     {
       "qNo": 62,
@@ -1452,7 +1453,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Averages"
     },
     {
       "qNo": 64,
@@ -1505,7 +1506,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Mixtures"
     },
     {
       "qNo": 67,
@@ -1547,7 +1548,7 @@
       "images": null,
       "chartDependent": false,
       "needsManualReview": false,
-      "topic": "Arithmetic"
+      "topic": "Ratio & Proportion"
     }
   ],
   "verification": {

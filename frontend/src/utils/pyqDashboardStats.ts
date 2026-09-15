@@ -258,11 +258,24 @@ export function buildPyqOverview(
 
 export function buildPyqInsights(
   overview: PyqDashboardOverview,
-  improvement: ImprovementDTO | null
+  improvement: ImprovementDTO | null,
+  extras?: { focusTopic?: string | null; timeSink?: string | null }
 ): InsightsResponse {
   const insights: InsightsResponse['insights'] = [];
   if (overview.attemptCount === 0) {
     return { insights: [{ type: 'INFO', message: 'Take a PYQ paper to unlock score trends and topic insights.' }] };
+  }
+  if (extras?.focusTopic) {
+    insights.push({
+      type: 'WARNING',
+      message: `Priority study: ${extras.focusTopic}`,
+    });
+  }
+  if (extras?.timeSink) {
+    insights.push({
+      type: 'INFO',
+      message: `Time save: ${extras.timeSink}`,
+    });
   }
   if (improvement && improvement.trend === 'IMPROVING') {
     insights.push({
@@ -280,7 +293,7 @@ export function buildPyqInsights(
       type: 'WARNING',
       message: `${overview.weakSubjects[0].subjectName} needs focus on PYQs (${overview.weakSubjects[0].accuracy.toFixed(1)}% accuracy).`,
     });
-  } else if (overview.averageScore > 0) {
+  } else if (overview.averageScore > 0 && !extras?.focusTopic) {
     insights.push({ type: 'SUCCESS', message: 'No weak PYQ subjects below 80% accuracy. Keep the consistency going!' });
   }
   if (overview.accuracyPercent > 0 && overview.accuracyPercent < 50) {
@@ -290,4 +303,230 @@ export function buildPyqInsights(
     });
   }
   return { insights: insights.slice(0, 4) };
+}
+
+export type PyqFocusTopic = {
+  subject: string;
+  sectionCode: string;
+  topic: string;
+  accuracy: number;
+  total: number;
+  missed: number;
+  avgSecondsSpent: number | null;
+  speedLabel: string | null;
+  insight: string | null;
+  priority: 'CRITICAL' | 'HIGH' | 'MEDIUM';
+};
+
+export type PyqTimeSink = {
+  subject: string;
+  sectionCode: string;
+  topic: string;
+  avgSecondsSpent: number;
+  expectedSeconds: number | null;
+  paceRatio: number | null;
+  extraSeconds: number;
+  accuracy: number;
+  total: number;
+  insight: string;
+};
+
+export type PyqSubjectBreakdown = {
+  subject: string;
+  sectionCode: string;
+  accuracy: number;
+  correct: number;
+  incorrect: number;
+  unattempted: number;
+  total: number;
+  weakTopicCount: number;
+  avgSecondsSpent: number | null;
+  topics: PyqFocusTopic[];
+};
+
+function isQuantSubject(subject: string, sectionCode: string): boolean {
+  const s = `${subject} ${sectionCode}`.toLowerCase();
+  return s.includes('quant') || sectionCode === 'QA';
+}
+
+function topicPriority(accuracy: number, total: number): PyqFocusTopic['priority'] {
+  if (accuracy < 45 && total >= 3) return 'CRITICAL';
+  if (accuracy < 60) return 'HIGH';
+  return 'MEDIUM';
+}
+
+export function buildPyqFocusTopics(
+  topics: PyqTopicPerformanceItem[],
+  limit = 8
+): PyqFocusTopic[] {
+  return topics
+    .filter((t) => t.total >= 2 && t.accuracy < 75)
+    .map((t) => {
+      const missed = t.missed ?? t.incorrect + t.unattempted;
+      return {
+        subject: t.subject,
+        sectionCode: t.sectionCode,
+        topic: t.topic,
+        accuracy: t.accuracy,
+        total: t.total,
+        missed,
+        avgSecondsSpent: t.avgSecondsSpent ?? null,
+        speedLabel: t.speedLabel ?? null,
+        insight: t.insight ?? null,
+        priority: topicPriority(t.accuracy, t.total),
+      };
+    })
+    .sort((a, b) => {
+      const order = { CRITICAL: 0, HIGH: 1, MEDIUM: 2 };
+      if (order[a.priority] !== order[b.priority]) return order[a.priority] - order[b.priority];
+      if (a.accuracy !== b.accuracy) return a.accuracy - b.accuracy;
+      return b.missed - a.missed;
+    })
+    .slice(0, limit);
+}
+
+export function buildPyqTimeSinks(
+  topics: PyqTopicPerformanceItem[],
+  limit = 6
+): PyqTimeSink[] {
+  const sinks = topics
+    .filter((t) => t.avgSecondsSpent != null && t.total >= 2)
+    .map((t) => {
+      const avg = t.avgSecondsSpent!;
+      const expected = t.expectedSeconds ?? null;
+      const pace = t.paceRatio ?? (expected && expected > 0 ? avg / expected : null);
+      const extra = expected != null ? Math.max(0, avg - expected) : Math.max(0, avg - 90);
+      const slow = t.speedLabel === 'SLOW' || (pace != null && pace >= 1.2) || extra >= 25;
+      if (!slow) return null;
+      const quantBoost = isQuantSubject(t.subject, t.sectionCode) ? 1 : 0;
+      const insight =
+        t.insight ||
+        (t.accuracy < 60
+          ? 'Slow and weak — revise concepts before timed drills'
+          : 'Accurate but slow — drill timed sets to reclaim minutes');
+      return {
+        subject: t.subject,
+        sectionCode: t.sectionCode,
+        topic: t.topic,
+        avgSecondsSpent: avg,
+        expectedSeconds: expected,
+        paceRatio: pace,
+        extraSeconds: extra,
+        accuracy: t.accuracy,
+        total: t.total,
+        insight,
+        _score: extra + quantBoost * 15 + (t.accuracy < 60 ? 10 : 0),
+      };
+    })
+    .filter(Boolean) as Array<PyqTimeSink & { _score: number }>;
+
+  return sinks
+    .sort((a, b) => b._score - a._score)
+    .slice(0, limit)
+    .map(({ _score: _, ...rest }) => rest);
+}
+
+export function buildPyqSubjectBreakdown(
+  topics: PyqTopicPerformanceItem[]
+): PyqSubjectBreakdown[] {
+  const bySubject = new Map<
+    string,
+    {
+      subject: string;
+      sectionCode: string;
+      correct: number;
+      incorrect: number;
+      unattempted: number;
+      total: number;
+      timeSum: number;
+      timed: number;
+      topics: PyqTopicPerformanceItem[];
+    }
+  >();
+
+  for (const t of topics) {
+    const key = t.subject || t.sectionCode || 'Other';
+    const cur = bySubject.get(key) || {
+      subject: key,
+      sectionCode: t.sectionCode,
+      correct: 0,
+      incorrect: 0,
+      unattempted: 0,
+      total: 0,
+      timeSum: 0,
+      timed: 0,
+      topics: [],
+    };
+    cur.correct += t.correct;
+    cur.incorrect += t.incorrect;
+    cur.unattempted += t.unattempted;
+    cur.total += t.total;
+    if (t.avgSecondsSpent != null && t.total > 0) {
+      cur.timeSum += t.avgSecondsSpent * t.total;
+      cur.timed += t.total;
+    }
+    cur.topics.push(t);
+    bySubject.set(key, cur);
+  }
+
+  return [...bySubject.values()]
+    .map((s) => {
+      const accuracy = s.total ? (s.correct / s.total) * 100 : 0;
+      const topicRows = buildPyqFocusTopics(s.topics, 12);
+      return {
+        subject: s.subject,
+        sectionCode: s.sectionCode,
+        accuracy,
+        correct: s.correct,
+        incorrect: s.incorrect,
+        unattempted: s.unattempted,
+        total: s.total,
+        weakTopicCount: s.topics.filter((t) => t.accuracy < 60 && t.total >= 2).length,
+        avgSecondsSpent: s.timed ? s.timeSum / s.timed : null,
+        topics: topicRows.length
+          ? topicRows
+          : s.topics
+              .slice()
+              .sort((a, b) => a.accuracy - b.accuracy)
+              .slice(0, 6)
+              .map((t) => ({
+                subject: t.subject,
+                sectionCode: t.sectionCode,
+                topic: t.topic,
+                accuracy: t.accuracy,
+                total: t.total,
+                missed: t.missed ?? t.incorrect + t.unattempted,
+                avgSecondsSpent: t.avgSecondsSpent ?? null,
+                speedLabel: t.speedLabel ?? null,
+                insight: t.insight ?? null,
+                priority: topicPriority(t.accuracy, t.total),
+              })),
+      };
+    })
+    .sort((a, b) => a.accuracy - b.accuracy);
+}
+
+export function buildPyqStudyActions(
+  focusTopics: PyqFocusTopic[],
+  timeSinks: PyqTimeSink[]
+): string[] {
+  const actions: string[] = [];
+  const topFocus = focusTopics.slice(0, 3);
+  for (const t of topFocus) {
+    actions.push(
+      `Study ${t.topic} (${t.subject}) — ${t.accuracy.toFixed(0)}% accuracy across ${t.total} Qs`
+    );
+  }
+  const quantSink = timeSinks.find((t) => isQuantSubject(t.subject, t.sectionCode));
+  if (quantSink) {
+    actions.push(
+      `Save time in Quant · ${quantSink.topic}: avg ${Math.round(quantSink.avgSecondsSpent)}s/Q` +
+        (quantSink.extraSeconds > 0 ? ` (~${Math.round(quantSink.extraSeconds)}s over pace)` : '')
+    );
+  } else if (timeSinks[0]) {
+    actions.push(
+      `Speed up ${timeSinks[0].topic}: avg ${Math.round(timeSinks[0].avgSecondsSpent)}s/Q`
+    );
+  }
+  return actions.slice(0, 4);
 }

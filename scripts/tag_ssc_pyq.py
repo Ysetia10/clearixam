@@ -128,9 +128,18 @@ QA_RULES: list[tuple[str, re.Pattern[str], int]] = [
     ("Data Interpretation", re.compile(r"table|chart|graph|bar|pie|data", re.I), 3),
     ("Trigonometry", re.compile(r"sin|cos|tan|cot|sec|cosec|θ|trigonometry", re.I), 3),
     ("Geometry / Mensuration", re.compile(r"triangle|circle|radius|area|perimeter|volume|cube|cylinder|cone|sphere|angle|chord", re.I), 2),
-    ("Algebra", re.compile(r"equation|polynomial|quadratic|simplify|x\b|algebra|identity", re.I), 2),
+    ("Algebra", re.compile(r"equation|polynomial|quadratic|simplify|algebra|identity", re.I), 2),
     ("Number System", re.compile(r"HCF|LCM|remainder|prime|digit|divisible|fraction", re.I), 2),
-    ("Arithmetic", re.compile(r"percent|profit|loss|interest|ratio|mixture|average|speed|time|distance|work|pipe|age|partnership|invest", re.I), 2),
+    ("Percentages", re.compile(r"percent|percentage|%", re.I), 3),
+    ("Profit & Loss", re.compile(r"profit|loss|discount|markup|selling price|cost price", re.I), 3),
+    ("Interest", re.compile(r"interest|compound|simple interest|\bSI\b|\bCI\b|loan", re.I), 3),
+    ("Ratio & Proportion", re.compile(r"ratio|proportion|partnership|invest", re.I), 3),
+    ("Averages", re.compile(r"average|mean|median", re.I), 3),
+    ("Mixtures", re.compile(r"mixture|alligation|solution|alcohol|milk", re.I), 3),
+    ("Time-Speed-Distance", re.compile(r"speed|distance|km/?h|train|upstream|downstream", re.I), 3),
+    ("Time & Work", re.compile(r"work|pipe|cistern|man[- ]days|days to complete", re.I), 3),
+    ("Ages", re.compile(r"\bage[sd]?\b|years old", re.I), 2),
+    ("Arithmetic", re.compile(r"time|partnership|invest|salary|price|cost", re.I), 1),
 ]
 
 ENG_RULES: list[tuple[str, re.Pattern[str]]] = [
