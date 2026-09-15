@@ -43,7 +43,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             style={{
               fontFamily: 'Inter, sans-serif',
               fontSize: '18px',
-              fontWeight: 800,
+              fontWeight: 500,
               background: 'linear-gradient(135deg, var(--accent), var(--green))',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',

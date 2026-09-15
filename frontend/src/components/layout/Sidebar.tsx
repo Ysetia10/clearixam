@@ -64,7 +64,7 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
             style={{
               fontFamily: 'Inter, sans-serif',
               fontSize: '20px',
-              fontWeight: 800,
+              fontWeight: 500,
               background: 'linear-gradient(135deg, var(--accent), var(--green))',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -118,7 +118,7 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
         <div
           style={{
             fontSize: '10px',
-            fontWeight: 600,
+            fontWeight: 500,
             letterSpacing: '1.5px',
             textTransform: 'uppercase',
             color: 'var(--text3)',
@@ -200,7 +200,7 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
               justifyContent: 'center',
               color: 'var(--on-color)',
               fontSize: '13px',
-              fontWeight: 700,
+              fontWeight: 500,
               flexShrink: 0,
             }}
           >

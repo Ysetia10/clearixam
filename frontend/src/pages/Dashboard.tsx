@@ -1,7 +1,25 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
+import { Tooltip } from '@mui/material';
+import {
+  Add,
+  Assignment,
+  CheckCircleOutline,
+  Download,
+  EditOutlined,
+  History,
+  InfoOutlined,
+  PsychologyOutlined,
+  QueryStats,
+  Search,
+  ShowChart,
+  Speed,
+  TimerOutlined,
+  TrendingUp,
+  WarningAmberOutlined,
+} from '@mui/icons-material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { 
   analyticsApi, 
@@ -27,11 +45,11 @@ import {
   buildPyqImprovement,
   buildPyqInsights,
   buildPyqOverview,
-  buildPyqStudyActions,
   buildPyqSubjectBreakdown,
   buildPyqTimeSinks,
   buildPyqTrend,
 } from '../utils/pyqDashboardStats';
+import { assessRiskLevel, riskTooltipText, type RiskAssessment } from '../utils/riskLevel';
 
 type DashboardView = 'mocks' | 'pyqs';
 
@@ -63,11 +81,11 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   const [selectedExamId, setSelectedExamId] = useState<string>('');
   const [viewMode, setViewMode] = useState<DashboardView>('mocks');
+  const [viewInitialized, setViewInitialized] = useState(false);
   const [selectedMockId, setSelectedMockId] = useState<string | null>(null);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [mockDetailOpen, setMockDetailOpen] = useState(false);
   const [editingGoal, setEditingGoal] = useState<any>(null);
-  const [expandedPyqSubject, setExpandedPyqSubject] = useState<string | null>(null);
 
   const { data: exams = [] } = useQuery({
     queryKey: ['exams'],
@@ -79,6 +97,10 @@ export const Dashboard = () => {
       setSelectedExamId(exams[0].id);
     }
   }, [exams, selectedExamId]);
+
+  useEffect(() => {
+    setViewInitialized(false);
+  }, [selectedExamId]);
 
   const downloadReportMutation = useMutation({
     mutationFn: reportsApi.downloadPerformanceReport,
@@ -110,7 +132,7 @@ export const Dashboard = () => {
 
   const { data: mocks, isLoading: mocksLoading } = useQuery({
     queryKey: ['mocks'],
-    queryFn: () => mocksApi.list(0, 10),
+    queryFn: () => mocksApi.list(0, 50),
     staleTime: 30000,
   });
 
@@ -120,6 +142,14 @@ export const Dashboard = () => {
     staleTime: 30000,
     enabled: !!selectedExamId,
   });
+
+  useEffect(() => {
+    if (viewInitialized || !selectedExamId || mocksLoading || pyqLoading) return;
+    const mockCount = (mocks?.content || []).filter((m) => m.examId === selectedExamId).length;
+    const pyqCount = recentPyq.length;
+    setViewMode(pyqCount > mockCount ? 'pyqs' : 'mocks');
+    setViewInitialized(true);
+  }, [viewInitialized, selectedExamId, mocks, recentPyq, mocksLoading, pyqLoading]);
 
   const { data: pyqTopics, isLoading: pyqTopicsLoading } = useQuery({
     queryKey: ['pyq-topic-performance', selectedExamId],
@@ -244,21 +274,9 @@ export const Dashboard = () => {
   const pyqFocusTopics = useMemo(() => buildPyqFocusTopics(topicList, 8), [topicList]);
   const pyqTimeSinks = useMemo(() => buildPyqTimeSinks(topicList, 6), [topicList]);
   const pyqSubjectBreakdown = useMemo(() => buildPyqSubjectBreakdown(topicList), [topicList]);
-  const pyqStudyActions = useMemo(
-    () => buildPyqStudyActions(pyqFocusTopics, pyqTimeSinks),
-    [pyqFocusTopics, pyqTimeSinks]
-  );
   const pyqInsights = useMemo(
-    () =>
-      buildPyqInsights(pyqOverview, pyqImprovement, {
-        focusTopic: pyqFocusTopics[0]
-          ? `${pyqFocusTopics[0].topic} (${pyqFocusTopics[0].accuracy.toFixed(0)}% · ${pyqFocusTopics[0].subject})`
-          : null,
-        timeSink: pyqTimeSinks[0]
-          ? `${pyqTimeSinks[0].topic} avg ${Math.round(pyqTimeSinks[0].avgSecondsSpent)}s/Q`
-          : null,
-      }),
-    [pyqOverview, pyqImprovement, pyqFocusTopics, pyqTimeSinks]
+    () => buildPyqInsights(pyqOverview, pyqImprovement),
+    [pyqOverview, pyqImprovement]
   );
 
   const mockTrendData = useMemo(() => {
@@ -323,9 +341,41 @@ export const Dashboard = () => {
 
   const goalProgress = isMocks ? overview?.goalProgress : pyqOverview.goalProgress;
 
+  const mockCutoff = useMemo(() => {
+    const examMocks = (mocks?.content || []).filter((m) => !selectedExamId || m.examId === selectedExamId);
+    return examMocks[0]?.cutoffScore ?? null;
+  }, [mocks, selectedExamId]);
+
+  const displayRisk: RiskAssessment = useMemo(() => {
+    if (isMocks) {
+      return assessRiskLevel(
+        overview?.movingAverage || 0,
+        mockCutoff,
+        'cutoff'
+      );
+    }
+    return pyqOverview.risk;
+  }, [isMocks, overview?.movingAverage, mockCutoff, pyqOverview.risk]);
+
+  const riskStroke =
+    displayRisk.level === 'LOW'
+      ? 'var(--green)'
+      : displayRisk.level === 'MEDIUM'
+        ? 'var(--amber)'
+        : 'var(--red)';
+  const riskTrack =
+    displayRisk.level === 'LOW'
+      ? 'rgba(16,185,129,0.15)'
+      : displayRisk.level === 'MEDIUM'
+        ? 'rgba(245,158,11,0.15)'
+        : 'rgba(244,63,94,0.15)';
+  // Circumference ≈ 150.8; higher fill = higher risk
+  const riskDashOffset =
+    displayRisk.level === 'HIGH' ? 22.6 : displayRisk.level === 'MEDIUM' ? 67.9 : 113.1;
+
   return (
     <DashboardLayout>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 className="page-title">Dashboard</h1>
           <p style={{ fontSize: '13px', color: 'var(--text2)', marginTop: '4px' }}>
@@ -345,29 +395,23 @@ export const Dashboard = () => {
               ))}
             </select>
           )}
-          {isMocks ? (
-            <button className="btn btn-primary" onClick={() => navigate('/add-mock')}>+ Add Mock</button>
-          ) : (
-            <button className="btn btn-primary" onClick={() => navigate('/pyq-tests')}>PYQ Tests</button>
-          )}
+          <div className="tabs" role="tablist" aria-label="Dashboard view">
+            <button
+              type="button"
+              className={`tab ${isMocks ? 'active' : ''}`}
+              onClick={() => setViewMode('mocks')}
+            >
+              Mocks
+            </button>
+            <button
+              type="button"
+              className={`tab ${!isMocks ? 'active' : ''}`}
+              onClick={() => setViewMode('pyqs')}
+            >
+              PYQs
+            </button>
+          </div>
         </div>
-      </div>
-
-      <div className="tabs" style={{ marginBottom: 24 }}>
-        <button
-          type="button"
-          className={`tab ${isMocks ? 'active' : ''}`}
-          onClick={() => setViewMode('mocks')}
-        >
-          Mocks
-        </button>
-        <button
-          type="button"
-          className={`tab ${!isMocks ? 'active' : ''}`}
-          onClick={() => setViewMode('pyqs')}
-        >
-          PYQs
-        </button>
       </div>
 
       {displayLegacyBanner.length > 0 && (
@@ -375,9 +419,12 @@ export const Dashboard = () => {
           <div style={{
             width: '36px', height: '36px', borderRadius: '50%',
             background: displayLegacyBanner[0].type === 'success' ? 'rgba(34,211,160,0.15)' : 'rgba(244,63,94,0.15)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: displayLegacyBanner[0].type === 'success' ? 'var(--green)' : 'var(--red)',
           }}>
-            {displayLegacyBanner[0].type === 'success' ? '✓' : '⚠'}
+            {displayLegacyBanner[0].type === 'success'
+              ? <CheckCircleOutline sx={{ fontSize: 20 }} />
+              : <WarningAmberOutlined sx={{ fontSize: 20 }} />}
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '14px', color: displayLegacyBanner[0].type === 'success' ? 'var(--green)' : 'var(--red)', fontWeight: 500 }}>
@@ -423,23 +470,34 @@ export const Dashboard = () => {
           )}
         </div>
 
-        <div className="card stagger-4">
-          <div className="stat-label">Risk Level</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
-            <svg width="60" height="60" viewBox="0 0 60 60">
-              <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(244,63,94,0.15)" strokeWidth="6" />
-              <circle cx="30" cy="30" r="24" fill="none" stroke="var(--red)" strokeWidth="6"
-                strokeDasharray="150.8"
-                strokeDashoffset={displayOverview?.riskLevel === 'HIGH' ? '37.7' : displayOverview?.riskLevel === 'MEDIUM' ? '75.4' : '113.1'}
-                transform="rotate(-90 30 30)"
-                style={{ transition: 'stroke-dashoffset 1s ease' }}
-              />
-            </svg>
-            <span className={`badge ${displayOverview?.riskLevel === 'LOW' ? 'badge-green' : displayOverview?.riskLevel === 'MEDIUM' ? 'badge-amber' : 'badge-red'}`}>
-              {displayOverview?.riskLevel || 'HIGH'} RISK
-            </span>
+        <Tooltip title={riskTooltipText(displayRisk)} arrow placement="top">
+          <div className="card stagger-4" style={{ cursor: 'help' }}>
+            <div className="stat-label" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              Risk Level
+              <InfoOutlined sx={{ fontSize: 14, color: 'var(--text3)' }} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '8px' }}>
+              <svg width="60" height="60" viewBox="0 0 60 60" aria-hidden>
+                <circle cx="30" cy="30" r="24" fill="none" stroke={riskTrack} strokeWidth="6" />
+                <circle
+                  cx="30"
+                  cy="30"
+                  r="24"
+                  fill="none"
+                  stroke={riskStroke}
+                  strokeWidth="6"
+                  strokeDasharray="150.8"
+                  strokeDashoffset={riskDashOffset}
+                  transform="rotate(-90 30 30)"
+                  style={{ transition: 'stroke-dashoffset 1s ease, stroke 0.3s ease' }}
+                />
+              </svg>
+              <span className={`badge ${displayRisk.level === 'LOW' ? 'badge-green' : displayRisk.level === 'MEDIUM' ? 'badge-amber' : 'badge-red'}`}>
+                {displayRisk.level} RISK
+              </span>
+            </div>
           </div>
-        </div>
+        </Tooltip>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '16px', marginBottom: '24px' }}>
@@ -454,35 +512,6 @@ export const Dashboard = () => {
 
       {!isMocks && (pyqFocusTopics.length > 0 || pyqTimeSinks.length > 0 || pyqSubjectBreakdown.length > 0) && (
         <>
-          {pyqStudyActions.length > 0 && (
-            <div className="card" style={{ marginBottom: 16 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, gap: 12, flexWrap: 'wrap' }}>
-                <div className="stat-label" style={{ marginBottom: 0 }}>What to work on next</div>
-                <button className="btn btn-ghost" style={{ padding: '4px 12px', fontSize: 12 }} onClick={() => navigate('/topic-performance')}>
-                  Full topic drill-down
-                </button>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {pyqStudyActions.map((action) => (
-                  <div
-                    key={action}
-                    style={{
-                      padding: '10px 12px',
-                      borderRadius: 8,
-                      background: 'var(--surface2)',
-                      borderLeft: '3px solid var(--accent2)',
-                      fontSize: 13,
-                      color: 'var(--text)',
-                      lineHeight: 1.45,
-                    }}
-                  >
-                    {action}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 16, marginBottom: 24 }}>
             <div className="card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
@@ -511,7 +540,7 @@ export const Dashboard = () => {
                       onClick={() => navigate('/topic-performance')}
                     >
                       <div style={{ minWidth: 0, flex: 1 }}>
-                        <div style={{ fontSize: 13, fontWeight: 600 }}>{t.topic}</div>
+                        <div style={{ fontSize: 13, fontWeight: 500 }}>{t.topic}</div>
                         <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
                           {t.subject} · {t.missed} missed / {t.total} Qs
                           {t.speedLabel === 'SLOW' ? ' · Slow' : ''}
@@ -524,7 +553,7 @@ export const Dashboard = () => {
                         <span className={`badge ${t.priority === 'CRITICAL' ? 'badge-red' : t.priority === 'HIGH' ? 'badge-amber' : 'badge-purple'}`}>
                           {t.priority === 'CRITICAL' ? 'Critical' : t.priority === 'HIGH' ? 'High' : 'Medium'}
                         </span>
-                        <span style={{ fontSize: 13, fontWeight: 700, color: t.accuracy < 60 ? 'var(--red)' : 'var(--amber)' }}>
+                        <span style={{ fontSize: 13, fontWeight: 500, color: t.accuracy < 60 ? 'var(--red)' : 'var(--amber)' }}>
                           {t.accuracy.toFixed(0)}%
                         </span>
                       </div>
@@ -537,7 +566,9 @@ export const Dashboard = () => {
             <div className="card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
                 <div className="stat-label" style={{ marginBottom: 0 }}>Time sinks</div>
-                <span className="badge badge-amber">Save minutes</span>
+                <span className="badge badge-amber" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                  <TimerOutlined sx={{ fontSize: 14 }} /> Save minutes
+                </span>
               </div>
               {pyqTimeSinks.length === 0 ? (
                 <div style={{ fontSize: 13, color: 'var(--text3)' }}>
@@ -552,14 +583,14 @@ export const Dashboard = () => {
                     >
                       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'flex-start' }}>
                         <div style={{ minWidth: 0 }}>
-                          <div style={{ fontSize: 13, fontWeight: 600 }}>{t.topic}</div>
+                          <div style={{ fontSize: 13, fontWeight: 500 }}>{t.topic}</div>
                           <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
                             {t.subject}
                             {/quant/i.test(t.subject) || t.sectionCode === 'QA' ? ' · Quant focus' : ''}
                           </div>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--amber)' }}>
+                          <div style={{ fontSize: 16, fontWeight: 500, color: 'var(--amber)' }}>
                             {Math.round(t.avgSecondsSpent)}s
                           </div>
                           <div style={{ fontSize: 10, color: 'var(--text3)' }}>
@@ -581,9 +612,9 @@ export const Dashboard = () => {
           <div className="card" style={{ marginBottom: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14, gap: 12, flexWrap: 'wrap' }}>
               <div>
-                <h3 className="section-title" style={{ marginBottom: 4 }}>Subject & topic analysis</h3>
+                <h3 className="section-title" style={{ marginBottom: 4 }}>Subject overview</h3>
                 <p style={{ margin: 0, fontSize: 12, color: 'var(--text3)' }}>
-                  Expand a subject to see which topics to study first
+                  Section-level accuracy — topics to study are listed in Focus topics above
                 </p>
               </div>
               <button className="btn btn-ghost" style={{ fontSize: 12 }} onClick={() => navigate('/topic-performance')}>
@@ -593,87 +624,37 @@ export const Dashboard = () => {
             {pyqSubjectBreakdown.length === 0 ? (
               <div style={{ fontSize: 13, color: 'var(--text3)' }}>Topic tags will appear after PYQ attempts.</div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {pyqSubjectBreakdown.map((s) => {
-                  const open = expandedPyqSubject === s.subject;
-                  return (
-                    <div key={s.subject} style={{ border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
-                      <button
-                        type="button"
-                        onClick={() => setExpandedPyqSubject(open ? null : s.subject)}
-                        style={{
-                          width: '100%',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          gap: 12,
-                          padding: '12px 14px',
-                          background: 'var(--surface2)',
-                          border: 'none',
-                          cursor: 'pointer',
-                          color: 'inherit',
-                          textAlign: 'left',
-                        }}
-                      >
-                        <div style={{ minWidth: 0 }}>
-                          <div style={{ fontSize: 14, fontWeight: 600 }}>{s.subject}</div>
-                          <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
-                            {s.correct}C / {s.incorrect}I / {s.unattempted}U · {s.weakTopicCount} weak topic{s.weakTopicCount === 1 ? '' : 's'}
-                            {s.avgSecondsSpent != null ? ` · avg ${Math.round(s.avgSecondsSpent)}s/Q` : ''}
-                          </div>
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <span className={`badge ${s.accuracy < 60 ? 'badge-red' : s.accuracy < 80 ? 'badge-amber' : 'badge-green'}`}>
-                            {s.accuracy.toFixed(0)}%
-                          </span>
-                          <span style={{ fontSize: 12, color: 'var(--text3)' }}>{open ? '▾' : '▸'}</span>
-                        </div>
-                      </button>
-                      {open && (
-                        <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                          {s.topics.length === 0 ? (
-                            <div style={{ fontSize: 12, color: 'var(--text3)' }}>No topic breakdown for this subject yet.</div>
-                          ) : (
-                            s.topics.map((t) => (
-                              <div
-                                key={`${s.subject}-${t.topic}`}
-                                style={{
-                                  display: 'flex',
-                                  justifyContent: 'space-between',
-                                  gap: 10,
-                                  alignItems: 'center',
-                                  padding: '8px 10px',
-                                  borderRadius: 8,
-                                  background: 'var(--surface)',
-                                  border: '1px solid var(--border)',
-                                }}
-                              >
-                                <div style={{ minWidth: 0 }}>
-                                  <div style={{ fontSize: 13, fontWeight: 500 }}>{t.topic}</div>
-                                  <div style={{ fontSize: 11, color: 'var(--text3)' }}>
-                                    {t.total} Qs · {t.missed} missed
-                                    {t.avgSecondsSpent != null ? ` · ${Math.round(t.avgSecondsSpent)}s avg` : ''}
-                                    {t.speedLabel === 'SLOW' ? ' · Slow' : t.speedLabel === 'FAST' ? ' · Fast' : ''}
-                                  </div>
-                                </div>
-                                <span className={`badge ${t.accuracy < 60 ? 'badge-red' : t.accuracy < 80 ? 'badge-amber' : 'badge-green'}`}>
-                                  {t.accuracy.toFixed(0)}%
-                                </span>
-                              </div>
-                            ))
-                          )}
-                        </div>
-                      )}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 10 }}>
+                {pyqSubjectBreakdown.map((s) => (
+                  <div
+                    key={s.subject}
+                    style={{
+                      padding: '12px 14px',
+                      borderRadius: 10,
+                      border: '1px solid var(--border)',
+                      background: 'var(--surface2)',
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'center' }}>
+                      <div style={{ fontSize: 14, fontWeight: 500 }}>{s.subject}</div>
+                      <span className={`badge ${s.accuracy < 60 ? 'badge-red' : s.accuracy < 80 ? 'badge-amber' : 'badge-green'}`}>
+                        {s.accuracy.toFixed(0)}%
+                      </span>
                     </div>
-                  );
-                })}
+                    <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 6 }}>
+                      {s.correct}C / {s.incorrect}I / {s.unattempted}U
+                      {s.weakTopicCount > 0 ? ` · ${s.weakTopicCount} weak topic${s.weakTopicCount === 1 ? '' : 's'}` : ''}
+                      {s.avgSecondsSpent != null ? ` · avg ${Math.round(s.avgSecondsSpent)}s/Q` : ''}
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
         </>
       )}
 
-      {displayInsights && displayInsights.insights.length > 0 && (
+      {isMocks && displayInsights && displayInsights.insights.length > 0 && (
         <InsightsCard insights={displayInsights} />
       )}
 
@@ -681,7 +662,7 @@ export const Dashboard = () => {
         <NeglectCard subjects={neglectedSubjects} windowSize={neglectData?.windowSize ?? 5} />
       )}
 
-      {displayAdaptive && displayAdaptive.subjects.length > 0 && (
+      {isMocks && displayAdaptive && displayAdaptive.subjects.length > 0 && (
         <AdaptiveStrengthCard adaptiveStrength={displayAdaptive} />
       )}
 
@@ -692,7 +673,7 @@ export const Dashboard = () => {
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
             <div>
-              <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>Set a Goal</div>
+              <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '18px', fontWeight: 500, marginBottom: '4px' }}>Set a Goal</div>
               <div style={{ fontSize: '13px', color: 'var(--text2)' }}>Track your progress toward a target score</div>
             </div>
             <button className="btn btn-primary" onClick={() => { setEditingGoal(null); setGoalDialogOpen(true); }}>Create Goal</button>
@@ -715,7 +696,7 @@ export const Dashboard = () => {
                 }
               }}
             >
-              ✏️ Edit Goal
+              <EditOutlined sx={{ fontSize: 16 }} /> Edit Goal
             </button>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
@@ -732,11 +713,11 @@ export const Dashboard = () => {
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
             <div>
               <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Current Score</div>
-              <div style={{ fontSize: '18px', fontWeight: 700 }}>{goalProgress.currentScore.toFixed(2)}</div>
+              <div style={{ fontSize: '18px', fontWeight: 500 }}>{goalProgress.currentScore.toFixed(2)}</div>
             </div>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Days Remaining</div>
-              <div style={{ fontSize: '18px', fontWeight: 700 }}>{goalProgress.daysRemaining}</div>
+              <div style={{ fontSize: '18px', fontWeight: 500 }}>{goalProgress.daysRemaining}</div>
             </div>
           </div>
         </div>
@@ -750,7 +731,9 @@ export const Dashboard = () => {
           </div>
           {displayTrendData.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon">📊</div>
+              <div className="empty-icon" style={{ display: 'flex', justifyContent: 'center' }}>
+                <ShowChart sx={{ fontSize: 36, color: 'var(--text3)' }} />
+              </div>
               <div className="empty-title">No trend data yet</div>
               <div className="empty-sub">
                 {isMocks ? 'Add mock tests to see your trend' : 'Take PYQ papers to see your trend'}
@@ -762,7 +745,7 @@ export const Dashboard = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis dataKey="date" tick={{ fontSize: 11, fill: 'var(--text3)' }} />
                 <YAxis tick={{ fontSize: 11, fill: 'var(--text3)' }} />
-                <Tooltip
+                <RechartsTooltip
                   contentStyle={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '12px' }}
                   labelStyle={{ color: 'var(--text)' }}
                 />
@@ -777,6 +760,7 @@ export const Dashboard = () => {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {isMocks && (
           <div className="card">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
               <span className="badge badge-red">Weak Subjects</span>
@@ -795,17 +779,18 @@ export const Dashboard = () => {
               </div>
             ) : (
               <div style={{ padding: '16px', background: 'rgba(34,211,160,0.08)', border: '1px solid rgba(34,211,160,0.2)', borderRadius: '8px', textAlign: 'center' }}>
-                <div style={{ fontSize: '24px', marginBottom: '4px' }}>✓</div>
+                <div style={{ marginBottom: '4px', color: 'var(--green)', display: 'flex', justifyContent: 'center' }}>
+                  <CheckCircleOutline sx={{ fontSize: 24 }} />
+                </div>
                 <div style={{ fontSize: '12px', color: 'var(--green)' }}>
                   {displayOverview && displayOverview.averageScore > 0
                     ? 'All subjects above 80%!'
-                    : isMocks
-                      ? 'Add mocks to see subject data'
-                      : 'Take PYQs to see subject data'}
+                    : 'Add mocks to see subject data'}
                 </div>
               </div>
             )}
           </div>
+          )}
 
           <div className="card">
             <h3 className="section-title" style={{ marginBottom: '12px' }}>Quick Actions</h3>
@@ -813,30 +798,30 @@ export const Dashboard = () => {
               {isMocks ? (
                 <>
                   <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/add-mock')}>
-                    ➕ Log a Mock
+                    <Add sx={{ fontSize: 18 }} /> Log a Mock
                   </button>
                   <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/performance-history')}>
-                    📋 Mock History
+                    <History sx={{ fontSize: 18 }} /> Mock History
                   </button>
                   <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/subject-analytics')}>
-                    📊 Subject Analytics
+                    <QueryStats sx={{ fontSize: 18 }} /> Subject Analytics
                   </button>
                   <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }}
                     onClick={() => downloadReportMutation.mutate()} disabled={downloadReportMutation.isPending}>
-                    📥 Download Report
+                    <Download sx={{ fontSize: 18 }} /> Download Report
                   </button>
                 </>
               ) : (
                 <>
                   <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/pyq-tests')}>
-                    ⏱️ Practice PYQ
+                    <Assignment sx={{ fontSize: 18 }} /> Practice PYQ
                   </button>
                   <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/topic-performance')}>
-                    🎯 Topic Performance
+                    <Speed sx={{ fontSize: 18 }} /> Topic Performance
                   </button>
                   {latestPyq && (
                     <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate(`/pyq-analyze/${latestPyq.attemptId}`)}>
-                      🔎 Analyze Latest PYQ
+                      <Search sx={{ fontSize: 18 }} /> Analyze Latest PYQ
                     </button>
                   )}
                 </>
@@ -877,8 +862,8 @@ export const Dashboard = () => {
                     background: 'var(--surface2)',
                   }}
                 >
-                  <div style={{ fontSize: 11, color: 'var(--text3)', fontWeight: 700 }}>{s.sectionCode}</div>
-                  <div style={{ fontSize: 22, fontWeight: 800, marginTop: 4 }}>{s.score.toFixed(1)}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text3)', fontWeight: 500 }}>{s.sectionCode}</div>
+                  <div style={{ fontSize: 22, fontWeight: 500, marginTop: 4 }}>{s.score.toFixed(1)}</div>
                   <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 4 }}>
                     {s.correct}C / {s.incorrect}I / {s.unattempted}U
                   </div>
@@ -890,26 +875,19 @@ export const Dashboard = () => {
       )}
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div style={{ padding: '22px 24px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-          <div>
-            <h3 className="section-title" style={{ marginBottom: 4 }}>
-              {isMocks ? 'Recent mocks' : 'Recent PYQs'}
-            </h3>
-            <p style={{ margin: 0, fontSize: 12, color: 'var(--text3)' }}>
-              {isMocks ? 'Logged external mock tests' : 'In-app previous year paper attempts'}
-            </p>
-          </div>
-          <button
-            className="btn btn-ghost"
-            style={{ fontSize: 12 }}
-            onClick={() => navigate(isMocks ? '/add-mock' : '/pyq-tests')}
-          >
-            {isMocks ? 'Log Mock' : 'PYQ Tests'}
-          </button>
+        <div style={{ padding: '22px 24px', borderBottom: '1px solid var(--border)' }}>
+          <h3 className="section-title" style={{ marginBottom: 4 }}>
+            {isMocks ? 'Recent mocks' : 'Recent PYQs'}
+          </h3>
+          <p style={{ margin: 0, fontSize: 12, color: 'var(--text3)' }}>
+            {isMocks ? 'Logged external mock tests' : 'In-app previous year paper attempts'}
+          </p>
         </div>
         {displayActivity.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-icon">📝</div>
+            <div className="empty-icon" style={{ display: 'flex', justifyContent: 'center' }}>
+              <Assignment sx={{ fontSize: 36, color: 'var(--text3)' }} />
+            </div>
             <div className="empty-title">{isMocks ? 'No mocks yet' : 'No PYQs yet'}</div>
             <div className="empty-sub">
               {isMocks ? 'Log an external mock to start tracking' : 'Take a PYQ paper to start tracking'}
@@ -925,8 +903,7 @@ export const Dashboard = () => {
           </div>
         ) : (
           <div className="table-scroll">
-            <div className="table-header" style={{ gridTemplateColumns: '90px 1.4fr 100px 100px 1fr 110px' }}>
-              <div className="th">Source</div>
+            <div className="table-header" style={{ gridTemplateColumns: '1.6fr 100px 90px 1.2fr 100px' }}>
               <div className="th">Activity</div>
               <div className="th">Date</div>
               <div className="th" style={{ textAlign: 'right' }}>Score</div>
@@ -934,20 +911,15 @@ export const Dashboard = () => {
               <div className="th" style={{ textAlign: 'center' }}>Actions</div>
             </div>
             {displayActivity.map((item) => (
-              <div key={`${item.kind}-${item.id}`} className="table-row" style={{ gridTemplateColumns: '90px 1.4fr 100px 100px 1fr 110px' }}>
-                <div>
-                  <span className={`badge ${item.kind === 'PYQ' ? 'badge-amber' : 'badge-green'}`}>
-                    {item.kind}
-                  </span>
-                </div>
+              <div key={`${item.kind}-${item.id}`} className="table-row" style={{ gridTemplateColumns: '1.6fr 100px 90px 1.2fr 100px' }}>
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <div style={{ fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {item.title}
                   </div>
                   <div style={{ fontSize: 11, color: 'var(--text3)' }}>{item.examName}</div>
                 </div>
                 <div style={{ fontSize: 13 }}>{new Date(item.date).toLocaleDateString()}</div>
-                <div style={{ fontSize: 13, textAlign: 'right', fontWeight: 600, color: 'var(--accent2)' }}>
+                <div style={{ fontSize: 13, textAlign: 'right', fontWeight: 500, color: 'var(--accent2)' }}>
                   {item.score.toFixed(2)}
                 </div>
                 <div style={{ fontSize: 12, color: 'var(--text2)' }}>
@@ -1022,12 +994,14 @@ function ImprovementCard({ improvement }: { improvement: ImprovementDTO }) {
   return (
     <div className="card">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-        <div className="stat-label" style={{ marginBottom: 0 }}>📈 Performance Trend</div>
+        <div className="stat-label" style={{ marginBottom: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <TrendingUp sx={{ fontSize: 16, color: 'var(--text3)' }} /> Performance Trend
+        </div>
         <span className={`badge ${trendBadge}`}>{trendLabel}</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
         <span style={{
-          fontFamily: 'Inter, sans-serif', fontSize: '28px', fontWeight: 700, color: trendColor
+          fontFamily: 'Inter, sans-serif', fontSize: '28px', fontWeight: 500, color: trendColor
         }}>
           {improvement.improvementRate >= 0 ? '+' : ''}{improvement.improvementRate.toFixed(1)}
         </span>
@@ -1036,11 +1010,11 @@ function ImprovementCard({ improvement }: { improvement: ImprovementDTO }) {
       <div className="stack-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
         <div style={{ background: 'var(--surface2)', borderRadius: '8px', padding: '8px 10px' }}>
           <div style={{ fontSize: '10px', color: 'var(--text3)' }}>Last 5</div>
-          <div style={{ fontSize: '16px', fontWeight: 600 }}>{improvement.last5Avg.toFixed(1)}</div>
+          <div style={{ fontSize: '16px', fontWeight: 500 }}>{improvement.last5Avg.toFixed(1)}</div>
         </div>
         <div style={{ background: 'var(--surface2)', borderRadius: '8px', padding: '8px 10px' }}>
           <div style={{ fontSize: '10px', color: 'var(--text3)' }}>Previous 5</div>
-          <div style={{ fontSize: '16px', fontWeight: 600 }}>{improvement.prev5Avg.toFixed(1)}</div>
+          <div style={{ fontSize: '16px', fontWeight: 500 }}>{improvement.prev5Avg.toFixed(1)}</div>
         </div>
       </div>
     </div>
@@ -1050,9 +1024,12 @@ function ImprovementCard({ improvement }: { improvement: ImprovementDTO }) {
 function InsightsCard({ insights }: { insights: InsightsResponse }) {
   const getInsightIcon = (type: InsightType) => {
     switch (type) {
-      case 'WARNING': return '⚠️';
-      case 'SUCCESS': return '✅';
-      case 'INFO': return 'ℹ️';
+      case 'WARNING':
+        return <WarningAmberOutlined sx={{ fontSize: 18, color: 'var(--red)' }} />;
+      case 'SUCCESS':
+        return <CheckCircleOutline sx={{ fontSize: 18, color: 'var(--green)' }} />;
+      case 'INFO':
+        return <InfoOutlined sx={{ fontSize: 18, color: 'var(--accent2)' }} />;
     }
   };
 
@@ -1067,7 +1044,7 @@ function InsightsCard({ insights }: { insights: InsightsResponse }) {
   return (
     <div className="card" style={{ marginBottom: '24px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-        <span style={{ fontSize: '16px' }}>🧠</span>
+        <PsychologyOutlined sx={{ fontSize: 18, color: 'var(--text3)' }} />
         <h3 className="section-title">Insights</h3>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -1081,7 +1058,7 @@ function InsightsCard({ insights }: { insights: InsightsResponse }) {
             borderRadius: '10px',
             borderLeft: `3px solid ${getInsightColor(insight.type)}`
           }}>
-            <span style={{ fontSize: '16px', marginTop: '1px' }}>{getInsightIcon(insight.type)}</span>
+            <span style={{ marginTop: '1px', display: 'flex' }}>{getInsightIcon(insight.type)}</span>
             <span style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text)' }}>
               {insight.message}
             </span>
@@ -1141,7 +1118,7 @@ function AdaptiveStrengthCard({ adaptiveStrength }: { adaptiveStrength: Adaptive
               <span style={{ 
                 fontSize: '12px', 
                 color: subject.relativeScore >= 0 ? 'var(--green)' : 'var(--red)',
-                fontWeight: 600
+                fontWeight: 500
               }}>
                 {subject.relativeScore >= 0 ? '+' : ''}{subject.relativeScore.toFixed(1)}%
               </span>
@@ -1174,14 +1151,14 @@ function AttemptAccuracyCard({ insight }: { insight: AttemptAccuracyInsightDTO }
       <div className="stack-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
         <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '10px 12px' }}>
           <div style={{ fontSize: '10px', color: 'var(--text3)', marginBottom: '4px' }}>High attempt accuracy</div>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: insight.highAttemptAccuracy >= insight.lowAttemptAccuracy ? 'var(--green)' : 'var(--red)' }}>
+          <div style={{ fontSize: '18px', fontWeight: 500, color: insight.highAttemptAccuracy >= insight.lowAttemptAccuracy ? 'var(--green)' : 'var(--red)' }}>
             {insight.highAttemptAccuracy.toFixed(1)}%
           </div>
           <div style={{ fontSize: '10px', color: 'var(--text3)' }}>avg {insight.highAttemptAvgRate.toFixed(0)}% attempted</div>
         </div>
         <div style={{ background: 'var(--surface2)', borderRadius: '10px', padding: '10px 12px' }}>
           <div style={{ fontSize: '10px', color: 'var(--text3)', marginBottom: '4px' }}>Low attempt accuracy</div>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: insight.lowAttemptAccuracy >= insight.highAttemptAccuracy ? 'var(--green)' : 'var(--red)' }}>
+          <div style={{ fontSize: '18px', fontWeight: 500, color: insight.lowAttemptAccuracy >= insight.highAttemptAccuracy ? 'var(--green)' : 'var(--red)' }}>
             {insight.lowAttemptAccuracy.toFixed(1)}%
           </div>
           <div style={{ fontSize: '10px', color: 'var(--text3)' }}>avg {insight.lowAttemptAvgRate.toFixed(0)}% attempted</div>
@@ -1196,7 +1173,7 @@ function NeglectCard({ subjects, windowSize }: { subjects: SubjectNeglectDTO[]; 
   return (
     <div className="card" style={{ marginBottom: '24px', borderColor: 'rgba(244,63,94,0.2)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-        <span style={{ fontSize: '16px' }}>⚠️</span>
+        <WarningAmberOutlined sx={{ fontSize: 18, color: 'var(--amber)' }} />
         <h3 className="section-title">Neglected Subjects</h3>
         <span style={{ fontSize: '11px', color: 'var(--text3)', marginLeft: 'auto' }}>last {windowSize} mocks</span>
       </div>

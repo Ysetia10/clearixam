@@ -24,10 +24,10 @@
 }
 
 [data-theme="light"] {
-  --bg: #f9fafb;
+  --bg: #ffffff;
   --surface: #ffffff;
-  --surface2: #f3f4f6;
-  --surface3: #e5e7eb;
+  --surface2: #f7f7f5;
+  --surface3: #efefec;
   --border: rgba(0,0,0,0.08);
   --border2: rgba(0,0,0,0.12);
   --text: #111827;
@@ -83,6 +83,11 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text);
+  font-weight: 500;
+}
+
+b, strong {
+  font-weight: 500;
 }
 
 body::before {
@@ -98,7 +103,7 @@ body::before {
 }
 
 [data-theme="light"] body::before {
-  background: radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%);
+  display: none;
 }
 
 @keyframes fadeUp {
@@ -189,7 +194,7 @@ body::before {
   padding: 4px 10px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .badge-red { 
@@ -239,7 +244,7 @@ body::before {
 
 .input-label {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text3);
@@ -256,7 +261,7 @@ body::before {
 
 .th {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 1.2px;
   text-transform: uppercase;
   color: var(--text3);
@@ -445,28 +450,28 @@ body::before {
 .section-title {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text);
 }
 
 .page-title {
   font-family: 'Inter', sans-serif;
   font-size: 26px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.5px;
 }
 
 .stat-value {
   font-family: 'Inter', sans-serif;
   font-size: 34px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -1px;
   line-height: 1;
 }
 
 .stat-label {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text3);

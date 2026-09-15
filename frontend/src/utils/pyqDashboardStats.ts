@@ -9,12 +9,14 @@ import type {
   InsightsResponse,
   WeakSubject,
 } from '../api/analytics';
+import { assessRiskLevel, pyqRiskReference, type RiskAssessment } from './riskLevel';
 
 export type PyqDashboardOverview = {
   averageScore: number;
   movingAverage: number;
   accuracyPercent: number;
   riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
+  risk: RiskAssessment;
   consistencyScore: 'HIGH' | 'MODERATE' | 'LOW' | 'INSUFFICIENT_DATA';
   weakSubjects: WeakSubject[];
   performanceChange: number;
@@ -208,9 +210,12 @@ export function buildPyqOverview(
     : 0;
 
   const maxMarks = options?.maxMarks || 0;
-  const pctOfMax = maxMarks > 0 ? (movingAverage / maxMarks) * 100 : accuracyPercent;
-  const riskLevel: PyqDashboardOverview['riskLevel'] =
-    pctOfMax >= 55 ? 'LOW' : pctOfMax >= 40 ? 'MEDIUM' : 'HIGH';
+  const { reference, basis } = pyqRiskReference({
+    maxMarks: maxMarks || undefined,
+    goalTarget: options?.goal?.targetScore,
+  });
+  const risk = assessRiskLevel(movingAverage || averageScore, reference, basis);
+  const riskLevel = risk.level;
 
   const recentScores = scores.slice(0, 5);
   const consistencyScore: PyqDashboardOverview['consistencyScore'] =
@@ -248,6 +253,7 @@ export function buildPyqOverview(
     movingAverage,
     accuracyPercent,
     riskLevel,
+    risk,
     consistencyScore: consistencyScore === 'INSUFFICIENT_DATA' ? 'INSUFFICIENT_DATA' : consistencyScore,
     weakSubjects: buildPyqWeakSubjects(topics),
     performanceChange,
@@ -504,29 +510,4 @@ export function buildPyqSubjectBreakdown(
       };
     })
     .sort((a, b) => a.accuracy - b.accuracy);
-}
-
-export function buildPyqStudyActions(
-  focusTopics: PyqFocusTopic[],
-  timeSinks: PyqTimeSink[]
-): string[] {
-  const actions: string[] = [];
-  const topFocus = focusTopics.slice(0, 3);
-  for (const t of topFocus) {
-    actions.push(
-      `Study ${t.topic} (${t.subject}) — ${t.accuracy.toFixed(0)}% accuracy across ${t.total} Qs`
-    );
-  }
-  const quantSink = timeSinks.find((t) => isQuantSubject(t.subject, t.sectionCode));
-  if (quantSink) {
-    actions.push(
-      `Save time in Quant · ${quantSink.topic}: avg ${Math.round(quantSink.avgSecondsSpent)}s/Q` +
-        (quantSink.extraSeconds > 0 ? ` (~${Math.round(quantSink.extraSeconds)}s over pace)` : '')
-    );
-  } else if (timeSinks[0]) {
-    actions.push(
-      `Speed up ${timeSinks[0].topic}: avg ${Math.round(timeSinks[0].avgSecondsSpent)}s/Q`
-    );
-  }
-  return actions.slice(0, 4);
 }
