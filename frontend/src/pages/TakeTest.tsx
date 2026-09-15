@@ -736,11 +736,32 @@ export const TakeTest = () => {
     void submit();
   }, [isSectional, isLastSection, advanceSection, submit]);
 
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // Browser may deny fullscreen outside a user gesture.
+    }
+  }, []);
+
   useEffect(() => {
-    if (!paper || !testStarted || paused || !question) return;
+    if (!paper || !question) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
+        void toggleFullscreen();
+        return;
+      }
+
+      if (!testStarted || paused) return;
 
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
@@ -759,7 +780,17 @@ export const TakeTest = () => {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [paper, testStarted, paused, question, index, goToIndex, saveAndNext, toggleMarkCurrent]);
+  }, [
+    paper,
+    testStarted,
+    paused,
+    question,
+    index,
+    goToIndex,
+    saveAndNext,
+    toggleMarkCurrent,
+    toggleFullscreen,
+  ]);
 
   if (loading || !paper || !question) {
     return <TakeTestSkeleton />;
@@ -1115,7 +1146,7 @@ export const TakeTest = () => {
           </div>
 
           <div className="tt-keys-hint">
-            Keys: ← → navigate · M mark · 1–4 select MCQ
+            Keys: ← → navigate · M mark · 1–4 select MCQ · F fullscreen
             {isSectional && (
               <>
                 <br />
