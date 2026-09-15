@@ -322,6 +322,22 @@ export const Dashboard = () => {
           message: i.message,
         }));
 
+  const mockCutoff = useMemo(() => {
+    const examMocks = (mocks?.content || []).filter((m) => !selectedExamId || m.examId === selectedExamId);
+    return examMocks[0]?.cutoffScore ?? null;
+  }, [mocks, selectedExamId]);
+
+  const displayRisk: RiskAssessment = useMemo(() => {
+    if (isMocks) {
+      return assessRiskLevel(
+        overview?.movingAverage || 0,
+        mockCutoff,
+        'cutoff'
+      );
+    }
+    return pyqOverview.risk;
+  }, [isMocks, overview?.movingAverage, mockCutoff, pyqOverview.risk]);
+
   const isLoading = isMocks
     ? overviewLoading || trendLoading || mocksLoading
     : pyqLoading || (viewMode === 'pyqs' && pyqTopicsLoading && !pyqTopics);
@@ -340,22 +356,6 @@ export const Dashboard = () => {
       : displayOverview?.consistencyScore || 'Insufficient Data';
 
   const goalProgress = isMocks ? overview?.goalProgress : pyqOverview.goalProgress;
-
-  const mockCutoff = useMemo(() => {
-    const examMocks = (mocks?.content || []).filter((m) => !selectedExamId || m.examId === selectedExamId);
-    return examMocks[0]?.cutoffScore ?? null;
-  }, [mocks, selectedExamId]);
-
-  const displayRisk: RiskAssessment = useMemo(() => {
-    if (isMocks) {
-      return assessRiskLevel(
-        overview?.movingAverage || 0,
-        mockCutoff,
-        'cutoff'
-      );
-    }
-    return pyqOverview.risk;
-  }, [isMocks, overview?.movingAverage, mockCutoff, pyqOverview.risk]);
 
   const riskStroke =
     displayRisk.level === 'LOW'
