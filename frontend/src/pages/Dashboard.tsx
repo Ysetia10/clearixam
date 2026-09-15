@@ -53,6 +53,24 @@ import { assessRiskLevel, riskTooltipText, type RiskAssessment } from '../utils/
 
 type DashboardView = 'mocks' | 'pyqs';
 
+/** Drop redundant exam prefix (e.g. "SSC CGL") when exam is already shown under the title. */
+function displayActivityTitle(title: string, examName: string): string {
+  let t = title.trim();
+  const prefixes = [`${examName} CGL`, 'SSC CGL', examName].filter(
+    (p, i, arr) => Boolean(p) && arr.indexOf(p) === i
+  );
+  prefixes.sort((a, b) => b.length - a.length);
+  for (const prefix of prefixes) {
+    const escaped = prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`^${escaped}\\s+`, 'i');
+    if (re.test(t)) {
+      t = t.replace(re, '').trim();
+      break;
+    }
+  }
+  return t || title;
+}
+
 type ActivityItem =
   | {
       kind: 'MOCK';
@@ -908,46 +926,54 @@ export const Dashboard = () => {
               <div className="th">Date</div>
               <div className="th" style={{ textAlign: 'right' }}>Score</div>
               <div className="th">Detail</div>
-              <div className="th" style={{ textAlign: 'center' }}>Actions</div>
+              <div className="th" style={{ textAlign: 'center' }}>{isMocks ? 'View' : 'Analyze'}</div>
             </div>
             {displayActivity.map((item) => (
               <div key={`${item.kind}-${item.id}`} className="table-row" style={{ gridTemplateColumns: '1.6fr 100px 90px 1.2fr 100px' }}>
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {item.title}
+                    {item.kind === 'PYQ' ? displayActivityTitle(item.title, item.examName) : item.title}
                   </div>
                   <div style={{ fontSize: 11, color: 'var(--text3)' }}>{item.examName}</div>
                 </div>
                 <div style={{ fontSize: 13 }}>{new Date(item.date).toLocaleDateString()}</div>
-                <div style={{ fontSize: 13, textAlign: 'right', fontWeight: 500, color: 'var(--accent2)' }}>
-                  {item.score.toFixed(2)}
-                </div>
-                <div style={{ fontSize: 12, color: 'var(--text2)' }}>
-                  {item.kind === 'PYQ' ? (
-                    <>
-                      {item.correctCount}C / {item.incorrectCount}I / {item.unattemptedCount}U
-                      {item.sections?.length > 0 && (
-                        <span style={{ color: 'var(--text3)' }}>
-                          {' · '}
-                          {item.sections.map((s) => `${s.sectionCode} ${s.score.toFixed(0)}`).join(' · ')}
-                        </span>
-                      )}
-                    </>
-                  ) : (
-                    <>
+                {item.kind === 'PYQ' ? (
+                  <>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--accent2)' }}>
+                        {item.score.toFixed(2)}
+                      </div>
+                      <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
+                        {item.correctCount}C / {item.incorrectCount}I / {item.unattemptedCount}U
+                      </div>
+                    </div>
+                    <div style={{ fontSize: 12, color: 'var(--text3)' }}>
+                      {item.sections?.length > 0
+                        ? item.sections.map((s) => `${s.sectionCode} ${s.score.toFixed(0)}`).join(' · ')
+                        : '—'}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div style={{ fontSize: 13, textAlign: 'right', fontWeight: 500, color: 'var(--accent2)' }}>
+                      {item.score.toFixed(2)}
+                    </div>
+                    <div style={{ fontSize: 12, color: 'var(--text2)' }}>
                       Cutoff {item.cutoffScore.toFixed(1)}
                       {item.probabilityScore != null ? ` · Prob ${item.probabilityScore}%` : ''}
-                    </>
-                  )}
-                </div>
+                    </div>
+                  </>
+                )}
                 <div style={{ textAlign: 'center' }}>
                   {item.kind === 'PYQ' ? (
                     <button
+                      type="button"
                       className="btn btn-ghost"
-                      style={{ padding: '4px 12px', fontSize: 12 }}
+                      style={{ padding: '6px 8px', minWidth: 'auto', lineHeight: 0 }}
                       onClick={() => navigate(`/pyq-analyze/${item.id}`)}
+                      aria-label="Analyze PYQ attempt"
                     >
-                      Analyze
+                      <ShowChart sx={{ fontSize: 20, color: 'var(--accent2)' }} />
                     </button>
                   ) : (
                     <button
