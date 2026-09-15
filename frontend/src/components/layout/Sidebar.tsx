@@ -9,7 +9,6 @@ import {
   ManageSearch,
   QuizOutlined,
   SettingsOutlined,
-  ShowChartOutlined,
   TimerOutlined,
 } from '@mui/icons-material'
 import type { SvgIconComponent } from '@mui/icons-material'
@@ -49,7 +48,6 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
 
   const menuItems: MenuItem[] = [
     { text: 'Dashboard', path: '/dashboard', Icon: DashboardOutlined },
-    { text: 'Subject Analytics', path: '/subject-analytics', Icon: ShowChartOutlined },
     { text: 'Topic Performance', path: '/topic-performance', Icon: ManageSearch },
     { text: 'PYQ Tests', path: '/pyq-tests', Icon: TimerOutlined },
     { text: 'Sectional Tests', path: '/sectional-tests', Icon: QuizOutlined },

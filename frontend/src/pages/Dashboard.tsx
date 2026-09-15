@@ -12,7 +12,6 @@ import {
   History,
   InfoOutlined,
   PsychologyOutlined,
-  QueryStats,
   Search,
   ShowChart,
   Speed,
@@ -821,8 +820,8 @@ export const Dashboard = () => {
                   <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/performance-history')}>
                     <History sx={{ fontSize: 18 }} /> Mock History
                   </button>
-                  <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/subject-analytics')}>
-                    <QueryStats sx={{ fontSize: 18 }} /> Subject Analytics
+                  <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/topic-performance')}>
+                    <Speed sx={{ fontSize: 18 }} /> Topic Performance
                   </button>
                   <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }}
                     onClick={() => downloadReportMutation.mutate()} disabled={downloadReportMutation.isPending}>

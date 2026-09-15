@@ -1,7 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { ArrowBack, ChevronLeft, ChevronRight, Close, ExpandMore } from '@mui/icons-material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
+import { analyticsApi, SubjectAnalyticsDTO, SubjectStatus } from '../api/analytics';
 import { examsApi, Exam } from '../api/exams';
+import { mocksApi } from '../api/mocks';
 import {
   papersApi,
   PyqTopicPerformanceItem,
@@ -11,6 +15,10 @@ import { MathText, PyqText, renderOptionLabel } from '../utils/formatPyqText';
 import { QuestionListSkeleton, TopicPerformanceSkeleton } from '../components/Shimmer';
 
 type TopicRow = PyqTopicPerformanceItem;
+
+function topicKey(t: Pick<TopicRow, 'sectionCode' | 'topic'>) {
+  return `${t.sectionCode}::${t.topic}`;
+}
 
 function statusColor(status: string) {
   if (status === 'CORRECT') return 'var(--green)';
@@ -44,13 +52,31 @@ function speedBadge(label: string | null | undefined) {
   return null;
 }
 
+type ViewMode = 'mocks' | 'pyqs';
+
+const MOCK_STATUS_BADGE: Record<SubjectStatus, string> = {
+  IMPROVING: 'badge-green',
+  DECLINING: 'badge-red',
+  STABLE: 'badge-amber',
+};
+
+const MOCK_STATUS_LABEL: Record<SubjectStatus, string> = {
+  IMPROVING: '↑ Improving',
+  DECLINING: '↓ Declining',
+  STABLE: '→ Stable',
+};
+
+const PAGE_WRAP: React.CSSProperties = {
+  maxWidth: 1200,
+  margin: '0 auto',
+  width: '100%',
+  padding: '32px 24px',
+};
+
 const TopicPerformancePage: React.FC = () => {
   const navigate = useNavigate();
-  const [performance, setPerformance] = useState<TopicRow[]>([]);
-  const [attemptCount, setAttemptCount] = useState(0);
-  const [topicsTagged, setTopicsTagged] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('pyqs');
+  const [viewInitialized, setViewInitialized] = useState(false);
   const [exams, setExams] = useState<Exam[]>([]);
   const [selectedExamId, setSelectedExamId] = useState('');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
@@ -70,45 +96,85 @@ const TopicPerformancePage: React.FC = () => {
       .catch(() => setExams([]));
   }, []);
 
-  const loadTopicPerformance = async (examId: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await papersApi.getTopicPerformance(examId || undefined);
-      setPerformance(data.topics || []);
-      setAttemptCount(data.attemptCount || 0);
-      setTopicsTagged(Boolean(data.topicsTagged));
-    } catch (err: unknown) {
-      setError((err as Error).message || 'Failed to load topic performance');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    data: pyqData,
+    isLoading: pyqLoading,
+    error: pyqQueryError,
+    refetch: refetchPyq,
+  } = useQuery({
+    queryKey: ['pyq-topic-performance', selectedExamId],
+    queryFn: () => papersApi.getTopicPerformance(selectedExamId || undefined),
+    enabled: !!selectedExamId,
+    staleTime: 30000,
+  });
+
+  const { data: mockAnalytics, isLoading: mockAnalyticsLoading } = useQuery({
+    queryKey: ['subject-analytics', selectedExamId],
+    queryFn: () => analyticsApi.getSubjectAnalytics(selectedExamId || undefined),
+    enabled: !!selectedExamId,
+    staleTime: 30000,
+  });
+
+  const { data: mocksPage, isLoading: mocksLoading } = useQuery({
+    queryKey: ['mocks', 50],
+    queryFn: () => mocksApi.list(0, 50),
+    staleTime: 30000,
+  });
+
+  const performance = pyqData?.topics ?? [];
+  const attemptCount = pyqData?.attemptCount ?? 0;
+  const topicsTagged = Boolean(pyqData?.topicsTagged);
+  const pyqError = pyqQueryError ? (pyqQueryError as Error).message : null;
+  const mockSubjects = mockAnalytics?.subjects ?? [];
+
+  const isMocks = viewMode === 'mocks';
+  const loading = !selectedExamId || (isMocks ? mockAnalyticsLoading : pyqLoading);
+  const initLoading = pyqLoading || mockAnalyticsLoading || mocksLoading;
 
   useEffect(() => {
-    if (!selectedExamId) return;
-    void loadTopicPerformance(selectedExamId);
+    setViewInitialized(false);
   }, [selectedExamId]);
 
-  const openTopicDrill = async (item: TopicRow) => {
-    setDrillTopic(item);
+  useEffect(() => {
+    if (viewInitialized || !selectedExamId || initLoading) return;
+    const pyqQuestions = performance.reduce(
+      (s, i) => s + i.correct + i.incorrect + i.unattempted,
+      0
+    );
+    const examMocks = (mocksPage?.content ?? []).filter((m) => m.examId === selectedExamId);
+    const mockQuestions = examMocks.reduce((s, m) => s + (m.attempted ?? 0), 0);
+    setViewMode(pyqQuestions > mockQuestions ? 'pyqs' : 'mocks');
+    setViewInitialized(true);
+  }, [viewInitialized, selectedExamId, initLoading, performance, mocksPage?.content]);
+
+  const openTopicDrill = useCallback(
+    async (item: TopicRow) => {
+      setDrillTopic(item);
+      setDrillQuestions([]);
+      setDrillError(null);
+      setDrillFilter('ALL');
+      setDrillLoading(true);
+      try {
+        const data = await papersApi.getTopicQuestions(
+          item.sectionCode,
+          item.topic,
+          selectedExamId || undefined
+        );
+        setDrillQuestions(data.questions || []);
+      } catch (err: unknown) {
+        setDrillError((err as Error).message || 'Failed to load topic questions');
+      } finally {
+        setDrillLoading(false);
+      }
+    },
+    [selectedExamId]
+  );
+
+  const closeTopicDrill = useCallback(() => {
+    setDrillTopic(null);
     setDrillQuestions([]);
     setDrillError(null);
-    setDrillFilter('ALL');
-    setDrillLoading(true);
-    try {
-      const data = await papersApi.getTopicQuestions(
-        item.sectionCode,
-        item.topic,
-        selectedExamId || undefined
-      );
-      setDrillQuestions(data.questions || []);
-    } catch (err: unknown) {
-      setDrillError((err as Error).message || 'Failed to load topic questions');
-    } finally {
-      setDrillLoading(false);
-    }
-  };
+  }, []);
 
   const filteredDrillQuestions = useMemo(() => {
     if (drillFilter === 'ALL') return drillQuestions;
@@ -210,6 +276,87 @@ const TopicPerformancePage: React.FC = () => {
     return { subjectData, sorted };
   }, [performance]);
 
+  const examMocks = useMemo(
+    () => (mocksPage?.content ?? []).filter((m) => m.examId === selectedExamId),
+    [mocksPage?.content, selectedExamId]
+  );
+
+  const sortedMockSubjects = useMemo(
+    () => [...mockSubjects].sort((a, b) => a.avgAccuracy - b.avgAccuracy),
+    [mockSubjects]
+  );
+
+  const mockOverview = useMemo(() => {
+    if (mockSubjects.length === 0) {
+      return {
+        avgAccuracy: 0,
+        avgAttemptsPerMock: 0,
+        mocksLogged: examMocks.length,
+        weakSubjects: 0,
+        improvingSubjects: 0,
+      };
+    }
+    const avgAccuracy =
+      mockSubjects.reduce((s, sub) => s + sub.avgAccuracy, 0) / mockSubjects.length;
+    const avgAttemptsPerMock =
+      mockSubjects.reduce((s, sub) => s + sub.avgAttemptsPerMock, 0) / mockSubjects.length;
+    const mocksLogged = Math.max(...mockSubjects.map((s) => s.totalMocksAttempted), examMocks.length);
+    return {
+      avgAccuracy,
+      avgAttemptsPerMock,
+      mocksLogged,
+      weakSubjects: mockSubjects.filter((s) => s.avgAccuracy < 80).length,
+      improvingSubjects: mockSubjects.filter((s) => s.status === 'IMPROVING').length,
+    };
+  }, [mockSubjects, examMocks.length]);
+
+  const orderedTopics = useMemo(() => {
+    const list: TopicRow[] = [];
+    for (const subject of sorted) {
+      for (const t of subjectData[subject].topics) {
+        list.push(t);
+      }
+    }
+    return list;
+  }, [sorted, subjectData]);
+
+  const drillTopicIndex = useMemo(() => {
+    if (!drillTopic) return -1;
+    const key = topicKey(drillTopic);
+    return orderedTopics.findIndex((t) => topicKey(t) === key);
+  }, [drillTopic, orderedTopics]);
+
+  const drillPrevTopic = drillTopicIndex > 0 ? orderedTopics[drillTopicIndex - 1] : null;
+  const drillNextTopic =
+    drillTopicIndex >= 0 && drillTopicIndex < orderedTopics.length - 1
+      ? orderedTopics[drillTopicIndex + 1]
+      : null;
+
+  const goAdjacentTopic = useCallback(
+    (delta: -1 | 1) => {
+      if (drillTopicIndex < 0) return;
+      const target = orderedTopics[drillTopicIndex + delta];
+      if (target) void openTopicDrill(target);
+    },
+    [drillTopicIndex, orderedTopics, openTopicDrill]
+  );
+
+  useEffect(() => {
+    if (!drillTopic) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeTopicDrill();
+      if (e.key === 'ArrowLeft' && drillPrevTopic) goAdjacentTopic(-1);
+      if (e.key === 'ArrowRight' && drillNextTopic) goAdjacentTopic(1);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [drillTopic, closeTopicDrill, drillPrevTopic, drillNextTopic, goAdjacentTopic]);
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -218,10 +365,10 @@ const TopicPerformancePage: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (!isMocks && pyqError) {
     return (
       <DashboardLayout>
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 0' }}>
+        <div style={PAGE_WRAP}>
           <div
             style={{
               padding: '14px 18px',
@@ -232,9 +379,10 @@ const TopicPerformancePage: React.FC = () => {
               fontSize: 14,
             }}
           >
-            {error}
+            {pyqError}
             <button
-              onClick={() => void loadTopicPerformance(selectedExamId)}
+              type="button"
+              onClick={() => void refetchPyq()}
               style={{
                 marginLeft: 12,
                 background: 'var(--red)',
@@ -254,39 +402,87 @@ const TopicPerformancePage: React.FC = () => {
     );
   }
 
-  if (performance.length === 0) {
+  const totalQuestions = performance.reduce((s, i) => s + i.correct + i.incorrect + i.unattempted, 0);
+  const totalCorrect = performance.reduce((s, i) => s + i.correct, 0);
+  const totalSkipped = performance.reduce((s, i) => s + i.unattempted, 0);
+  const overallAccuracy = totalQuestions > 0 ? (totalCorrect / totalQuestions) * 100 : 0;
+  const weakSubjects = sorted.filter((s) => subjectData[s].overallAccuracy < 60).length;
+  const strongSubjects = sorted.filter((s) => subjectData[s].overallAccuracy >= 80).length;
+
+  const pyqEmpty = !isMocks && performance.length === 0;
+  const mockEmpty = isMocks && mockSubjects.length === 0;
+
+  const renderHeader = () => (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: 16,
+        flexWrap: 'wrap',
+        marginBottom: 28,
+        alignItems: 'flex-start',
+      }}
+    >
+      <div>
+        <h1 className="page-title">Topic Performance</h1>
+        <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--text3)' }}>
+          {isMocks
+            ? 'Subject accuracy and attempt patterns from your logged mocks'
+            : `From ${attemptCount} PYQ attempt${attemptCount === 1 ? '' : 's'}${topicsTagged ? '' : ' · some questions may be uncategorized'} · skips count as misses`}
+        </p>
+      </div>
+      <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+        {exams.length > 0 && (
+          <select
+            className="select"
+            value={selectedExamId}
+            onChange={(e) => setSelectedExamId(e.target.value)}
+            style={{ minWidth: 140 }}
+          >
+            {exams.map((exam) => (
+              <option key={exam.id} value={exam.id}>
+                {exam.name}
+              </option>
+            ))}
+          </select>
+        )}
+        <div className="tabs" role="tablist" aria-label="Performance source">
+          <button
+            type="button"
+            className={`tab ${isMocks ? 'active' : ''}`}
+            onClick={() => setViewMode('mocks')}
+          >
+            Mocks
+          </button>
+          <button
+            type="button"
+            className={`tab ${!isMocks ? 'active' : ''}`}
+            onClick={() => setViewMode('pyqs')}
+          >
+            PYQs
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (pyqEmpty || mockEmpty) {
     return (
       <DashboardLayout>
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 28 }}>
-            <div>
-              <h1 className="page-title">Topic Performance</h1>
-              <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--text3)' }}>
-                Built from your submitted PYQ attempts and labelled question topics
-              </p>
-            </div>
-            {exams.length > 0 && (
-              <select
-                className="select"
-                value={selectedExamId}
-                onChange={(e) => setSelectedExamId(e.target.value)}
-                style={{ minWidth: 140 }}
-              >
-                {exams.map((exam) => (
-                  <option key={exam.id} value={exam.id}>
-                    {exam.name}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
+        <div style={PAGE_WRAP}>
+          {renderHeader()}
           <div className="card" style={{ textAlign: 'center', padding: '60px 40px' }}>
             <p style={{ color: 'var(--text2)', fontSize: 14, lineHeight: 1.7, marginBottom: 20 }}>
-              No PYQ topic data yet. Take a timed PYQ paper and submit it — topics from the paper will
-              show up here.
+              {isMocks
+                ? 'No mock subject data yet. Log external mocks with section-wise scores to see accuracy and attempt trends here.'
+                : 'No PYQ topic data yet. Take a timed PYQ paper and submit it — topics from the paper will show up here.'}
             </p>
-            <button className="btn btn-primary" onClick={() => navigate('/pyq-tests')}>
-              Go to PYQ Tests
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => navigate(isMocks ? '/add-mock' : '/pyq-tests')}
+            >
+              {isMocks ? 'Add a mock' : 'Go to PYQ Tests'}
             </button>
           </div>
         </div>
@@ -294,53 +490,183 @@ const TopicPerformancePage: React.FC = () => {
     );
   }
 
-  const totalQuestions = performance.reduce((s, i) => s + i.correct + i.incorrect + i.unattempted, 0);
-  const totalSkipped = performance.reduce((s, i) => s + i.unattempted, 0);
-  const weakSubjects = sorted.filter((s) => subjectData[s].overallAccuracy < 60).length;
-  const strongSubjects = sorted.filter((s) => subjectData[s].overallAccuracy >= 80).length;
-
   return (
     <DashboardLayout>
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 0' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            gap: 16,
-            flexWrap: 'wrap',
-            marginBottom: 28,
-            alignItems: 'flex-start',
-          }}
-        >
-          <div>
-            <h1 className="page-title">Topic Performance</h1>
-            <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--text3)' }}>
-              From {attemptCount} PYQ attempt{attemptCount === 1 ? '' : 's'}
-              {topicsTagged ? '' : ' · some questions may be uncategorized'}
-              {' · '}skips count as misses
-            </p>
-          </div>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {exams.length > 0 && (
-              <select
-                className="select"
-                value={selectedExamId}
-                onChange={(e) => setSelectedExamId(e.target.value)}
-                style={{ minWidth: 140 }}
-              >
-                {exams.map((exam) => (
-                  <option key={exam.id} value={exam.id}>
-                    {exam.name}
-                  </option>
-                ))}
-              </select>
-            )}
-            <button className="btn" onClick={() => navigate('/pyq-tests')}>
-              PYQ Tests
-            </button>
-          </div>
-        </div>
+      <div style={PAGE_WRAP}>
+        {renderHeader()}
 
+        {isMocks ? (
+          <>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 160px), 1fr))',
+                gap: 14,
+                marginBottom: 20,
+              }}
+            >
+              {[
+                {
+                  label: 'AVG ACCURACY',
+                  value: `${mockOverview.avgAccuracy.toFixed(1)}%`,
+                  color: 'var(--accent2)',
+                  bg: 'rgba(99,102,241,0.08)',
+                  border: 'rgba(99,102,241,0.25)',
+                },
+                {
+                  label: 'AVG ATTEMPTS',
+                  value: mockOverview.avgAttemptsPerMock.toFixed(1),
+                  color: 'var(--blue)',
+                  bg: 'rgba(33,150,243,0.08)',
+                  border: 'rgba(33,150,243,0.25)',
+                },
+                {
+                  label: 'MOCKS LOGGED',
+                  value: mockOverview.mocksLogged,
+                  color: 'var(--text)',
+                  bg: 'var(--surface2)',
+                  border: 'var(--border)',
+                },
+                {
+                  label: 'WEAK SUBJECTS',
+                  value: mockOverview.weakSubjects,
+                  color: mockOverview.weakSubjects > 0 ? 'var(--red)' : 'var(--green)',
+                  bg: mockOverview.weakSubjects > 0 ? 'var(--red-glow)' : 'var(--green-glow)',
+                  border: mockOverview.weakSubjects > 0 ? 'rgba(244,63,94,0.3)' : 'rgba(34,211,160,0.3)',
+                },
+                {
+                  label: 'IMPROVING',
+                  value: mockOverview.improvingSubjects,
+                  color: 'var(--green)',
+                  bg: 'var(--green-glow)',
+                  border: 'rgba(34,211,160,0.3)',
+                },
+              ].map((card) => (
+                <div
+                  key={card.label}
+                  className="card"
+                  style={{
+                    background: card.bg,
+                    border: `1px solid ${card.border}`,
+                    padding: '20px 18px',
+                  }}
+                >
+                  <div style={{ fontSize: 28, fontWeight: 500, color: card.color, lineHeight: 1 }}>
+                    {card.value}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 500,
+                      letterSpacing: '1px',
+                      textTransform: 'uppercase',
+                      color: card.color,
+                      marginTop: 6,
+                    }}
+                  >
+                    {card.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div
+              style={{
+                padding: '12px 18px',
+                background: 'rgba(124,106,255,0.07)',
+                border: '1px solid rgba(124,106,255,0.2)',
+                borderRadius: 10,
+                marginBottom: 28,
+                fontSize: 13,
+                color: 'var(--text2)',
+              }}
+            >
+              Accuracy is averaged across logged mocks. Avg attempts is questions attempted per mock per
+              subject. Trend compares your last five mocks to the previous five.
+            </div>
+
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
+                gap: 16,
+              }}
+            >
+              {sortedMockSubjects.map((subject: SubjectAnalyticsDTO) => {
+                const accuracyColor =
+                  subject.avgAccuracy >= 90
+                    ? 'var(--green)'
+                    : subject.avgAccuracy >= 70
+                      ? 'var(--amber)'
+                      : 'var(--red)';
+                const trendColor = subject.trend >= 0 ? 'var(--green)' : 'var(--red)';
+                return (
+                  <div key={subject.subjectName} className="card" style={{ padding: '18px 20px' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                        gap: 12,
+                        marginBottom: 14,
+                      }}
+                    >
+                      <div>
+                        <div style={{ fontSize: 16, fontWeight: 500 }}>{subject.subjectName}</div>
+                        <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 4 }}>
+                          {subject.totalMocksAttempted} mock
+                          {subject.totalMocksAttempted !== 1 ? 's' : ''}
+                          {subject.lastAttemptedDate && (
+                            <>
+                              {' '}
+                              · last{' '}
+                              {new Date(subject.lastAttemptedDate).toLocaleDateString('en-IN', {
+                                day: '2-digit',
+                                month: 'short',
+                              })}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      <span className={`badge ${MOCK_STATUS_BADGE[subject.status]}`}>
+                        {MOCK_STATUS_LABEL[subject.status]}
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 32, fontWeight: 500, color: accuracyColor, marginBottom: 10 }}>
+                      {subject.avgAccuracy.toFixed(1)}%
+                    </div>
+                    <div className="progress-track" style={{ marginBottom: 16 }}>
+                      <div
+                        className="progress-fill"
+                        style={{
+                          width: `${Math.min(100, subject.avgAccuracy)}%`,
+                          background: `linear-gradient(90deg, ${accuracyColor}, ${accuracyColor}88)`,
+                        }}
+                      />
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
+                      <div>
+                        <div style={{ fontSize: 11, color: 'var(--text3)' }}>Avg attempts / mock</div>
+                        <div style={{ fontSize: 16, fontWeight: 500 }}>
+                          {subject.avgAttemptsPerMock.toFixed(1)}
+                        </div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontSize: 11, color: 'var(--text3)' }}>Trend (last 5 vs prev 5)</div>
+                        <div style={{ fontSize: 16, fontWeight: 500, color: trendColor }}>
+                          {subject.trend === 0
+                            ? '—'
+                            : `${subject.trend > 0 ? '+' : ''}${subject.trend.toFixed(1)}%`}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <>
         <div
           style={{
             display: 'grid',
@@ -350,10 +676,12 @@ const TopicPerformancePage: React.FC = () => {
           }}
         >
           {[
+            { label: 'ACCURACY', value: `${overallAccuracy.toFixed(1)}%`, color: 'var(--accent2)', bg: 'rgba(99,102,241,0.08)', border: 'rgba(99,102,241,0.25)' },
+            { label: 'ATTEMPTS', value: attemptCount, color: 'var(--text)', bg: 'var(--surface2)', border: 'var(--border)' },
             { label: 'QUESTIONS', value: totalQuestions, color: 'var(--blue)', bg: 'rgba(33,150,243,0.08)', border: 'rgba(33,150,243,0.25)' },
             { label: 'SKIPPED', value: totalSkipped, color: 'var(--amber)', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
-            { label: 'WEAK', value: weakSubjects, color: weakSubjects > 0 ? 'var(--red)' : 'var(--green)', bg: weakSubjects > 0 ? 'var(--red-glow)' : 'var(--green-glow)', border: weakSubjects > 0 ? 'rgba(244,63,94,0.3)' : 'rgba(34,211,160,0.3)' },
-            { label: 'STRONG', value: strongSubjects, color: 'var(--green)', bg: 'var(--green-glow)', border: 'rgba(34,211,160,0.3)' },
+            { label: 'WEAK SUBJ.', value: weakSubjects, color: weakSubjects > 0 ? 'var(--red)' : 'var(--green)', bg: weakSubjects > 0 ? 'var(--red-glow)' : 'var(--green-glow)', border: weakSubjects > 0 ? 'rgba(244,63,94,0.3)' : 'rgba(34,211,160,0.3)' },
+            { label: 'STRONG SUBJ.', value: strongSubjects, color: 'var(--green)', bg: 'var(--green-glow)', border: 'rgba(34,211,160,0.3)' },
           ].map((card) => (
             <div
               key={card.label}
@@ -429,16 +757,14 @@ const TopicPerformancePage: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span
-                    style={{
-                      fontSize: 18,
+                  <ExpandMore
+                    sx={{
+                      fontSize: 22,
                       color: 'var(--text3)',
-                      display: 'inline-block',
                       transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.15s ease',
                     }}
-                  >
-                    ▾
-                  </span>
+                  />
                   <span style={{ fontSize: 17, fontWeight: 500, color: 'var(--text)' }}>{subject}</span>
                 </div>
                 <span style={{ fontSize: 20, fontWeight: 500, color: perf.color }}>
@@ -622,69 +948,144 @@ const TopicPerformancePage: React.FC = () => {
             </div>
           );
         })}
-      </div>
+          </>
+        )}
 
       {drillTopic && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Topic review: ${drillTopic.topic}`}
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 100,
-            background: 'rgba(0,0,0,0.65)',
+            zIndex: 2000,
+            background: 'var(--bg)',
             display: 'flex',
-            alignItems: 'flex-end',
-            justifyContent: 'center',
-            padding: 0,
+            flexDirection: 'column',
           }}
-          onClick={() => setDrillTopic(null)}
         >
           <div
-            className="card"
             style={{
-              width: '100%',
-              maxWidth: 720,
-              maxHeight: 'min(88vh, 820px)',
-              overflow: 'auto',
-              margin: 0,
-              borderRadius: '16px 16px 0 0',
-              padding: 0,
+              flexShrink: 0,
+              background: 'var(--surface)',
+              borderBottom: '1px solid var(--border)',
+              padding: '12px 16px 14px',
             }}
-            onClick={(e) => e.stopPropagation()}
           >
             <div
               style={{
-                position: 'sticky',
-                top: 0,
-                background: 'var(--surface)',
-                borderBottom: '1px solid var(--border)',
-                padding: '16px 18px',
                 display: 'flex',
+                alignItems: 'center',
                 justifyContent: 'space-between',
-                gap: 12,
-                alignItems: 'flex-start',
-                zIndex: 1,
+                gap: 8,
+                marginBottom: 10,
               }}
             >
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontWeight: 500, fontSize: 16 }}>{drillTopic.topic}</div>
-                <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>
-                  {drillTopic.subject} · {drillTopic.correct}C / {drillTopic.incorrect}W /{' '}
-                  {drillTopic.unattempted}S · {drillTopic.accuracy.toFixed(1)}%
-                  {drillTopic.avgSecondsSpent != null &&
-                    ` · avg ${formatDuration(drillTopic.avgSecondsSpent)}/Q`}
-                </div>
-                {drillTopic.insight && (
-                  <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 6 }}>
-                    {drillTopic.insight}
-                  </div>
-                )}
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={closeTopicDrill}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 10px' }}
+              >
+                <ArrowBack sx={{ fontSize: 18 }} />
+                Back
+              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  disabled={!drillPrevTopic || drillLoading}
+                  onClick={() => goAdjacentTopic(-1)}
+                  aria-label="Previous topic"
+                  style={{ padding: '6px 8px', minWidth: 'auto', lineHeight: 0 }}
+                >
+                  <ChevronLeft sx={{ fontSize: 22 }} />
+                </button>
+                <span style={{ fontSize: 12, color: 'var(--text3)', minWidth: 72, textAlign: 'center' }}>
+                  {drillTopicIndex >= 0 ? `${drillTopicIndex + 1} / ${orderedTopics.length}` : '—'}
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  disabled={!drillNextTopic || drillLoading}
+                  onClick={() => goAdjacentTopic(1)}
+                  aria-label="Next topic"
+                  style={{ padding: '6px 8px', minWidth: 'auto', lineHeight: 0 }}
+                >
+                  <ChevronRight sx={{ fontSize: 22 }} />
+                </button>
               </div>
-              <button type="button" className="btn" onClick={() => setDrillTopic(null)}>
-                Close
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={closeTopicDrill}
+                aria-label="Close topic review"
+                style={{ padding: '6px 8px', minWidth: 'auto', lineHeight: 0 }}
+              >
+                <Close sx={{ fontSize: 22 }} />
               </button>
             </div>
+            <div style={{ maxWidth: 900, margin: '0 auto', width: '100%' }}>
+              <div style={{ fontWeight: 500, fontSize: 18 }}>{drillTopic.topic}</div>
+              <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>
+                {drillTopic.subject} · {drillTopic.correct}C / {drillTopic.incorrect}W /{' '}
+                {drillTopic.unattempted}S · {drillTopic.accuracy.toFixed(1)}%
+                {drillTopic.avgSecondsSpent != null &&
+                  ` · avg ${formatDuration(drillTopic.avgSecondsSpent)}/Q`}
+              </div>
+              {drillTopic.insight && (
+                <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 6 }}>{drillTopic.insight}</div>
+              )}
+              {(drillPrevTopic || drillNextTopic) && (
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: 8,
+                    marginTop: 10,
+                    flexWrap: 'wrap',
+                    fontSize: 12,
+                    color: 'var(--text3)',
+                  }}
+                >
+                  {drillPrevTopic && (
+                    <button
+                      type="button"
+                      className="btn btn-ghost"
+                      disabled={drillLoading}
+                      onClick={() => goAdjacentTopic(-1)}
+                      style={{ fontSize: 12, padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: 2 }}
+                    >
+                      <ChevronLeft sx={{ fontSize: 16 }} />
+                      {drillPrevTopic.topic}
+                    </button>
+                  )}
+                  {drillNextTopic && (
+                    <button
+                      type="button"
+                      className="btn btn-ghost"
+                      disabled={drillLoading}
+                      onClick={() => goAdjacentTopic(1)}
+                      style={{ fontSize: 12, padding: '4px 10px', marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 2 }}
+                    >
+                      {drillNextTopic.topic}
+                      <ChevronRight sx={{ fontSize: 16 }} />
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
 
-            <div style={{ padding: 16 }}>
+          <div
+            style={{
+              flex: 1,
+              minHeight: 0,
+              overflow: 'auto',
+              WebkitOverflowScrolling: 'touch',
+            }}
+          >
+            <div style={{ padding: 16, maxWidth: 900, margin: '0 auto', width: '100%' }}>
               {!drillLoading && !drillError && drillQuestions.length > 0 && (
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
                   {(
@@ -813,6 +1214,7 @@ const TopicPerformancePage: React.FC = () => {
           </div>
         </div>
       )}
+      </div>
     </DashboardLayout>
   );
 };
