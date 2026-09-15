@@ -50,6 +50,11 @@ function AppContent() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', mode);
+    document.body.style.backgroundColor = mode === 'light' ? '#ffffff' : '#09090f';
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) {
+      themeMeta.setAttribute('content', mode === 'light' ? '#ffffff' : '#09090f');
+    }
   }, [mode]);
 
   return (

@@ -921,25 +921,40 @@ export const Dashboard = () => {
           </div>
         ) : (
           <div className="table-scroll">
-            <div className="table-header" style={{ gridTemplateColumns: '1.6fr 100px 90px 1.2fr 100px' }}>
+            <div
+              className="table-header"
+              style={{
+                gridTemplateColumns: 'minmax(0, 1.15fr) auto 96px minmax(0, 1.2fr) 64px',
+                columnGap: 20,
+              }}
+            >
               <div className="th">Activity</div>
               <div className="th">Date</div>
-              <div className="th" style={{ textAlign: 'right' }}>Score</div>
-              <div className="th">Detail</div>
+              <div className="th" style={{ textAlign: isMocks ? 'right' : 'center' }}>Score</div>
+              <div className="th" style={{ paddingLeft: 8 }}>Detail</div>
               <div className="th" style={{ textAlign: 'center' }}>{isMocks ? 'View' : 'Analyze'}</div>
             </div>
             {displayActivity.map((item) => (
-              <div key={`${item.kind}-${item.id}`} className="table-row" style={{ gridTemplateColumns: '1.6fr 100px 90px 1.2fr 100px' }}>
+              <div
+                key={`${item.kind}-${item.id}`}
+                className="table-row"
+                style={{
+                  gridTemplateColumns: 'minmax(0, 1.15fr) auto 96px minmax(0, 1.2fr) 64px',
+                  columnGap: 20,
+                }}
+              >
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {item.kind === 'PYQ' ? displayActivityTitle(item.title, item.examName) : item.title}
                   </div>
                   <div style={{ fontSize: 11, color: 'var(--text3)' }}>{item.examName}</div>
                 </div>
-                <div style={{ fontSize: 13 }}>{new Date(item.date).toLocaleDateString()}</div>
+                <div style={{ fontSize: 13, whiteSpace: 'nowrap', paddingRight: 4 }}>
+                  {new Date(item.date).toLocaleDateString()}
+                </div>
                 {item.kind === 'PYQ' ? (
                   <>
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{ textAlign: 'center' }}>
                       <div style={{ fontSize: 13, fontWeight: 500, color: 'var(--accent2)' }}>
                         {item.score.toFixed(2)}
                       </div>
@@ -947,7 +962,7 @@ export const Dashboard = () => {
                         {item.correctCount}C / {item.incorrectCount}I / {item.unattemptedCount}U
                       </div>
                     </div>
-                    <div style={{ fontSize: 12, color: 'var(--text3)' }}>
+                    <div style={{ fontSize: 12, color: 'var(--text3)', paddingLeft: 8 }}>
                       {item.sections?.length > 0
                         ? item.sections.map((s) => `${s.sectionCode} ${s.score.toFixed(0)}`).join(' · ')
                         : '—'}
@@ -958,7 +973,7 @@ export const Dashboard = () => {
                     <div style={{ fontSize: 13, textAlign: 'right', fontWeight: 500, color: 'var(--accent2)' }}>
                       {item.score.toFixed(2)}
                     </div>
-                    <div style={{ fontSize: 12, color: 'var(--text2)' }}>
+                    <div style={{ fontSize: 12, color: 'var(--text2)', paddingLeft: 8 }}>
                       Cutoff {item.cutoffScore.toFixed(1)}
                       {item.probabilityScore != null ? ` · Prob ${item.probabilityScore}%` : ''}
                     </div>

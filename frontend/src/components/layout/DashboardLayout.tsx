@@ -14,7 +14,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', position: 'relative' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', position: 'relative', background: 'var(--bg)' }}>
       {isMobile && (
         <header
           style={{
