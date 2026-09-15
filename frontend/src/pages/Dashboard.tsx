@@ -20,6 +20,16 @@ import { papersApi, RecentPyqAttempt } from '../api/papers';
 import { GoalSettingDialog } from '../components/GoalSettingDialog';
 import { MockDetailDialog } from '../components/MockDetailDialog';
 import { DashboardSkeleton } from '../components/Shimmer';
+import {
+  buildPyqAdaptiveStrength,
+  buildPyqAttemptInsight,
+  buildPyqImprovement,
+  buildPyqInsights,
+  buildPyqOverview,
+  buildPyqTrend,
+} from '../utils/pyqDashboardStats';
+
+type DashboardView = 'mocks' | 'pyqs';
 
 type ActivityItem =
   | {
@@ -48,6 +58,7 @@ type ActivityItem =
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [selectedExamId, setSelectedExamId] = useState<string>('');
+  const [viewMode, setViewMode] = useState<DashboardView>('mocks');
   const [selectedMockId, setSelectedMockId] = useState<string | null>(null);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [mockDetailOpen, setMockDetailOpen] = useState(false);
@@ -99,79 +110,51 @@ export const Dashboard = () => {
   });
 
   const { data: recentPyq = [], isLoading: pyqLoading } = useQuery({
-    queryKey: ['pyq-recent-attempts', selectedExamId],
-    queryFn: () => papersApi.listRecentAttempts(selectedExamId || undefined, 10),
+    queryKey: ['pyq-recent-attempts', selectedExamId, 50],
+    queryFn: () => papersApi.listRecentAttempts(selectedExamId || undefined, 50),
     staleTime: 30000,
     enabled: !!selectedExamId,
   });
 
-  const recentActivity = useMemo<ActivityItem[]>(() => {
-    const mockItems: ActivityItem[] = (mocks?.content || [])
-      .filter((m) => !selectedExamId || m.examId === selectedExamId)
-      .map((m) => ({
-        kind: 'MOCK' as const,
-        id: m.id,
-        date: m.testDate,
-        title: m.testName || 'Mock test',
-        examName: m.examName,
-        score: m.totalScore,
-        cutoffScore: m.cutoffScore,
-        probabilityScore: m.probabilityScore,
-      }));
-
-    const pyqItems: ActivityItem[] = recentPyq.map((a) => ({
-      kind: 'PYQ' as const,
-      id: a.attemptId,
-      date: a.submittedAt || '',
-      title: a.paperTitle,
-      examName: a.examName,
-      score: a.totalScore,
-      correctCount: a.correctCount,
-      incorrectCount: a.incorrectCount,
-      unattemptedCount: a.unattemptedCount,
-      sections: a.sections || [],
-    }));
-
-    return [...mockItems, ...pyqItems]
-      .filter((item) => item.date)
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .slice(0, 12);
-  }, [mocks, recentPyq, selectedExamId]);
-
-  const latestPyq = recentPyq[0] ?? null;
+  const { data: pyqTopics, isLoading: pyqTopicsLoading } = useQuery({
+    queryKey: ['pyq-topic-performance', selectedExamId],
+    queryFn: () => papersApi.getTopicPerformance(selectedExamId || undefined),
+    staleTime: 60000,
+    enabled: !!selectedExamId && viewMode === 'pyqs',
+  });
 
   const { data: neglectData } = useQuery({
     queryKey: ['subject-neglect', selectedExamId],
     queryFn: () => analyticsApi.getSubjectNeglect(selectedExamId || undefined),
-    enabled: !!selectedExamId,
+    enabled: !!selectedExamId && viewMode === 'mocks',
     staleTime: 60000,
   });
 
   const { data: attemptInsight } = useQuery({
     queryKey: ['attempt-accuracy', selectedExamId],
     queryFn: () => analyticsApi.getAttemptAccuracyInsight(selectedExamId || undefined),
-    enabled: !!selectedExamId,
+    enabled: !!selectedExamId && viewMode === 'mocks',
     staleTime: 60000,
   });
 
   const { data: improvement } = useQuery({
     queryKey: ['improvement', selectedExamId],
     queryFn: () => analyticsApi.getImprovement(selectedExamId || undefined),
-    enabled: !!selectedExamId,
+    enabled: !!selectedExamId && viewMode === 'mocks',
     staleTime: 60000,
   });
 
   const { data: adaptiveStrength } = useQuery({
     queryKey: ['adaptive-strength', selectedExamId],
     queryFn: () => analyticsApi.getAdaptiveStrength(selectedExamId || undefined),
-    enabled: !!selectedExamId,
+    enabled: !!selectedExamId && viewMode === 'mocks',
     staleTime: 60000,
   });
 
   const { data: insightsData } = useQuery({
     queryKey: ['insights', selectedExamId],
     queryFn: () => analyticsApi.getInsights(selectedExamId || undefined),
-    enabled: !!selectedExamId,
+    enabled: !!selectedExamId && viewMode === 'mocks',
     staleTime: 60000,
   });
 
@@ -197,8 +180,68 @@ export const Dashboard = () => {
   }, []);
 
   const selectedExam = exams.find((e: Exam) => e.id === selectedExamId);
+  const activeGoal = goals.length > 0 ? goals[goals.length - 1] : null;
 
-  const trendData = useMemo(() => {
+  const mockActivity = useMemo<ActivityItem[]>(() => {
+    return (mocks?.content || [])
+      .filter((m) => !selectedExamId || m.examId === selectedExamId)
+      .map((m) => ({
+        kind: 'MOCK' as const,
+        id: m.id,
+        date: m.testDate,
+        title: m.testName || 'Mock test',
+        examName: m.examName,
+        score: m.totalScore,
+        cutoffScore: m.cutoffScore,
+        probabilityScore: m.probabilityScore,
+      }))
+      .filter((item) => item.date)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 12);
+  }, [mocks, selectedExamId]);
+
+  const pyqActivity = useMemo<ActivityItem[]>(() => {
+    return recentPyq
+      .map((a) => ({
+        kind: 'PYQ' as const,
+        id: a.attemptId,
+        date: a.submittedAt || '',
+        title: a.paperTitle,
+        examName: a.examName,
+        score: a.totalScore,
+        correctCount: a.correctCount,
+        incorrectCount: a.incorrectCount,
+        unattemptedCount: a.unattemptedCount,
+        sections: a.sections || [],
+      }))
+      .filter((item) => item.date)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 12);
+  }, [recentPyq]);
+
+  const latestPyq = recentPyq[0] ?? null;
+  const topicList = pyqTopics?.topics || [];
+
+  const pyqOverview = useMemo(
+    () =>
+      buildPyqOverview(recentPyq, topicList, {
+        maxMarks: selectedExam?.maxMarks,
+        goal: activeGoal
+          ? { targetScore: activeGoal.targetScore, targetDate: activeGoal.targetDate }
+          : null,
+      }),
+    [recentPyq, topicList, selectedExam, activeGoal]
+  );
+  const pyqTrendData = useMemo(() => buildPyqTrend(recentPyq), [recentPyq]);
+  const pyqImprovement = useMemo(() => buildPyqImprovement(recentPyq), [recentPyq]);
+  const pyqAttemptInsight = useMemo(() => buildPyqAttemptInsight(recentPyq), [recentPyq]);
+  const pyqAdaptive = useMemo(() => buildPyqAdaptiveStrength(topicList), [topicList]);
+  const pyqInsights = useMemo(
+    () => buildPyqInsights(pyqOverview, pyqImprovement),
+    [pyqOverview, pyqImprovement]
+  );
+
+  const mockTrendData = useMemo(() => {
     if (!trend?.trends) return [];
     return trend.trends.map(p => ({
       date: new Date(p.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }),
@@ -207,7 +250,7 @@ export const Dashboard = () => {
     }));
   }, [trend]);
 
-  const legacyInsights = useMemo(() => {
+  const mockLegacyInsights = useMemo(() => {
     if (!overview) return [];
     const list = [];
     if (overview.performanceChange > 3) {
@@ -223,9 +266,29 @@ export const Dashboard = () => {
     return list.slice(0, 2);
   }, [overview]);
 
-  const isLoading = overviewLoading || trendLoading || mocksLoading || pyqLoading;
+  const isMocks = viewMode === 'mocks';
+  const displayOverview = isMocks ? overview : pyqOverview;
+  const displayTrendData = isMocks ? mockTrendData : pyqTrendData;
+  const displayImprovement = isMocks ? improvement : pyqImprovement;
+  const displayAttemptInsight = isMocks ? attemptInsight : pyqAttemptInsight;
+  const displayAdaptive = isMocks ? adaptiveStrength : pyqAdaptive;
+  const displayInsights = isMocks ? insightsData : pyqInsights;
+  const displayActivity = isMocks ? mockActivity : pyqActivity;
+  const displayLegacyBanner = isMocks
+    ? mockLegacyInsights
+    : pyqInsights.insights
+        .filter((i) => i.type === 'SUCCESS' || i.type === 'WARNING')
+        .slice(0, 2)
+        .map((i) => ({
+          type: i.type === 'SUCCESS' ? ('success' as const) : ('warning' as const),
+          message: i.message,
+        }));
 
-  if (isLoading && !overview) {
+  const isLoading = isMocks
+    ? overviewLoading || trendLoading || mocksLoading
+    : pyqLoading || (viewMode === 'pyqs' && pyqTopicsLoading && !pyqTopics);
+
+  if (isLoading && (isMocks ? !overview : recentPyq.length === 0 && pyqLoading)) {
     return (
       <DashboardLayout>
         <DashboardSkeleton />
@@ -233,12 +296,21 @@ export const Dashboard = () => {
     );
   }
 
+  const consistencyLabel =
+    displayOverview?.consistencyScore === 'INSUFFICIENT_DATA'
+      ? 'Insufficient Data'
+      : displayOverview?.consistencyScore || 'Insufficient Data';
+
+  const goalProgress = isMocks ? overview?.goalProgress : pyqOverview.goalProgress;
+
   return (
     <DashboardLayout>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 className="page-title">Dashboard</h1>
-          <p style={{ fontSize: '13px', color: 'var(--text2)', marginTop: '4px' }}>Track your performance and progress</p>
+          <p style={{ fontSize: '13px', color: 'var(--text2)', marginTop: '4px' }}>
+            {isMocks ? 'Track mock performance and progress' : 'Track PYQ performance and progress'}
+          </p>
         </div>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
           {exams.length > 0 && (
@@ -253,26 +325,46 @@ export const Dashboard = () => {
               ))}
             </select>
           )}
-          <button className="btn" onClick={() => navigate('/pyq-tests')}>PYQ Tests</button>
-          <button className="btn btn-primary" onClick={() => navigate('/add-mock')}>+ Add Mock</button>
+          {isMocks ? (
+            <button className="btn btn-primary" onClick={() => navigate('/add-mock')}>+ Add Mock</button>
+          ) : (
+            <button className="btn btn-primary" onClick={() => navigate('/pyq-tests')}>PYQ Tests</button>
+          )}
         </div>
       </div>
 
-      {legacyInsights.length > 0 && (
-        <div className={`insight-banner ${legacyInsights[0].type === 'success' ? 'insight-banner-green' : 'insight-banner-red'}`} style={{ marginBottom: '24px' }}>
+      <div className="tabs" style={{ marginBottom: 24 }}>
+        <button
+          type="button"
+          className={`tab ${isMocks ? 'active' : ''}`}
+          onClick={() => setViewMode('mocks')}
+        >
+          Mocks
+        </button>
+        <button
+          type="button"
+          className={`tab ${!isMocks ? 'active' : ''}`}
+          onClick={() => setViewMode('pyqs')}
+        >
+          PYQs
+        </button>
+      </div>
+
+      {displayLegacyBanner.length > 0 && (
+        <div className={`insight-banner ${displayLegacyBanner[0].type === 'success' ? 'insight-banner-green' : 'insight-banner-red'}`} style={{ marginBottom: '24px' }}>
           <div style={{
             width: '36px', height: '36px', borderRadius: '50%',
-            background: legacyInsights[0].type === 'success' ? 'rgba(34,211,160,0.15)' : 'rgba(244,63,94,0.15)',
+            background: displayLegacyBanner[0].type === 'success' ? 'rgba(34,211,160,0.15)' : 'rgba(244,63,94,0.15)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px',
           }}>
-            {legacyInsights[0].type === 'success' ? '✓' : '⚠'}
+            {displayLegacyBanner[0].type === 'success' ? '✓' : '⚠'}
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '14px', color: legacyInsights[0].type === 'success' ? 'var(--green)' : 'var(--red)', fontWeight: 500 }}>
-              {legacyInsights[0].message}
+            <div style={{ fontSize: '14px', color: displayLegacyBanner[0].type === 'success' ? 'var(--green)' : 'var(--red)', fontWeight: 500 }}>
+              {displayLegacyBanner[0].message}
             </div>
-            {legacyInsights[1] && (
-              <div style={{ fontSize: '12px', color: 'var(--text3)', marginTop: '2px' }}>{legacyInsights[1].message}</div>
+            {displayLegacyBanner[1] && (
+              <div style={{ fontSize: '12px', color: 'var(--text3)', marginTop: '2px' }}>{displayLegacyBanner[1].message}</div>
             )}
           </div>
         </div>
@@ -282,20 +374,33 @@ export const Dashboard = () => {
         <div className="card stagger-1">
           <div className="stat-label">Average Score</div>
           <div className="stat-value" style={{ color: 'var(--accent2)' }}>
-            {overview?.averageScore ? overview.averageScore.toFixed(2) : <span className="badge badge-amber">No data</span>}
+            {displayOverview && displayOverview.averageScore > 0 ? (
+              displayOverview.averageScore.toFixed(2)
+            ) : (
+              <span className="badge badge-amber">No data</span>
+            )}
           </div>
           {selectedExam && <div style={{ fontSize: '11px', color: 'var(--text3)', marginTop: '4px' }}>Max: {selectedExam.maxMarks}</div>}
         </div>
 
         <div className="card stagger-2">
           <div className="stat-label">Moving Average (last 3)</div>
-          <div className="stat-value">{overview?.movingAverage?.toFixed(2) || '0.00'}</div>
+          <div className="stat-value">{displayOverview?.movingAverage?.toFixed(2) || '0.00'}</div>
         </div>
 
         <div className="card stagger-3">
-          <div className="stat-label">Probability</div>
-          <div className="stat-value">{overview?.probability || 0}%</div>
-          {overview?.probability === 0 && <span className="badge badge-red" style={{ marginTop: '8px' }}>Insufficient data</span>}
+          <div className="stat-label">{isMocks ? 'Probability' : 'Accuracy'}</div>
+          <div className="stat-value">
+            {isMocks
+              ? `${overview?.probability || 0}%`
+              : `${(pyqOverview.accuracyPercent || 0).toFixed(1)}%`}
+          </div>
+          {isMocks && overview?.probability === 0 && (
+            <span className="badge badge-red" style={{ marginTop: '8px' }}>Insufficient data</span>
+          )}
+          {!isMocks && pyqOverview.attemptCount === 0 && (
+            <span className="badge badge-amber" style={{ marginTop: '8px' }}>No PYQs yet</span>
+          )}
         </div>
 
         <div className="card stagger-4">
@@ -305,49 +410,41 @@ export const Dashboard = () => {
               <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(244,63,94,0.15)" strokeWidth="6" />
               <circle cx="30" cy="30" r="24" fill="none" stroke="var(--red)" strokeWidth="6"
                 strokeDasharray="150.8"
-                strokeDashoffset={overview?.riskLevel === 'HIGH' ? '37.7' : overview?.riskLevel === 'MEDIUM' ? '75.4' : '113.1'}
+                strokeDashoffset={displayOverview?.riskLevel === 'HIGH' ? '37.7' : displayOverview?.riskLevel === 'MEDIUM' ? '75.4' : '113.1'}
                 transform="rotate(-90 30 30)"
                 style={{ transition: 'stroke-dashoffset 1s ease' }}
               />
             </svg>
-            <span className={`badge ${overview?.riskLevel === 'LOW' ? 'badge-green' : overview?.riskLevel === 'MEDIUM' ? 'badge-amber' : 'badge-red'}`}>
-              {overview?.riskLevel || 'HIGH'} RISK
+            <span className={`badge ${displayOverview?.riskLevel === 'LOW' ? 'badge-green' : displayOverview?.riskLevel === 'MEDIUM' ? 'badge-amber' : 'badge-red'}`}>
+              {displayOverview?.riskLevel || 'HIGH'} RISK
             </span>
           </div>
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '16px', marginBottom: '24px' }}>
-        {/* Performance Stability */}
         <div className="card">
           <div className="stat-label">Performance Stability</div>
-          <span className="badge badge-amber">{overview?.consistencyScore || 'Insufficient Data'}</span>
+          <span className="badge badge-amber">{consistencyLabel}</span>
         </div>
 
-        {/* Improvement Trend */}
-        {improvement && (
-          <ImprovementCard improvement={improvement} />
-        )}
-
-        {/* Attempt vs Accuracy Insight */}
-        {attemptInsight && (
-          <AttemptAccuracyCard insight={attemptInsight} />
-        )}
+        {displayImprovement && <ImprovementCard improvement={displayImprovement} />}
+        {displayAttemptInsight && <AttemptAccuracyCard insight={displayAttemptInsight} />}
       </div>
 
-      {insightsData && insightsData.insights.length > 0 && (
-        <InsightsCard insights={insightsData} />
+      {displayInsights && displayInsights.insights.length > 0 && (
+        <InsightsCard insights={displayInsights} />
       )}
 
-      {neglectedSubjects.length > 0 && (
+      {isMocks && neglectedSubjects.length > 0 && (
         <NeglectCard subjects={neglectedSubjects} windowSize={neglectData?.windowSize ?? 5} />
       )}
 
-      {adaptiveStrength && adaptiveStrength.subjects.length > 0 && (
-        <AdaptiveStrengthCard adaptiveStrength={adaptiveStrength} />
+      {displayAdaptive && displayAdaptive.subjects.length > 0 && (
+        <AdaptiveStrengthCard adaptiveStrength={displayAdaptive} />
       )}
 
-      {!overview?.goalProgress ? (
+      {!goalProgress ? (
         <div className="card card-accent" style={{
           background: 'linear-gradient(135deg, rgba(124,106,255,0.12), rgba(124,106,255,0.04))',
           border: '1px solid rgba(124,106,255,0.25)', marginBottom: '24px',
@@ -366,12 +463,11 @@ export const Dashboard = () => {
           border: '1px solid rgba(124,106,255,0.25)', marginBottom: '24px',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <div className="stat-label">Goal Progress</div>
+            <div className="stat-label">Goal Progress {isMocks ? '' : '(vs PYQ avg)'}</div>
             <button 
               className="btn btn-ghost" 
               style={{ padding: '4px 12px', fontSize: '12px' }}
               onClick={() => {
-                const activeGoal = goals.length > 0 ? goals[goals.length - 1] : null;
                 if (activeGoal) {
                   setEditingGoal(activeGoal);
                   setGoalDialogOpen(true);
@@ -383,44 +479,45 @@ export const Dashboard = () => {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span style={{ fontSize: '13px', color: 'var(--text2)' }}>
-              {overview.goalProgress.goalProgressPercent.toFixed(1)}% toward {overview.goalProgress.targetScore.toFixed(2)}
+              {goalProgress.goalProgressPercent.toFixed(1)}% toward {goalProgress.targetScore.toFixed(2)}
             </span>
-            <span className={`badge ${overview.goalProgress.onTrack ? 'badge-green' : 'badge-amber'}`}>
-              {overview.goalProgress.onTrack ? 'On Track' : 'Needs Focus'}
+            <span className={`badge ${goalProgress.onTrack ? 'badge-green' : 'badge-amber'}`}>
+              {goalProgress.onTrack ? 'On Track' : 'Needs Focus'}
             </span>
           </div>
           <div className="progress-track">
-            <div className="progress-fill" style={{ width: `${Math.min(overview.goalProgress.goalProgressPercent, 100)}%` }} />
+            <div className="progress-fill" style={{ width: `${Math.min(goalProgress.goalProgressPercent, 100)}%` }} />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px' }}>
             <div>
               <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Current Score</div>
-              <div style={{ fontSize: '18px', fontWeight: 700 }}>{overview.goalProgress.currentScore.toFixed(2)}</div>
+              <div style={{ fontSize: '18px', fontWeight: 700 }}>{goalProgress.currentScore.toFixed(2)}</div>
             </div>
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Days Remaining</div>
-              <div style={{ fontSize: '18px', fontWeight: 700 }}>{overview.goalProgress.daysRemaining}</div>
+              <div style={{ fontSize: '18px', fontWeight: 700 }}>{goalProgress.daysRemaining}</div>
             </div>
           </div>
         </div>
       )}
 
       <div className="stack-md" style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '16px', marginBottom: '24px' }}>
-        {/* Performance Trend Chart */}
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h3 className="section-title">Performance Trend</h3>
+            <h3 className="section-title">{isMocks ? 'Performance Trend' : 'PYQ Performance Trend'}</h3>
             {selectedExam && <span style={{ fontSize: '12px', color: 'var(--text3)' }}>{selectedExam.name}</span>}
           </div>
-          {trendData.length === 0 ? (
+          {displayTrendData.length === 0 ? (
             <div className="empty-state">
               <div className="empty-icon">📊</div>
               <div className="empty-title">No trend data yet</div>
-              <div className="empty-sub">Add mock tests to see your trend</div>
+              <div className="empty-sub">
+                {isMocks ? 'Add mock tests to see your trend' : 'Take PYQ papers to see your trend'}
+              </div>
             </div>
           ) : (
             <ResponsiveContainer width="100%" height={240}>
-              <LineChart data={trendData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
+              <LineChart data={displayTrendData} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis dataKey="date" tick={{ fontSize: 11, fill: 'var(--text3)' }} />
                 <YAxis tick={{ fontSize: 11, fill: 'var(--text3)' }} />
@@ -428,27 +525,25 @@ export const Dashboard = () => {
                   contentStyle={{ background: 'var(--surface2)', border: '1px solid var(--border)', borderRadius: '8px', fontSize: '12px' }}
                   labelStyle={{ color: 'var(--text)' }}
                 />
-                {overview?.movingAverage && (
+                {isMocks && overview?.movingAverage && (
                   <ReferenceLine y={mocks?.content?.[0]?.cutoffScore} stroke="var(--red)" strokeDasharray="4 4" label={{ value: 'Cutoff', fill: 'var(--red)', fontSize: 10 }} />
                 )}
                 <Line type="monotone" dataKey="score" stroke="var(--accent2)" strokeWidth={2} dot={{ r: 3, fill: 'var(--accent2)' }} name="Score" />
-                <Line type="monotone" dataKey="avg" stroke="var(--green)" strokeWidth={2} strokeDasharray="5 5" dot={false} name="3-Mock Avg" />
+                <Line type="monotone" dataKey="avg" stroke="var(--green)" strokeWidth={2} strokeDasharray="5 5" dot={false} name={isMocks ? '3-Mock Avg' : '3-PYQ Avg'} />
               </LineChart>
             </ResponsiveContainer>
           )}
         </div>
 
-        {/* Right Column */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {/* Weak Subjects */}
           <div className="card">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
               <span className="badge badge-red">Weak Subjects</span>
               <span style={{ fontSize: '11px', color: 'var(--text3)' }}>&lt;80% accuracy</span>
             </div>
-            {overview?.weakSubjects && overview.weakSubjects.length > 0 ? (
+            {displayOverview?.weakSubjects && displayOverview.weakSubjects.length > 0 ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {overview.weakSubjects.map((subject) => (
+                {displayOverview.weakSubjects.map((subject) => (
                   <div key={subject.subjectName} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span style={{ fontSize: '13px', color: 'var(--text)' }}>{subject.subjectName}</span>
                     <span className={`badge ${subject.accuracy < 60 ? 'badge-red' : 'badge-amber'}`}>
@@ -461,41 +556,56 @@ export const Dashboard = () => {
               <div style={{ padding: '16px', background: 'rgba(34,211,160,0.08)', border: '1px solid rgba(34,211,160,0.2)', borderRadius: '8px', textAlign: 'center' }}>
                 <div style={{ fontSize: '24px', marginBottom: '4px' }}>✓</div>
                 <div style={{ fontSize: '12px', color: 'var(--green)' }}>
-                  {overview?.averageScore ? 'All subjects above 80%!' : 'Add mocks to see subject data'}
+                  {displayOverview && displayOverview.averageScore > 0
+                    ? 'All subjects above 80%!'
+                    : isMocks
+                      ? 'Add mocks to see subject data'
+                      : 'Take PYQs to see subject data'}
                 </div>
               </div>
             )}
           </div>
 
-          {/* Quick Actions */}
           <div className="card">
             <h3 className="section-title" style={{ marginBottom: '12px' }}>Quick Actions</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/pyq-tests')}>
-                ⏱️ Practice PYQ
-              </button>
-              <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/topic-performance')}>
-                🎯 Topic Performance
-              </button>
-              <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/subject-analytics')}>
-                📊 Subject Analytics
-              </button>
-              <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/add-mock')}>
-                ➕ Log a Mock
-              </button>
-              <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/performance-history')}>
-                📋 Mock History
-              </button>
-              <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }}
-                onClick={() => downloadReportMutation.mutate()} disabled={downloadReportMutation.isPending}>
-                📥 Download Report
-              </button>
+              {isMocks ? (
+                <>
+                  <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/add-mock')}>
+                    ➕ Log a Mock
+                  </button>
+                  <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/performance-history')}>
+                    📋 Mock History
+                  </button>
+                  <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/subject-analytics')}>
+                    📊 Subject Analytics
+                  </button>
+                  <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }}
+                    onClick={() => downloadReportMutation.mutate()} disabled={downloadReportMutation.isPending}>
+                    📥 Download Report
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/pyq-tests')}>
+                    ⏱️ Practice PYQ
+                  </button>
+                  <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate('/topic-performance')}>
+                    🎯 Topic Performance
+                  </button>
+                  {latestPyq && (
+                    <button className="btn btn-ghost" style={{ width: '100%', justifyContent: 'flex-start' }} onClick={() => navigate(`/pyq-analyze/${latestPyq.attemptId}`)}>
+                      🔎 Analyze Latest PYQ
+                    </button>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {latestPyq && (
+      {!isMocks && latestPyq && (
         <div className="card" style={{ marginBottom: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 14 }}>
             <div>
@@ -541,24 +651,35 @@ export const Dashboard = () => {
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div style={{ padding: '22px 24px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
           <div>
-            <h3 className="section-title" style={{ marginBottom: 4 }}>Recent activity</h3>
+            <h3 className="section-title" style={{ marginBottom: 4 }}>
+              {isMocks ? 'Recent mocks' : 'Recent PYQs'}
+            </h3>
             <p style={{ margin: 0, fontSize: 12, color: 'var(--text3)' }}>
-              PYQ attempts and logged mocks · sources kept separate
+              {isMocks ? 'Logged external mock tests' : 'In-app previous year paper attempts'}
             </p>
           </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <button className="btn btn-ghost" style={{ fontSize: 12 }} onClick={() => navigate('/pyq-tests')}>PYQ Tests</button>
-            <button className="btn btn-ghost" style={{ fontSize: 12 }} onClick={() => navigate('/add-mock')}>Log Mock</button>
-          </div>
+          <button
+            className="btn btn-ghost"
+            style={{ fontSize: 12 }}
+            onClick={() => navigate(isMocks ? '/add-mock' : '/pyq-tests')}
+          >
+            {isMocks ? 'Log Mock' : 'PYQ Tests'}
+          </button>
         </div>
-        {recentActivity.length === 0 ? (
+        {displayActivity.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">📝</div>
-            <div className="empty-title">No activity yet</div>
-            <div className="empty-sub">Take a PYQ paper or log an external mock to start tracking</div>
+            <div className="empty-title">{isMocks ? 'No mocks yet' : 'No PYQs yet'}</div>
+            <div className="empty-sub">
+              {isMocks ? 'Log an external mock to start tracking' : 'Take a PYQ paper to start tracking'}
+            </div>
             <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 16, flexWrap: 'wrap' }}>
-              <button className="btn btn-primary" onClick={() => navigate('/pyq-tests')}>Start PYQ</button>
-              <button className="btn" onClick={() => navigate('/add-mock')}>+ Add Mock</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate(isMocks ? '/add-mock' : '/pyq-tests')}
+              >
+                {isMocks ? '+ Add Mock' : 'Start PYQ'}
+              </button>
             </div>
           </div>
         ) : (
@@ -571,7 +692,7 @@ export const Dashboard = () => {
               <div className="th">Detail</div>
               <div className="th" style={{ textAlign: 'center' }}>Actions</div>
             </div>
-            {recentActivity.map((item) => (
+            {displayActivity.map((item) => (
               <div key={`${item.kind}-${item.id}`} className="table-row" style={{ gridTemplateColumns: '90px 1.4fr 100px 100px 1fr 110px' }}>
                 <div>
                   <span className={`badge ${item.kind === 'PYQ' ? 'badge-amber' : 'badge-green'}`}>
