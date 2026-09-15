@@ -1209,7 +1209,7 @@ export const TakeTest = () => {
           border-radius: 3px;
           padding: 8px 14px;
           font-size: 13px;
-          font-weight: 600;
+          font-weight: 500;
           cursor: pointer;
           line-height: 1.2;
         }
@@ -1238,7 +1238,7 @@ export const TakeTest = () => {
           flex-wrap: wrap;
         }
         .tt-topbar-title {
-          font-weight: 700;
+          font-weight: 500;
           font-size: 15px;
         }
         .tt-topbar-actions {
@@ -1293,7 +1293,7 @@ export const TakeTest = () => {
           background: #fff;
           color: var(--tt-blue);
           font-size: 12px;
-          font-weight: 600;
+          font-weight: 500;
           cursor: pointer;
           white-space: nowrap;
           margin-right: 2px;
@@ -1334,7 +1334,7 @@ export const TakeTest = () => {
           background: #e3f2fd;
           border-bottom: 1px solid #bbdefb;
           font-size: 13px;
-          font-weight: 600;
+          font-weight: 500;
         }
         .tt-timebar-clock {
           font-variant-numeric: tabular-nums;
@@ -1373,7 +1373,7 @@ export const TakeTest = () => {
         }
         .tt-passage-intro {
           margin: 0 0 14px;
-          font-weight: 700;
+          font-weight: 500;
           font-size: 13px;
         }
         .tt-passage-text { overflow-wrap: anywhere; }
@@ -1399,7 +1399,7 @@ export const TakeTest = () => {
           border-bottom: 1px solid #eee;
           padding-bottom: 8px;
         }
-        .tt-q-title { font-weight: 700; font-size: 14px; }
+        .tt-q-title { font-weight: 500; font-size: 14px; }
         .tt-q-marks { font-size: 12px; color: var(--tt-muted); }
         .tt-stem {
           font-size: 14px;
@@ -1436,7 +1436,7 @@ export const TakeTest = () => {
         .tt-marked-flag {
           margin-top: 14px;
           font-size: 12px;
-          font-weight: 700;
+          font-weight: 500;
           color: #5e35b1;
         }
         .tt-footer {
@@ -1478,7 +1478,7 @@ export const TakeTest = () => {
           place-items: center;
           color: #546e7a;
         }
-        .tt-candidate-name { font-weight: 700; font-size: 13px; }
+        .tt-candidate-name { font-weight: 500; font-size: 13px; }
         .tt-legend {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -1495,7 +1495,7 @@ export const TakeTest = () => {
         .tt-legend-wide { grid-column: 1 / -1; }
         .tt-palette-heading {
           font-size: 12px;
-          font-weight: 700;
+          font-weight: 500;
           margin-bottom: 8px;
           color: #37474f;
         }
@@ -1511,7 +1511,7 @@ export const TakeTest = () => {
           border: none;
           color: #fff;
           font-size: 12px;
-          font-weight: 700;
+          font-weight: 500;
           cursor: pointer;
           display: grid;
           place-items: center;
@@ -1580,7 +1580,7 @@ export const TakeTest = () => {
           padding-bottom: 12px;
           border-bottom: 1px solid #eee;
         }
-        .tt-paper-qno { font-weight: 700; font-size: 13px; }
+        .tt-paper-qno { font-weight: 500; font-size: 13px; }
 
         @media (max-width: 1100px) {
           .tt-main-split { grid-template-columns: 1fr; }

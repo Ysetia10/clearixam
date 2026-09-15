@@ -67,7 +67,7 @@ function QuestionCard({ q }: { q: QuestionReview }) {
         }}
       >
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontWeight: 700, marginBottom: 4 }}>
+          <div style={{ fontWeight: 500, marginBottom: 4 }}>
             Q{q.qNo} · {q.sectionCode}
             {q.topic ? ` · ${q.topic}` : ''} · {q.type}
           </div>
@@ -88,7 +88,7 @@ function QuestionCard({ q }: { q: QuestionReview }) {
           )}
         </div>
         <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{ fontWeight: 700, color: statusColor(q.status), fontSize: 13 }}>
+          <div style={{ fontWeight: 500, color: statusColor(q.status), fontSize: 13 }}>
             {statusLabel(q.status)}
           </div>
           <div
@@ -140,10 +140,10 @@ function QuestionCard({ q }: { q: QuestionReview }) {
                   >
                     {renderOptionLabel(key, text)}
                     {isCorrect && (
-                      <span style={{ marginLeft: 8, color: 'var(--green)', fontWeight: 600 }}>Correct</span>
+                      <span style={{ marginLeft: 8, color: 'var(--green)', fontWeight: 500 }}>Correct</span>
                     )}
                     {isYours && !isCorrect && (
-                      <span style={{ marginLeft: 8, color: 'var(--red)', fontWeight: 600 }}>Your answer</span>
+                      <span style={{ marginLeft: 8, color: 'var(--red)', fontWeight: 500 }}>Your answer</span>
                     )}
                   </div>
                 );
@@ -278,7 +278,7 @@ export const PyqAnalyze = () => {
         ].map((card) => (
           <div key={card.label} className="card" style={{ padding: 16 }}>
             <div style={{ fontSize: 12, color: 'var(--text3)' }}>{card.label}</div>
-            <div style={{ fontSize: 28, fontWeight: 800, marginTop: 4 }}>{card.value}</div>
+            <div style={{ fontSize: 28, fontWeight: 500, marginTop: 4 }}>{card.value}</div>
           </div>
         ))}
       </div>
@@ -296,7 +296,7 @@ export const PyqAnalyze = () => {
                 borderColor: filter === f.key ? 'var(--accent)' : undefined,
                 background:
                   filter === f.key ? 'color-mix(in srgb, var(--accent) 15%, transparent)' : undefined,
-                fontWeight: filter === f.key ? 700 : 500,
+                fontWeight: filter === f.key ? 500 : 500,
               }}
             >
               {f.label} ({f.count})
@@ -333,7 +333,7 @@ export const PyqAnalyze = () => {
               }}
             >
               <div>
-                <div style={{ fontWeight: 700 }}>{section.sectionCode}</div>
+                <div style={{ fontWeight: 500 }}>{section.sectionCode}</div>
                 <div style={{ fontSize: 12, color: 'var(--text3)' }}>{section.section}</div>
               </div>
               <div style={{ fontSize: 13, color: 'var(--text2)' }}>
@@ -359,7 +359,7 @@ export const PyqAnalyze = () => {
                           style={{
                             padding: '10px 16px',
                             color: 'var(--text3)',
-                            fontWeight: 600,
+                            fontWeight: 500,
                           }}
                         >
                           {h}
@@ -371,7 +371,7 @@ export const PyqAnalyze = () => {
                 <tbody>
                   {section.topics.map((topic) => (
                     <tr key={topic.topic} style={{ borderBottom: '1px solid var(--border)' }}>
-                      <td style={{ padding: '10px 16px', fontWeight: 600 }}>{topic.topic}</td>
+                      <td style={{ padding: '10px 16px', fontWeight: 500 }}>{topic.topic}</td>
                       <td style={{ padding: '10px 16px' }}>
                         {topic.attempted}/{topic.total}
                       </td>
@@ -381,7 +381,7 @@ export const PyqAnalyze = () => {
                       <td style={{ padding: '10px 16px', color: 'var(--text2)' }}>
                         {formatDuration(topic.avgSecondsSpent) ?? '—'}
                       </td>
-                      <td style={{ padding: '10px 16px', fontWeight: 700 }}>
+                      <td style={{ padding: '10px 16px', fontWeight: 500 }}>
                         {topic.score.toFixed(1)}
                       </td>
                     </tr>

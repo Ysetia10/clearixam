@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
+import { CancelOutlined, Check, CheckCircleOutline, SkipNextOutlined } from '@mui/icons-material';
 import { MCQResult as MCQResultType, setOutcome } from '../api/mcq';
+
+const OUTCOME_ICONS = {
+  CORRECT: CheckCircleOutline,
+  INCORRECT: CancelOutlined,
+  UNATTEMPTED: SkipNextOutlined,
+} as const;
 
 interface MCQResultProps {
   result: MCQResultType;
@@ -57,7 +64,7 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
     borderRadius: '8px',
     cursor: settingOutcome ? 'not-allowed' : 'pointer',
     fontSize: '14px',
-    fontWeight: '600',
+    fontWeight: '500',
     transition: 'all 0.2s ease',
     opacity: settingOutcome ? 0.6 : 1,
     minWidth: '120px',
@@ -80,21 +87,21 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
     }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '700', color: 'var(--text)' }}>
+        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '500', color: 'var(--text)' }}>
           Classification Result
         </h3>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <span style={{
             backgroundColor: getSourceBadgeColor(result.source),
             color: 'var(--on-color)',
-            padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: '600'
+            padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: '500'
           }}>
             {result.source}
           </span>
           <span style={{
             backgroundColor: confidenceBadge.color,
             color: 'var(--on-color)',
-            padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: '600'
+            padding: '4px 12px', borderRadius: '20px', fontSize: '12px', fontWeight: '500'
           }}>
             {confidenceBadge.label}
           </span>
@@ -145,7 +152,7 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
             border: '1px solid var(--border)',
           }}>
             <label className="input-label" style={{ marginBottom: '6px' }}>{label}</label>
-            <div style={{ fontSize: '16px', fontWeight: '700', color }}>{value}</div>
+            <div style={{ fontSize: '16px', fontWeight: '500', color }}>{value}</div>
           </div>
         ))}
       </div>
@@ -183,36 +190,40 @@ const MCQResult: React.FC<MCQResultProps> = ({ result, onEdit, onConfirm, onOutc
         }}>
           <label className="input-label" style={{ marginBottom: '12px' }}>Mark Your Performance</label>
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            {(['CORRECT', 'INCORRECT', 'UNATTEMPTED'] as const).map((o) => (
-              <button key={o} onClick={() => handleOutcomeClick(o)} disabled={settingOutcome}
-                style={getOutcomeButtonStyle(o, selectedOutcome === o)}>
-                <span>{o === 'CORRECT' ? '✅' : o === 'INCORRECT' ? '❌' : '⏭️'}</span>
+            {(['CORRECT', 'INCORRECT', 'UNATTEMPTED'] as const).map((o) => {
+              const Icon = OUTCOME_ICONS[o];
+              return (
+              <button key={o} type="button" onClick={() => handleOutcomeClick(o)} disabled={settingOutcome}
+                style={{ ...getOutcomeButtonStyle(o, selectedOutcome === o), display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <Icon sx={{ fontSize: 18 }} />
                 {o === 'CORRECT' ? 'Correct' : o === 'INCORRECT' ? 'Incorrect' : 'Skipped'}
               </button>
-            ))}
+            );})}
           </div>
           {selectedOutcome && (
-            <div style={{ marginTop: '10px', fontSize: '13px', color: 'var(--green)', fontWeight: '600' }}>
-              ✓ Marked as: {selectedOutcome.toLowerCase()}
+            <div style={{ marginTop: '10px', fontSize: '13px', color: 'var(--green)', fontWeight: '500', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Check sx={{ fontSize: 16 }} />
+              Marked as: {selectedOutcome.toLowerCase()}
             </div>
           )}
         </div>
       )}
       {result.presetOutcome && (
-        <div style={{ marginBottom: '20px', fontSize: '13px', color: 'var(--green)', fontWeight: '600' }}>
-          ✓ Outcome already set: {result.presetOutcome.toLowerCase()}
+        <div style={{ marginBottom: '20px', fontSize: '13px', color: 'var(--green)', fontWeight: '500', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Check sx={{ fontSize: 16 }} />
+          Outcome already set: {result.presetOutcome.toLowerCase()}
         </div>
       )}
 
       {/* Action Buttons */}
       <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
         <button onClick={onEdit} className="btn" style={{
-          backgroundColor: 'var(--amber)', color: 'var(--bg)', border: 'none', fontWeight: '600',
+          backgroundColor: 'var(--amber)', color: 'var(--bg)', border: 'none', fontWeight: '500',
         }}>
           ✏️ Edit Classification
         </button>
         <button onClick={onConfirm} className="btn" style={{
-          backgroundColor: 'var(--green)', color: 'var(--on-color)', border: 'none', fontWeight: '600',
+          backgroundColor: 'var(--green)', color: 'var(--on-color)', border: 'none', fontWeight: '500',
         }}>
           ✓ Confirm & Continue
         </button>

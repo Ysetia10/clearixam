@@ -364,13 +364,13 @@ const TopicPerformancePage: React.FC = () => {
                 padding: '20px 18px',
               }}
             >
-              <div style={{ fontSize: 32, fontWeight: 700, color: card.color, lineHeight: 1 }}>
+              <div style={{ fontSize: 32, fontWeight: 500, color: card.color, lineHeight: 1 }}>
                 {card.value}
               </div>
               <div
                 style={{
                   fontSize: 11,
-                  fontWeight: 700,
+                  fontWeight: 500,
                   letterSpacing: '1px',
                   textTransform: 'uppercase',
                   color: card.color,
@@ -439,9 +439,9 @@ const TopicPerformancePage: React.FC = () => {
                   >
                     ▾
                   </span>
-                  <span style={{ fontSize: 17, fontWeight: 600, color: 'var(--text)' }}>{subject}</span>
+                  <span style={{ fontSize: 17, fontWeight: 500, color: 'var(--text)' }}>{subject}</span>
                 </div>
-                <span style={{ fontSize: 20, fontWeight: 700, color: perf.color }}>
+                <span style={{ fontSize: 20, fontWeight: 500, color: perf.color }}>
                   {d.overallAccuracy.toFixed(0)}%
                 </span>
               </div>
@@ -484,7 +484,7 @@ const TopicPerformancePage: React.FC = () => {
                     style={{
                       padding: '14px 22px 6px',
                       fontSize: 12,
-                      fontWeight: 600,
+                      fontWeight: 500,
                       letterSpacing: '0.5px',
                       color: 'var(--text3)',
                     }}
@@ -526,7 +526,7 @@ const TopicPerformancePage: React.FC = () => {
                           }}
                         >
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', minWidth: 0 }}>
-                            <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)' }}>
+                            <span style={{ fontSize: 15, fontWeight: 500, color: 'var(--text)' }}>
                               {item.topic}
                             </span>
                             {highSkip && (
@@ -538,7 +538,7 @@ const TopicPerformancePage: React.FC = () => {
                               <span
                                 style={{
                                   fontSize: 11,
-                                  fontWeight: 600,
+                                  fontWeight: 500,
                                   color: speed.color,
                                   background: speed.bg,
                                   padding: '2px 7px',
@@ -549,7 +549,7 @@ const TopicPerformancePage: React.FC = () => {
                               </span>
                             )}
                           </div>
-                          <span style={{ fontSize: 16, fontWeight: 700, color: tp.color, flexShrink: 0 }}>
+                          <span style={{ fontSize: 16, fontWeight: 500, color: tp.color, flexShrink: 0 }}>
                             {item.accuracy.toFixed(1)}%
                           </span>
                         </div>
@@ -666,7 +666,7 @@ const TopicPerformancePage: React.FC = () => {
               }}
             >
               <div style={{ minWidth: 0 }}>
-                <div style={{ fontWeight: 700, fontSize: 16 }}>{drillTopic.topic}</div>
+                <div style={{ fontWeight: 500, fontSize: 16 }}>{drillTopic.topic}</div>
                 <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>
                   {drillTopic.subject} · {drillTopic.correct}C / {drillTopic.incorrect}W /{' '}
                   {drillTopic.unattempted}S · {drillTopic.accuracy.toFixed(1)}%
@@ -706,7 +706,7 @@ const TopicPerformancePage: React.FC = () => {
                           drillFilter === f.key
                             ? 'color-mix(in srgb, var(--accent) 15%, transparent)'
                             : undefined,
-                        fontWeight: drillFilter === f.key ? 700 : 500,
+                        fontWeight: drillFilter === f.key ? 500 : 500,
                         fontSize: 13,
                         minHeight: 36,
                       }}
@@ -754,7 +754,7 @@ const TopicPerformancePage: React.FC = () => {
                       <span>
                         Q{q.qNo} · {q.paperTitle}
                       </span>
-                      <span style={{ color: statusColor(q.status), fontWeight: 700 }}>
+                      <span style={{ color: statusColor(q.status), fontWeight: 500 }}>
                         {statusLabel(q.status)} · {q.scoreDelta > 0 ? '+' : ''}
                         {q.scoreDelta.toFixed(1)}
                         {q.secondsSpent != null ? ` · ${formatDuration(q.secondsSpent)}` : ''}

@@ -56,7 +56,7 @@ const RecentCorrections: React.FC = () => {
   return (
     <div className="card">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-        <span style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text)' }}>Recent Corrections</span>
+        <span style={{ fontSize: '15px', fontWeight: '500', color: 'var(--text)' }}>Recent Corrections</span>
         <button onClick={loadCorrections} className="btn btn-ghost" style={{ fontSize: '12px', padding: '4px 10px' }}>
           ↻ Refresh
         </button>

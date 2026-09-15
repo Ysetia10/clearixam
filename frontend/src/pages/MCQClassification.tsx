@@ -107,7 +107,7 @@ const MCQClassification: React.FC = () => {
                 padding: '12px 16px', marginBottom: '16px',
                 background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: '10px',
               }}>
-                <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text)' }}>
+                <div style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text)' }}>
                   Reviewing {bulkIndex + 1} of {bulkQueue.length}
                 </div>
                 <div style={{ display: 'flex', gap: '4px' }}>
@@ -159,7 +159,7 @@ const MCQClassification: React.FC = () => {
 
             {/* How to use */}
             <div className="card" style={{ marginTop: '16px' }}>
-              <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text3)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '10px' }}>
+              <div style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text3)', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '10px' }}>
                 How to use
               </div>
               <ol style={{ paddingLeft: '18px', margin: 0, fontSize: '13px', color: 'var(--text2)', lineHeight: '1.8' }}>

@@ -50,7 +50,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   mb: 2,
                 }}
               />
-              <Typography variant="h5" gutterBottom fontWeight="bold">
+              <Typography variant="h5" gutterBottom fontWeight={500}>
                 Something went wrong
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>

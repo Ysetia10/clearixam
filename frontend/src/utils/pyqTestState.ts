@@ -96,7 +96,7 @@ export function paletteStyle(status: QuestionStatus, active: boolean): CSSProper
   const base: CSSProperties = {
     height: 32,
     fontSize: 12,
-    fontWeight: active ? 700 : 600,
+    fontWeight: active ? 500 : 500,
     cursor: 'pointer',
     color: '#fff',
     boxSizing: 'border-box',

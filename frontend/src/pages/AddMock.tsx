@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { DeleteOutline } from '@mui/icons-material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { mocksApi } from '../api/mocks';
 import { examsApi, Exam, Subject } from '../api/exams';
@@ -409,7 +410,7 @@ export const AddMock = () => {
                             background: 'var(--surface3)',
                             borderRadius: '10px',
                             fontSize: '14px',
-                            fontWeight: 600,
+                            fontWeight: 500,
                             color: 'var(--accent2)',
                           }}>
                             {calculateScore(row.attempted, row.correct)}
@@ -422,7 +423,7 @@ export const AddMock = () => {
                           disabled={subjectRows.length === 1}
                           style={{ padding: '10px', color: 'var(--red)' }}
                         >
-                          🗑
+                          <DeleteOutline sx={{ fontSize: 20 }} />
                         </button>
                       </div>
                     );
@@ -446,13 +447,13 @@ export const AddMock = () => {
                 }}>
                   <div>
                     <div className="stat-label">Total Attempted</div>
-                    <div style={{ fontSize: '20px', fontWeight: 700 }}>{totalAttempted}</div>
+                    <div style={{ fontSize: '20px', fontWeight: 500 }}>{totalAttempted}</div>
                   </div>
                   <div>
                     <div className="stat-label">Unattempted</div>
                     <div style={{
                       fontSize: '20px',
-                      fontWeight: 700,
+                      fontWeight: 500,
                       color: unattempted < 0 ? 'var(--red)' : 'var(--text)',
                     }}>
                       {unattempted}
@@ -460,15 +461,15 @@ export const AddMock = () => {
                   </div>
                   <div>
                     <div className="stat-label">Total Score</div>
-                    <div style={{ fontSize: '20px', fontWeight: 700, color: 'var(--accent2)' }}>{totalScore}</div>
+                    <div style={{ fontSize: '20px', fontWeight: 500, color: 'var(--accent2)' }}>{totalScore}</div>
                   </div>
                   <div>
                     <div className="stat-label">Max Questions</div>
-                    <div style={{ fontSize: '20px', fontWeight: 700 }}>{maxQuestions}</div>
+                    <div style={{ fontSize: '20px', fontWeight: 500 }}>{maxQuestions}</div>
                   </div>
                   <div>
                     <div className="stat-label">Max Marks</div>
-                    <div style={{ fontSize: '20px', fontWeight: 700 }}>{maxMarks}</div>
+                    <div style={{ fontSize: '20px', fontWeight: 500 }}>{maxMarks}</div>
                   </div>
                 </div>
               </>

@@ -241,7 +241,7 @@ export function markEmphasizedPyqText(raw: string, options?: Record<string, stri
 const highlightStyle: CSSProperties = {
   background: 'color-mix(in srgb, var(--amber) 28%, transparent)',
   color: 'inherit',
-  fontWeight: 700,
+  fontWeight: 500,
   padding: '0 3px',
   borderRadius: 3,
   boxDecorationBreak: 'clone',

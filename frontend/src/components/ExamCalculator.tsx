@@ -222,7 +222,7 @@ export function ExamCalculator({ open, onClose }: { open: boolean; onClose: () =
         style={{
           padding: '12px 14px',
           fontSize: 26,
-          fontWeight: 700,
+          fontWeight: 500,
           fontVariantNumeric: 'tabular-nums',
           textAlign: 'right',
           minHeight: 40,
@@ -253,7 +253,7 @@ export function ExamCalculator({ open, onClose }: { open: boolean; onClose: () =
                 : 'var(--surface2)',
               color: 'var(--text)',
               fontSize: 16,
-              fontWeight: 600,
+              fontWeight: 500,
               cursor: 'pointer',
             }}
           >

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { BarChartOutlined } from '@mui/icons-material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { analyticsApi, SubjectStatus } from '../api/analytics';
 import { examsApi, Exam } from '../api/exams';
@@ -96,7 +97,9 @@ export const SubjectAnalytics = () => {
       {subjects.length === 0 ? (
         <div className="card">
           <div className="empty-state">
-            <div className="empty-icon">📊</div>
+            <div className="empty-icon" style={{ display: 'flex', justifyContent: 'center' }}>
+              <BarChartOutlined sx={{ fontSize: 36, color: 'var(--text3)' }} />
+            </div>
             <div className="empty-title">
               {filter !== 'all' ? `No ${filter} subjects` : 'No data yet'}
             </div>
@@ -118,7 +121,7 @@ export const SubjectAnalytics = () => {
               <div key={subject.subjectName} className={`card stagger-${Math.min(i + 1, 6)}`}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                   <div>
-                    <h3 style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', fontWeight: 700 }}>
+                    <h3 style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', fontWeight: 500 }}>
                       {subject.subjectName}
                     </h3>
                     <div style={{ fontSize: '11px', color: 'var(--text3)', marginTop: '2px' }}>
@@ -133,7 +136,7 @@ export const SubjectAnalytics = () => {
                   </span>
                 </div>
                 <div style={{ marginBottom: '16px' }}>
-                  <div style={{ fontSize: '32px', fontWeight: 700, color: accuracyColor, fontFamily: 'Inter, sans-serif', marginBottom: '8px' }}>
+                  <div style={{ fontSize: '32px', fontWeight: 500, color: accuracyColor, fontFamily: 'Inter, sans-serif', marginBottom: '8px' }}>
                     {subject.avgAccuracy.toFixed(1)}%
                   </div>
                   <div className="progress-track">
@@ -146,11 +149,11 @@ export const SubjectAnalytics = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Avg Attempts</div>
-                    <div style={{ fontSize: '16px', fontWeight: 600 }}>{subject.avgAttemptsPerMock.toFixed(1)}</div>
+                    <div style={{ fontSize: '16px', fontWeight: 500 }}>{subject.avgAttemptsPerMock.toFixed(1)}</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Trend (last 5 vs prev 5)</div>
-                    <div style={{ fontSize: '16px', fontWeight: 600, color: trendColor }}>
+                    <div style={{ fontSize: '16px', fontWeight: 500, color: trendColor }}>
                       {subject.trend === 0
                         ? '—'
                         : `${subject.trend > 0 ? '+' : ''}${subject.trend.toFixed(1)}%`}

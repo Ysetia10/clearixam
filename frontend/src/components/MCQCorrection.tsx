@@ -36,7 +36,7 @@ const MCQCorrection: React.FC<MCQCorrectionProps> = ({ result, onCorrectionSubmi
       marginBottom: '20px',
       backgroundColor: 'var(--amber-glow)',
     }}>
-      <h3 style={{ margin: '0 0 12px', fontSize: '16px', fontWeight: '700', color: 'var(--text)' }}>
+      <h3 style={{ margin: '0 0 12px', fontSize: '16px', fontWeight: '500', color: 'var(--text)' }}>
         Correct Classification
       </h3>
 

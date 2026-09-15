@@ -1,4 +1,14 @@
 import React, { useState, useRef, useCallback } from 'react';
+import {
+  CancelOutlined,
+  CheckCircleOutline,
+  Close,
+  ImageOutlined,
+  Inventory2Outlined,
+  SkipNextOutlined,
+  TextFieldsOutlined,
+} from '@mui/icons-material';
+import type { SvgIconComponent } from '@mui/icons-material';
 import { processImage, processText, setOutcome, MCQResult } from '../api/mcq';
 
 interface MCQUploadProps {
@@ -7,11 +17,16 @@ interface MCQUploadProps {
   onError: (error: string) => void;
 }
 
-const OUTCOMES = [
-  { value: 'CORRECT', label: 'Correct', emoji: '✅', color: 'var(--green)' },
-  { value: 'INCORRECT', label: 'Incorrect', emoji: '❌', color: 'var(--red)' },
-  { value: 'UNATTEMPTED', label: 'Skipped', emoji: '⏭️', color: 'var(--text2)' },
-] as const;
+const OUTCOMES: {
+  value: 'CORRECT' | 'INCORRECT' | 'UNATTEMPTED';
+  label: string;
+  Icon: SvgIconComponent;
+  color: string;
+}[] = [
+  { value: 'CORRECT', label: 'Correct', Icon: CheckCircleOutline, color: 'var(--green)' },
+  { value: 'INCORRECT', label: 'Incorrect', Icon: CancelOutlined, color: 'var(--red)' },
+  { value: 'UNATTEMPTED', label: 'Skipped', Icon: SkipNextOutlined, color: 'var(--text2)' },
+];
 
 const MAX_BULK = 15;
 
@@ -147,18 +162,25 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onBulkResults, onError 
 
   return (
     <div className="card" style={{ marginBottom: '20px' }}>
-      <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: '700', color: 'var(--text)' }}>
+      <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: '500', color: 'var(--text)' }}>
         MCQ Classification
       </h3>
 
       {/* Mode Toggle */}
       <div className="tabs" style={{ marginBottom: '16px', width: 'fit-content' }}>
         {([
-          { key: 'image', label: '🖼️ Image' },
-          { key: 'text', label: '📝 Text' },
-          { key: 'bulk', label: '📦 Bulk' },
-        ] as const).map(({ key, label }) => (
-          <button key={key} className={`tab${inputMode === key ? ' active' : ''}`} onClick={() => setInputMode(key)}>
+          { key: 'image' as const, label: 'Image', Icon: ImageOutlined },
+          { key: 'text' as const, label: 'Text', Icon: TextFieldsOutlined },
+          { key: 'bulk' as const, label: 'Bulk', Icon: Inventory2Outlined },
+        ]).map(({ key, label, Icon }) => (
+          <button
+            key={key}
+            type="button"
+            className={`tab${inputMode === key ? ' active' : ''}`}
+            onClick={() => setInputMode(key)}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+          >
+            <Icon sx={{ fontSize: 18 }} />
             {label}
           </button>
         ))}
@@ -215,8 +237,8 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onBulkResults, onError 
               </>
             ) : (
               <>
-                <div style={{ fontSize: '36px', lineHeight: 1 }}>🖼️</div>
-                <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text)' }}>
+                <ImageOutlined sx={{ fontSize: 40, color: 'var(--text3)' }} />
+                <div style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text)' }}>
                   {dragging ? 'Drop image here' : 'Drag & drop an image here'}
                 </div>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>or</div>
@@ -250,8 +272,8 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onBulkResults, onError 
               transition: 'border-color 0.2s, background 0.2s',
             }}
           >
-            <div style={{ fontSize: '28px', marginBottom: '8px' }}>📦</div>
-            <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text)', marginBottom: '4px' }}>
+            <Inventory2Outlined sx={{ fontSize: 36, color: 'var(--text3)', marginBottom: '8px' }} />
+            <div style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text)', marginBottom: '4px' }}>
               {dragging ? 'Drop images here' : 'Drag & drop multiple images'}
             </div>
             <div style={{ fontSize: '12px', color: 'var(--text3)', marginBottom: '10px' }}>or</div>
@@ -279,9 +301,13 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onBulkResults, onError 
                       {i + 1}. {f.name}
                     </span>
                     <button
+                      type="button"
+                      aria-label="Remove file"
                       onClick={() => setBulkFiles(prev => prev.filter((_, idx) => idx !== i))}
-                      style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: '14px', padding: '0 4px', lineHeight: 1 }}
-                    >×</button>
+                      style={{ background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', padding: '0 4px', lineHeight: 0, display: 'flex' }}
+                    >
+                      <Close sx={{ fontSize: 18 }} />
+                    </button>
                   </div>
                 ))}
               </div>
@@ -311,11 +337,11 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onBulkResults, onError 
 
       {/* Outcome toggle */}
       <div style={{ marginBottom: '16px' }}>
-        <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text3)', letterSpacing: '0.5px', marginBottom: '8px' }}>
+        <div style={{ fontSize: '12px', fontWeight: '500', color: 'var(--text3)', letterSpacing: '0.5px', marginBottom: '8px' }}>
           How did you do on this one?
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
-          {OUTCOMES.map(({ value, label, emoji, color }) => {
+          {OUTCOMES.map(({ value, label, Icon, color }) => {
             const isSelected = selectedOutcome === value;
             return (
               <button
@@ -329,7 +355,7 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onBulkResults, onError 
                   background: isSelected ? `${color}18` : 'transparent',
                   color: isSelected ? color : 'var(--text2)',
                   fontSize: '13px',
-                  fontWeight: '600',
+                  fontWeight: '500',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
                   fontFamily: 'inherit',
@@ -339,7 +365,7 @@ const MCQUpload: React.FC<MCQUploadProps> = ({ onResult, onBulkResults, onError 
                   gap: '5px',
                 }}
               >
-                <span>{emoji}</span> {label}
+                <Icon sx={{ fontSize: 18 }} /> {label}
               </button>
             );
           })}

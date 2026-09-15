@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { AssignmentOutlined, DeleteOutline, VisibilityOutlined } from '@mui/icons-material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { examsApi, Exam } from '../api/exams';
 import { mocksApi, MockResponse } from '../api/mocks';
@@ -75,7 +76,9 @@ export const PerformanceHistory = () => {
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {!mocks?.content?.length ? (
           <div className="empty-state">
-            <div className="empty-icon">📝</div>
+            <div className="empty-icon" style={{ display: 'flex', justifyContent: 'center' }}>
+              <AssignmentOutlined sx={{ fontSize: 36, color: 'var(--text3)' }} />
+            </div>
             <div className="empty-title">No mock tests yet</div>
             <div className="empty-sub">Add your first mock test to start tracking</div>
             <button className="btn btn-primary" style={{ marginTop: '16px' }} onClick={() => navigate('/add-mock')}>
@@ -96,8 +99,8 @@ export const PerformanceHistory = () => {
             {mocks.content.map((mock: MockResponse) => (
               <div key={mock.id} className="table-row" style={{ gridTemplateColumns: '110px 1fr 110px 110px 100px 110px 110px' }}>
                 <div style={{ fontSize: '13px' }}>{new Date(mock.testDate).toLocaleDateString()}</div>
-                <div style={{ fontSize: '13px', fontWeight: 600 }}>{getExamName(mock)}</div>
-                <div style={{ fontSize: '13px', textAlign: 'right', fontWeight: 600, color: 'var(--accent2)' }}>
+                <div style={{ fontSize: '13px', fontWeight: 500 }}>{getExamName(mock)}</div>
+                <div style={{ fontSize: '13px', textAlign: 'right', fontWeight: 500, color: 'var(--accent2)' }}>
                   {mock.totalScore.toFixed(2)}
                 </div>
                 <div style={{ fontSize: '13px', textAlign: 'right', color: 'var(--text2)' }}>
@@ -116,18 +119,22 @@ export const PerformanceHistory = () => {
                 </div>
                 <div style={{ display: 'flex', gap: '6px', justifyContent: 'center' }}>
                   <button
+                    type="button"
                     className="btn btn-ghost"
-                    style={{ padding: '4px 10px', fontSize: '12px' }}
+                    style={{ padding: '4px 10px', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                     onClick={() => handleViewDetail(mock.id)}
                   >
-                    👁 View
+                    <VisibilityOutlined sx={{ fontSize: 16 }} />
+                    View
                   </button>
                   <button
+                    type="button"
                     className="btn btn-ghost"
-                    style={{ padding: '4px 10px', fontSize: '12px', color: 'var(--red)' }}
+                    style={{ padding: '4px 10px', fontSize: '12px', color: 'var(--red)', lineHeight: 0 }}
                     onClick={() => setDeleteId(mock.id)}
+                    aria-label="Delete mock"
                   >
-                    🗑
+                    <DeleteOutline sx={{ fontSize: 18 }} />
                   </button>
                 </div>
               </div>

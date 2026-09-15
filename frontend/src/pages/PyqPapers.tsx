@@ -95,7 +95,7 @@ export const PyqPapers = () => {
               }}
             >
               <div>
-                <div style={{ fontWeight: 700, fontSize: 16 }}>{paper.title}</div>
+                <div style={{ fontWeight: 500, fontSize: 16 }}>{paper.title}</div>
                 {latest && (
                   <div style={{ fontSize: 13, marginTop: 10, color: 'var(--text2)' }}>
                     Latest score:{' '}

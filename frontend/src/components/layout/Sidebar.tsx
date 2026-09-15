@@ -1,4 +1,18 @@
 import { Drawer } from '@mui/material'
+import {
+  Add,
+  DarkMode,
+  DashboardOutlined,
+  History,
+  LightMode,
+  Logout,
+  ManageSearch,
+  QuizOutlined,
+  SettingsOutlined,
+  ShowChartOutlined,
+  TimerOutlined,
+} from '@mui/icons-material'
+import type { SvgIconComponent } from '@mui/icons-material'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { removeToken } from '../../api/auth'
 import { useThemeMode } from '../../context/ThemeContext'
@@ -8,6 +22,12 @@ interface SidebarProps {
   isMobile?: boolean
   open?: boolean
   onClose?: () => void
+}
+
+type MenuItem = {
+  text: string
+  path: string
+  Icon: SvgIconComponent
 }
 
 export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps) => {
@@ -27,15 +47,15 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
     onClose?.()
   }
 
-  const menuItems = [
-    { text: 'Dashboard', path: '/dashboard', icon: '📊' },
-    { text: 'Subject Analytics', path: '/subject-analytics', icon: '📈' },
-    { text: 'Topic Performance', path: '/topic-performance', icon: '🎯' },
-    { text: 'PYQ Tests', path: '/pyq-tests', icon: '⏱️' },
-    { text: 'Sectional Tests', path: '/sectional-tests', icon: '📝' },
-    { text: 'Add Mock', path: '/add-mock', icon: '➕' },
-    { text: 'Mock History', path: '/performance-history', icon: '📋' },
-    { text: 'Account', path: '/account', icon: '⚙️' },
+  const menuItems: MenuItem[] = [
+    { text: 'Dashboard', path: '/dashboard', Icon: DashboardOutlined },
+    { text: 'Subject Analytics', path: '/subject-analytics', Icon: ShowChartOutlined },
+    { text: 'Topic Performance', path: '/topic-performance', Icon: ManageSearch },
+    { text: 'PYQ Tests', path: '/pyq-tests', Icon: TimerOutlined },
+    { text: 'Sectional Tests', path: '/sectional-tests', Icon: QuizOutlined },
+    { text: 'Add Mock', path: '/add-mock', Icon: Add },
+    { text: 'Mock History', path: '/performance-history', Icon: History },
+    { text: 'Account', path: '/account', Icon: SettingsOutlined },
   ]
 
   const getInitials = (email: string) => email.substring(0, 2).toUpperCase()
@@ -77,6 +97,7 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
         </div>
 
         <button
+          type="button"
           onClick={toggleTheme}
           style={{
             background: 'var(--surface2)',
@@ -97,17 +118,12 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
         >
           {mode === 'dark' ? (
             <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="5" />
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-              </svg>
+              <LightMode sx={{ fontSize: 18 }} />
               <span style={{ fontSize: '12px', fontWeight: 500 }}>Light Mode</span>
             </>
           ) : (
             <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
+              <DarkMode sx={{ fontSize: 18 }} />
               <span style={{ fontSize: '12px', fontWeight: 500 }}>Dark Mode</span>
             </>
           )}
@@ -130,6 +146,7 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
         </div>
         {menuItems.map((item) => {
           const isActive = location.pathname === item.path
+          const { Icon } = item
           return (
             <div
               key={item.path}
@@ -164,8 +181,8 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
                   }}
                 />
               )}
-              <span style={{ fontSize: '16px' }}>{item.icon}</span>
-              <span style={{ fontWeight: isActive ? 600 : 500 }}>{item.text}</span>
+              <Icon sx={{ fontSize: 20, opacity: isActive ? 1 : 0.85 }} />
+              <span style={{ fontWeight: 500 }}>{item.text}</span>
             </div>
           )
         })}
@@ -234,15 +251,20 @@ export const Sidebar = ({ isMobile = false, open = true, onClose }: SidebarProps
         </div>
 
         <button
+          type="button"
           onClick={handleLogout}
           className="btn btn-ghost"
           style={{
             width: '100%',
             marginTop: '8px',
             justifyContent: 'center',
+            gap: 8,
+            display: 'flex',
+            alignItems: 'center',
           }}
         >
-          🚪 Logout
+          <Logout sx={{ fontSize: 18 }} />
+          Logout
         </button>
       </div>
     </div>

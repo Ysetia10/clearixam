@@ -120,7 +120,7 @@ export const Login = () => {
                 variant="h3"
                 sx={{
                   color: 'white',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   mb: 2,
                   textShadow: '0 2px 10px rgba(0,0,0,0.2)',
                 }}
@@ -317,7 +317,7 @@ export const Login = () => {
                     gutterBottom
                     sx={{ 
                       mb: 0.5,
-                      fontWeight: 700,
+                      fontWeight: 500,
                       background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
@@ -407,7 +407,7 @@ export const Login = () => {
                       mb: 2,
                       py: 1.2,
                       fontSize: '0.9rem',
-                      fontWeight: 600,
+                      fontWeight: 500,
                       background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
                       boxShadow: '0 4px 14px rgba(139, 92, 246, 0.4)',
                       transition: 'all 0.3s',
@@ -438,7 +438,7 @@ export const Login = () => {
                     onClick={() => navigate('/register')}
                     sx={{
                       cursor: 'pointer',
-                      fontWeight: 600,
+                      fontWeight: 500,
                       transition: 'all 0.2s',
                       '&:hover': {
                         color: 'primary.dark',

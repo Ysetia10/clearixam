@@ -24,16 +24,20 @@ export const getTheme = (mode: 'light' | 'dark') =>
     typography: {
       fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif',
       fontSize: 13,
+      fontWeightLight: 500,
+      fontWeightRegular: 500,
+      fontWeightMedium: 500,
+      fontWeightBold: 500,
       h4: {
-        fontWeight: 600,
+        fontWeight: 500,
         fontSize: '1.5rem',
       },
       h5: {
-        fontWeight: 600,
+        fontWeight: 500,
         fontSize: '1.25rem',
       },
       h6: {
-        fontWeight: 600,
+        fontWeight: 500,
         fontSize: '1rem',
       },
       body1: {
@@ -72,6 +76,7 @@ export const getTheme = (mode: 'light' | 'dark') =>
             textTransform: 'none',
             borderRadius: 6,
             fontSize: '0.8125rem',
+            fontWeight: 500,
             padding: '6px 12px',
           },
           sizeSmall: {
@@ -99,7 +104,7 @@ export const getTheme = (mode: 'light' | 'dark') =>
             fontSize: '0.8125rem',
           },
           head: {
-            fontWeight: 600,
+            fontWeight: 500,
             fontSize: '0.75rem',
             textTransform: 'uppercase',
             letterSpacing: '0.5px',

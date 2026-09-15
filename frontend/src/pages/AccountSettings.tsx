@@ -1,6 +1,14 @@
 import { useState, useRef, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import {
+  DownloadOutlined,
+  HourglassEmptyOutlined,
+  LockOutlined,
+  Logout,
+  UploadOutlined,
+  WarningAmberOutlined,
+} from '@mui/icons-material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { backupApi, BackupData } from '../api/backup';
 import { removeToken } from '../api/auth';
@@ -176,13 +184,13 @@ export const AccountSettings = () => {
             justifyContent: 'center',
             color: 'var(--on-color)',
             fontSize: '24px',
-            fontWeight: 700,
+            fontWeight: 500,
             fontFamily: 'Inter, sans-serif',
           }}>
             {getInitials(userEmail)}
           </div>
           <div>
-            <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', fontWeight: 700, marginBottom: '4px', color: 'var(--text)' }}>
+            <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '20px', fontWeight: 500, marginBottom: '4px', color: 'var(--text)' }}>
               {userEmail.split('@')[0]}
             </div>
             <div style={{ fontSize: '13px', color: 'var(--text2)' }}>
@@ -214,11 +222,23 @@ export const AccountSettings = () => {
 
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' }}>
           <button
+            type="button"
             className="btn btn-primary"
             onClick={() => exportMutation.mutate()}
             disabled={exportMutation.isPending}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
           >
-            {exportMutation.isPending ? '⏳ Exporting...' : '📥 Export Data'}
+            {exportMutation.isPending ? (
+              <>
+                <HourglassEmptyOutlined sx={{ fontSize: 18 }} />
+                Exporting...
+              </>
+            ) : (
+              <>
+                <DownloadOutlined sx={{ fontSize: 18 }} />
+                Export Data
+              </>
+            )}
           </button>
 
           <input
@@ -229,10 +249,13 @@ export const AccountSettings = () => {
             onChange={handleFileSelect}
           />
           <button
+            type="button"
             className="btn btn-ghost"
             onClick={() => fileInputRef.current?.click()}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
           >
-            📤 Import Data
+            <UploadOutlined sx={{ fontSize: 18 }} />
+            Import Data
           </button>
         </div>
 
@@ -244,7 +267,10 @@ export const AccountSettings = () => {
           fontSize: '12px',
           color: 'var(--text2)',
         }}>
-          🔒 Your data is exported in JSON format. Keep this file secure as it contains all your mock test data and goals.
+          <span style={{ display: 'inline-flex', alignItems: 'flex-start', gap: 8 }}>
+            <LockOutlined sx={{ fontSize: 16, marginTop: '1px', flexShrink: 0 }} />
+            Your data is exported in JSON format. Keep this file secure as it contains all your mock test data and goals.
+          </span>
         </div>
       </div>
 
@@ -258,11 +284,15 @@ export const AccountSettings = () => {
           Logout from your account
         </p>
         <button
+          type="button"
           className="btn btn-ghost"
           onClick={handleLogout}
           style={{
             color: 'var(--red)',
             borderColor: 'rgba(244,63,94,0.3)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.background = 'rgba(244,63,94,0.1)';
@@ -271,7 +301,8 @@ export const AccountSettings = () => {
             e.currentTarget.style.background = 'var(--surface2)';
           }}
         >
-          🚪 Logout
+          <Logout sx={{ fontSize: 18 }} />
+          Logout
         </button>
       </div>
 
@@ -296,7 +327,7 @@ export const AccountSettings = () => {
             overflow: 'auto',
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
-              <span style={{ fontSize: '24px' }}>⚠️</span>
+              <WarningAmberOutlined sx={{ fontSize: 28, color: 'var(--amber)' }} />
               <h3 className="section-title">Confirm Data Import</h3>
             </div>
 

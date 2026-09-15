@@ -71,7 +71,7 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth fullScreen={isMobile}>
       <DialogTitle sx={{ pb: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="subtitle1" fontWeight="bold">
+          <Typography variant="subtitle1" fontWeight={500}>
             Mock Test Details
           </Typography>
           <IconButton onClick={onClose} size="small">
@@ -109,7 +109,7 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
           <Typography variant="caption" color="text.secondary">
             Test Date
           </Typography>
-          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+          <Typography variant="subtitle1" fontWeight={500} gutterBottom>
             {mockDetail.testDate}
           </Typography>
 
@@ -118,7 +118,7 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
               <Typography variant="caption" color="text.secondary">
                 Total Score
               </Typography>
-              <Typography variant="h6" fontWeight="bold" color="primary">
+              <Typography variant="h6" fontWeight={500} color="primary">
                 {mockDetail.totalScore.toFixed(2)}
               </Typography>
             </Box>
@@ -126,7 +126,7 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
               <Typography variant="caption" color="text.secondary">
                 Cutoff Score
               </Typography>
-              <Typography variant="h6" fontWeight="bold">
+              <Typography variant="h6" fontWeight={500}>
                 {mockDetail.cutoffScore.toFixed(2)}
               </Typography>
             </Box>
@@ -134,7 +134,7 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
               <Typography variant="caption" color="text.secondary">
                 Overall Accuracy
               </Typography>
-              <Typography variant="h6" fontWeight="bold" color="success.main">
+              <Typography variant="h6" fontWeight={500} color="success.main">
                 {overallAccuracy.toFixed(1)}%
               </Typography>
             </Box>
@@ -182,7 +182,7 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
                 return (
                   <TableRow key={subject.subjectName}>
                     <TableCell sx={{ py: 0.75 }}>
-                      <Typography variant="body2" fontWeight="bold">{subject.subjectName}</Typography>
+                      <Typography variant="body2" fontWeight={500}>{subject.subjectName}</Typography>
                     </TableCell>
                     <TableCell align="right" sx={{ py: 0.75 }}>{subject.attempted}</TableCell>
                     <TableCell align="right" sx={{ py: 0.75 }}>{subject.correct}</TableCell>
@@ -196,23 +196,23 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
                       />
                     </TableCell>
                     <TableCell align="right" sx={{ py: 0.75 }}>
-                      <Typography variant="body2" fontWeight="bold">{subject.score.toFixed(2)}</Typography>
+                      <Typography variant="body2" fontWeight={500}>{subject.score.toFixed(2)}</Typography>
                     </TableCell>
                   </TableRow>
                 );
               })}
               <TableRow>
                 <TableCell sx={{ py: 0.75 }}>
-                  <Typography variant="body2" fontWeight="bold">TOTAL</Typography>
+                  <Typography variant="body2" fontWeight={500}>TOTAL</Typography>
                 </TableCell>
                 <TableCell align="right" sx={{ py: 0.75 }}>
-                  <Typography variant="body2" fontWeight="bold">{totalAttempted}</Typography>
+                  <Typography variant="body2" fontWeight={500}>{totalAttempted}</Typography>
                 </TableCell>
                 <TableCell align="right" sx={{ py: 0.75 }}>
-                  <Typography variant="body2" fontWeight="bold">{totalCorrect}</Typography>
+                  <Typography variant="body2" fontWeight={500}>{totalCorrect}</Typography>
                 </TableCell>
                 <TableCell align="right" sx={{ py: 0.75 }}>
-                  <Typography variant="body2" fontWeight="bold">{totalAttempted - totalCorrect}</Typography>
+                  <Typography variant="body2" fontWeight={500}>{totalAttempted - totalCorrect}</Typography>
                 </TableCell>
                 <TableCell align="right" sx={{ py: 0.75 }}>
                   <Chip
@@ -225,7 +225,7 @@ export const MockDetailDialog = ({ open, onClose, mockDetail }: MockDetailDialog
                   />
                 </TableCell>
                 <TableCell align="right" sx={{ py: 0.75 }}>
-                  <Typography variant="body2" fontWeight="bold">{mockDetail.totalScore.toFixed(2)}</Typography>
+                  <Typography variant="body2" fontWeight={500}>{mockDetail.totalScore.toFixed(2)}</Typography>
                 </TableCell>
               </TableRow>
             </TableBody>

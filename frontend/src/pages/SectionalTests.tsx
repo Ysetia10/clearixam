@@ -4,6 +4,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend, ReferenceLine,
 } from 'recharts';
+import { Add, DeleteOutline, QuizOutlined, ShowChartOutlined } from '@mui/icons-material';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { examsApi, Exam, Subject } from '../api/exams';
 import {
@@ -46,7 +47,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
       padding: '10px 14px',
       fontSize: '12px',
     }}>
-      <div style={{ fontWeight: 600, marginBottom: '6px', color: 'var(--text2)' }}>{label}</div>
+      <div style={{ fontWeight: 500, marginBottom: '6px', color: 'var(--text2)' }}>{label}</div>
       {payload.map((p: any) => (
         <div key={p.dataKey} style={{ color: p.color, marginBottom: '2px' }}>
           {p.name}: <strong>{typeof p.value === 'number' ? fmt1(p.value) : p.value}</strong>
@@ -88,7 +89,7 @@ function SubjectHistoryPanel({
       {/* header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h3 style={{ fontFamily: 'Inter, sans-serif', fontSize: '18px', fontWeight: 700, marginBottom: '4px' }}>
+          <h3 style={{ fontFamily: 'Inter, sans-serif', fontSize: '18px', fontWeight: 500, marginBottom: '4px' }}>
             {summary.subjectName}
           </h3>
           <span style={{ fontSize: '12px', color: 'var(--text3)' }}>
@@ -99,19 +100,19 @@ function SubjectHistoryPanel({
         <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Latest Score</div>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: ACCENT }}>{fmt1(summary.latestScore)}</div>
+            <div style={{ fontSize: '22px', fontWeight: 500, color: ACCENT }}>{fmt1(summary.latestScore)}</div>
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Accuracy</div>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: accColor }}>{fmt1(summary.latestAccuracy)}%</div>
+            <div style={{ fontSize: '22px', fontWeight: 500, color: accColor }}>{fmt1(summary.latestAccuracy)}%</div>
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Best Score</div>
-            <div style={{ fontSize: '22px', fontWeight: 700, color: GREEN }}>{fmt1(summary.bestScore)}</div>
+            <div style={{ fontSize: '22px', fontWeight: 500, color: GREEN }}>{fmt1(summary.bestScore)}</div>
           </div>
           <div style={{ textAlign: 'right' }}>
             <div style={{ fontSize: '11px', color: 'var(--text3)' }}>Speed (latest)</div>
-            <div style={{ fontSize: '22px', fontWeight: 700 }}>{fmtSec(summary.latestSecondsPerQuestion)}</div>
+            <div style={{ fontSize: '22px', fontWeight: 500 }}>{fmtSec(summary.latestSecondsPerQuestion)}</div>
           </div>
         </div>
       </div>
@@ -119,7 +120,7 @@ function SubjectHistoryPanel({
       {/* trend badges */}
       <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
         <span style={{
-          padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 600,
+          padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 500,
           background: `${trendColor(summary.scoreTrend)}22`,
           color: trendColor(summary.scoreTrend),
         }}>
@@ -127,7 +128,7 @@ function SubjectHistoryPanel({
         </span>
         {summary.speedTrend != null && (
           <span style={{
-            padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 600,
+            padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 500,
             background: `${trendColor(-summary.speedTrend)}22`,
             color: trendColor(-summary.speedTrend),
           }}>
@@ -135,7 +136,7 @@ function SubjectHistoryPanel({
           </span>
         )}
         <span style={{
-          padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 600,
+          padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 500,
           background: 'var(--surface2)', color: 'var(--text2)',
         }}>
           Avg accuracy: {fmt1(summary.avgAccuracy)}%
@@ -148,7 +149,7 @@ function SubjectHistoryPanel({
 
           {/* Score over time */}
           <div>
-            <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text2)', marginBottom: '12px' }}>Score over time</div>
+            <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text2)', marginBottom: '12px' }}>Score over time</div>
             <ResponsiveContainer width="100%" height={180}>
               <LineChart data={h} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -162,7 +163,7 @@ function SubjectHistoryPanel({
 
           {/* Accuracy over time */}
           <div>
-            <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text2)', marginBottom: '12px' }}>Accuracy over time</div>
+            <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text2)', marginBottom: '12px' }}>Accuracy over time</div>
             <ResponsiveContainer width="100%" height={180}>
               <LineChart data={h} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -178,7 +179,7 @@ function SubjectHistoryPanel({
           {/* Speed over time */}
           {hasSpeed && (
             <div>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text2)', marginBottom: '12px' }}>Time per question (seconds)</div>
+              <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text2)', marginBottom: '12px' }}>Time per question (seconds)</div>
               <ResponsiveContainer width="100%" height={180}>
                 <LineChart data={h.filter(p => p.secondsPerQuestion != null)} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
@@ -194,7 +195,7 @@ function SubjectHistoryPanel({
           {/* Latest entry pie */}
           {latest && (
             <div>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text2)', marginBottom: '12px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text2)', marginBottom: '12px' }}>
                 Latest breakdown ({fmtDate(latest.testDate)})
               </div>
               <ResponsiveContainer width="100%" height={180}>
@@ -219,7 +220,7 @@ function SubjectHistoryPanel({
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border)' }}>
               {['Date', 'Total Qs', 'Attempted', 'Correct', 'Incorrect', 'Unattempted', 'Score', 'Accuracy', 'Time', 'Sec/Q', ''].map(h => (
-                <th key={h} style={{ padding: '8px 12px', textAlign: 'left', fontSize: '11px', fontWeight: 600, color: 'var(--text3)', whiteSpace: 'nowrap' }}>{h}</th>
+                <th key={h} style={{ padding: '8px 12px', textAlign: 'left', fontSize: '11px', fontWeight: 500, color: 'var(--text3)', whiteSpace: 'nowrap' }}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -231,21 +232,25 @@ function SubjectHistoryPanel({
                 <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{fmtDate(p.testDate)}</td>
                 <td style={{ padding: '10px 12px' }}>{p.totalQuestions}</td>
                 <td style={{ padding: '10px 12px' }}>{p.attempted}</td>
-                <td style={{ padding: '10px 12px', color: GREEN, fontWeight: 600 }}>{p.correct}</td>
-                <td style={{ padding: '10px 12px', color: RED, fontWeight: 600 }}>{p.incorrect}</td>
+                <td style={{ padding: '10px 12px', color: GREEN, fontWeight: 500 }}>{p.correct}</td>
+                <td style={{ padding: '10px 12px', color: RED, fontWeight: 500 }}>{p.incorrect}</td>
                 <td style={{ padding: '10px 12px', color: 'var(--text3)' }}>{p.unattempted}</td>
-                <td style={{ padding: '10px 12px', fontWeight: 700, color: ACCENT }}>{fmt1(p.score)}</td>
-                <td style={{ padding: '10px 12px', color: p.accuracy >= 80 ? GREEN : p.accuracy >= 60 ? AMBER : RED, fontWeight: 600 }}>
+                <td style={{ padding: '10px 12px', fontWeight: 500, color: ACCENT }}>{fmt1(p.score)}</td>
+                <td style={{ padding: '10px 12px', color: p.accuracy >= 80 ? GREEN : p.accuracy >= 60 ? AMBER : RED, fontWeight: 500 }}>
                   {fmt1(p.accuracy)}%
                 </td>
                 <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{p.timeTakenMinutes}m</td>
                 <td style={{ padding: '10px 12px', whiteSpace: 'nowrap' }}>{fmtSec(p.secondsPerQuestion)}</td>
                 <td style={{ padding: '10px 12px' }}>
                   <button
+                    type="button"
                     onClick={() => onDelete(p.id)}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', fontSize: '14px', padding: '2px 6px', borderRadius: '4px' }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)', padding: '2px 6px', borderRadius: '4px', lineHeight: 0, display: 'flex' }}
                     title="Delete entry"
-                  >🗑</button>
+                    aria-label="Delete entry"
+                  >
+                    <DeleteOutline sx={{ fontSize: 18 }} />
+                  </button>
                 </td>
               </tr>
             ))}
@@ -408,7 +413,7 @@ function AddEntryForm({
             ].map(({ label, value, color }) => (
               <div key={label} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '2px' }}>{label}</div>
-                <div style={{ fontSize: '18px', fontWeight: 700, color }}>{value}</div>
+                <div style={{ fontSize: '18px', fontWeight: 500, color }}>{value}</div>
               </div>
             ))}
           </div>
@@ -478,8 +483,14 @@ export const SectionalTests = () => {
       {/* top bar — tabs + exam selector */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
         <div className="tabs">
-          <button className={`tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')}>📈 History & Analytics</button>
-          <button className={`tab ${tab === 'add' ? 'active' : ''}`} onClick={() => setTab('add')}>➕ Add Entry</button>
+          <button type="button" className={`tab ${tab === 'history' ? 'active' : ''}`} onClick={() => setTab('history')} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <ShowChartOutlined sx={{ fontSize: 18 }} />
+            History & Analytics
+          </button>
+          <button type="button" className={`tab ${tab === 'add' ? 'active' : ''}`} onClick={() => setTab('add')} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <Add sx={{ fontSize: 18 }} />
+            Add Entry
+          </button>
         </div>
 
         {tab === 'history' && exams.length > 0 && (
@@ -502,7 +513,9 @@ export const SectionalTests = () => {
           ) : !analytics || analytics.subjects.length === 0 ? (
             <div className="card">
               <div className="empty-state">
-                <div className="empty-icon">📝</div>
+                <div className="empty-icon" style={{ display: 'flex', justifyContent: 'center' }}>
+                  <QuizOutlined sx={{ fontSize: 36, color: 'var(--text3)' }} />
+                </div>
                 <div className="empty-title">No sectional test entries yet</div>
                 <div className="empty-sub">Switch to "Add Entry" and log your first session</div>
                 <button className="btn btn-primary" style={{ marginTop: '16px' }} onClick={() => setTab('add')}>
@@ -522,7 +535,7 @@ export const SectionalTests = () => {
                 ].map(({ label, value, color }) => (
                   <div key={label} className="card" style={{ padding: '16px', textAlign: 'center' }}>
                     <div style={{ fontSize: '11px', color: 'var(--text3)', marginBottom: '4px' }}>{label}</div>
-                    <div style={{ fontSize: '20px', fontWeight: 700, color }}>{value}</div>
+                    <div style={{ fontSize: '20px', fontWeight: 500, color }}>{value}</div>
                   </div>
                 ))}
               </div>

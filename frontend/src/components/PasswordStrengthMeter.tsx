@@ -59,7 +59,7 @@ export const PasswordStrengthMeter = ({ password }: PasswordStrengthMeterProps) 
             },
           }}
         />
-        <Typography variant="caption" sx={{ color: strength.color, fontWeight: 600, minWidth: 50 }}>
+        <Typography variant="caption" sx={{ color: strength.color, fontWeight: 500, minWidth: 50 }}>
           {strength.label}
         </Typography>
       </Box>

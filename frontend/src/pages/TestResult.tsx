@@ -56,7 +56,7 @@ export const TestResult = () => {
         ].map((card) => (
           <div key={card.label} className="card" style={{ padding: 16 }}>
             <div style={{ fontSize: 12, color: 'var(--text3)' }}>{card.label}</div>
-            <div style={{ fontSize: 28, fontWeight: 800, marginTop: 4 }}>{card.value}</div>
+            <div style={{ fontSize: 28, fontWeight: 500, marginTop: 4 }}>{card.value}</div>
           </div>
         ))}
       </div>
@@ -66,7 +66,7 @@ export const TestResult = () => {
           <thead>
             <tr style={{ textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
               {['Section', 'Attempted', 'Correct', 'Incorrect', 'Unattempted', 'Score'].map((h) => (
-                <th key={h} style={{ padding: '12px 16px', color: 'var(--text3)', fontWeight: 600 }}>
+                <th key={h} style={{ padding: '12px 16px', color: 'var(--text3)', fontWeight: 500 }}>
                   {h}
                 </th>
               ))}
@@ -75,12 +75,12 @@ export const TestResult = () => {
           <tbody>
             {result.sections.map((s) => (
               <tr key={s.sectionCode} style={{ borderBottom: '1px solid var(--border)' }}>
-                <td style={{ padding: '12px 16px', fontWeight: 600 }}>{s.sectionCode}</td>
+                <td style={{ padding: '12px 16px', fontWeight: 500 }}>{s.sectionCode}</td>
                 <td style={{ padding: '12px 16px' }}>{s.attempted}/{s.total}</td>
                 <td style={{ padding: '12px 16px' }}>{s.correct}</td>
                 <td style={{ padding: '12px 16px' }}>{s.incorrect}</td>
                 <td style={{ padding: '12px 16px' }}>{s.unattempted}</td>
-                <td style={{ padding: '12px 16px', fontWeight: 700 }}>{s.score.toFixed(1)}</td>
+                <td style={{ padding: '12px 16px', fontWeight: 500 }}>{s.score.toFixed(1)}</td>
               </tr>
             ))}
           </tbody>
@@ -90,7 +90,7 @@ export const TestResult = () => {
       <div className="tt-result-cards">
         {result.sections.map((s) => (
           <div key={s.sectionCode} className="card" style={{ padding: 14 }}>
-            <div style={{ fontWeight: 700, marginBottom: 8 }}>{s.section || s.sectionCode}</div>
+            <div style={{ fontWeight: 500, marginBottom: 8 }}>{s.section || s.sectionCode}</div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 13 }}>
               <div>Attempted <strong>{s.attempted}/{s.total}</strong></div>
               <div>Score <strong>{s.score.toFixed(1)}</strong></div>
